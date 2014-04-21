@@ -1,0 +1,66 @@
+User's Guide
+---------------
+
+Grailsflow allows you to manage processes, their definitions and activities related to a
+rocess. This user's guide describes some of the basic features of Grailsflow and how you
+can use them.
+
+
+1. Start Processes
+
+Start by clicking the menu item 'Start Process' and review all available process
+definitions. When you select a definition (or process type) you start a process of that
+type.
+
+After a process was started the 'Process Details' page with process flow information is
+displayed. In case of 'Wait' start node (start node is "interactive") 'Start Node Details'
+page is shown - this page gives possibility to change the default values for the available
+process variables. After pressing an action (or event) button, the process started using
+these variables values.
+
+
+2. List Processes
+
+'List Processes' menu item contains a list of started processes with their available
+operations. When you click on a process, you see all details of the process, it's nodes
+and their statuses. Also, it is possible to review a graphical representation of started
+processes (visited nodes, untouched nodes, interactive nodes which are currently waiting
+for user actions, etc.). The graphic shows all nodes of the selected process with their
+statuses (marked by different colors). Any active process can be killed.
+
+
+3. Show Worklist
+
+'Show Worklist' menu item contains list of nodes that are waiting for user input. It is
+possible to click on the node ID and see 'Node Details' page with information about
+selected node. At 'Node Details' page it's also possible to review and change process
+variables values and select an event, that get's sent to the node. Events and their names
+can be seen as the name of the transition to another node. After the event has been sent
+the 'Process Details' page is displayed.
+
+
+4. Edit Process Types
+
+'Edit Process Types' page show a list of available process definitions. This menue allows
+to add, edit or delete process. On the 'Process Editor' page (when process type for edit
+is selected) there are two tables:
+
+    * the list of process variables definitions and
+    * the list of process nodes definitions. For each node definition it's possible to
+      review node transitions and edit them.
+
+
+
+5. Edit Action
+
+'Edit Actions' menu item has not been finished yet. We are still thinking about the way
+process definition is created (using Grailsflow Process Editor) the process nodes contain
+empty actions.
+
+
+6. Anayze Response Time
+
+Allows to analyze the response time of executed processes. GrailsFlow searches all process
+nodes for a process type, determines the time used for each node, then checks for the
+min., max. and average time and displays them on screen. The process type nodes can be
+sorted by minimum and maximum execution time, by the average execution time, etc.

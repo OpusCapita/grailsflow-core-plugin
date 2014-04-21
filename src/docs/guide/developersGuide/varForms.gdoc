@@ -1,0 +1,262 @@
+h4. Types of Forms
+GrailsFlow supports automatic execution of nodes and manual user input. Workflows often need the user to make decisions
+or give input to the process.
+
+GrailsFlow has functions for worklist management integrated. Whenever a process designer specifies a wait node, the
+execution of the process stops when reaching that node. The node becomes visible in the worklist of the user that is
+currently assigned to that process node.
+
+When he clicks on the node there are three possible interactions:
+
+*  automatic forms: the user sees all process variables that the process designer has given read access to. He can enter
+values for variables. GrailsFlow also shows buttons for all events/transitions that leave the node, so the user can
+decide which transition to take by clicking on the button.
+*  manual form: GrailsFlow allows to upload forms that have been defined manually. These forms are shown instead of the
+automatically generated form.
+*  manual forms and controller: This allows process designers to define their own forms management and their own
+controllers. This is the most flexible way of interacting with the user; however it is also the biggest effort.
+Controller can deal with process variables or other Grails components and can also span multiple pages using the Grails
+WebFlow functionality.
+
+h4. Create a Form
+
+In the Process Editor under Process Nodes click button 'Add' on to create a node.
+
+Enter Node ID and select type as 'Wait' then variables visibility section is displayed. Define the visibility for each
+of the variables (INVISIBLE, READ_ONLY, REQUIRED and WRITE_READ). Select the form generation as
+
+Use Automatic Form and click button 'Save'.
+
+The user interface form is auto generated as below. 
+
+!developersGuide/varForms_1.jpg!
+
+The user interface form is auto generated as below.
+  
+!developersGuide/varForms_2.jpg!
+
+To create a manual form, select Use Custom Form, a text box appears for entering html code for the form. Enter the
+manual form code and click button 'Generate'
+
+!developersGuide/varForms_3.jpg!
+  
+
+To create a manual form with a controller select the option Use Custom Controller and Form and enter the code for
+Manual form and controller and click button 'Generate'
+
+!developersGuide/varForms_4.jpg!
+
+
+
+If the editor is an external one, select Use External Editor option and enter the URL for the same.
+
+!developersGuide/varForms_5.jpg!
+ 
+
+ Example:
+    * Views Section
+    ** size
+    ** widget
+    ** rows
+    ** cols
+    ** styleClass
+    ** template
+    ** displayKey
+    ** remoteFields
+    ** dateFormat
+    ** restriction
+    * Descriptions Section
+    ** description_(en|de|fr|...)
+    ** label_(en|de|fr|...)
+    * Constraints Section
+    ** required
+
+Example:
+
+{code}
+
+class AutoFormsGenerationTestProcess {
+    public String  productId
+    public Link userSite
+    public Address address
+    public String commentary
+ 
+ 
+    static views = {
+        // the order of fields is taken into account when form auto generates,
+        // if the property is not specified in this section it will be displayed
+        // below specified properties
+ 
+        address(widget: "externalSearch", template: "search/address.gsp",
+        displayKey: "addressID", remoteFields: "name1,city")
+        commentary(widget: "textarea")
+        productId(size:35)
+    }
+ 
+ 
+    static descriptions = {
+        AutoFormsGenerationTest(description_en: "Process workflow shows automatic forms generation.",
+        description_de: "Process workflow shows automatic forms generation.")
+        address(description_en: "You can specify address here.", description_de: "You can specify address here.",
+        label_en: "Address", label_de: "Address")
+        productId(label_en: "Product ID", label_de: "Product ID")
+   }
+ 
+ 
+   static constraints = {
+       productId(required:true)
+       address(required:true)
+   }
+
+{code}
+
+h4. Grailsflow Auto Forms Generation
+
+*size*
+
+Usage: Uses a value to restrict the size of property input field
+Example:
+{code}
+productID(size: 35)
+{code}
+
+*widget*
+
+Usage: specifies the widget that represents this process variable property,
+Possible values:
+
+# textarea
+# externalSearch
+# list
+
+Example:
+{code}
+commentary(widget: "textarea")
+address(widget: "externalSearch")
+ 
+status(widget: "list")
+{code}
+
+External Search: If you want to use widget 'externalSearch', it is also important to specify 'displayKey' and 'template'
+attributes, because they specify template and bean property for rendering. The mechanism of external search rendering
+is the following: property is rendered as readonly input with 'search' and 'clear' link-icons, pressing 'search' link -
+you see the popup window with a 'template' page. It can be the page with the search form or it can contain the list of
+all available values for the property and the user has possibility to select one. Then the inputs of the property are
+preselected with these values. The requirements for template page are:
+
+* The template before closing should call opener function, the name of this function is available in template as
+'callbackFunctionName' parameter. Also in template there are some more available parameters, they are: ID0 - the
+identifier property of the preselected value. fieldName0 - the property name (process variable name).
+
+* It is possible to rewrite and create your own function that fills the opener inputs with selected value. But in this
+case you need to know how the widget Id's are formed.
+
+* Pay attention how the opener inputs can be filled: if you want to call opener function, you should transmit some
+params with the function, they are: 'key' - the identifier property of your selected value, and any other parameters
+that have the same names as properties of variable (specified as displayKey and remoteFields properties names), for
+example: key = 3 - the unique identifier of Address object. addressId = 'MIRAX GROUP' - value of Address display Key
+property city = 'London' - the value of city property street= 'Piccadilly' - the value of street property
+If you want to fill owner fields with you own JavaScript function, please pay attention how the opener widgits Id's are
+formed. The key property with Id '${propertyName}' for opener window, the remoteFields have the following ID structure:
+
+${propertyName}_${remoteField}, for example:
+{code}
+    opener.document.getElementById("address").value = 3
+    opener.document.getElementById("address_addressId").value = addressID
+    opener.document.getElementById("address_city").value = city
+    opener.document.getElementById("address_street").value = street
+{code}
+
+List: If you want to use widget 'list', you can also specify 'displayKey' and 'restriction' attributes.
+
+*rows*
+
+Usage: defines the number of rows for textarea widget
+Example:
+{code}
+commentary(rows: 10)
+{code}
+
+*cols*
+
+Usage: defines the number of columns for textarea widget
+Example:
+{code}
+commentary(cols: 50)
+{code}
+
+*styleClass*
+
+Usage: defines which style class should be applied for widget
+Example:
+{code}
+productId(styleClass: "productEntry")
+{code}
+
+*template*
+
+Usage: this property is important for externalSearch, it describes path to template that will use for external search
+Example:
+{code}
+address(template: "search/address.gsp")
+{code}
+
+*displayKey*
+
+Usage: this property is important for externalSearch and list widgets, if it's specified then selected value is represented by this property of bean.
+Example:
+{code}
+address(displayKey: "addressId")
+{code}
+
+*remoteFields*
+
+Usage: this property is important for externalSearch, the properties names are comma-separated, specifies additional fields which are displayed on UI
+Example:
+{code}
+address(remoteFields: "city, street")
+{code}
+
+*dateFormat*
+
+Usage: can be useful for properties of type Date, there we can specify the pattern for date, e.g. 'y-m-d H:i:s'
+Example:
+{code}
+startDate(dateFormat: "y-m-d H:i:s")
+{code}
+
+*restriction*
+
+Usage: can be useful if you specify widget list. In this case in restriction input you can write restrictions for list values.
+Example:
+{code}
+address(widget: "list", restriction: "address.city = 'Berlin'")
+{code}
+
+It means that in list should be shown only addresses with property City ='Berlin'
+
+*description*
+
+Usage: specifies the description for process or process variable property
+Example:
+{code}
+commentary(description_en: "Put your commentary here.", description_de: "Put your commentary here.")
+{code}
+
+*label*
+
+Usage: specifies the label for property or node event
+Example:
+{code}
+catalogId(label_en: "Product Catalog ID", lable_de: "Product Catalog ID")
+
+Set(label_en: "Set Values", label_de: "Set Values")
+{code}
+
+*required*
+
+Usage: set to true if the property value is required
+Example:
+{code}
+productId(required:true)
+{code}

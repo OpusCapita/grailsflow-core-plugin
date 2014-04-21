@@ -1,0 +1,14 @@
+In case any process is invalid ( has buggy script ), its description field contains the following notification:
+
+!usersGuide/buggy.jpg!
+
+To fix process script code, follow the steps below:
+
+*  Select *Edit* option from *Operation* column to open *Process Script* page.
+*  Notification message points to lines and columns containing errors. Fix errors right in the textarea.
+*  Before saving the fixed code, check whether it can be compiled by clicking the *Check* button.
+*  If the message _The code of process script can be compiled appears_ , click *Save* button - and you will be redirected
+to *Edit Process Types* page. Now the process is valid and available for editing.
+
+!usersGuide/editBuggy.jpg!
+

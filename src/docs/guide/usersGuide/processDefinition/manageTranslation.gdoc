@@ -1,0 +1,17 @@
+The feature *Manage Translation* is used to have process, process variables, and process nodes description in different
+languages. Right now, you can have descriptions only in two languages, i.e., English and German. The idea behind it is
+to localize the process definition to any desired language.
+
+The *Manage Translation* option is available in *Process Editor*, *Process Variables*, and *Process Node* screens.
+
+* Click *Manage Translation* option, the *Process Translations* screen appears.
+
+!usersGuide/translation.jpg!
+
+* Select the language from the drop down.
+
+* Enter data in text area.
+
+* Click *Add* option.
+
+* Click *Apply* button.

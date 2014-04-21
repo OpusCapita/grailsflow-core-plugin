@@ -1,0 +1,29 @@
+To create a process, follow the steps below:
+
+* Click *Add* button. The *Process Editor* window appears.
+
+!usersGuide/processEditor.jpg!
+
+* Enter *Process ID.*
+
+Enter a unique *Process ID*. *Process ID* is mandatory. The screen displays error message if you do not enter
+*Process ID*.
+
+!usersGuide/processEditorErrorMessage.jpg!
+
+*  Enter process description in *Description* field.
+
+The description is for current browser language (i.e. request language). Descriptions for other languages can be
+added/modified using *Manage Translations* option. Refer *Manage Translation* section for more details.
+
+* Click *Create* button. The *Process Editor* screen displays the following options:
+
+    ** define *Valid from/Valid to* values to specify the valid range for process script definition,
+    ** add assignees,
+    ** add variables,
+    ** add nodes.
+
+!usersGuide/createProcesses.jpg!
+
+
+

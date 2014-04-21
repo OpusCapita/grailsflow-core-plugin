@@ -1,0 +1,21 @@
+In this section, you can analyze response time based on process types and sort nodes by fields. It allows to analyze the
+response time of the executed processes. GrailsFlow searches all process nodes for a process type, determines the time
+used for each node, checks for min., max., and average time and then displays them on screen. The process type nodes can
+be sorted by minimum, maximum, average execution time, interactive, and non-interactive node. Click *Analyse Response*
+*Time* menu from the left corner of the screen. The *Analyse Response Time* screen appears.
+
+!usersGuide/analyseTime.jpg!
+
+Protocolling Nodes Execution section allows to analyze execution time of protocol groups (consisting of one or several
+process nodes) for processes of the same type. See *Protocoling Nodes Execution* for ProtocolingTest Process:
+
+!usersGuide/protocolling_1.jpg!
+
+To find the response time of a particular process node, follow the steps below:
+
+*  Select Process Type from the drop down menu.
+*  Select the criteria by which the process nodes has to be sorted, from Sort Node By field.
+*  Click *"Search"* button to display response time of the process, with respect to process nodes. Here, the process
+nodes are sorted with respect to the average time.
+
+!usersGuide/protocolling_2.jpg!

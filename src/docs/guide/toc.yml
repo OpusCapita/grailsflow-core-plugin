@@ -1,0 +1,69 @@
+overview:
+  title: Overview
+installation:
+  title: Installation
+usersGuide:
+  title: User's Guide
+  processes:
+      title: Introduction
+  analyseTime:
+      title: Analyse Response Time
+  schedulerDetails:
+      title: View Scheduler Details
+  showDocuments:
+      title: Show Documents
+  useProcesses:
+      title: Use Processes
+      startProcess:
+          title: Start Process
+      showWorklist:
+          title: Show Worklist
+      showEmbeddedWorklist:
+          title: Show Embedded Worklist
+      listProcesses:
+          title: List Processes
+      killProcess:
+          title: Kill Process
+  processDefinition:
+      title: Process Definition
+      actionsOfNode:
+          title: Actions Of Node
+      addVariables:
+          title: Add Process Variables
+      createProcess:
+          title: Create Process
+      editProcess:
+          title: Edit Process
+      deleteProcess:
+          title: Delete Process
+      fixProcess:
+          title: Fix Buggy Process Code
+      manageTranslation:
+          title: Manage Translation
+      processNodes:
+          title: Process Nodes
+      transitions:
+          title: Transitions
+developersGuide:
+  title: Developer's Guide
+  introduction:
+      title: Overview
+  nodeOwner:
+      title: Changing a Node Owner dynamically
+  actions:
+      title: Creating Actions
+  extStartProcess:
+      title: Extendable Start Process
+  varForms:
+      title: Generating forms from Variable definitions
+  manualForms:
+      title: Manual Forms
+  manualFormsActions:
+      title: Manual Forms Actions
+  postKillHandler:
+      title: PostKillOperation Handler
+  customizeDueDate:
+      title: Customize Due Dates calculation
+
+faq:
+  title: Frequently Asked Questions

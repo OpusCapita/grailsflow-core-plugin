@@ -1,0 +1,148 @@
+Grailsflow-core plugin: Installation Guide and Configuration.
+--------------------------------------------------------------
+
+First of all you should use 'grails install-plugin' goal and install
+plugin sources in your application. Secondly, there are a number of
+grails plugins that should be installed in application. They are:
+
+1. Quartz plugin (tested with version grails-quartz-0.2.zip);
+
+2. RichUI plugin (tested with version grails-richui-0.3.zip);
+
+Also it's necessary to add some libraries to application folder "lib/":
+
+1. jsontools-core-1.5
+   (for building graphics)
+
+2. commons-httpclient-3.0.1
+   (for using asynchronous calls in process Actions)
+
+3. jai_core-1.1.3
+   (for correct work RichUI plugin)
+
+4. jai_codac-1.1.3
+   (for correct work RichUI plugin)
+
+5. jdom-1.0
+   (for parsing results from asynchronous calls, from callback results)
+
+6. commons-codec-1.3
+   (for encode and decode purposes)
+
+Then, Please, PAY ATTENTION how it is necessary to configure
+Grailsflow-core plugin for stable work.
+
+There is a list of Spring beans that can/should be configured in
+application, if it uses Grailsflow-core plugin:
+
+The following configuration (common beans) are already configured in
+GrailsflowCoreGrailsPlugin.groovy and have the default values. You can
+change default configuration by specifying new beans values.
+
+1. applicationContext-grailsflow-common beans:
+
+  <!-- Necessary for uploading files. -->
+  <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <property name="maxUploadSize" value="1000000"/>
+  </bean>
+
+  <!-- Define path (folder) for processes scripts.
+  The path is relative to workarea resources path -->
+  <bean id="processesPath" class="java.lang.String">
+    <constructor-arg value="processes"/>
+  </bean>
+
+  <!-- Define path (folder) for actions scripts.
+  The path is relative to workarea resources path -->
+  <bean id="actionsPath" class="java.lang.String">
+    <constructor-arg value="actions"/>
+  </bean>
+
+  <!-- Define root path (folder) for stored documents.
+  The path is relative to workarea resources path -->
+  <bean id="documentsPath" class="java.lang.String">
+    <constructor-arg value="documents"/>
+  </bean>
+
+  <!-- Important for action flow and class should implements
+   ActionFactory interface. -->
+  <bean id="actionFactory" class="com.jcatalog.grailsflow.actions.GrailsflowActionFactory">
+    <property name="workareaPathProvider" ref="workareaPathProvider"/>
+    <property name="actionsPath" ref="actionsPath"/>
+  </bean>
+
+  <!-- Important for process flow and execution and class should
+   implements ProcessFactory interface. -->
+  <bean id="processFactory" class="com.jcatalog.grailsflow.engine.GrailsflowProcessFactory">
+    <property name="actionFactory" ref="actionFactory"/>
+    <property name="workareaPathProvider" ref="workareaPathProvider"/>
+    <property name="processesPath" ref="processesPath"/>
+  </bean>
+
+  <!-- Property is used for paging, defines maximum size for items
+   list. -->
+  <bean id="maxResultSize" class = "java.lang.Integer">
+    <constructor-arg><value>10</value></constructor-arg>
+  </bean>
+
+  <!-- Application ID or name of external application: especially
+   important if there are several applications which share DB but have
+   Grailsflow-core plugin installed in both of them. In this case
+   Grailsflow Engine needs to know with which application it works in
+   the concrete moment. Can be specified as empty value! -->
+  <bean id="appExternalID" class = "java.lang.String">
+    <constructor-arg value = "grailsflow"/>
+  </bean>
+
+  <!-- Common configs for worklist providers -->
+  <bean id="abstractProvider"
+        class="com.jcatalog.grailsflow.worklist.AbstractWorklistProvider"
+        abstract="true"/>
+
+The next configurations need to have some implementations or
+extentions, according to application security implementation, structure
+of folders used mail libraries, etc..
+
+2. applicationContext-grailsflow-workarea beans:
+
+  <!-- Configuration for workareaPathProvider, should implements
+   WorkareaPathProvider class -->
+  <bean id="workareaPathProvider" class="com.jcatalog.grailsflow.workarea.FooPathProvider">
+    <property name="resourcesPath" value="workarea"/>
+    <property name="resourcesUrl" value="/workarea"/>
+  </bean>
+
+3. applicationContext-grailsflow-worklist beans:
+
+  <!-- Configuration for worklistProvider, the implementation class
+   should extends AbstractWorklistProvider class. Important to specify
+   'parent': parent="abstractProvider" - is a bean, configured in
+   Grailsflow-core plugin -->
+  <bean id="worklistProvider"
+        class="com.jcatalog.grailsflow.worklist.FooWorklistProvider"
+        parent="abstractProvider">
+
+4. applicationContext-grailsflow-security beans:
+
+  <!-- Configuration for securityHelper class, should implements a
+   SecurityHelper interface. -->
+  <bean id="securityHelper"
+        class="com.jcatalog.grailsflow.security.FooSecurityHelper"
+        scope="singleton"/>
+
+5. applicationContext-grailsflow-client beans:
+
+  <!-- Configuration for client Executir, the implementation class
+   should extends ClientExecutor class. Especially important if you
+   want to use external calls and asynchronous actions in your
+   application. -->
+  <bean id="clientExecutor" class="com.jcatalog.grailsflow.client.FooHTTPClientExecutor">
+
+6. applicationContext-grailsflow-mail beans:
+
+  <!-- Configuration for sendMailHelper, should implements
+   SendMailHelper interface. -->
+  <bean id="sendMailHelper" class="com.jcatalog.grailsflow.mail.FooMailHelper">
+    <property name="mailHost" value="neon.scand"/>
+    <property name="sender" value="info@neon.scand"/>
+  </bean>

@@ -1,0 +1,19 @@
+Release Notes Grailsflow 0.9.1
+------------------------------
+
+The following new features and improvements were done in release Grailsflow-0.9.1:
+
+1. Added ProcessIdentifier section in Process Definition script.
+
+2. Added Grailsflow tag for representing dates (with specidied patterns for several
+locales)
+
+3. Changed configuration for worklistProvider bean: removed special configurations
+for it.
+
+4. Improved Work List filtering with additional parameters.
+
+5. Process Editor: Added initial sorting of Process Variables and Process Nodes.
+
+6. Added editorType and externalUrl properties for the node definition: currently it is
+possible to specify external editor for process variables.

@@ -1,0 +1,74 @@
+The *Worklist* screen displays the nodes that are waiting for user input. These nodes are visible to user whose User ID
+or Role or group is assigned to the respective nodes.
+
+To open *Worklist* screen click *Show Worklist* menu from left side of the screen. The *Worklist* screen appears.
+
+!usersGuide/embeddedWorklist.jpg!
+
+The screen displays all the nodes which are of *Wait* type. The Filter by variable drop down is used to filter the nodes
+ depending on the following criteria:
+
+* Product ID
+* name
+* requesterName
+
+Once you select any of these criteria, the value drop down displays the values of the selected criteria respective to
+the process nodes.
+
+The criteria are available under the Filter by variable drop down, only if they are specified under
+'additionalWorklistColumns' bean.
+
+For example, in the above figure the *Node ID* “CheckValues” has *Product ID* as “101570”. So, if you select *Product ID*
+as a filter variable, the value drop down displays “101507” in the drop down. Click the button *Filter*. The screen
+displays only the filtered node.
+
+!usersGuide/filteredWorklist.jpg!
+
+*Be attentive!* The filtering can slow down your worklist loading, if you have a lot of processes in list. If we have
+more then 500 processes in worklist we get variables by splitting the parameter list into smaller chunks and
+then combining the results. But such functionality requires time for execution and can slow down performance. So,
+by default, the filtering is working if we have in list no more entries then *maxRestrictedProcesses* size. You can change
+the behaviour by reconfiguring some available Spring beans or even to disable filtering functionality at all.
+
+*  _isWorklistFilterAvailable_  - this bean define if we need filtering functionality, the default value is configured
+to *TRUE*
+*  _maxRestrictedProcesses_ - this bean contains Integer value for common quantity of restricted processes that used in
+SQL 'in' clause (default value is '2000' entries)
+
+It is possible to click on the node ID and see the 'Node Details' page with information about the selected node.
+Events and their names can be seen as the name of the transition to another node. After the event has been sent, the
+'Process Details' page is displayed
+
+!usersGuide/nodeDetails_2.jpg!
+
+
+Imagine that you are the manager and you want to review all requests from your employees. In the demo workflow, the
+admin user acts as an employee, manager and HR person at the same time, so that you don't have to login and logout for
+this demo. Go to the 'Show Worklist' menu item. Here you see the request for holidays from an employee. Click on the
+request and see the form that contains the employee name, request message, area for your resolution notes and two
+buttons 'Approve' and 'Reject'.
+
+!usersGuide/worklist_1.jpg!
+
+Consider you as a manager, wants to approve this request. You can type in a note (in the resolution field), but this is
+only useful if you reject the request. And click *Approve* button to approve the holiday request or click on *Reject*
+to reject it.
+
+A letter about the successful holiday approval would be sent to your employee.
+
+Imagine that you are an HR-person. You need to record how many holidays each employee has used so far and if it is
+payable or not. Go to the 'Show Worklist' menu item. Here you have a list of approved holidays that you should take note of.
+
+You see that the manager has approved the holidays. Click on the request link and see the form that contains the
+employee name, manager decision, manager notes and an input area for a log message.
+
+You could enter a log, something like "approved; no critical projects at that time"
+
+Then click on button *Save Log Info* to save the log message is saved and the workflow is completed.
+
+!usersGuide/worklist_2.jpg!
+
+
+
+
+

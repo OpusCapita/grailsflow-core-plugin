@@ -1,0 +1,33 @@
+The transition defines the order in which the process nodes have to be executed. For example, if the manager approves
+the leave request the approval has to be sent to the employee and HR. In order to move from *Approve Notification* node
+to *Approve Finish* node, a transition is required. While transition, it passes some information to the next node.
+
+h4. Add Transition
+
+To add transition to a node, follow the steps below:
+
+    * Click *Edit* option in *Operations* column in *Edit Process Types* screen. The *Process Editor* screen appears.
+    * Go to *Process Nodes* section, select the node and click *Plus* button. The *Process Transitions* screen will open.
+    * Enter event in the *Event *field. This is the message to the next transition node.
+    * Select the next transition node from the list of nodes.
+    * Click "Apply" button to add transition, else click *Back* button.
+
+!usersGuide/processTransition_1.jpg!
+
+!usersGuide/processTransition_2.jpg!
+
+To delete a transition, select the *Delete* icon button.
+
+To edit the transition click on the transition, here _okay_. The *Process Transition* screen appears. Edit the
+transition and click *Apply* button.
+
+!usersGuide/processTransition_3.jpg!
+
+If the node is a *Fork* type, the transition is to multiple nodes, as mentioned below:
+
+!usersGuide/processTransition_4.jpg!
+
+Here the transition of *ApprovedOperation* is to *HRNotification* and *ApproveNotification*.
+
+To delete transition click *Delete* button. A message window appears. Click “OK” button to delete the transition.
+

@@ -1,0 +1,12 @@
+Release Notes Grailsflow 1.0.14
+-----------------------------
+
+The following new features and improvements were done in release Grailsflow-1.0.14:
+
+1. Fixed Node execution with status running after restarting Server;
+
+2. Fixed loading for Due Dates from Groovy process definitions; 
+
+3. Enhanced security functionality; 
+
+11. Fixed bugs, adjusted tests.

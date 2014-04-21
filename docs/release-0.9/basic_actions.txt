@@ -1,0 +1,44 @@
+Basic Actions
+------------------------
+
+We have an abstract class Action. It contains some special system info and some useful
+methods for getting Spring configuration beans. All actions that used in 'action' closure
+of the process definition should extend Action class and implement its abstract method.
+There are some rules for implementing custom Actions:
+
+ 1. Abstract method
+
+    abstract Object execute()
+
+needs to be implemented. The result that is returned from this method is used as action
+result and can be assigned to variable value or return as the result of 'return'
+statemenent.
+
+ 2.  Class Action contains helper method
+
+     getObjectByName(String beanName)
+
+It gives possibility to use in actions services and configured beans for sending mails,
+for executing some DB operation, etc. The beans are looked in Spring context configuration
+and if nothing was found - the null result is returned.
+
+
+3. Also in Action class there is a Map, called actionInfo:
+
+      Map actionInfo
+
+It contains additional information that external processBuilder provide for it. In Grailsflow-0.8
+actionInfo contains information about process key, node ID, locale, siteBase, requester, etc.
+This can be usefull for generation reports, sending mails and so on, so, please pay attention
+that this information is available for developing custom actions.
+
+In Grailsflow-0.8 there are a number of basic actions that can be usefull for workflow definition.
+Among them:
+
+ 1. LogAction - it can write some log information in trace or in log file.
+
+ 2. EvaluateAction - action for evaluating expressions, usefull when we need to evaluate some
+ info to specified type, like Map, List, etc.
+
+ 3. SendMailAction - sending mail with the given parameters.
+

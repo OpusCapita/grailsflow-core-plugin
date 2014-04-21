@@ -1,0 +1,259 @@
+h4. Add the plugin as a dependency to your application.
+To do so directly edit your @BuildConfig.groovy@ to look something like this:
+
+{code:groovy}
+    ...
+    plugins {
+        ...
+        runtime("com.jcatalog.grailsplugins:gralsflow-core:1.3-SNAPSHOT")
+    }
+{code}
+
+h4. Grailsflow-core plugin needs to be configured. 
+
+There is a list of Spring beans that can/should be configured in your application, if it uses the Grailsflow-core plugin.
+
+The following configuration (common beans) are already configured in GrailsflowCoreGrailsPlugin.groovy and have default values. You can change the default configuration by specifying new beans values in any Spring configuration file.
+
+
+1. Common beans:
+{code}
+    <!-- Necessary for uploading files. -->
+    bean (org.springframework.web.multipart.commons.CommonsMultipartResolver) {
+        maxUploadSize(1000000)
+    }  
+
+    <!-- Default workarea configuration. The class should implement com.jcatalog.grailsflow.workarea.WorkareaPathProvider -->
+    workareaPathProvider(com.jcatalog.grailsflow.workarea.GrailsflowPathProvider) {
+        resourcesPath = "workarea"
+        resourcesUrl = "/workarea"
+    }
+
+    < !-- Path (folder) for process scripts. The path is relative to workarea resources path -->
+    processesPath(java.lang.String, "processes")
+
+    <!-- Path (folder) for actions scripts. The path is relative to workarea resources path -->
+    actionsPath(java.lang.String, "actions")
+
+    < !-- Root path (folder) for stored documents. The path is relative to workarea resources path -->
+    documentsPath(java.lang.String, "documents") 
+
+    < !-- Root path (folder) for callback scripts. The path is relative to workarea resources path -->
+    callbacksPath(java.lang.String, "callbacks")    
+
+    < !-- Default scripts configuration. The class should implement com.jcatalog.grailsflow.workarea.ScriptsProvider -->
+    scriptsProvider(com.jcatalog.grailsflow.workarea.GrailsflowWorkareaScriptsProvider) {
+        workareaPathProvider = ref('workareaPathProvider')
+    }  
+    < !-- Default configuration for threads quantity (threads that can be running concurrently) -->
+    maxThreadsQuantity(java.lang.Integer, "10")
+
+    < !-- Default configuration for quantity of restricted processes that used in SQL 'in' clause -->
+    maxRestrictedProcesses(java.lang.Integer, "2000")      
+
+    < !-- Default value for external application ID. It's an Application ID or name of external application: 
+     especially important if there are several applications which share the DB 
+     but have Grailsflow-core plugin installed in both of them. In this case Grailsflow Engine  
+     needs to know with which application it currently works. Can have an empty value! -->
+    appExternalID(java.lang.String, "grailsflow")    
+
+    < !-- Default format patterns -->
+    datePatterns(java.util.HashMap, ['en':'MM/dd/yyyy', 'de':'dd.MM.yyyy']) 
+    dateTimePatterns(java.util.HashMap, ['en':'MM/dd/yy HH:mm', 'de':'dd.MM.yy HH:mm']) 
+    numberPatterns(java.util.HashMap, ['en':'0.00', 'de':'0.00']) 
+    decimalSeparators(java.util.HashMap, ['en':'.', 'de':','])  
+
+    < !-- bean allows worklist filtering.
+      NOTE: if set to TRUE - it can cause problems with performance
+      in case of large amount of items. -->
+    isWorklistFilterAvailable(java.lang.Boolean, Boolean.TRUE)
+{code}
+
+    Also, it is possible to define some extra beans, like 'additionalWorklistColumns'
+    and 'processLogDir'. They haven't default configuration, but can be easily defined
+    in Spring configuration of application, like: 
+{code}
+    < !-- here you can specify additional columns in worklist, also these properties will
+       be available in worklist filtering -->  
+     <bean id="additionalWorklistColumns" class="java.util.ArrayList">
+        <constructor-arg>
+          <list>
+            <value>productId</value>
+            <value>name</value>
+            <value>requesterName</value>
+          </list>
+        </constructor-arg>
+    </bean>
+
+     < !-- define path for processes logs -->
+    <bean id="processLogDir" class="java.lang.String">
+      <constructor-arg value="logs/process/"/>
+    </bean>'
+
+    < !-- process post killer handler, should implement class
+      com.jcatalog.grailsflow.process.PostKillProcessHandler -->
+    <bean id="postKillProcessHandler" class="com.myapp.process.MyKillProcessHandler"/>
+{code}        
+
+2. Security configuration:
+{code}
+    < !-- Default configuration for securityHelper, should implement com.jcatalog.grailsflow.security.SecurityHelper -->  
+    securityHelper(com.jcatalog.grailsflow.security.GrailsflowSecurityHelper)  
+
+    < !-- Default configuration for securityHelper, should implement com.jcatalog.grailsflow.security.UsersProvider -->  
+    usersProvider(com.jcatalog.grailsflow.security.GrailsflowUsersProvider)  
+
+    < !-- Default configuration for securityHelper, should implement com.jcatalog.grailsflow.security.RolesProvider -->  
+    rolesProvider(com.jcatalog.grailsflow.security.GrailsflowRolesProvider) 
+
+    < !-- Default configuration for securityHelper, should implement com.jcatalog.grailsflow.security.GroupsProvider -->  
+    groupsProvider(com.jcatalog.grailsflow.security.GrailsflowGroupsProvider)
+{code}
+      
+
+  3.  Grailsflow engine configuration
+    {code}
+    < !-- Configures actionFactory, should implement com.jcatalog.grailsflow.actions.ActionFactory class --> 
+    actionFactory(com.jcatalog.grailsflow.actions.GrailsflowActionFactory) {
+        actionsPath = ref('actionsPath')
+        scriptsProvider = ref('scriptsProvider')
+    }
+     < !-- Default settings for worklistProvider -->
+    worklistProvider(com.jcatalog.grailsflow.worklist.WorklistProvider) {
+        appExternalID = ref('appExternalID')
+    }
+     < !-- Default settings for processProvider -->
+    processProvider(com.jcatalog.grailsflow.process.ProcessProvider) {
+        appExternalID = ref('appExternalID')
+    }
+
+    < !-- Default settings for processScriptProvider, should implement class com.jcatalog.grailsflow.process.script.ProcessScriptProvider -->
+    processScriptProvider(com.jcatalog.grailsflow.process.script.GrailsflowProcessScriptProvider) {
+        scriptsProvider = ref('scriptsProvider')
+        processesPath = ref('processesPath')
+    }
+
+    < !-- Default settings for cacheManager, should implement class com.jcatalog.grailsflow.cache.CacheManager --> 
+    cacheManager(com.jcatalog.grailsflow.cache.SimpleCacheManager)
+
+    < !-- Default settings for processFactory, should implement class com.jcatalog.grailsflow.engine.ProcessFactory --> 
+    processFactory(com.jcatalog.grailsflow.engine.GrailsflowCachingProcessFactory) {
+        processScriptProvider = ref('processScriptProvider')
+        cacheManager = ref('cacheManager')
+    }
+
+    < !-- Default settings for nodeExecutor bean --> 
+    nodeExecutor(com.jcatalog.grailsflow.engine.execution.NodeExecutor) {
+        actionFactory = ref('actionFactory')
+    }
+{code}
+      
+
+ 4. Validation beans:
+  {code}
+    < !-- Default settings for process definition validation bean, should implement class    com.jcatalog.grailsflow.validation.Validator -->
+    processDefValidator(com.jcatalog.grailsflow.validation.DefaultProcessDefValidator)
+     
+    < !-- Default settings for process class validation bean, should implement class   com.jcatalog.grailsflow.validation.Validator -->
+    processClassValidator(com.jcatalog.grailsflow.validation.DefaultProcessClassValidator)
+{code}
+
+5. Client executor bean:
+{code}
+      
+    <!-- Configuration for client Executor, the implementation class should extend
+      ClientExecutor class. Especially important if you want to use external calls and
+      asynchronous actions in your application. -->
+    clientExecutor(com.jcatalog.grailsflow.client.GrailsflowHTTPClientExecutor)
+{code}
+
+6. Extention  beans:
+{code}
+    <!-- Configuration for eventEmailProcessor, should implement
+      com.jcatalog.grailsflow.extension.email.EventEmailProcessor interface. -->
+    eventEmailProcessor(com.jcatalog.grailsflow.extension.email.GrailsflowEventEmailProcessor) {
+        processManagerService = ref('processManagerService')
+    }  
+{code}
+    Extended UI configuration with templates and configurable search parameters:  
+{code}
+    <!-- default settings for processListColumns UI -->
+    processTypeSearchProperty(DefaultSearchParameter) {
+        name = "type"
+        searchTemplate = "/processList/search/type"
+    }
+    processStatusSearchProperty(DefaultSearchParameter) {
+        name = "status"
+        searchTemplate = "/processList/search/status"
+    }
+    startedFromSearchProperty(DateSearchParameter) {
+        name = "startedFrom"
+        searchTemplate = "/processList/search/date"
+    }
+    userSearchProperty(DefaultSearchParameter) {
+        name = "startUser"
+    }
+    finishedFromSearchProperty(DateSearchParameter) {
+        name = "finishedFrom"
+        searchTemplate = "/processList/search/date"
+    }
+    processListSearchParameters(ListFactoryBean) {
+        items = [ ref('processTypeSearchProperty'),
+                  ref('processStatusSearchProperty'),
+                  ref('startedFromSearchProperty'), ref('userSearchProperty'),
+                  ref('finishedFromSearchProperty')
+        ]
+    }
+
+    processTypeDisplayProperty(DefaultDisplayParameter) {
+        name = "type"
+        displayTemplate = "/processList/display/type"
+    }
+    processStatusDisplayProperty(DefaultDisplayParameter) {
+        name = "status.statusID"
+        displayProperty = "status"
+        displayTemplate = "/processList/display/status"
+    }
+    createdOnDisplayProperty(DefaultDisplayParameter) {
+        name = "createdOn"
+        displayProperty = "createdOn"
+        displayTemplate = "/processList/display/dateTime"
+    }
+    createdByDisplayProperty(DefaultDisplayParameter) {
+        name = "createdBy"
+        displayProperty = "createdBy"
+    }
+    activeNodesDisplayProperty(DefaultDisplayParameter) {
+        name = "activeNodes"
+        sortable = false
+        displayTemplate = "/processList/display/activeNodes"
+    }
+    finishedOnDisplayProperty(DefaultDisplayParameter) {
+        name = "finishedOn"
+        displayProperty = "finishedOn"
+        displayTemplate = "/processList/display/dateTime"
+    }
+    processListDisplayParameters(ListFactoryBean) {
+        items = [ ref('processTypeDisplayProperty'),
+                  ref('processStatusDisplayProperty'),
+                  ref('createdOnDisplayProperty'), ref('createdByDisplayProperty'),
+                  ref("activeNodesDisplayProperty"),
+                  ref('finishedOnDisplayProperty')
+        ]
+    }
+
+    nodeWorklistColumn(DefaultDisplayParameter) {
+        name = "nodeID"
+        displayTemplate = "/worklist/display/node"
+    }
+    externalURLWorklistColumn(DefaultDisplayParameter) {
+        name = "externalUrl"
+        sortable = false
+        displayTemplate = "/worklist/display/externalUrl"
+    }
+    ...
+{code}
+
+    (the full list of available beans can be found in GrailsflowCoreGrailsPlugin.groovy file) 
+      
+

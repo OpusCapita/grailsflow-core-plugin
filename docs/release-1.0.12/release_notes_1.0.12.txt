@@ -1,0 +1,24 @@
+Release Notes Grailsflow 1.0.12
+-----------------------------
+
+The following new features and improvements were done in release Grailsflow-1.0.12:
+
+1. Fixed bugs.
+
+2. Improved performance issues.
+
+3. Improved logging and scalability.
+
+4. Adding protocolling for process nodes.
+
+5. Enhancing ProcessNode table, added more fields, like ‘startedExecutionOn’.
+
+6. Added CSV and Excel exporting for started processes.
+
+7. Implemented node execution in separate threads.
+
+8. Used JQuery as javascript provider.
+
+9. Adjusted processes scheduling.
+
+10. Added more example processes, adjusted tests.

@@ -1,0 +1,81 @@
+Actions define the operations to be performed in each node, internally. Basically action defines the operation of a
+node. You can develop code for the operation of each node using plain Groovy code.
+
+h4. Create Action
+
+For example, we need to send a Notification if Holiday Request is rejected.
+
+1. To open the *Process Action Editor* screen, click the following buttons:
+
+Administration -> Edit Process Types -> *Edit* button for *Request Holiday Process* -> *Edit* button for
+*RejectNotification* node -> *Edit Node Actions* button.
+
+The *Process Action Editor* screen will open:
+
+!usersGuide/actionEditor.jpg!
+
+To create a *SendNotificationMail* action you can either write the plain code (using Variables and Actions from the
+drop-down list as a hint) or you can use 'plus' button to add Variables and Actions automatically.
+
+Select *SendNotificationMail* from the drop-down list and click 'plus' button.
+
+*Action Call Parameters* editor will open in a new window. Fill in the necessary fields and click *Apply* button.
+
+!usersGuide/actionParameters.jpg!
+
+Manually adjust the code
+
+{code}
+if (requesterMail) {
+SendMail(mailFrom:managerMail,mailTo: requesterMail,subject:'Rejected Notification',message: 'Your request was rejected.')
+}
+return "finish"
+
+{code}
+
+and click *Apply* button.
+
+
+According to the node type you should pay attention to the nodes actions. If the node is manual (type is 'Wait') then
+you don't need to trigger any transition and specify 'return' statement. The body of 'Wait' node is executed after
+transition definition (the transition is defined manually by the user). If the 'return' statement is specified in manual
+node it is ignored by process execution engine.
+
+If node type is automatic (one from 'Activity', 'Fork', 'AndJoin', 'OrJoin') then you need to specify 'return'
+statement that triggers the next transition.
+
+Return statement has the following syntax:
+
+!usersGuide/returnStatement.jpg!
+
+If there is no 'return' statement for automatic node then the next node(nodes) cannot be activated.
+
+From the version of Grailsflow-1.0.x when 'action' closure contains plain Groovy code then return statement can hold
+functions, expressions, etc.
+The evaluated value is transfered to String type and used for transition definition.
+
+4. Click *"Apply"* button to save action of the node.
+
+The Up and Down navigation icons are used to move statements up and down.
+
+The *'Delete'* icon is used to delete the statement.
+
+The *Edit Node Action* button is used both for create and edit actions.
+
+Once you create process, add process variables, create process nodes, add transitions, and create actions for nodes,
+click *Save Process Type* button to save the process. The process definition is saved on the server to file
+<processID>Process.groovy.
+
+You can view the process definition file saved on server, using *Show Source Code* button.
+
+!usersGuide/processScript.jpg!
+
+You can reload definition that you currently edit from file <processID>Process.groovy by pressing *Reload Process from File*.
+
+To view the process in pictorial or graphical representation, click *Show Graphical Process* button.
+
+!usersGuide/graphicalNotation.jpg!
+
+*Export as HTML* button will create HTML that describes the process. It's something like a report; you can view this
+HTML to get the common information about the process. Click *Export as HTML* button. A *File Download* window appears.
+Click “Open” or “Save”. A zipped folder appears. Open the zipped folder and open the html file.

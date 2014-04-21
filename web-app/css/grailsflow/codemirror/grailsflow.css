@@ -1,0 +1,4 @@
+/* Code Mirror default settings*/
+.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}
+.CodeMirror-scroll {height: 500px; width: 800px;}
+.activeline {background: #cdcdcd !important;}

@@ -1,0 +1,110 @@
+A process requires variables to manipulate the process data. To add variables to a process follow the steps below:
+
+* Click *Add* button, which is under *Process Variable* or click the corresponding *Edit* option under *Operations*
+column, in *Edit Process Type* screen. The *Process Variables* screen appears.
+
+!usersGuide/processVariable_1.jpg!
+
+* Enter variable name in *Name* field.
+
+Enter a unique name. *Name* field is mandatory.
+
+* Check *Is Process Identifier* check box.
+
+The *Is Process Identifier* is used to make the variable as an identifier of the process. For example, if there is a
+process named “My Process” has a variable “name” marked as process identifier. So, if you start that process with
+name="John". While that process is running you cannot start another "MyProcess" with name="John". But you can start
+"MyProcess" with any other name.
+
+* Check *Required* check box.
+
+The *Required* check box, defines the variable as mandatory. The application cannot perform operation without the
+variable value.
+
+* Select the variable type from *Type* drop down.
+
+By default, it displays *String* type. Currently, Grailsflow supports the following variable types:
+
+**    Boolean
+**    Double
+**    String
+**    Long
+**    Integer
+**    Date
+**    Document
+**    Link
+**    Object
+
+* Enter default variable value in *Value* field.
+
+It is the default value for the variable. By default, the value will be set when process gets started.
+
+* Select the type of variable view from *View* drop down.
+
+View specifies the way the variable will be displayed on the UIs of the interactive nodes ('Wait' nodes). Refer
+*Varible View* section for more details.
+
+8. Click button *Apply* to save the process varaible.
+
+Similarly, you can create multiple variables for a process.
+
+
+h4. Variable View
+
+The Variable View type consists of the following views:
+
+  *  Simple View
+       ** Style Class - Defines CSS class for the input.
+       ** Size is the size of the input. Default size is 20.
+
+!usersGuide/simpleView.jpg!
+
+  *  Select Box View – It displays values in a drop down. It consists of one value per line.
+
+!usersGuide/selectBoxView.jpg!
+
+  *  Text Area View - Displays variable value in text area. Its size is defined with Rows and Columns property values.
+  Default rows count is 10, for column default value is 50.
+
+!usersGuide/textAreaView.jpg!
+
+  * Date View
+      **  Date Format – Defines the format of dates.
+      **  Style Class - Defines CSS class for the input.
+      **  Size - Size of the date input. Default size is 20.
+
+!usersGuide/dateView.jpg!
+
+  * Check Box View - Displays checkbox for the Boolean values.
+
+!usersGuide/checkBoxView.jpg!
+
+  * Link View - Link view displays {{input}}s for editing the Link values.
+
+!usersGuide/linkView.jpg!
+
+  * Document View - Document view allows to upload files as Document values.
+
+!usersGuide/documentView.jpg!
+
+  *  List Objects View - List Object view displays select box to choose value for domain object variable.
+  Values for select box are selected form database.
+        **  Property to display property of the domain is used as label for the select box option.
+        **  Restriction is 'where' condition (without 'where' word) that will be used for selecting list of objects
+        from the database.
+
+!usersGuide/listObjectView.jpg!
+
+  *  External Search Object View - Uses pop-up window for selecting value for domain object variable.
+        **  Property to display is the name of the domain property that will be displayed.
+        **  Search URL is the URL for opening pop-up search window.
+        **  Additional Fields are comma-separated property names, whoes value will be additionally shown.
+
+!usersGuide/externalSearchObjectView.jpg!
+
+  To edit or delete process variable, click the corresponding *Edit* or *Delete* option of variables, under *Operations*
+column, in *Process Editor* screen.
+
+
+
+

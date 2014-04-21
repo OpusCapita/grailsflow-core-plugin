@@ -1,0 +1,16 @@
+Release Notes Grailsflow 1.1-RC1
+-----------------------------
+
+The following new features and improvements were done in release Grailsflow-1.1-RC1:
+
+1. Upgraded to Grails-2.0.1.
+
+2. Reused Resource plugin for handling plugin resources.
+
+3. Adjusted killing for long-running processes.
+
+4. Updated synchronization.
+
+5. Added more demo processes and actions, adjusted tests.
+
+6. Fixed bugs.

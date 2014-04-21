@@ -1,0 +1,26 @@
+Installation of GrailsFlow 0.2
+---------------------------------
+
+The following sections explain how to install Grailsflow-0.2 and how to use it.
+
+
+System requirements
+
+    * Application is written for Grails-0.6 and compiled under JDK 1.5.0-09
+    * War installation was tested under Apache Tomcat Server 5.5.20
+
+
+Installation
+
+    * To install the GrailsFlow war-file, please, put it into the 'webapps' folder of your
+      tomcat server and run the server. For other servers, please install according to the
+      documentation of your server.
+
+    * If you want to run the Grailsflow application from the zip-file using your own
+      Grails installation:
+
+         1. Create a new application using 'grails create-app' from the command line.
+         2. Unpack the zip-file with the source code and copy all necessary files  in your
+            newly created application directory.
+         3. Install the Quarz plugin.
+         4. Run the application using 'grails run-app' command.

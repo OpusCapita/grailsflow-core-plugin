@@ -1,0 +1,53 @@
+The *View Scheduler Details* menu is used to schedule the execution of process in later interval of time. For example,
+the HR of a company has to track the leaves of an employee, very frequently. The scheduler option will helps to create
+a process to track the leaves and schedule the process to execute frequently, at some interval of time.
+
+Click *View Scheduler details* menu from the left corner of the screen. The Scheduler Details screen appears.
+
+The *Scheduler Details* screen displays the currently running jobs and the scheduled jobs. *'Scheduler details'* is used
+to monitor the Quartz jobs and the configuration of the Quartz library. It shows the Quartz configuration parameters and
+allows to view all currently running jobs and to pause, delete and edit jobs. It displays the scheduler information with
+jobs and triggers.
+
+Edit jobs allows to modify the repeat interval. This is useful e.g. to tune the NodeActivatorJob.
+
+!usersGuide/schedulerDetails_1.jpg!
+
+The *Pause Scheduler* button is used to pause all the scheduled jobs, listed under *Scheduled Jobs* option.
+
+The *Running Jobs* display the job names which are running currently. It displays the job names which are triggered at
+that instace of time interval.
+
+The *Schedule Process* button is used to schedule the process. To schedule a process, follow the steps below:
+
+* Click *Shedule Process* button. The *Schedule Process* screen appears.
+
+!usersGuide/schedulerDetails_2.jpg!
+
+* Select the *Process Type* from the drop down.
+
+* Enter values for *Process Variables*.
+
+* Select the repeating sequence:
+
+   ** Once
+   ** Minutely
+   ** Daily
+   ** Weekly
+   ** Specify custom value – To specify the customized repeating value other than the above mentioned sequences.
+
+* Enter the date in *Day* field.
+
+* Enter time in *Time* field
+
+* Click *Add Job* button.
+
+The job is added under the *Scheduled Jobs* option, in *Scheduler Details* screen.
+
+h4. Specify Custom Value
+
+The *Specify Custom Value* is used to enter the repeating sequences other than the available sequences.
+
+Select *Specify Custom Value* from *Repeating* field.
+
+!usersGuide/schedulerDetails_3.jpg!

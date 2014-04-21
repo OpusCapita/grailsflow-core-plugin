@@ -1,0 +1,97 @@
+In Grailsflow it is possible to start process in two ways:
+
+*  start process with defauls values by passing process name;
+*  start process from external system (with requested variables values).
+
+Using first way, you can start process with default values (that are predefined in process definition script). When you
+start process and your first node is manual (the node of type 'Wait') you will be automatically redirected to the manual
+form and only when you submit it (change/set values for the process variables), the process will be started.
+
+But sometimes there is a situation when external system wants to start the process. The system should provide the
+starting data for process (the values for process variables). For example, the several different systems use the same
+process definition 'CreateProduct' for creating product. For starting the process, the system should provide 'productId'
+and 'catalogId' values. The problem is that systems can have (and usually have) different formats for sending
+parameters, e.g. in XML. It means that for each and every system we need a special 'parser' script for parameters, and
+then when Grailsflow will get the parameters in usual form it can start process using standard procedure.
+
+To start a process from external system is possible to do with using Grailsflow 'Extendable StartProcess' feature. When
+you want to use it you need:
+
+# Have a Groovy 'callback' script in application workarea (the application contains Grailsflow plugin installed). This
+script should be places in workarea directory according to 'callbacksPath' bean value. The bean is defined in
+Grailsflow, and can be redefined in application, but the defauls value is "callbacks" folder.
+Callback script should parse request to get process variables (and possibly processType and user) to store them in the
+result parameter. Parameters that are available in the callback script:
+
+* request - HttpServletRequest instance
+* params - String valued parameters passed to the ProcessController by request
+* result - object for storing parsed process parameters
+
+Parameters that should be provided in the 'result' map (in callback script):
+
+* variables - (optional) - map of [name:value] pairs of process variables that should be used.
+* requester -  (optional, default is logged user) - ID of person that invokes event
+* processType - (required) - the name of process definition that should be started
+
+# Use URI for starting process:
+
+   *process/extendedStartProcess/<id>*
+
+where 'id' - is a Groovy callback script name.
+
+Lets check the example: your system provides the parameters for starting in the following view (as XML):
+
+{code}
+<?xml version='1.0' encoding='UTF-8'?>
+  <test> 
+    <DOCUMENT>   
+      <PRODUCTID>11240_Printer</PRODUCTID>
+      <CATALOGID>HP</CATALOGID>   
+      <MANUFACTURER>JC_MANUFACTURER</MANUFACTURER>
+      <STATUS>UPDATED</STATUS> 
+    </DOCUMENT>
+  </test>
+{code}
+
+You create script 'TestScript.groovy' that knows how to get parameters from request:
+
+{code}
+// Parsing request body
+ 
+def doc = request.XML
+if(!doc || !doc.DOCUMENT) {
+  result.message = "Cannot parse request" 
+  result.statusCode = 500 
+  return
+}
+// Getting process parameters
+def productId = doc.DOCUMENT[0].PRODUCTID[0]
+def catalogId = doc.DOCUMENT[0].CATALOGID[0]
+def manufacturer = doc.DOCUMENT[0].MANUFACTURER[0]
+ef SAP_Status = doc.DOCUMENT[0].STATUS[0]
+ 
+def variables = [productId: productId,                
+                 catalogId: catalogId,                
+                 manufacturer: manufacturer,                
+                 SAP_Status: SAP_Status]
+ 
+def securityHelper = applicationContext.getBean("securityHelper")
+if (!securityHelper) { 
+  result.message = "Security Helper bean is not configured." 
+  result.statusCode = 500 
+  return
+}
+ 
+result.processType = "TestProduct"
+result.requester = securityHelper.getUser(null)
+result.variables = variables
+
+{code}
+
+Then you place script 'TestScript' in workarea (in callbacksPath folder) and start the process by passing URL:
+
+<your_application_context_path>/process/extendedStartProcess/TestScript
+
+For example:
+
+_http://localhost:8080/pim-grails/process/extendedStartProcess/TestScript_

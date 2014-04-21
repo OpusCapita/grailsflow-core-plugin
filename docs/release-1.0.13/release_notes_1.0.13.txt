@@ -1,0 +1,32 @@
+Release Notes Grailsflow 1.0.13
+-----------------------------
+
+The following new features and improvements were done in release Grailsflow-1.0.13:
+
+1. Improved kill operation: added possibility to kill process during node execution, 
+added verifications for completed processes;
+
+2. Added new process variable type "List"; Grailsflow domain model was enhanced with 
+two more tables: ProcessVarListItem, ProcessVarDefListItem. The changes are compatible 
+with previous version grailsflow-1.0.12.
+
+3. Enhanced processes search, added possibility to search by date ranges and 
+multiple statuses;
+
+4. Adjusted views/templates to use controller from parameters, not hardcoded values;
+
+5. Added wildcard search support for restrictions for process variables; 
+(process variables filtering for processes search, worklist)
+
+6. Updated graphical diagrams for started processes and process definitions;
+
+7. Added more operations for Process Editor, enhanced messages.
+
+8. Adjusted node execution logging: exceptions in node execution are available 
+in process log;
+
+9. Adjusted locale patterns usage for translations, dates, time, delimiters;
+
+10. Added enumirations for status values and send event execution results; 
+
+11. Fixed bugs, adjusted tests.

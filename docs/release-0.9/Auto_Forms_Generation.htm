@@ -1,0 +1,253 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+	<title>Grailsflow Auto Forms Generation</title>
+</head>
+
+<body>
+  <div id="container" style="margin-top:10px;">
+
+              <h2>Grailsflow Auto Forms Generation</h2>
+              <ul class="star">
+                  <li><a href="#Example" class="pageLink">Example</a></li>
+                  <li><a href="#Example" class="pageLink">Views Section</a></li>
+                    <ul class="star">
+                        <li><a href="#size" class="pageLink">size</a></li>
+                        <li><a href="#widget" class="pageLink">widget</a></li>
+                        <li><a href="#rows" class="pageLink">rows</a></li>
+                        <li><a href="#cols" class="pageLink">cols</a></li>
+                        <li><a href="#styleClass" class="pageLink">styleClass</a></li>
+                        <li><a href="#template" class="pageLink">template</a></li>
+                        <li><a href="#displayKey" class="pageLink">displayKey</a></li>
+                        <li><a href="#remoteFields" class="pageLink">remoteFields</a></li>
+                        <li><a href="#dateFormat" class="pageLink">dateFormat</a></li>
+                        <li><a href="#restriction" class="pageLink">restriction</a></li>
+                    </ul>
+                  <li><a href="#Example" class="pageLink">Descriptions Section</a></li>
+                    <ul class="star">
+                        <li><a href="#description" class="pageLink">description_(en|de|fr|...)</a></li>
+                        <li><a href="#label" class="pageLink">label_(en|de|fr|...)</a></li>
+                    </ul>
+                  <li><a href="#Example" class="pageLink">Constraints Section</a></li>
+                    <ul class="star">
+                        <li><a href="#required" class="pageLink">required</a></li>
+                    </ul>
+              </ul>
+
+              <a name="Example"></a>
+              <h3>Example</h3>
+              <p class="paragraph"/>
+              <div class="code">
+                <pre>class AutoFormsGenerationTestProcess &#123;
+                  <span class="java&#45;object">public String </span> productId
+                  <span class="java&#45;object">public Link</span> userSite
+                  <span class="java&#45;object">public Address</span> address
+                  <span class="java&#45;object">public String</span> commentary <br/>
+
+                  <span class="java&#45;keyword">static</span> views = &#123;
+                      // <i>the order of fields is taken into account when form auto generates,</i>
+                      // <i>if the property is not specified in this section it will be displayed</i>
+                      // <i>below specified properties</i>
+
+                      address(widget: "externalSearch", template: "search/address.gsp",
+                              displayKey: "addressID", remoteFields: "name1,city")
+                      commentary(widget: "textarea")
+                      productId(size:35)
+                  &#125;
+                  <br/>
+                  <span class="java&#45;keyword">static</span> descriptions = &#123;
+                      AutoFormsGenerationTest(description_en: "Process workflow shows automatic forms generation.",
+                                              description_de: "Process workflow shows automatic forms generation.")
+                      address(description_en: "You can specify address here.", description_de: "You can specify address here.",
+                              label_en: "Address", label_de: "Address")
+                      productId(label_en: "Product ID", label_de: "Product ID")
+                  &#125;
+                  <br/>
+                  <span class="java&#45;keyword">static</span> constraints = &#123;
+                      productId(required:<span class="java&#45;keyword">true</span>)
+                      address(required:<span class="java&#45;keyword">true</span>)
+                  &#125;
+                </pre>
+              </div>
+
+              <h3>Grailsflow Auto Forms Generation</h3>
+              <p class="paragraph"/>
+              <a name="size"></a>
+                <h4>size</h4>
+                <p class="paragraph"/>
+                Usage: Uses a value to restrict the size of property input field
+                <br/>Example:<br/>
+                <div class="code"><pre>productID(size: 35)</pre></div>
+                <br/><br/>
+              <p class="paragraph"/>
+              <a name="widget"></a>
+                <h4>widget</h4>
+                <p class="paragraph"/>
+                Usage: specifies the widget that represents this process variable property,
+                <br/>
+                Possible values:
+                <ol>
+                  <li>textarea</li>
+                  <li>externalSearch</li>
+                  <li>list</li>
+                 </ol>
+                <br/>Example:<br/>
+                <div class="code"><pre>commentary(widget: "textarea")</pre></div>
+                <div class="code"><pre>address(widget: "externalSearch")</pre></div>
+                <div class="code"><pre>status(widget: "list")</pre></div>
+                <b>External Search:</b>
+                If you want to use widget 'externalSearch', it is also important to
+                specify 'displayKey' and 'template' attributes, because they specify
+                template and bean property for rendering.
+                The mechanism of external search rendering is the following: property
+                is rendered as readonly input with 'search' and 'clear' link-icons,
+                pressing 'search' link - you see the popup window with a 'template' page.
+                It can be the page with the search form or it can contain the list of all
+                available values for the property and the user has possibility to select
+                one. Then the inputs of the property are preselected with these values.
+                The requirements for template page are:
+                <ol>
+                  <li>The template before closing should call opener function, the name of
+                     this function is available in template as 'callbackFunctionName'
+                     parameter. Also in template there are some more available parameters,
+                     they are:
+                        ID0 - the identifier property of the preselected value.
+                        fieldName0 - the property name (process variable name)
+
+                  </li>
+                  <li>It is possible to rewrite and create your own function that fills
+                      the opener inputs with selected value. But in this case you need to
+                      know how the widget Id's are formed.
+                  </li>
+                  <li>Pay attention how the opener inputs can be filled: if you want to call
+                    opener function, you should transmit some params with the function,
+                    they are: 'key' - the identifier property of your selected value,
+                    and any other parameters that have the same names as properties of variable
+                    (specified as displayKey and remoteFields properties names), for example:
+                      key = 3 - the unique identifier of Address object.
+                      addressId = 'MIRAX GROUP' - value of Address display Key property
+                      city = 'London' - the value of city property
+                      street= 'Piccadilly' - the value of street property
+                    <br/>
+                    If you want to fill owner fields with you own JavaScript function,
+                    please pay attention how the opener widgits Id's are formed.
+
+                    The key property with Id '${propertyName}' for opener window, the
+                    remoteFields have the following ID structure: ${propertyName}_${remoteField},
+                    for example: <br/>
+                       opener.document.getElementById("address").value = 3 <br/>
+                       opener.document.getElementById("address_addressId").value = addressID <br/>
+                       opener.document.getElementById("address_city").value = city <br/>
+                       opener.document.getElementById("address_street").value = street <br/>
+
+                    </li>
+                </ol>
+                <b>List:</b>
+                If you want to use widget 'list', you can also specify 'displayKey' and
+                'restriction' attributes.
+                <br/><br/>
+              <p class="paragraph"/>
+              <a name="rows"></a>
+                <h4>rows</h4>
+                <p class="paragraph"/>
+                Usage: defines the number of rows for textarea widget
+                <br/>Example:<br/>
+                <div class="code"><pre>commentary(rows: 10)</pre></div>
+                <br/><br/>
+              <p class="paragraph"/>
+              <a name="cols"></a>
+                <h4>cols</h4>
+                <p class="paragraph"/>
+                Usage: defines the number of columns for textarea widget
+                <br/>Example:<br/>
+                <div class="code"><pre>commnetary(cols: 50)</pre></div>
+                <br/><br/>
+              <p class="paragraph"/>
+              <a name="styleClass"></a>
+                <h4>styleClass</h4>
+                <p class="paragraph"/>
+                Usage: defines which style class should be applied for widget
+                <br/>Example:<br/>
+                <div class="code"><pre> productId(styleClass: "productEntry")</pre></div>
+                <br/><br/>
+              <p class="paragraph"/>
+              <a name="template"></a>
+                <h4>template</h4>
+                <p class="paragraph"/>
+                Usage: this property is important for externalSearch, it describes path to
+                template that will use for external search
+                <br/>Example:<br/>
+                <div class="code"><pre>address(template: "search/address.gsp")</pre></div>
+                <br/><br/>
+              <p class="paragraph"/>
+              <a name="displayKey"></a>
+                <h4>displayKey</h4>
+                <p class="paragraph"/>
+                Usage: this property is important for externalSearch and list widgets,
+                if it's specified then selected value is represented by this property of
+                bean.
+                <br/>Example:<br/>
+                <div class="code"><pre>address(displayKey: "addressId")</pre></div>
+                <br/><br/>
+              <p class="paragraph"/>
+              <a name="remoteFields"></a>
+                <h4>remoteFields</h4>
+                <p class="paragraph"/>
+                Usage: this property is important for externalSearch, the properties names
+                are comma-separated, specifies additional fields which are displayed on UI
+                <br/>Example:<br/>
+                <div class="code"><pre>address(remoteFields: "city, street")</pre></div>
+                <br/><br/>
+              <p class="paragraph"/>
+              <a name="dateFormat"></a>
+                <h4>dateFormat</h4>
+                <p class="paragraph"/>
+                Usage: can be useful for properties of type Date, there we can specify the
+                pattern for date, e.g. 'y-m-d H:i:s'
+                <br/>Example:<br/>
+                <div class="code"><pre>startDate(dateFormat: "y-m-d H:i:s")</pre></div>
+                <br/><br/>
+              <p class="paragraph"/>
+              <a name="restriction"></a>
+                <h4>restriction</h4>
+                <p class="paragraph"/>
+                Usage: can be useful if you specify widget <b>list</b>. In this case in
+                restriction input you can write restrictions for list values.
+                <br/>Example:<br/>
+                <div class="code">
+                    <pre>address(widget: "list", restriction: "address.city = 'Berlin'")</pre>
+                </div>
+                It means that in list should be shown only addresses with property City ='Berlin'
+                <br/><br/>
+              <p class="paragraph"/>
+              <a name="description"></a>
+                <h4>description</h4>
+                <p class="paragraph"/>
+                Usage: specifies the description for process or process variable property
+                <br/>Example:<br/>
+                <div class="code"><pre>commentary(description_en: "Put your commentary here.", description_de: "Put your commentary here.")</pre></div>
+                <br/><br/>
+              <p class="paragraph"/>
+              <a name="label"></a>
+                <h4>label</h4>
+                <p class="paragraph"/>
+                Usage: specifies the label for property or node event
+                <br/>Example:<br/>
+                <div class="code"><pre>catalogId(label_en: "Product Catalog ID", lable_de: "Product Catalog ID")</pre></div>
+                <div class="code"><pre>Set(label_en: "Set Values", label_de: "Set Values")</pre></div>
+                <br/><br/>
+              <p class="paragraph"/>
+              <a name="required"></a>
+                <h4>required</h4>
+                <p class="paragraph"/>
+                Usage: set to true if the property value is required
+                <br/>Example:<br/>
+                <div class="code"><pre>productId(required:<b>true</b>)</pre></div>
+                <br/><br/>
+	  </div><!-- /container -->
+
+</body>
+</html>

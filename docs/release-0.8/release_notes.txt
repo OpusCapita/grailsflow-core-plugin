@@ -1,0 +1,290 @@
+Release Notes Grailsflow 0.8
+-----------------------------
+
+The following new features and improvements were done in release Grailsflow-0.8:
+
+1. Process Flow/Runtime:
+
+    * Added possibility to define 'assignees' for the next nodes (restricted nodes
+      visibility).
+    * Added support for asynchronous operations.
+    * Implemented functionality for developing custom Quartz jobs (for asynchronous
+      operations).
+    * Implemented functionality for configuring custom client executor for callback
+      functions (according to application security).
+    * Added implementation for DueDateJob.
+
+2. Process Definition:
+
+    * Implemented support for placeholders (#).
+    * Added support for distinguishing process variables and constants.
+    * Added support for process attributes (constraints, views, descriptions).
+    * Implemented Attribute Editor and builder.
+    * Added 'nodeInfo' attribute for process node definition.
+    * Improved variable visibility definition in manual nodes.
+    * Enhanced generation process service.
+    * Improved auto forms generation, according to process attributes
+    * Added new Grailsflow types: Link, Document, support for external search widget.
+
+3. Action Definition:
+
+    * Enhanced Action Editor view
+    * Fixed problems with parameters and placeholders in Action Editor.
+    * Improved ActionUtils: it is possible to define nextAssignee value as String Value
+      (without evaluation operation to List.class)
+    * Added support for writing back action variables after execution.
+
+
+4. Monitoring/Scheduling Jobs:
+
+    * Added UI and functionality for monitoring Jobs.
+    * Implemented functionality for adding jobs(scheduling jobs for starting processes
+      with specified initial values).
+
+5. User Management:
+
+    * Implemented pluggable user management for workarea, security and worklist
+      providers - added a number of interfaces that allow to extend existed functionality
+      with your own.
+
+6. Plugin Management:
+
+    * Created a GrailsFlow Plugin for Grails.
+
+
+Process Flow/Runtime
+-----------------------
+
+1. Added possibility to define 'assignees' for the next nodes (restricted nodes
+   visibility).
+
+For this aim there are two Process Engine variables that are available in nodes like process
+variables:
+
+ - nextAssignee;
+ - nextAssignees;
+
+The property 'nextAssignees' is the most common variant for using.
+It has a type Map, there the key - nodeID, value - list of restricted users/roles/groups
+that can review node with 'nodeID'. The property 'nextAssignee' has type List and
+contains a simple collection of usersnames/roles/groups that can review following
+activated nodes. The difference between 'nextAssignees' and 'nextAssignee' properties it
+that in 'nextAssignees' we can specify different assigneers for each following nodes, at
+that time 'nextAssignee' gives you possibility to specify assigneers for all following
+nodes (it is more convenient, if you have only one following node - in this case you do
+not need to specify 'nodeID' of that node).
+
+2. Added support for asynchronous operations.
+
+Implemented a AsynchronousAction abstract class. It implements Action interface and gives
+possibility to execute actions asynchronously. In current implementation we use Quartz for
+asynchronous calls, probably later we will also add support for WS calls. Asynchronous methods
+are always used in conjunction with a return" statement in the action editor, e.g.
+return AsyncCall(). For more information, please check 'asynchronous_actions.txt' document.
+
+
+3. Implemented functionality for developing custom Quartz jobs (for asynchronous
+   operations).
+
+It is possible to implement custom Quartz jobs, that extends abstract
+GrailsflowCallbackJob class. These implementation can have nothing special in implemented
+abstract 'executeAndReturnCallbackInfo' method. The method can return information in any
+view or presentation. The information returned by the method will be returned to process
+controller as the 'action result', and can be saved in process variable, if 'resultVarName'
+property of the action is specified.
+
+4. Implemented functionality for configuring custom client executor for callback
+   functions (according to application security).
+
+An abstract GrailsflowCallbackJob class knows how to prepare data and return it to process
+controller. For executing call we need a special client executor - according to
+application security implementation and asynchronous type. For example, a simple client
+executor can create a PostMethod with header, that contains authentication information and
+execute method call.
+
+5. Added implementation for DueDateJob.
+
+Grailsflow-0.8 contains implementation for DueDateJob - that is a job that sends 'timeout'
+and 'overdue' events for nodes. The 'dueDate' value of node can have different meaning, it
+depends of node type and status. For nodes that are waiting for user actions (for manual
+nodes, that are activated and waiting for user events) the job checks dueDate time, if it
+expired, the 'overdue' event is sent. If the node in 'AWAIT_CALLBACK' state (status of the
+node is equal to 'AWAIT_CALLBACK') the job sends 'timeout' event to the node. In the node
+description contains transitions for such events - the Process Flow moving according to
+transition, if not - the event ignored.
+
+
+Process Definition
+----------------------
+
+1. Implemented support for placeholders (#).
+
+Grailsflow 0.8 has improved mechanism for distinction between process variables and
+constant values. In previous versions of Grailsflow if the value was equal to variable
+name we considered that we should use variable value. So, we added spacial placeholder "#"
+which means that text(expresion)that follows after it probably should be evaluated using
+GroovyShell.
+
+2. Added support for distinguishing process variables and constants.
+
+The distinguishing between process variables and constants is achived via introduced
+placeholder "#". We do not compare values with variables any more. There is a special
+helper method, that checks values: if the value is considered to be an expression - it is
+evaluated by GroovyShell.
+
+3. Added support for process attributes (constraints, views, descriptions).
+
+The Process Definition contains some new sections for enhanced auto-generation procedure.
+The attributes can be specified in the following sections(closures):
+  - constraints;
+  - views;
+  - descriptions;.
+Each section can contains closures that equals to process variables name. The closure
+parameters specify the view (size, widget, length, etc..), description and other properties.
+More about properties and theirs values you can read on 'Auto_Forms_Generation.htm' page.
+
+4. Implemented Attribute Editor and builder.
+
+Added a special attribute editor. In previous versions of Grailsflow, process description
+property was escaped, currencty it is stored in attributes and can have different
+translations according to user locale.
+
+5. Added 'nodeInfo' attribute for process node definition.
+
+Process Node definition was enhanced with 'nodeInfo' property - a kind of node description,
+it can contains expressions (the user can define them using placeholder "#"), the
+description is evaluated then node is activated.
+
+6. Improved variable visibility definition in manual nodes.
+
+Previously it was a problem to store/restore variable visibility for process definition in
+Process Editor. We needed a stable mechanizm for definition variable visibility for all
+manual nodes. According to this requirement we introduced some more classes for storing
+visibility in DB and enhanced ProcessDef class structure.
+
+7. Enhanced generation process service.
+
+According to introducing new variables types, like Document, Link, new attributes
+closures and visibility enhancements, it was important to create modifications in Process
+Generation service. It contains two mechanism:
+ - generating Groovy definition script from process definition object;
+ - generating process definition object from definition script;
+
+8. Improved auto-forms generation, according to process attributes.
+
+The process attributes define how the automatic manual forms should be generated.
+Currently it is able to specify view attributes and define widgets. More important that
+Process Engine knows how to deal with such values, how to store theirs values in DB and
+how to represent them on UI.
+
+9. Added new Grailsflow types: Link, Document, support for external search widget.
+
+Grailsflow-core plugin gives you possibility to have process variables of custom domain
+types. For such types we expect that there is a table in DB and in ProcessVariable entry
+we store key in 'value' property, and in 'type' type of this key, in full class name -
+full name of this custom class. For such custom classes it is very convenient to use
+special widget 'external search widget' for generated automatic UI forms. In this case
+you can specify which properties should be shown on UI, and external search in a new
+popup window gives possibility to search for necessary values. For more information it is
+usefull to look at 'Auto_Forms_Generation.htm' page.
+
+Action Definition
+----------------------
+
+1. Enhanced Action Editor view
+
+Currently its possible to specify action result as return parameter, it means that in
+return statements we can specify action with parameters (parameters are editable). Were
+added some restrictions: e.g. asynchronous actions can be used only in 'return' statements,
+if you want to change action in any other place of 'action' part - only synchronous
+actions are available.
+
+2. Fixed problems with parameters and placeholders in Action Editor.
+
+Grailsflow 0.8 has improved mechanism for distinction between process variables and
+constant values. In previous versions of Grailsflow if the value was equal to variable
+name we considered that we should use variable value. So, we added spacial placeholder "#"
+which means that text(expresion)that follows after it probably should be evaluated using
+GroovyShell.
+
+3. Improved ActionUtils: it is possible to define nextAssignee value as String Value
+   (without evaluation operation to List.class)
+
+We enhanced ActionUtils class: it has improved possibilities of converting String values
+to necessary types. Also we inhanced number of converted types, were added possibility to
+work with more complex types, like List, Map, Document, Link.
+
+4. Added support for writing back action variables after execution.
+
+Very often in action we need to know some more information about process flow (like
+locale, requester information, process key or running node key - for sending mails or
+generation some links). Sometimes we need to change some process variable values according
+to calculations in actions. Process variables can be updated according to theirs
+visibility in the node, if the variable is visible in the node - it should be updated, if
+not - the old value is applied. And even one more thing: we decided to create ActionFactory is
+independent of Process classes. This decision gives us some flexibility and possibility to use
+different implementations of ActionFactory and ActionBuilder for Process Engine, at the
+same time Action Builder and Action Editor (that works with builder structure) are
+available for reusing with some other engines, that deals with actions and needs to have a
+good existed visual ActionEditor.
+
+Monitoring/Scheduling Jobs
+-------------------------------
+
+1. Added UI and functionality for monitoring Jobs.
+
+There is a new menu item "View Scheduler Details": it contains information for monitoring
+and running scheduled jobs. Also it is possible to pause/resume scheduled jobs, review
+jobs details and attributes.
+
+2. Implemented functionality for add/change/delete jobs.
+
+The menu item "View Scheduler Details" gives possibility to schedule (add) jobs for
+starting processes with specified initial values. Its possible to delete jobs, and edit
+(change) jobs parameters, like repeating and start time.
+
+
+User Management
+--------------------
+
+1. Implemented pluggable user management.
+
+It was implemented a pluggable user management for workarea, security and worklist
+providers - added a number of interfaces that allow to extend existed functionality with
+your own. Using interfaces and Spring configuration files - you can change behaviour of
+application. There a number of Interfaces, like WorklistProvider, WorkareaProvider,
+ClientExecutor, SendMailHelper, SecurityHelper, GrailsflowCallbackJob, etc.
+
+
+Plugin Management
+---------------------
+
+1. Created a GrailsFlow Plugin for Grails.
+
+Currently Grailsflow is available as a plugin, it can be used in other Grails applications
+for managing and defining processes. Some plugin parts are configurable, so its possible
+for developers to specify theirs own implementations for commin interfaces. There are
+some rules for configuring GrailsFlow plugin:
+
+  1.1. Spring configuration:
+  There are as inner GrailsFlow-core plugin configuration, it has been
+  implemented in the GrailsflowCoreGrailsPlugin.groovy - see
+  doWithSpring closure so and external application context configuration -
+  grails-app/conf/spring/grailsflow.
+  In each applications which will use GrailsFlow-core plugin you have
+  to implement own external application context configuration.
+
+  1.2 Layouts:
+  All GrailsFlow-core GSPs contains:
+    <meta name="layout" content="grailsflow" />
+  Please implement own 'grailsflow' layout in each applications using
+  GrailsFlow-core plugin .
+
+  1.3 CSS Resources:
+  There is possibility to override default.css for GrailsFlow-core.
+  For it you have to add configuration to Config.groovy:
+    grailsFlowCoreConfig{
+      cssDir = "css"
+      cssFile = "test.css"
+    }
+  where you define some specific css which will override default.css
