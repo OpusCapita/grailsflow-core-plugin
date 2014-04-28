@@ -15,7 +15,7 @@ If the start node is non-interactive (i.e., other than Wait type) the *Process D
 
 !usersGuide/processDetails.jpg!
 
-The *'Show Graphical Process'* button displays the process in graphical representation.
+The 'Show Graphical Process' button provides a graphical representation of the process.
 
-You can schedule a process to start its execution later interval of time. Refer *View Scheduler Details* for more
-details.
+A process can be scheduled to start execution at a later point in time. Refer *View Scheduler Details* for more details.
+

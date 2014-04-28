@@ -1,10 +1,13 @@
-The process can be killed, it means that all process activities should be stopped, all active nodes and process should
-be set to status 'KILLED'.
+A process can be killed - this means that all process activities should be stopped and all active nodes and process
+should be set to status 'KILLED'.
 
-When the process starting killing procedure from UI, first of all we interrupt process invocation thread, then update
-process status (and all active nodes) to 'KILLING'. The next step - we check _actions_ thread - the thread
-where we execute actions code. If there is no alive _actions_ thread, then we update process status (and its active
-nodes) to "KILLED". If we have _actions_ thread then try to interrupt it. This thread will check the interrupted flag
-for process, in case of interrupted flag we set process status (and its active nodes) to "KILLED".
+When the process starts the killing procedure from UI, first of all we interrupt the process invocation thread, then
+update process status (and all active nodes) to 'KILLING'.
 
-During process execution we can have exceptions in node execution. In case of exceptions, the process can be killed too.
+In the next step - we check actions thread - the thread where we execute actions code. If there is no alive actions
+thread, then we update process status (and its active nodes) to "KILLED". If we have an actions thread, then try to
+interrupt it. This thread will check the interrupted flag for process. In case of interrupted flag, we set the process
+status (and its active nodes) to "KILLED".
+
+During process execution we can have exceptions in the node execution. In case of exceptions, the process can be
+killed too.

@@ -1,5 +1,4 @@
-h4. Add the plugin as a dependency to your application.
-To do so directly edit your @BuildConfig.groovy@ to look something like this:
+Add the plugin as a dependency to your application by directly editing your BuildConfig.groovy to look like this:
 
 {code:groovy}
     ...
@@ -9,14 +8,19 @@ To do so directly edit your @BuildConfig.groovy@ to look something like this:
     }
 {code}
 
-h4. Grailsflow-core plugin needs to be configured. 
+*Grailsflow-core plugin needs to be configured*
 
 There is a list of Spring beans that can/should be configured in your application, if it uses the Grailsflow-core plugin.
 
-The following configuration (common beans) are already configured in GrailsflowCoreGrailsPlugin.groovy and have default values. You can change the default configuration by specifying new beans values in any Spring configuration file.
+The following configuration (common beans) are already configured in GrailsflowCoreGrailsPlugin.groovy and have default
+values. You can change the default configuration by specifying new beans values in any Spring configuration file.
 
 
 1. Common beans:
+
+Also, it is possible to define some extra beans, like 'additionalWorklistColumns' and 'processLogDir'. They don't have a
+default configuration, but can be easily defined in the Spring configuration of the application, like:
+
 {code}
     <!-- Necessary for uploading files. -->
     bean (org.springframework.web.multipart.commons.CommonsMultipartResolver) {
@@ -254,6 +258,6 @@ The following configuration (common beans) are already configured in GrailsflowC
     ...
 {code}
 
-    (the full list of available beans can be found in GrailsflowCoreGrailsPlugin.groovy file) 
+(The full list of available beans can be found in the GrailsflowCoreGrailsPlugin.groovy file)
       
 

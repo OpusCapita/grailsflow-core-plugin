@@ -1,52 +1,57 @@
-Nodes are steps of process. They define what are the steps has to be performed, while executing a process.
-For example: If an employee has to request leave, following are the steps to be performed:
+Nodes are steps in a process. They define the steps to be performed, while executing a process. For example: If an
+employee has to request leave, following are the steps to be performed:
 
-    * Employees send leave request to the manager
-    * Manager approves or rejects
-    * HR tracks the leaves of an employee
+* Employee sends leave request to the manager
+* Manager approves or rejects
+* HR tracks the leave
 
-Therefore, following are the nodes of a Leave request process:
+Therefore, the nodes of a Leave request process is as follows:
 
-    * Send Leave request
-    * Manager Approval
-    * Manager Rejection
-    * HR Notification.
+* Send Leave request
+* Manager Approval
+* Manager Rejection
+* HR Notification.
 
 Node can have different types:
 
-    * "Wait"-Nodes wait for input, so they are visible in the worklist of the user that is assigned to that node. You can define actions and forms for this node type.
-    * "Activity"- Nodes execute actions without waiting for user input. You can define actions for this node type.
-    * “Fork” - From this node you can execute several new nodes simultaneously (several nodes will be activated not only one as for 'Activity' node type).
-    * "AndJoin" - Node should wait for all its incoming transitions (e.g. until all managers are not approved the letter about payment - the payment is not done).
-    * “OrJoin” - Node should wait for at least one incoming transition and then can be activated/executed (e.g. if the 'letter about payment' was rejected or approved by manager - we go to the 'Final' node and finish the process flow).
+* *Wait* - Nodes wait for input, so they are visible in the worklist of the user assigned to that node. You can define
+actions and forms for this node type.
 
-H4. Add Nodes
+* *Activity* - Nodes execute actions without waiting for user input. You can define actions for this node type.
 
-* Click *Edit Process Types* menu, select its corresponding *Edit* option and click button *Add* under *Process Nodes*.
-The *Process Nodes* screen appears.
+* *Fork* - From this node you can execute several new nodes simultaneously (several nodes will be activated not only one
+ as for 'Activity' node type).
+
+* *AndJoin* - Node should wait for all its incoming transitions (e.g. until all managers do not approve,  the payment is
+ not done).
+
+* *OrJoin* - Node should wait for at least one incoming transition and then can be activated/executed (e.g. if the
+'letter about payment' was rejected or approved by manager -then go to the 'Final' node and finish the process flow).
+
+
+*Add Nodes*
+
+* Click the *Edit Process Types* menu.  Select its corresponding *Edit* option and click the *Add* button under Process
+Nodes to open the Process Nodes screen.
 
 !usersGuide/processNode_1.jpg!
 
-* Enter Node ID (mandatory), select Type from the drop down list, fill in *Due Date* and *Expected Duration* fields and
-enter *Protocol Group*.
-
-* Click button *Apply*. You will be redirected to *Process Editor Page*. On this page there are links to P
-*Process Node Editor*:
+* Enter *Node ID* (mandatory), select *Type* from the drop down list, fill in *Due Date* and *Expected Duration* fields
+and enter *Protocol Group*.
+* Click the *Apply* button to be redirected to the *Process Editor* page where there are links.
 
 !usersGuide/processNode_2.jpg!
 
-h4. Add Assignee(s)
+*Add Assignee(s)*
 
-Now, you can assign the nodes to any user, role or group and define the visibility of variables.
+You can assign the nodes to any user, role or group and define the visibility of variables - e.g. In the Request Leave
+process, a manager can only approve or reject leave. The Assignees column allows you to assign the nodes
+*Manager Approval* and *Manager Rejection* to manager role or user.
 
-For example: In Request Leave process a manager can only approve or reject leave. The Assignees column allows you to
-assign the nodes *Manager Approval* and *Manager Rejection* to manager role or user.
-
-To add assignees, follow the steps below:
+Use the following steps to add assignees:
 
 * Select *Users*, *Roles* or *Groups* using radio buttons.
-
-* Click *Plus* icon button to chose *Process Assignees*. A window appears, which displays *Users*, *Roles* or *Groups*.
+* Click the *plus* icon/button to select *Process Assignees* and a window opens displaying Users, Roles or Groups.
 
 !usersGuide/addRoles.jpg!
 
@@ -60,25 +65,25 @@ You can click *Delete* option to delete an assignee.
 
 Once you add assignee the next step is to define visibility of process variables.
 
-h4. Visibility of Variables
+*Visibility of Variables*
 
-Visibility of variables is to define whether the process variables are invisible, read only, or write and read
-variables.
-Following are visibilities available:
+Visibility of variables is used to define whether the process variables are invisible, read only, or write and read
+variables. Available visibilities are listed below:
 
-    * INVISIBLE
-    * READ_ONLY
-    * WRITE_READ
-    * REQUIRED
+INVISIBLE
+READ_ONLY
+WRITE_READ
+REQUIRED
 
-Select the visibilities for each process variables in *Visibility* for Variables: *Variable List*.
+Select the visibilities for each of the process variables in the *Visibility* column of the *Visibility for
+Variables : Variable List*.
 
 !usersGuide/visibilityofVaraibles.jpg!
 
-The “Preview Generated Form” button is used to preview the form generated for the nodes of “Wait” type. Refer
+The "Preview Generated Form" button is used to preview the form generated for the nodes of “Wait” type. Refer
 *Manual Form* section for more details.
 
-h4. Manual Form
+*Manual Form*
 
 The Manual Form has the following options:
 
@@ -87,38 +92,38 @@ The Manual Form has the following options:
     * Use Customer Form
     * Use Custom Controller and Form (for development mode only)
 
-h5. _External URL_
+_External URL_
 
-Sometimes you do not want to customize the form or use automatically generated form, but use external editor/view/page.
-So you can specify *URL* for the external page. When you try to open 'Manual Step page' the control is redirected to
-specified *External URL*.
+If you do not want to customize the form or use automatically generated form, but use external editor/view/page instead,
+you can specify the *URL* for the external page. When you try to open 'Manual Step page' the control is redirected to
+the specified *External URL*.
 
-h5. _Use Automatic Form_
+_Use Automatic Form_
 
-The *Use Automatic Form* option will automatically generate a form for the node type “Wait”.
+The *Use Automatic Form* option will automatically generate a form for the node type "Wait".
 
-h5. _Use Custom Form_
+_Use Custom Form_
 
-The *Use Custom Form* option is used to create a customized form for the node type “Wait”. The user can write the code
-in *Manual Form* text area and click button. The form is generated. The “Preview Generated Form” button is used to preview
-the generated form as shown below:
+The Use Custom Form option is used to create a customized form for the node type "Wait". The user can write the code
+in the Manual Form text area and click a button to generate the form. The *Preview Generated Form* button is used to
+preview the generated form as shown below:
 
 !usersGuide/manualForm.jpg!
 
-Now, click “Preview Generated Form” button. The screen displays the preview of *HolidayRequestFrom* as shown below:
+Now, click "Preview Generated Form" button to display the preview of HolidayRequestForm as shown below:
 
 !usersGuide/previewofGeneratedForm.jpg!
 
-h5. _Use Custom Controller and Form (for development mode only)_
+_Use Custom Controller and Form (for development mode only)_
 
-The *Use Custom Controller and Form* option is used to modify or add more additional features to the user customized
-form, or to create a more complex user customized form. Similar to *Use Custom Form* create write code in *Manual Form*
-text area and click *Generate* button. To preview the form click “Preview Generated Form” button.
+The *Use Custom Controller and Form* option is used to modify or add more features to the user customized form or to
+create a more complex user customized form. Similar to *Use Custom Form*, create write code in the Manual Form text area
+and click the *Generate* button. To preview the form, click the "Preview Generated Form" button.
 
-h5. _Custom Page and Controller Rules_
+_Custom Page and Controller Rules_
 
 It displays a pop-up with some code rules and information for the user who wants to specify custom controller/page. The
-page contains list of variables that are available on the page (variables, transitions, and so on.)
+page contains a list of variables that are available on the page (variables, transitions etc.).
 
 
 

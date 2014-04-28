@@ -6,7 +6,7 @@ There are two major stages in Grailsflow:
 *  Process Definition
 *  Execute Process
 
-h4. Process Definition
+*Process Definition*
 
 In *Process Definition* stage, you can create a process, add process variables, nodes, transition, and actions. The
 functionality of these steps will be explained in later sections. Once you create a process, you can execute it any
@@ -14,10 +14,11 @@ number of times. This in turn, allows reusing of process and reduces the process
 
 !usersGuide/processDefinition.jpg!
 
-h4. Execute Process
+*Execute Process*
 
-In *Execute Process* stage, you can make use of the processes, which was created in Process Definition stage.
-Here you can start a process, view the currently executing processes, view worklist, and execute the worklist item.
+In the *Execute Process* stage, you can make use of the processes created in the *Process Definition* stage. Here it is
+possible to start a process, view the currently executing processes, view worklist, and execute the worklist item.
+
 
 !usersGuide/executeProcess.jpg!
 

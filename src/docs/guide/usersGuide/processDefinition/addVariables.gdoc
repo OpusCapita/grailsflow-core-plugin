@@ -5,51 +5,47 @@ column, in *Edit Process Type* screen. The *Process Variables* screen appears.
 
 !usersGuide/processVariable_1.jpg!
 
-* Enter variable name in *Name* field.
+* Enter variable name in *Name* field - field is mandatory and name should be a unique name
 
-Enter a unique name. *Name* field is mandatory.
+* Check the *Is Process Identifier* check box - used to make the variable as an identifier of the process - e.g. if
+there is a process "My Process" has a variable "name" marked as process identifier. So, if you start that process
+with name="John" - while that process is running you cannot start another "MyProcess" with name="John". But you can
+start "MyProcess" with any other name.
 
-* Check *Is Process Identifier* check box.
+* Check *Required* check box - defines the variable as mandatory. The application cannot perform the operation without
+the variable value.
 
-The *Is Process Identifier* is used to make the variable as an identifier of the process. For example, if there is a
-process named “My Process” has a variable “name” marked as process identifier. So, if you start that process with
-name="John". While that process is running you cannot start another "MyProcess" with name="John". But you can start
-"MyProcess" with any other name.
+* Select the variable type from the *Type* drop down - by default, it displays String type.
 
-* Check *Required* check box.
+Currently, Grailsflow supports the following variable types:
 
-The *Required* check box, defines the variable as mandatory. The application cannot perform operation without the
-variable value.
+Boolean
+Double
+String
+Long
+Integer
+Date
+Document
+Link
+Object
 
-* Select the variable type from *Type* drop down.
+* Enter default variable value in *Value*  field - it is the default value for the variable. The value will be set by
+default when the process gets started.
 
-By default, it displays *String* type. Currently, Grailsflow supports the following variable types:
+* Select the type of variable view from the *View* drop down - view specifies the way the variable will be displayed on the UIs of the interactive nodes ('Wait' nodes). Refer Varible View section for more details.
 
-**    Boolean
-**    Double
-**    String
-**    Long
-**    Integer
-**    Date
-**    Document
-**    Link
-**    Object
+* Click the *Apply* button to save the process variable.
 
-* Enter default variable value in *Value* field.
+Similarly, multiple variables can be created for a process.
 
-It is the default value for the variable. By default, the value will be set when process gets started.
+*Variable View*
 
-* Select the type of variable view from *View* drop down.
+Values for select box are selected from the database.
 
-View specifies the way the variable will be displayed on the UIs of the interactive nodes ('Wait' nodes). Refer
-*Varible View* section for more details.
+* Property to display property of the domain is used as label for the select box option.
+* Restriction is 'where' condition (without 'where' word) that will be used for selecting list of objects from the
+database
 
-8. Click button *Apply* to save the process varaible.
-
-Similarly, you can create multiple variables for a process.
-
-
-h4. Variable View
 
 The Variable View type consists of the following views:
 

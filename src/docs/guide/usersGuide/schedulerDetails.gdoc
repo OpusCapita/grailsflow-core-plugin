@@ -1,22 +1,23 @@
-The *View Scheduler Details* menu is used to schedule the execution of process in later interval of time. For example,
-the HR of a company has to track the leaves of an employee, very frequently. The scheduler option will helps to create
-a process to track the leaves and schedule the process to execute frequently, at some interval of time.
+The *View Scheduler Details* menu is used to schedule the execution of a process at a later date/time.
 
-Click *View Scheduler details* menu from the left corner of the screen. The Scheduler Details screen appears.
+For example, the HR of a company has to track the leave taken by an employee, very frequently. The scheduler option will
+help to create a process to track the leave and schedule process execution frequently, at specific intervals.
 
-The *Scheduler Details* screen displays the currently running jobs and the scheduled jobs. *'Scheduler details'* is used
+Click the *View Scheduler details* menu from the left corner of the screen to open the Scheduler Details screen.
+
+The *Scheduler Details* screen displays the currently running jobs and the scheduled jobs. 'Scheduler details' is used
 to monitor the Quartz jobs and the configuration of the Quartz library. It shows the Quartz configuration parameters and
-allows to view all currently running jobs and to pause, delete and edit jobs. It displays the scheduler information with
-jobs and triggers.
+allows you to view all currently running jobs, to pause, delete and edit jobs. It displays the scheduler information
+with jobs and triggers.
 
-Edit jobs allows to modify the repeat interval. This is useful e.g. to tune the NodeActivatorJob.
+Edit jobs allows you to modify the repeat interval, which is useful e.g. to tune the NodeActivatorJob.
 
 !usersGuide/schedulerDetails_1.jpg!
 
-The *Pause Scheduler* button is used to pause all the scheduled jobs, listed under *Scheduled Jobs* option.
+The *Pause Scheduler* button is used to pause all scheduled jobs listed under the Scheduled Jobs option.
 
-The *Running Jobs* display the job names which are running currently. It displays the job names which are triggered at
-that instace of time interval.
+*Running Jobs* displays the job names which are running currently and also displays job names triggered at a specific
+time interval.
 
 The *Schedule Process* button is used to schedule the process. To schedule a process, follow the steps below:
 
@@ -44,7 +45,7 @@ The *Schedule Process* button is used to schedule the process. To schedule a pro
 
 The job is added under the *Scheduled Jobs* option, in *Scheduler Details* screen.
 
-h4. Specify Custom Value
+h3. Specify Custom Value
 
 The *Specify Custom Value* is used to enter the repeating sequences other than the available sequences.
 

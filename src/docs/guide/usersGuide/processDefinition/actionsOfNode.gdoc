@@ -1,7 +1,7 @@
 Actions define the operations to be performed in each node, internally. Basically action defines the operation of a
 node. You can develop code for the operation of each node using plain Groovy code.
 
-h4. Create Action
+*Create Action*
 
 For example, we need to send a Notification if Holiday Request is rejected.
 
@@ -23,7 +23,7 @@ Select *SendNotificationMail* from the drop-down list and click 'plus' button.
 
 !usersGuide/actionParameters.jpg!
 
-Manually adjust the code
+Manually adjust the code and then click the *Apply* button.
 
 {code}
 if (requesterMail) {
@@ -33,13 +33,10 @@ return "finish"
 
 {code}
 
-and click *Apply* button.
-
-
-According to the node type you should pay attention to the nodes actions. If the node is manual (type is 'Wait') then
-you don't need to trigger any transition and specify 'return' statement. The body of 'Wait' node is executed after
-transition definition (the transition is defined manually by the user). If the 'return' statement is specified in manual
-node it is ignored by process execution engine.
+According to the node type you should pay attention to the actions. If the node is manual (type is 'Wait') then you
+don't need to trigger any transition and specify 'return' statement. The body of 'Wait' node is executed after
+transition definition (defined manually by the user). If the 'return' statement is specified in manual node it is
+ignored by process execution engine.
 
 If node type is automatic (one from 'Activity', 'Fork', 'AndJoin', 'OrJoin') then you need to specify 'return'
 statement that triggers the next transition.

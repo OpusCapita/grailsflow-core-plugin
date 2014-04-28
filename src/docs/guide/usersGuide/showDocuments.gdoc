@@ -1,12 +1,11 @@
-The Show Documents menu displays the directories, which contain files that are uploaded for the process; which has
-*Document* type variable.
+The Show Documents menu displays directories which contain files (which has Document type variable) uploaded for the
+process.
 
 Documents are a special type of process variables that allows storing arbitrary files in a process. You declare a
-process variable in your process class through the process designer with the type Documents.
-When you enter variables, GrailsFlow presents a “Browser” button to upload documents. The file is uploaded and stored in
-a directory.
+process variable in your process class through the process designer with the type Documents. When you enter variables,
+GrailsFlow presents a â€œBrowserâ€ button to upload documents. The file is uploaded and stored in a directory.
 
-We create one directory for each day. The file name is cleaned up and extended by the process id and a counter. The link
+A directory is created for each day. The file name is cleaned up and extended by the process id and a counter. The link
 to the file is stored in the DB.
 
 If the variable can be changed in a later step, the file can be downloaded and a new version can be uploaded. The new
