@@ -194,6 +194,11 @@ class ProcessVarDefController extends GrailsFlowSecureController {
             var.isProcessIdentifier = params.isProcessIdentifier ? true : false
             var.required = params.required ? true : false
             var.view = GrailsflowRequestUtils.getVariableViewFromParams(params)
+            if (var.view && !var.view.validate()) {
+                flash.errors << grailsflowMessageBundleService
+                        .getMessage(RESOURCE_BUNDLE, "grailsflow.message.view.error")
+                return render(view: 'variableForm', model: [variable: var, process: process])
+            }
 
             if (var.id) {
                 // update existing var
