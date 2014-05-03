@@ -337,12 +337,12 @@ class ProcessController extends GrailsFlowSecureController {
         searchParameters.ascending = params.order
 
         flash.errors = []
-        Date startedFromDate = getParsedDate(params.startedFrom)
-        Date startedToDate = getParsedDate(params.startedTo)
-        Date finishedFromDate = getParsedDate(params.finishedFrom)
-        Date finishedToDate = getParsedDate(params.finishedTo)
-        Date modifiedFromDate = getParsedDate(params.modifiedFrom)
-        Date modifiedToDate = getParsedDate(params.modifiedTo)
+        Date startedFromDate = getStartOfParsedDate(params.startedFrom)
+        Date startedToDate = getEndOfParsedDate(params.startedTo)
+        Date finishedFromDate = getStartOfParsedDate(params.finishedFrom)
+        Date finishedToDate = getEndOfParsedDate(params.finishedTo)
+        Date modifiedFromDate = getStartOfParsedDate(params.modifiedFrom)
+        Date modifiedToDate = getEndOfParsedDate(params.modifiedTo)
 
         if ((startedToDate && startedFromDate?.after(startedToDate))
             || (finishedToDate && finishedFromDate?.after(finishedToDate))
@@ -757,8 +757,14 @@ class ProcessController extends GrailsFlowSecureController {
                  <script>document.subForm.submit();</script>"""
     }
 
-    private Date getParsedDate(String dateString) {
-        return GrailsflowUtils.getParsedDate(dateString, gf.datePattern()?.toString())
+    private Date getStartOfParsedDate(String dateString) {
+        return GrailsflowUtils.getStartOfDate(GrailsflowUtils.
+                getParsedDate(dateString, gf.datePattern()?.toString()))
+    }
+
+    private Date getEndOfParsedDate(String dateString) {
+        return GrailsflowUtils.getEndOfDate(GrailsflowUtils.
+                getParsedDate(dateString, gf.datePattern()?.toString()))
     }
 
     private Map<String, Object> getPagingParameters(def params) {
