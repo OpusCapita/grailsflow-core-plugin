@@ -57,7 +57,7 @@
             content += " <script type='text/javascript'>jQuery.noConflict();"
             content += "jQuery(document).ready(function(\$){"
             content += " \$('#listItemValue_"+varName+"_"+index+"').datepicker({dateFormat: convertDatePatternFromJavaToJqueryDatePicker('"+"${gf.datePattern()}"+"'), showOn: 'button'}); }) <\/script>"
-            content += ' <input name="listItemValue_'+varName+"_"+index+'" id="listItemValue_'+varName+"_"+index+'" value = "'+value+'" maxlength="20"/>'
+            content += ' <input name="listItemValue_'+varName+"_"+index+'" id="listItemValue_'+varName+"_"+index+'" value = "'+value+'" maxlength="20" readonly="true"/>'
         } else if (newType == 'String') {
             content += ' <textarea value="'+value+'" cols="60" rows="3" name="listItemValue_'+varName+'_'+index+'"/>&nbsp;&nbsp;'
         } else {
