@@ -59,7 +59,7 @@ class ProcessController extends GrailsFlowSecureController {
     def processWorklistService
     def grailsflowMessageBundleService
     def datePatterns
-    // Export service provided by Export plugin	
+    // Export service provided by Export plugin
     def exportService
     def additionalWorklistColumns
     def maxResultSize
@@ -361,7 +361,7 @@ class ProcessController extends GrailsFlowSecureController {
         searchParameters.modifiedFrom = modifiedFromDate
         searchParameters.modifiedTo = modifiedToDate
         searchParameters.modifiedBy = params.modifiedBy
-        
+
         // define request variables filter
         Map varsFilter = [:]
         params.keySet()?.each() { parameter ->
@@ -614,6 +614,19 @@ class ProcessController extends GrailsFlowSecureController {
         renderNodeDetails(node, processInstance)
     }
 
+    /**
+     * Action that returns back to previous view
+     */
+    def returnBack = {
+        if (!params.backPage) {
+            flash.errors = [ grailsflowMessageBundleService
+                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.backpage.error") ]
+            return forward(action: 'showTypes', params: params)
+        }
+
+        redirect(action: params.backPage)
+    }
+
 
    /**
     * Helper method for rendering NodeDetails page
@@ -657,7 +670,7 @@ class ProcessController extends GrailsFlowSecureController {
       GrailsUtil.deprecated("/process/forwardEvent in deprecated. Use 'processManagement' controller and 'forwardEvent' action instead.")
       forward(controller: "processManagement", action: "forwardEvent", params: params)
     }
-    
+
     def killProcess = {
       GrailsUtil.deprecated("/process/killProcess in deprecated. Use 'processManagement' controller and 'killProcess' action instead.")
       forward(controller: "processManagement", action: "killProcess", params: params)

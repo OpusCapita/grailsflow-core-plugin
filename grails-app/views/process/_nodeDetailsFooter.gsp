@@ -21,15 +21,12 @@
 <gf:messageBundle bundle="grailsflow.common" var="common"/>
 
 <g:if test="${params.isEmbedded != 'true'}">
- <g:set var="isStarted" value="${nodeDetails.process.id != null}"/>
  <g:form controller="${params['controller']}" method="POST">
    <div class="buttons">
-     <g:if test="${isStarted}">
-       <span class="button"><g:actionSubmit action="showWorklist" value="${common['grailsflow.command.back']}" class="button"/></span>
-     </g:if>
-     <g:else>
-       <span class="button"><g:actionSubmit action="showTypes" value="${common['grailsflow.command.back']}" class="button"/></span>
-     </g:else>
+      <g:hiddenField name="backPage" value="${nodeDetails.process.id ? 'showWorklist' : 'showTypes'}" />
+      <span class="button">
+        <g:actionSubmit action="returnBack" value="${common['grailsflow.command.back']}" class="button"/>
+      </span>
    </div>
  </g:form>
 </g:if>
