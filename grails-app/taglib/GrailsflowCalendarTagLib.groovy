@@ -142,7 +142,7 @@ class GrailsflowCalendarTagLib {
          </script>
 
          <input name="${attrs.property}" id="${attrs.property}" value = "${(attrs.value instanceof Date) ? gf.displayDate(value: attrs.value) : (attrs.value ?: '')}"
-                maxlength="${attrs.maxlength ? attrs.maxlength : "20"}" size="${attrs.size}" class="${attrs.class}" style="${attrs.style}"/>
+                maxlength="${attrs.maxlength ? attrs.maxlength : "20"}" size="${attrs.size}" class="${attrs.class}" style="${attrs.style}" readonly="true" />
 
        """
 

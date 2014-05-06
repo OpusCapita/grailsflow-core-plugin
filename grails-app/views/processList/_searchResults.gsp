@@ -29,7 +29,7 @@
 <table class="grid" width="100%">
 <thead>
   <tr>
-    <gf:displayHeaders bundle="${processList}" displayParameters="${displayParameters}"/>
+    <gf:displayHeaders bundle="${processList}" displayParameters="${displayParameters}" labelPrefix="grailsflow."/>
     <th>${common['grailsflow.label.operations']}</th>
   </tr>
 </thead>

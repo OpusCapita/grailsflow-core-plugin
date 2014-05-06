@@ -48,7 +48,7 @@ class GrailsflowUtils {
                 date = sdf.parse(dateString.toString())
             } catch (ParseException e){
                 log.error("Cannot convert ${dateString} to date.", e)
-                return null
+                throw e
             }
             return date
         } else return null

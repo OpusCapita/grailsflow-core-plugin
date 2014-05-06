@@ -36,6 +36,7 @@ import org.springframework.web.servlet.support.RequestContextUtils as RCU
 import com.jcatalog.grailsflow.status.NodeStatusEnum
 
 import com.jcatalog.grailsflow.process.ProcessSearchParameters
+import java.text.ParseException
 
 /**
  * Process controller class is used for displaying process-related views.
@@ -337,31 +338,35 @@ class ProcessController extends GrailsFlowSecureController {
         searchParameters.ascending = params.order
 
         flash.errors = []
-        Date startedFromDate = getStartOfParsedDate(params.startedFrom)
-        Date startedToDate = getEndOfParsedDate(params.startedTo)
-        Date finishedFromDate = getStartOfParsedDate(params.finishedFrom)
-        Date finishedToDate = getEndOfParsedDate(params.finishedTo)
-        Date modifiedFromDate = getStartOfParsedDate(params.modifiedFrom)
-        Date modifiedToDate = getEndOfParsedDate(params.modifiedTo)
+        try {
+            Date startedFromDate = getStartOfParsedDate(params.startedFrom)
+            Date startedToDate = getEndOfParsedDate(params.startedTo)
+            Date finishedFromDate = getStartOfParsedDate(params.finishedFrom)
+            Date finishedToDate = getEndOfParsedDate(params.finishedTo)
+            Date modifiedFromDate = getStartOfParsedDate(params.modifiedFrom)
+            Date modifiedToDate = getEndOfParsedDate(params.modifiedTo)
 
-        if ((startedToDate && startedFromDate?.after(startedToDate))
-            || (finishedToDate && finishedFromDate?.after(finishedToDate))
-            || (finishedToDate && startedFromDate?.after(finishedToDate))
-            || (finishedToDate && modifiedFromDate?.after(finishedToDate))) {
-            flash.errors = [grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.dateRanges.invalid")]
+            if ((startedToDate && startedFromDate?.after(startedToDate))
+                || (finishedToDate && finishedFromDate?.after(finishedToDate))
+                || (finishedToDate && startedFromDate?.after(finishedToDate))
+                || (finishedToDate && modifiedFromDate?.after(finishedToDate))) {
+                flash.errors << grailsflowMessageBundleService
+                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.dateRanges.invalid")
+                return forward(controller: "process", action: "list", params: params)
+            }
+
+            searchParameters.startedBy = params.createdBy
+            searchParameters.startedFrom = startedFromDate
+            searchParameters.startedTo = startedToDate
+            searchParameters.finishedFrom = finishedFromDate
+            searchParameters.finishedTo = finishedToDate
+            searchParameters.modifiedFrom = modifiedFromDate
+            searchParameters.modifiedTo = modifiedToDate
+            searchParameters.modifiedBy = params.modifiedBy
+        } catch (ParseException pe) {
+            flash.errors << pe.message
             return forward(controller: "process", action: "list", params: params)
         }
-
-        searchParameters.startedBy = params.createdBy
-        searchParameters.startedFrom = startedFromDate
-        searchParameters.startedTo = startedToDate
-        searchParameters.finishedFrom = finishedFromDate
-        searchParameters.finishedTo = finishedToDate
-        searchParameters.modifiedFrom = modifiedFromDate
-        searchParameters.modifiedTo = modifiedToDate
-        searchParameters.modifiedBy = params.modifiedBy
-
         // define request variables filter
         Map varsFilter = [:]
         params.keySet()?.each() { parameter ->

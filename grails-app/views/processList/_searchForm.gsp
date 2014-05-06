@@ -29,5 +29,5 @@
 <!-- Content is added dynamically -->
 </table>
 
-<gf:advancedSearch name="criteria" tableId="search_table"
+<gf:advancedSearch name="criteria" tableId="search_table" labelPrefix="grailsflow."
     searchParameters="${searchParameters}" bundle="${processList}"/>
