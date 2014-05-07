@@ -140,10 +140,11 @@ class GrailsflowCalendarTagLib {
              \$('#${attrs.property}').datepicker({dateFormat: convertDatePatternFromJavaToJqueryDatePicker('${gf.datePattern()}'), showOn: "button"});
            })
          </script>
-
-         <input name="${attrs.property}" id="${attrs.property}" value = "${(attrs.value instanceof Date) ? gf.displayDate(value: attrs.value) : (attrs.value ?: '')}"
+         <div class="calendar">
+           <input name="${attrs.property}" id="${attrs.property}" value = "${(attrs.value instanceof Date) ? gf.displayDate(value: attrs.value) : (attrs.value ?: '')}"
                 maxlength="${attrs.maxlength ? attrs.maxlength : "20"}" size="${attrs.size}" class="${attrs.class}" style="${attrs.style}" readonly="true" />
-
+           <a href="javascript: void(0)" onclick="jQuery('#${attrs.property}').val('')"><img src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor',file:'delete.gif')}" alt="Delete"/></a>
+         </div>
        """
 
     }
