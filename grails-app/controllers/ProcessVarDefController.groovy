@@ -25,6 +25,7 @@ import com.jcatalog.grailsflow.model.definition.ProcessVariableDef
 import com.jcatalog.grailsflow.model.definition.ProcessVarDefListItem
 import com.jcatalog.grailsflow.model.process.ProcessVariable
 import java.text.ParseException
+import com.jcatalog.grailsflow.model.view.VariableView
 
 /**
 * Process variable definition controller class is used for working with
@@ -86,7 +87,7 @@ class ProcessVarDefController extends GrailsFlowSecureController {
         if (params.varID) {
             var = ProcessVariableDef.get(Long.valueOf(params.varID))
         } else {
-            var = new ProcessVariableDef()
+            var = new ProcessVariableDef(processDef:  process)
         }
 
         if (!params.varName) {
@@ -190,25 +191,25 @@ class ProcessVarDefController extends GrailsFlowSecureController {
                 return render(view: 'variableForm', model: [variable: var, process: process])
             }
 
-            var.processDef = process
             var.isProcessIdentifier = params.isProcessIdentifier ? true : false
             var.required = params.required ? true : false
-            var.view = GrailsflowRequestUtils.getVariableViewFromParams(params)
-            if (var.view && !var.view.validate()) {
-                flash.errors << grailsflowMessageBundleService
-                        .getMessage(RESOURCE_BUNDLE, "grailsflow.message.view.error")
+
+            VariableView view = GrailsflowRequestUtils.getVariableViewFromParams(params)
+            view.variable = var
+            if (!view.validate()) {
+                flash.error  = grailsflowMessageBundleService
+                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.view.error")
+                view.errors.allErrors.each {
+                    flash.errors << it.defaultMessage
+                }
                 return render(view: 'variableForm', model: [variable: var, process: process])
             }
 
-            if (var.id) {
-                // update existing var
-                var.save()
-            } else {
-                // add new variable to variables list
-	            process.addToVariables(var)
-	            process.save()
+            var.view = view
+            if (!var.save()) {
+                var.errors.allErrors.each { flash.errors << it.defaultMessage }
             }
-            
+
             redirect(controller: "processDef", action: "editProcess", params: [id: process.id])
         }
     }
