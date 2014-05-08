@@ -589,3 +589,7 @@ a.prevLink {
   margin: 6px 0px 6px 0px;
   padding: 2px 0px 2px 30px;
 }
+
+.jQueryCalendar {
+    white-space:nowrap;
+}
