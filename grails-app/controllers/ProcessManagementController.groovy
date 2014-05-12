@@ -457,16 +457,21 @@ class ProcessManagementController extends GrailsFlowSecureController {
                 return link
             case ProcessVariable.LIST :
                 params.datePattern = gf.datePattern()?.toString()
-                List<Object> listItems = GrailsflowRequestUtils.getVariableItemsFromParams(variable?.name, params)
-                params.findAll {String key, value -> key.startsWith("listItemType_${variable?.name}_") }
-                        .each { params.remove(it.key) }
-                params.findAll { key, value -> key.indexOf("listItemValue_${variable?.name}_") != -1 }
-                        .each { params.remove(it.key) }
-                params.findAll {String key, value -> key.indexOf("parent_varType_${variable?.name}") != -1 }
-                        .each { params.remove(it.key) }
-                params.findAll {String key, value -> key.indexOf("previousType_${variable?.name}") != -1 }
-                        .each { params.remove(it.key) }
-                return listItems
+                try {
+                    List<Object> listItems = GrailsflowRequestUtils.getVariableItemsFromParams(variable?.name, params)
+                    params.findAll {String key, value -> key.startsWith("listItemType_${variable?.name}_") }
+                            .each { params.remove(it.key) }
+                    params.findAll { key, value -> key.indexOf("listItemValue_${variable?.name}_") != -1 }
+                            .each { params.remove(it.key) }
+                    params.findAll {String key, value -> key.indexOf("parent_varType_${variable?.name}") != -1 }
+                            .each { params.remove(it.key) }
+                    params.findAll {String key, value -> key.indexOf("previousType_${variable?.name}") != -1 }
+                            .each { params.remove(it.key) }
+                    return listItems
+                } catch (Exception ex) {
+                    flash.errors << ex
+                    return null
+                }
             default:
                 return params.remove(parameterName)
         }

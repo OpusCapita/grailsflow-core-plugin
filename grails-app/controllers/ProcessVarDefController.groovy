@@ -161,9 +161,6 @@ class ProcessVarDefController extends GrailsFlowSecureController {
             } else if (params.varType.equals("List"))  {
                 var.defaultValue = null
                 var.subType = params["parent_varType_${var.id ? var?.name : ''}"]
-                Collection<ProcessVarDefListItem> items = var.items
-                var.items?.clear()
-                items*.delete()
 
                 try {
                     params.datePattern = gf.datePattern()?.toString()
@@ -174,11 +171,15 @@ class ProcessVarDefController extends GrailsFlowSecureController {
                         tempVariable.value = listValue
                         preparedItems.add(new ProcessVarDefListItem(content: tempVariable.variableValue, processVariableDef: var))
                     }
+
+                    Collection<ProcessVarDefListItem> items = var.items
+                    var.items?.clear()
+                    items*.delete()
                     var.items = preparedItems
                 } catch (Exception e) {
                     flash.errors << grailsflowMessageBundleService
-                        .getMessage(RESOURCE_BUNDLE, "grailsflow.message.specifiedValue.notSuitable")
-                    return render(view: 'variableForm', model: [variable: var, process: process])
+                        .getMessage(RESOURCE_BUNDLE, "grailsflow.message.specifiedValue.items.notSuitable")
+                    return render(view: 'variableForm', model: [variable: var, process: process], params: params)
                 }
             } else {
                 var.defaultValue = params.varValue
@@ -195,19 +196,23 @@ class ProcessVarDefController extends GrailsFlowSecureController {
             var.required = params.required ? true : false
 
             VariableView view = GrailsflowRequestUtils.getVariableViewFromParams(params)
-            view.variable = var
-            if (!view.validate()) {
-                flash.error  = grailsflowMessageBundleService
-                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.view.error")
-                view.errors.allErrors.each {
-                    flash.errors << it.defaultMessage
+            if (view) {
+                view.variable = var
+
+                if (!view.validate()) {
+                    flash.error  = grailsflowMessageBundleService
+                        .getMessage(RESOURCE_BUNDLE, "grailsflow.message.view.error")
+                    view.errors.allErrors.each {
+                        flash.errors << it.defaultMessage
+                    }
+                    return render(view: 'variableForm', model: [variable: var, process: process], params: param)
                 }
-                return render(view: 'variableForm', model: [variable: var, process: process])
+                var.view = view
             }
 
-            var.view = view
             if (!var.save()) {
                 var.errors.allErrors.each { flash.errors << it.defaultMessage }
+                return render(view: 'variableForm', model: [variable: var, process: process], params: param)
             }
 
             redirect(controller: "processDef", action: "editProcess", params: [id: process.id])

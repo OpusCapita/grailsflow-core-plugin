@@ -232,7 +232,7 @@ class ProcessVariable {
 	                return value
 	        }
         } catch (Exception e) {
-             println("Error in convertion is occured "+e)
+             throw e
         }
         return null      
     }

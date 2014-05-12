@@ -146,22 +146,28 @@ class GrailsflowRequestUtils {
         Map types = parameters.findAll {String key, value -> key.startsWith("listItemType_${variableName}_") }
         Map values = parameters.findAll {key, value -> key.indexOf("listItemValue_${variableName}_") != -1 }
         types?.each() { String typeKey, String typeValue ->
-            String type = typeValue
-            String index = typeKey.substring("listItemType_${variableName}_".length())
-            String content = values["listItemValue_${variableName}_${index}"]
-            Object convertedValue
-            if (type == 'Link') {
-                content = "['path':'"+ values["listItemValue_${variableName}_path_${index}"]+"','description':'"+values["listItemValue_${variableName}_desc_${index}"]+"']"
-            } else if (type == 'Boolean') {
-                content =  content ? "true" : "false"
-            } else if (type == 'Date') {
-                String pattern = parameters.datePattern
-                content = GrailsflowUtils.getParsedDate(values["listItemValue_${variableName}_${index}"], pattern)?.time?.toString()
-            } else {
-                content = values["listItemValue_${variableName}_${index}"] ?: ''
+            try {
+                String type = typeValue
+                String index = typeKey.substring("listItemType_${variableName}_".length())
+                String content = values["listItemValue_${variableName}_${index}"]
+                Object convertedValue
+                if (type == 'Link') {
+                    content = "['path':'"+ values["listItemValue_${variableName}_path_${index}"]+"','description':'"+values["listItemValue_${variableName}_desc_${index}"]+"']"
+                } else if (type == 'Boolean') {
+                    content =  content ? "true" : "false"
+                } else if (type == 'Date') {
+                    String pattern = parameters.datePattern
+                    content = GrailsflowUtils.getParsedDate(values["listItemValue_${variableName}_${index}"], pattern)?.time?.toString()
+                } else {
+                    content = values["listItemValue_${variableName}_${index}"] ?: ''
+                }
+                items << ProcessVariable.getConvertedValue(content, type, null)
+            } catch (Exception ex) {
+                log.error("Impossible to get item value from parameters, probably the value is not fit list items type.", ex)
+                throw ex
             }
-            items << ProcessVariable.getConvertedValue(content, type, null)
         }
+
         return items
     }
 

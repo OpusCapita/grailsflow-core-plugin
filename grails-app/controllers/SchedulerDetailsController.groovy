@@ -257,7 +257,14 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
                 value = "${link.toString()}"
             } else if (type == ProcessVariable.LIST){
                 params.datePattern = gf.datePattern()?.toString()
-                value = GrailsflowRequestUtils.getVariableItemsFromParams(variable.name, params)
+                try {
+                    value = GrailsflowRequestUtils.getVariableItemsFromParams(variable.name, params)
+                } catch (Exception ex) {
+                    flash.errors << "Specified values for List items are not fit the type of List elements. "+ex
+                    log.error("Specified values for List items are not fit the type of List elements", ex)
+                    render(view: "scheduleProcess", model: [processClasses:  classes, processClass: processClass,
+                            repeatingInfo: getRepeatingPeriods(), params: params, bean: params])
+                }
             } else if (type == ProcessVariable.OBJECT) {
                 value = null
             }
