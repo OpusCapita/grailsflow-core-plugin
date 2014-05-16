@@ -84,11 +84,6 @@
                                  location:'ne',
                                  placement: 'outsideGrid',
                                  shrinkGrid: true,
-                                 rendererOptions: {
-                                     numberColumns: 2 ,
-                                     numberRows : Math.ceil(data.length/2)
-                                 }
-
                              }
 
                            }
