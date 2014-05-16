@@ -1,21 +1,21 @@
 In Grailsflow it is possible to start process in two ways:
 
-*  start process with defauls values by passing process name;
+*  start process with defaults values by passing process name;
 *  start process from external system (with requested variables values).
 
-Using first way, you can start process with default values (that are predefined in process definition script). When you
-start process and your first node is manual (the node of type 'Wait') you will be automatically redirected to the manual
-form and only when you submit it (change/set values for the process variables), the process will be started.
+In the first, you can start process with default values (pre-defined in process definition script). When you start the
+process and your first node is manual (the node of type 'Wait') you will be automatically redirected to the manual form
+and the process will be started only when you submit it (change/set values for the process variables).
 
-But sometimes there is a situation when external system wants to start the process. The system should provide the
+But sometimes there is a situation when the external system wants to start the process. The system should provide the
 starting data for process (the values for process variables). For example, the several different systems use the same
 process definition 'CreateProduct' for creating product. For starting the process, the system should provide 'productId'
 and 'catalogId' values. The problem is that systems can have (and usually have) different formats for sending
-parameters, e.g. in XML. It means that for each and every system we need a special 'parser' script for parameters, and
-then when Grailsflow will get the parameters in usual form it can start process using standard procedure.
+parameters, e.g. in XML. It means that for each and every system, a special 'parser' script is needed for parameters,
+and then when Grailsflow gets the parameters in usual form it can start the process using standard procedure.
 
-To start a process from external system is possible to do with using Grailsflow 'Extendable StartProcess' feature. When
-you want to use it you need:
+It is possible to start a process from an external system using Grailsflow 'Extendable StartProcess' feature. When you
+want to use it you need:
 
 # Have a Groovy 'callback' script in application workarea (the application contains Grailsflow plugin installed). This
 script should be places in workarea directory according to 'callbacksPath' bean value. The bean is defined in

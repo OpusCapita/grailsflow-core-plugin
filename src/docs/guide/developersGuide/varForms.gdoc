@@ -1,5 +1,6 @@
-h4. Types of Forms
-GrailsFlow supports automatic execution of nodes and manual user input. Workflows often need the user to make decisions
+*Types of Forms*
+
+Grailsflow supports automatic execution of nodes and manual user input. Workflows often need the user to make decisions
 or give input to the process.
 
 GrailsFlow has functions for worklist management integrated. Whenever a process designer specifies a wait node, the
@@ -8,24 +9,23 @@ currently assigned to that process node.
 
 When he clicks on the node there are three possible interactions:
 
-*  automatic forms: the user sees all process variables that the process designer has given read access to. He can enter
+*  *automatic form:* the user sees all process variables that the process designer has given read access to. He can enter
 values for variables. GrailsFlow also shows buttons for all events/transitions that leave the node, so the user can
 decide which transition to take by clicking on the button.
-*  manual form: GrailsFlow allows to upload forms that have been defined manually. These forms are shown instead of the
+*  *manual form:* GrailsFlow allows to upload forms that have been defined manually. These forms are shown instead of the
 automatically generated form.
-*  manual forms and controller: This allows process designers to define their own forms management and their own
+*  *manual forms and controller:* This allows process designers to define their own forms management and their own
 controllers. This is the most flexible way of interacting with the user; however it is also the biggest effort.
 Controller can deal with process variables or other Grails components and can also span multiple pages using the Grails
 WebFlow functionality.
 
-h4. Create a Form
+*Create a Form*
 
-In the Process Editor under Process Nodes click button 'Add' on to create a node.
+In the Process Editor under Process Nodes, click the "Add" button to create a node.
 
-Enter Node ID and select type as 'Wait' then variables visibility section is displayed. Define the visibility for each
-of the variables (INVISIBLE, READ_ONLY, REQUIRED and WRITE_READ). Select the form generation as
-
-Use Automatic Form and click button 'Save'.
+Enter Node ID and select type as 'Wait' to display the visibility section. Define the visibility for each of the
+variables (INVISIBLE, READ_ONLY, REQUIRED and WRITE_READ). Select form generation as - "Use Automatic Form" and click
+the "Save" button.
 
 The user interface form is auto generated as below. 
 
@@ -110,7 +110,8 @@ class AutoFormsGenerationTestProcess {
 
 {code}
 
-h4. Grailsflow Auto Forms Generation
+
+*Grailsflow Auto Forms Generation*
 
 *size*
 
@@ -137,27 +138,30 @@ address(widget: "externalSearch")
 status(widget: "list")
 {code}
 
-External Search: If you want to use widget 'externalSearch', it is also important to specify 'displayKey' and 'template'
-attributes, because they specify template and bean property for rendering. The mechanism of external search rendering
-is the following: property is rendered as readonly input with 'search' and 'clear' link-icons, pressing 'search' link -
-you see the popup window with a 'template' page. It can be the page with the search form or it can contain the list of
-all available values for the property and the user has possibility to select one. Then the inputs of the property are
-preselected with these values. The requirements for template page are:
+*External Search:*  If you want to use widget 'externalSearch', it is also important to specify the 'displayKey' and
+'template' attributes, because they specify the template and bean property for rendering.
 
-* The template before closing should call opener function, the name of this function is available in template as
-'callbackFunctionName' parameter. Also in template there are some more available parameters, they are: ID0 - the
-identifier property of the preselected value. fieldName0 - the property name (process variable name).
+The mechanism of external search rendering is as follows: property is rendered as readonly input with 'search' and
+'clear' link-icons.  By clicking the 'search' link - you see the pop-up window with a 'template' page. It can be the
+page with the search form or it can contain the list of all available values for the property and the user has the
+option to possibily select one. Then the inputs of the property are pre-selected with these values. The requirements
+for the template page are:
 
-* It is possible to rewrite and create your own function that fills the opener inputs with selected value. But in this
+*  The template before closing should call opener function, the name of this function is available in the template as
+the 'callbackFunctionName' parameter. Also in the template,  there are some more available parameters, they are: ID0 -
+the identifier property of the preselected value. fieldName0 - the property name (process variable name).
+
+*  It is possible to rewrite and create your own function that fills the opener inputs with selected value. But in this
 case you need to know how the widget Id's are formed.
 
-* Pay attention how the opener inputs can be filled: if you want to call opener function, you should transmit some
-params with the function, they are: 'key' - the identifier property of your selected value, and any other parameters
-that have the same names as properties of variable (specified as displayKey and remoteFields properties names), for
-example: key = 3 - the unique identifier of Address object. addressId = 'MIRAX GROUP' - value of Address display Key
-property city = 'London' - the value of city property street= 'Piccadilly' - the value of street property
+*  Pay attention how the opener inputs can be filled: if you want to call opener function, you should transmit some
+params with the function since this is the: 'key' - the identifier property of your selected values and any other
+parameters that have the same names as properties of variable (specified as displayKey and remoteFields properties
+names), for example: key = 3 - the unique identifier of Address object. addressId = 'MIRAX GROUP' - value of Address
+display Key property city = 'London' - the value of city property street= 'Piccadilly' - the value of street property
 If you want to fill owner fields with you own JavaScript function, please pay attention how the opener widgits Id's are
 formed. The key property with Id '${propertyName}' for opener window, the remoteFields have the following ID structure:
+
 
 ${propertyName}_${remoteField}, for example:
 {code}

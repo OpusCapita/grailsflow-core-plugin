@@ -1,15 +1,16 @@
-h4. Actions
+*Actions*
 
 Actions are the principal unit that execute all activities and operations in GrailsFlow. They are written in plain
 Groovy and stored in a specified folder. The folder can be customized in Spring configuration (like paths to processes
-scripts and document attachments), on default it is configured to 'actions' folder in workarea. When the node is
-executing, the necessary action script is loaded as file, dynamically parsed to Java class and then executed (method
-execute() of the class is called).
+scripts and document attachments), by default it is configured to the 'actions' folder in the workarea. When the node
+is executing, the necessary action script is loaded as a file, dynamically parsed to Java class and then executed
+(method execute() of the class is called).
 
 When you write a new action, you have to subclass the abstract class Action. All actions can then be used in the action
 editor and the 'action' closure of the process definition.
 
-h4. How to implement a custom action
+
+*How to implement a custom action*
 
 The class Action provides several methods that are further described here.
 
@@ -35,7 +36,7 @@ implementation. It provides the
 *    siteBase,
 *    requester.
 
-Grailsflow provides a number of basic actions that are useful many workflows. Among them are:
+Grailsflow provides a number of basic actions that are useful in many workflows. Among them are:
 
 * LogAction - writes some log information in the trace or the log file.
 * EvaluateAction - evaluates arbitrary Groovy expressions. This is very powerful and generic and reduces the number of

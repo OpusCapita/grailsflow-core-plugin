@@ -78,9 +78,22 @@
                                  renderer: jQuery.jqplot.CategoryAxisRenderer }
                              },
                              series: series,
-                             legend: { show: true, location: "ne", xoffset: 4, yoffset: 4}
+                             legend: {
+                                 renderer: jQuery.jqplot.EnhancedLegendRenderer,
+                                 show: true,
+                                 location:'ne',
+                                 placement: 'outsideGrid',
+                                 shrinkGrid: true,
+                                 rendererOptions: {
+                                     numberColumns: 2 ,
+                                     numberRows : Math.ceil(data.length/2)
+                                 }
+
+                             }
+
                            }
                           );
+
                });
 
              }
@@ -97,7 +110,13 @@
              }
 
          </r:script>
-
+         <style>
+            table.jqplot-table-legend {
+                display: block;
+                height: 300px;
+                overflow-y: scroll;
+            }
+         </style>
          <title>${processDetails['grailsflow.title.analyseResponseTime']}</title>
     </head>
     <body>
@@ -131,7 +150,7 @@
              
               <br/><h2 class="headline">${processDetails['grailsflow.label.protocolingNodes']}</h2>
               <g:if test="${processTypeProtocol}">
-                  <div class="jqplot-target" id="graphic" style="width:600px; height: 300px; position: relative;"></div>
+                <div class="jqplot-target" id="graphic" style="width:800px; height: 300px; position: relative;"></div>
               </g:if>
               <g:else>${processDetails['grailsflow.label.noProtocolGroups']}</g:else>
 

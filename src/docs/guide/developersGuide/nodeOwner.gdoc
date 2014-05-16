@@ -1,25 +1,22 @@
-Grailsflow allows to define assignees or owners of node. An assignee or node owner could be a specific user, a list of
-roles or groups. These are the persons that see the workitems, work on them and move them to the next status.
+Grailsflow allows user's to define assignees or owners of node. An assignee or node owner could be a specific user, a
+list of roles or groups. These are the persons that see the workitems, work on them and move them to the next status.
 
-The owners of a node are predefined in the process editor, however they can be overwritten within the workflow. When a
+The owners of a node are pre-defined in the process editor, however they can be overwritten within the workflow. When a
 worklist is shown, the system checks for all nodes that have the same user id, roles or groups in the assignee list that
 the current user has and shows those nodes in the worklist.
 
 There are processes that require that the assignee of a node is determined/calculated dynamically, e.g some of them are
-visible only for an administrator, some are available for simple users, other for restricted groups, etc.
+visible only for an administrator, some are available for simple users, others for restricted groups, etc.
 
-GrailsFlow supports this by providing a system variable nextOwners that allows to set the owners for the next nodes.
-This variable is not stored in the DB, but evaluated while executing a node and lives only in the action execution
-context.
+GrailsFlow supports this by providing a system variable nextOwners that allows them to set the owners for the next
+nodes. This variable is not stored in the DB, but evaluated while executing a node and lives only in the action
+execution context.
 
-The variable nextOwners has a type Map. The nodeId is the key and values are a list of users/role/groups. The variable
-nextOwner is of type List and contains a simple collection of user names/roles/groups.
+When the actions of a node are finished, that next nodes are created and GrailsFlow writes "nextOwners" as the "owners"
+into those nodes. In the definition of actions, they look and act like simple process variables.
 
-When the actions of a node are finished, that next nodes are created and GrailsFlow writes the "nextOwners" as the
-"owners" into those nodes. In the definition of actions, they look and act like simple process variables.
-
-The difference between 'nextOwners' and 'nextOwner' properties is that in 'nextOwners' we can specify different
-assignees for specific nodes, while 'nextOwner' allows to specify assignees for all following nodes. This is more
+The difference between 'nextOwners' and 'nextOwner' properties is that in 'nextOwners' , you can specify different
+assignees for specific nodes, while 'nextOwner' allows you to specify assignees for all following nodes. This is more
 convenient, if you have only one following node - in this case you do not need to specify 'nodeID' for that node.
 
 The user names/roles/groups in assignees should have the same types/values, as the information coming from the

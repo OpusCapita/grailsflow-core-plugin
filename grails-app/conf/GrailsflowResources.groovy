@@ -53,6 +53,9 @@ modules = {
                   file:'jquery.jqplot.min.js']
         resource url:[ plugin: 'jqplot', dir: 'js/jqplot/plugins',
                   file:'jqplot.categoryAxisRenderer.min.js']
+        resource url:[ plugin: 'jqplot', dir: 'js/jqplot/plugins',
+                  file:'jqplot.enhancedLegendRenderer.min.js']
+
     }
     grailsflowCodeMirror {
         resource url:'/css/grailsflow/codemirror/codemirror.css'

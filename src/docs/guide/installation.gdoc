@@ -4,7 +4,7 @@ Add the plugin as a dependency to your application by directly editing your Buil
     ...
     plugins {
         ...
-        runtime("com.jcatalog.grailsplugins:gralsflow-core:1.3-SNAPSHOT")
+        runtime ':grailsflow-core:1.3.4-SNAPSHOT'
     }
 {code}
 

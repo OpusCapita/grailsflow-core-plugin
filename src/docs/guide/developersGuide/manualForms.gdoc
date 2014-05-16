@@ -1,8 +1,9 @@
-h4. Why do we use Manual Forms.
+*Why do we use Manual Forms*
 
 Sometimes it’s not convenient to use Grailsflow automatic forms for process flow. They have a number of restrictions.
-All automatic forms have the same layout: the list of variables and the list of available events. In Grailsflow there
-is a possibility to create manual (or custom) form. On your manual form you can use any styles, scripts, functionality.
+
+All automatic forms have the same layout: the list of variables and the list of available events. In Grailsflow, there
+is a possibility to create manual or custom forms. On your manual form you can use any styles, scripts, functionality.
 See example.
 
 Automatic form for HolidayRequest process definitions:
@@ -13,11 +14,11 @@ Custom form for the same process definition:
 
 !developersGuide/manualForms_2.jpg!
 
-h4. Based on Grails: Groovy + GSPs.
+*Based on Grails: Groovy + GSPs*
 
-The manual form creation if based on Groovy and GSP concepts. The manual (or custom) form is a GSP template that will be
-rendered on the ‘Node Details’ page. When you decide that you need to create a form, the following links about Grails,
-Groovy and GSP (groovy server pages) can be useful for you:
+The manual form creation if based on Groovy and GSP concepts - The manual (or custom) form is a GSP template that will
+be rendered on the ‘Node Details’ page. When you decide that you need to create a form, the following links about
+Grails, Groovy and GSP (groovy server pages) can be useful for you:
 
  * [http://www.grails.org/|http://www.grails.org/]
 
@@ -25,40 +26,44 @@ Groovy and GSP (groovy server pages) can be useful for you:
 
  * [http://groovy.codehaus.org/GSP|http://groovy.codehaus.org/GSP]
 
-h4. How to create Manual Forms and integrate into Process definition.
 
-When you decide that you need a manual form instead of automatic for your node, you have two ways:
+*How to create Manual Forms and integrate into Process definition*
+
+When you decide that you need a manual instead of an automatic form for your node, there are two ways to do it:
 
 *  Create simple Manual form;
-*  Create Manual form with Custom Controller;
+*  Create Manual form with Custom Controller
 
-The information about second way you can get in chapter 11. This feature is working only in development mode.
-When you finish with the form and press ‘Generate’ button, the GSP template is generated and stored in the application
-views. When the node will be activated, the manual form will be rendered to the user. Each form belongs to the process
-node and stored in the views under path ‘views/manualForms/<ProcessType>/_<ProcessNode>.gsp’.
+The information for the second (Create Manual form with Custom Controller) option  can be found in chapter 11. This
+feature works only in development mode.
+
+When you finish with the form and press the ‘Generate’ button, the GSP template is generated and stored in the
+application views. When the node is activated, the manual form will be rendered to the user. Each form belongs to the
+process node and stored in views as - path‘views/manualForms/<ProcessType>/_<ProcessNode>.gsp’.
 The Manual form is rendered as the part of the 'Node Details' page. Only server messages (standard error messages) can
 be added to the page automatically (at the top of the page). If your form cannot be rendered, the error message will be
 displayed.
 
-h4. Access of Process Variables.
+
+*Access of Process Variables*
 
 On the manual form you can access all process variables. They are in bean ‘nodeDetails’ that is available on the manual
 form. You can get them by using the following signature:
 
 ${nodeDetails.variables}
 
-Where ‘variables’ is a Map that contains entries
+Where 'variables' is a Map that contains entries
 [ variableName: variableDetails ]
 VariableDetails bean contains the following list of properties:
 
-*    name           String variable name
-*    typeName  (changed to 'type' since version 1.0)   type of variable
-*    label            Map of languageID -> variable label
-*    description   Map of languageID -> variable description
-*    value            Object variable value
-*    visibility        Variable visibility
-*    required       Is variable required or not
-*    view             View of variable (See more information in chapter 8)
+*    *name*           String variable name
+*    *typeName*  (changed to *type* since version 1.0)   type of variable
+*    *label*            Map of languageID -> variable label
+*    *description*   Map of languageID -> variable description
+*    *value*           Object variable value
+*    *visibility*        Variable visibility
+*    *required*      Is variable required or not
+*    *view*             View of variable (See more information in chapter 8)
 
 For example, you can access property 'value' of variable using the following notation:
 ${nodeDetails.variables.requesterName.value}
@@ -66,18 +71,19 @@ ${nodeDetails.variables.requesterName.value}
 !developersGuide/manualForms_3.jpg!
 
 If you want your variable to be updated after form submitting you need to follow the rule that variable should have
-property ‘name’ specified like:
+property 'name' specified like:
 
-name=”var_<variableName>”.
+name="var_<variableName>".
 
-h4. Available Events (transitions).
+
+*Available Events (transitions)*
 
 Also on the manual forms you can get information about all available transitions from current node. They are stored in
 bean ‘nodeDetails’ and can be accessed using signature:
 
 ${nodeDetails.events}
 
-Where “events” is a set of objects. Each object contains the next information about transition:
+Where "events" is a set of objects. Each object contains the next information about transition:
 
 *    event;
 *    label (the Map of entries: languageID -> event label) - it is used for making events translatable.
@@ -92,9 +98,9 @@ See example:
 Pay attention, that if you want to submit any information to the server you need to place it in  <g:form> tag. For more
 information check [http://www.grails.org/Tag+-+form|http://www.grails.org/Tag+-+form ].
 
-h4. Available Beans and Services.
+*Available Beans and Services*
 
-There is a bean “nodeDetails” that is available on manual form. This bean is of type
+There is a bean "nodeDetails" that is available on manual form. This bean is of type
 com.jcatalog.grailsflow.engine.NodeDetails and contains the following info:
 
 NodeDetails has following properties:
@@ -111,19 +117,22 @@ NodeDetails has following properties:
 *    events           Set<EventDetails> of events
 *    variables        Map of variableName -> variableDetails
 
-h4. How to access DB entries.
+
+*How to access DB entries*
 
 On the custom form it is possible to access database instances using standard Grails possibilities (working with
 domains) and Groovy tags:
+{code}
 <g:select from="${com.jcatalog.core.Country.list()}"
           optionKey="countryId"
           optionValue="countryId"
           value="${orderAddress?.country}"/>
+{code}
 
 This example shows how to create selectbox with Countries (countryID are shown).
 
-If you need to access the DB table, you need to specify the domain class of it (full class name) and then call the one
-of the dynamic methods that Grails provides for domains.
+If you need to access the DB table, you need to specify the domain class (full class name) and then call one of the
+dynamic methods that Grails provides for domains.
 
 For example, you can get all entries from table Product:
 
@@ -140,7 +149,8 @@ com.jcatalog.product.Product.findWhere(productId:“Printer”, catalogId: “HP
 
 For more information about available dynamic methods,  see  [http://grails.org/DomainClass+Dynamic+Methods|http://grails.org/DomainClass+Dynamic+Methods] .
 
-h4. Custom tags provided by Grailsflow.
+
+*Custom tags provided by Grailsflow*
 
 For the automatic form you can specify ‘view’ and default values for each process variable. For the manual form you can
 use all the same ‘views’ or tags. Among them:
@@ -156,15 +166,16 @@ use all the same ‘views’ or tags. Among them:
 *    ExternalSearchObjectView
 *    DefaultView
 
-The ‘view’ property can be specified for each process variable in variable editor. Then if you specify the view you can
-ask Grailsflow to use this ‘view’ for rendering variable. For this reason, you can use ‘variableInput’ Grailsflow tag
-(implemented in developing version):
+TThe 'view' property can be specified for each process variable in the variable editor. Then, if you specify the view,
+you can ask Grailsflow to use this 'view' for rendering the variable. For this reason, you can use 'variableInput'
+Grailsflow tag (implemented in developing version):
 
 {code}
 <gf:variableInput variable="${variable}"/>
 {code}
 
-If you do not specify ‘view’ templates for each process variable you can use view templates directly on the manual page:
+If you do not specify 'view' templates for each process variable you can use view templates directly on the manual page:
+
 {code}
 <g:customizingTemplate
  template="${ com.jcatalog.grailsflow.model.view.CheckBoxView.template}”
@@ -201,7 +212,7 @@ the variable in Process Variable Editor.
 
 !developersGuide/manualForms_5.jpg!
 
-If you did not configure ‘View’ for the process variable definition, it is possible to use External search too. You can
+If you did not configure 'View' for the process variable definition, it is possible to use External search too. You can
 do it using Grails <g:render> tag. For ExternalSearchObjectView there are three parameters that you can specify:
 
 *    displayKey (property for display in input field);
@@ -221,22 +232,23 @@ The following example should show external search component for Address object.
 
 Where:
 
-*    contextPath    Path for template searching
+*    contextPath      Path for template searching
 *    template         Template for rendering
-*    model             Information that should be available for the template
+*    model            Information that should be available for the template
 
-In the ‘model’ you put ‘variable’ object. As you do not have a view specified for the variable, we can create it:
+In the 'model' you put 'variable' object. As you do not have a view specified for the variable, we can create it:
 {code}
 new com.jcatalog.grailsflow.model.view.ExternalSearchObjectView(…)
 {code}
 
-In the brackets it is possible to define properties for this ‘view’.
-new com.jcatalog.grailsflow.model.view.ExternalSearchObjectView(displayKey:
-'addressID', searchUrl: 'search/address.gsp', additionalFields: 'name1, city')
+In the brackets, it is possible to define properties for this 'view'.
 
-As it was mentioned before, the events and variables have Maps of labels and descriptions (only variables have
-descriptions). You can show the labels and descriptions according to the requested locale using Grailsflow tag
-‘translatedValue’.
+{code}
+new com.jcatalog.grailsflow.model.view.ExternalSearchObjectView(displayKey: 'addressID', searchUrl: 'search/address.gsp', additionalFields: 'name1, city')
+{code}
+
+As mentioned before, the events and variables have Maps of labels and descriptions (only variables have descriptions).
+You can show the labels and descriptions according to the requested locale using Grailsflow tag 'translatedValue'’.
 
 For example:
 {code}
@@ -248,7 +260,7 @@ or
 <g:translatedValue translations="${variable.description}" default="" />
 {code}
 
-h4. How to include user owned GSP templates.
+*How to include user owned GSP templates*
 
 It is possible to include your own prepared templates into the manual form.You can do it using Grailsflow tag
 “customizingTemplate”.
@@ -256,12 +268,13 @@ It is possible to include your own prepared templates into the manual form.You c
 <g:customizingTemplate template="/myForms/eventForwarding" model="[currentAssignees: nodeDetails.assignees]"/>
 {code}
 
-h4. Customize Return Controller and Action.
+*Customize Return Controller and Action*
 
-By default after manual step form execution you will be forwarded to the Process Details page. You can customize this
-behavior by specifying return controller and action in your manual page.
-For example you can set it to 'showWorklist' - it means that after submitting form you will be redirected to the
-Worklist page. Please see the following example:
+By default, after the manual step form execution, you will be forwarded to the Process Details page. You can customize
+this behavior by specifying the return controller and action in your manual page. For example you can set it to
+'showWorklist' - this means that after form submission, you will be redirected to the Worklist page. Please see the
+following example:
+
 {code}
 <input type="hidden" name="returnController" value="process"/ >
 <input type="hidden" name="returnAction" value="showWorklist"/ >
@@ -270,17 +283,17 @@ Worklist page. Please see the following example:
 Releases of Grailsflow-1.0 and higher use parameters 'resultController', 'resultAction' instead of 'returnController',
 'returnAction'.
 
-h4. Multi-Step pages.
+*Multi-Step pages*
 
-This feature is working only in the development mode of Grails. It gives possibility to enhance process flow (add some
-additional functionality and steps) without changing process definition. You can do it using multi-step page. For using
-this feature you need to select ‘Use Custom Controller and Form’ in Node Editor. In that case your ‘manual form’ content
-(that you entered in the textarea) will be rendered as the first step. It should contain links/buttons that leads to
-the actions in your Custom Controller. Your Custom Controller can make some actions and then render the next ‘step page’
-(such page you can create using ‘Add Multi-Step Page’ link). Then the step can lead to the Custom Controller and
-Controller will render the next step or redirect to the Grailsflow controller and continue the flow.
+This feature works only in the development mode of Grails. It makes it possible to enhance process flow (add some
+additional functionality and steps) without changing process definition. This can be done by using multi-step page. For
+this, you need to select ‘Use Custom Controller and Form’ in Node Editor. In that case your ‘manual form’ content
+(entered in the textarea) will be rendered as the first step. It should contain links/buttons that leads to the actions
+in your Custom Controller. Your Custom Controller can make some actions and then render the next ‘step page’ (page can
+be created using the ‘Add Multi-Step Page’ link). This step can lead to the Custom Controller and the Controller will
+render the next step or redirect to the Grailsflow controller and continue the flow.
 
-See some screenshots:
+Multi-Step page belongs to the node and stored in the views under path, see some screenshots:
 
 !developersGuide/manualForms_6.jpg!
 

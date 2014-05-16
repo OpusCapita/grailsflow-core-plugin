@@ -1,7 +1,7 @@
-h4. Customize Due Date calculation
+*Customize Due Date calculation*
 
-There is a possibility to customize *Due Date* calculation for *Process Nodes*. It is possible to configure calculation
-behaviour for all processes or for certain *Process Type*. By default, the process node due date calculated as
+It is a possible to customize Due Date calculation for Process Nodes and configure calculation behaviour for all
+processes or for certain Process Type. By default, the process node due date calculated as:
 
 {code} node.dueOn = node.startedOn + nodeDef.dueDate {code}
 
@@ -9,9 +9,8 @@ where
 * node.startedOn - *Date* when node was ACTIVATED.
 * nodeDef.dueDate - *Long* value from process definition.
 
-
-But sometimes it is necessary to change behaviour, for example in case when the *dueDate* (node.dueOn) is a weekends we need to shift
-it. Use *Config.groovy* file of your application to configure *Due Date* calculation. See examples:
+Sometimes, it is necessary to change behaviour - e.g. if the *dueDate* (node.,dueOn) is a weekend, it will need to be
+shifted. Use the *Config.groovy* file of your application to configure *Due Date* calculation.
 
 {code}
 grailsflow.customizedDueDate = { Date dueDate ->
