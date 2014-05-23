@@ -1,5 +1,4 @@
-
-h4. 1. How to customize worklist page
+h3. 1. How to customize worklist page.
 
 There are several ways to customize worklist page. If you need to enhance 
 worklist table with more columns such as any process variable values, then 
@@ -50,16 +49,15 @@ name and path:
  _views/process/showWorklist.gsp_
 
 
-
-h4. 2. How to redirect to any custom page after sending event
+h3. 2. How to redirect to any custom page after sending event.
 
 By default, usually after submitting manual form the user is redirected to 
 'showProcessDetails' page. If you want to customize this behaviour, specify 
 the following values on your custom gsp page: 
 
 {code}
-<input type="hidden" name="resultController" value="someControllerHere"/ >
-<input type="hidden" name="resultAction" value="someActionHere"/ >
+ <input type="hidden" name="resultController" value="someControllerHere"/ >
+ <input type="hidden" name="resultAction" value="someActionHere"/ >
 {code}
 
 
@@ -71,7 +69,7 @@ Also here yu can specify any additional values that should be submitted:
 
 
 
-h4. 3. How to create custom page with elements of standard generated form
+h3. 3. How to create custom page with elements of standard generated form.
 
 If you like to use automitic form generation and don't want to create any 
 special new form for variable values, you can use grailsflow template for 
@@ -96,7 +94,49 @@ possible to use:
 {code}
       <gf:customizingTemplate template="/manualForms/eventForwarding"
         model="[currentAssignees: nodeDetails.assignees]"/>
+{code} 
+
+
+
+h3. 4. If you don't want to have automatic starting for NodeActivatorJob and DueDateJob during application running
+
+In that case there are properties that can be configured in your application (e.g. in Config.groovy):
+
+{code}
+ grailsflow.scheduler.nodeActivator.autoStart = false    // disable auto starting for Engine Job
+ grailsflow.scheduler.nodeDueDate.autoStart = false    // disable auto starting for Engine Job
+ grailsflow.scheduler.eventsEmailCheck.autoStart = false    // disabled by default
 {code}
 
+Also it is possible to specify start delay and repeat interval for Grailsflow jobs:
 
+{code}
+ grailsflow.scheduler.nodeActivator.startDelay = 60000         // starts in one minute after application startup
+ grailsflow.scheduler.nodeActivator.repeatInterval = 15000     // executes every 15 seconds
 
+ grailsflow.scheduler.nodeDueDate.startDelay = 60000
+ grailsflow.scheduler.nodeDueDate.repeatInterval = 60000       // executes every minute
+
+ grailsflow.scheduler.eventsEmailCheck.startDelay = 60000   // executes every minute
+ grailsflow.scheduler.eventsEmailCheck.repeatInterval = 60000 // executes every minute
+{code}
+
+h3. 5. How to configure E-mail settings for Grailsflow-core
+
+The user can specify mail settings in Config.groovy. There are the following settings:
+
+{code}
+grailsflow.events.mail.enabled=false
+grailsflow.events.mail.address="somebody@mail.xxx"
+grailsflow.events.mail.host="mail.xxx"
+grailsflow.events.mail.account="smith"
+grailsflow.events.mail.password="pass"
+{code}
+
+h3. 6. How to configure my custom i18n translations for Grailsflow
+
+It is possible to specify additional i18n bundles locations for Grailsflow translations in Config.groovy
+
+{code}
+grailsflow.i18n.locations = ["WEB-INF/grails-app/i18n/"]
+{code}

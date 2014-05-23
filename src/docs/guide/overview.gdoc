@@ -1,41 +1,40 @@
-GrailsFlow is an open source Workflow and Process Engine, written using Groovy and Grails (Grails Plugin)and can be easily integrated with other Java, Groovy or Grails applications.
+
+GrailsFlow is an open source Workflow and Process Engine, written using Groovy and Grails (Grails Plugin) which
+can be easily integrated with other Java, Groovy or Grails applications.
 
 GrailsFlow provides:
 
 * complete out of the box workflow and process management system
-* a very simple structure and is easy to understand
-* Groovy based DSL to define the process, not an XML
+* a very simple structure which is easy to understand
+* Groovy based DSL to define the process, not an XML 
 * complete user interface for process definition, worklist management and process monitoring
-
-Target usage of the system is for midsize applications with 10.000´s of processes in the application and hundreds of new
-processes per day.
 
 *Architecture*
 
-The application is written in Groovy and Grails. Process Definition are stored as plain Groovy classes, that fulfill
-certain coding conventions. The integration of GrailsFlow into Grails is in some respect similar to the integration of
-Spring Webflow.
+The application is written in Groovy and Grails. Process Definitions are stored as plain Groovy classes, that
+fulfill certain coding conventions. The integration of GrailsFlow into Grails is in some respect similar to
+the integration of Spring Webflow.
 
-The target usage of the system is for midsize applications with 10.000's of processes in the application and hundreds of
-new processes per day. Currently it does not aim to be a solution to manage millions of processes per year, however the
-design would allow that.
+The target usage of the system is for midsize applications with 10,000's of processes in the application and
+hundreds of new processes per day. Currently, it does not aim to be a solution to manage millions of processes
+per year, however the design would allow that.
 
 *Contact*
 
 GrailsFlow has been developed by jCatalog Software AG.
 
-We would be glad to get any feedback, bug reports, software extensions or similar. Currently, while the software is open
-source, we do not have an open repository, so send any comments, extensions and changes via email. You find the contact
-information on site www.grailsflow.org.
+We would be glad to get any feedback, bug reports, software extensions etc  Currently, while the software is
+open source, we do not have an open repository, so send any comments, extensions and changes via email. Contact
+information can be found in - www.grailsflow.org.
 
 *Usage*
 
-If you would like to understand, GrailsFlow, you first might want the check the demo on site www.grailsflow.org.
+If you would like to understand GrailsFlow, you first might want to check the demo on www.grailsflow.org.
 
-Check the status to understand in more detail what has changed in GrailFlow, what has been implemented and what is on
-the roadmap.
+Check the status to understand in more detail what has changed in GrailsFlow, what has been implemented and
+what is on the road-map.
 
-Finally go on and download GrailsFlow. It still has some bugs and certain functions missing, however it is already used
-in production at the first customer sites.
+After that, go on and download GrailsFlow. It still has some bugs and certain functions missing, however it is
+already in use at the first customer sites.
 
 If you plan to use a workflow engine, check out GrailsFlow now!
