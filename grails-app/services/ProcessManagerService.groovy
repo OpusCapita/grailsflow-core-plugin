@@ -1227,11 +1227,16 @@ class ProcessManagerService implements InitializingBean {
                     } finally {
                         //unbinding a new session from thread
                         TransactionSynchronizationManager.unbindResource(sessionFactory)
-                        if(!FlushMode.MANUAL.equals(session.getFlushMode())) {
-                            session.flush();
+                        try {
+                            if(!FlushMode.MANUAL.equals(session.getFlushMode())) {
+                                session.flush();
+                            }
+                        } catch (Exception ex) {
+                            log.error("Session flushing after node execution '${node.nodeID}' for process #${node.process?.id}(${node.process?.type}) ) is failed", ex)
+                        } finally {
+                            //close session in any way
+                            SessionFactoryUtils.closeSession(session);
                         }
-                        //close session
-                        SessionFactoryUtils.closeSession(session);
                     }
                     return executionResult
                 }
