@@ -1,9 +1,6 @@
-h3. 1. How to customize worklist page.
+h4.  1. How to customize worklist page. 
 
-There are several ways to customize worklist page. If you need to enhance 
-worklist table with more columns such as any process variable values, then 
-you can configure additional columns using Spring 
-('additionalWorklistColumns' bean): 
+There are several ways to customize the worklist page. To enhance the worklist table with more columns - such as any process variable values etc., then configure the additional columns using the Spring ('additionalWorklistColumns' bean) : 
 
 {code} 
   <bean id="additionalWorklistColumns" class="java.util.ArrayList">
@@ -17,79 +14,62 @@ you can configure additional columns using Spring
   </bean>
 {code}
 
+Also, filtering is possible in the worklist. It helps in searching for process nodes with some known variable values.  
 
-Also there is a filtering on worklist. It helps searching for process nodes 
-with some known variables values.There is a very important note here!The 
-filtering can slow down your worklist loading, if you have a lot of processes 
-in the list. If there are more then 500 processes in the worklist we get 
-variables by splitting the parameter list into smaller chunks and then 
-combining the results. But such functionality requires time for execution and 
-can slow down performance. So, by default, the filtering works well if there 
-are no more entries than then maxRestrictedProcesses size. The behaviour can 
-be changed by reconfiguring some available Spring beans or even to disable 
-filtering functionality at all.
+*Important*  - Filtering can slow down the loading of your worklist, if you have a lot of processes in the list.
 
-*isWorklistFilterAvailable* - this bean defines if we need the filtering 
-functionality, the default value is configured to TRUE 
+If there are more then 500 processes in the worklist, get variables by splitting the parameter list into smaller sections and then combining the results. However, this requires time for execution and can slow down performance. So, by default, the filtering works well if there are no more entries than the maxRestrictedProcesses size. The behaviour can be changed by re-configuring some available Spring beans or even disabling the filtering functionality.
+
+*isWorklistFilterAvailable* - if needed, this bean defines the filtering functionality and the default value is configured to TRUE 
 
 {code}
+
   isWorklistFilterAvailable(java.lang.Boolean, Boolean.TRUE)
+
 {code}
 
-*maxRestrictedProcesses* - this bean contains the Integer value for common 
-quantity of restricted processes used in SQL 'in' clause (default value is 
-'2000' entries)
+*maxRestrictedProcesses* - this bean contains the Integer value for common quantity of restricted processes used in the SQL 'in' clause (default value is '2000' entries)
 
 {code}
   maxRestrictedProcesses(java.lang.Integer, "2000")
 {code}
 
 Another way to customize worklist is to use your custom page with the same 
-name and path: 
- _views/process/showWorklist.gsp_
+name and path :  _views/process/showWorklist.gsp_
 
+h4.  2. How to redirect to any custom page after sending an event.
 
-h3. 2. How to redirect to any custom page after sending event.
-
-By default, usually after submitting manual form the user is redirected to 
-'showProcessDetails' page. If you want to customize this behaviour, specify 
-the following values on your custom gsp page: 
+Usually, after submitting the manual form, the user is redirected, by default, to the 'showProcessDetails' page. To customize this behaviour, specify the following values on your custom gsp page : 
 
 {code}
  <input type="hidden" name="resultController" value="someControllerHere"/ >
  <input type="hidden" name="resultAction" value="someActionHere"/ >
 {code}
 
-
-Also here yu can specify any additional values that should be submitted: 
+Specify any additional values that should be submitted here : 
 
 {code}
 <input type="hidden" name="userName" value="${someBean.userName}"/ >
 {code}
 
-
-
-h3. 3. How to create custom page with elements of standard generated form.
+h4.  3. How to create a custom page with elements of a standard generated form
 
 If you like to use automitic form generation and don't want to create any 
-special new form for variable values, you can use grailsflow template for 
-your custom page: 
+special new form for variable values, use the grailsflow template for the custom page : 
 
 {code}
    <gf:customizingTemplate template="/manualForms/variablesForm"
       model="[variables: nodeDetails.variables]" />
 {code} 
 
-If you want to have additional node Information on your custom page, use 
-grailsflow template *nodeInfo*: 
+For additional node Information on your custom page, use grailsflow template *nodeInfo*: 
  
 {code}
     <gf:customizingTemplate template="/manualForms/nodeInfo"
        model="[nodeDetails: nodeDetails]"/>
 {code} 
   
-Also , if there is need to assign node to another user/role/group, it is 
-possible to use: 
+To assign a node to another user/role/group, use :  
  
 {code}
       <gf:customizingTemplate template="/manualForms/eventForwarding"
@@ -97,8 +77,7 @@ possible to use:
 {code} 
 
 
-
-h3. 4. If you don't want to have automatic starting for NodeActivatorJob and DueDateJob during application running
+h4.  4. If you don't want to have automatic starting for NodeActivatorJob and DueDateJob during application running
 
 In that case there are properties that can be configured in your application (e.g. in Config.groovy):
 
@@ -112,16 +91,19 @@ Also it is possible to specify start delay and repeat interval for Grailsflow jo
 
 {code}
  grailsflow.scheduler.nodeActivator.startDelay = 60000         // starts in one minute after application startup
+
  grailsflow.scheduler.nodeActivator.repeatInterval = 15000     // executes every 15 seconds
 
  grailsflow.scheduler.nodeDueDate.startDelay = 60000
  grailsflow.scheduler.nodeDueDate.repeatInterval = 60000       // executes every minute
 
  grailsflow.scheduler.eventsEmailCheck.startDelay = 60000   // executes every minute
+
  grailsflow.scheduler.eventsEmailCheck.repeatInterval = 60000 // executes every minute
+
 {code}
 
-h3. 5. How to configure E-mail settings for Grailsflow-core
+h4.  5.  How to configure E-mail settings for Grailsflow-core
 
 The user can specify mail settings in Config.groovy. There are the following settings:
 
@@ -133,7 +115,7 @@ grailsflow.events.mail.account="smith"
 grailsflow.events.mail.password="pass"
 {code}
 
-h3. 6. How to configure my custom i18n translations for Grailsflow
+h4.  6. How to configure my custom i18n translations for Grailsflow
 
 It is possible to specify additional i18n bundles locations for Grailsflow translations in Config.groovy
 
