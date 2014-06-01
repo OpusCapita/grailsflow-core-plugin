@@ -25,6 +25,7 @@ grails.project.dependency.resolution = {
         mavenRepo "http://repository.codehaus.org"
         mavenRepo "http://download.java.net/maven/2/"
         mavenRepo "http://repository.jboss.com/maven2/"
+        mavenRepo "http://repo.grails.org/grails/core"
     }
     
     dependencies {
@@ -46,14 +47,12 @@ grails.project.dependency.resolution = {
         build ":tomcat:7.0.47"
 
         // plugins needed at runtime but not for compilation
-        runtime ":hibernate:3.6.10.6" // or ":hibernate4:4.1.11.6"
-        runtime("org.grails.plugins:resources:1.1.6")
-        runtime('org.grails.plugins:quartz:0.4.2',
-                'org.grails.plugins:jquery:1.7.1',
-                'org.grails.plugins:jquery-ui:1.8.15',
-                'org.grails.plugins:jqplot:0.1')
-        runtime('org.grails.plugins:export:0.9') {
-            transitive = false
-        }
+        runtime ":hibernate:3.6.10.6"
+        runtime(":resources:1.2.8")
+        runtime(':quartz:0.4.2',
+                ':jquery:1.11.1',
+                ':jquery-ui:1.8.15',
+                ':jqplot:0.1')
+        compile(':export:1.6')
     }
 }
