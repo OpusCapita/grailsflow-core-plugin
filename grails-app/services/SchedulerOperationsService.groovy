@@ -3,12 +3,20 @@ import org.quartz.Trigger
 import java.text.DateFormat
 import org.apache.commons.lang.time.DurationFormatUtils
 import org.quartz.SimpleTrigger
-import org.springframework.scheduling.quartz.JobDetailBean
 import com.jcatalog.grailsflow.jobs.ProcessActivatorJob
-import org.quartz.JobDataMap
-import java.text.SimpleDateFormat
 import org.springframework.context.ApplicationContextAware
 import org.springframework.context.ApplicationContext
+import org.quartz.JobDetail
+import org.quartz.JobBuilder
+import org.quartz.TriggerBuilder
+import org.quartz.SimpleScheduleBuilder
+
+import static org.quartz.TriggerKey.*;
+import static org.quartz.JobKey.*
+import org.quartz.SchedulerMetaData
+import org.quartz.impl.matchers.GroupMatcher
+import org.quartz.JobExecutionContext
+import org.quartz.JobDataMap;
 
 /*
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -59,9 +67,9 @@ class SchedulerOperationsService implements ApplicationContextAware {
     public Boolean pauseResumeJob(String jobName, String jobGroup, Boolean shouldBePaused) {
         try {
             if (shouldBePaused) {
-                quartzScheduler.pauseJob(jobName, jobGroup)
+                quartzScheduler.pauseJob(jobKey(jobName, jobGroup))
             } else {
-                quartzScheduler.resumeJob(jobName, jobGroup)
+                quartzScheduler.resumeJob(jobKey(jobName, jobGroup))
             }
         } catch(SchedulerException se) {
             log.error("Errors in pausing job ${jobName} of group ${jobGroup}", se)
@@ -72,11 +80,11 @@ class SchedulerOperationsService implements ApplicationContextAware {
 
     public Map getJobDetails(String jobName, String jobGroup) {
         def jobDetails = [:]
-        def trigger = quartzScheduler.getTrigger(jobName, jobGroup)
+        SimpleTrigger trigger = quartzScheduler.getTrigger(triggerKey(jobName, jobGroup))
         if (!trigger) {
             return jobDetails
         }
-        jobDetails.job = quartzScheduler.getJobDetail(jobName, jobGroup)
+        jobDetails.job = quartzScheduler.getJobDetail(jobKey(jobName, jobGroup))
         jobDetails.trigger = trigger
 
         def calendarTime = Calendar.getInstance()
@@ -95,7 +103,7 @@ class SchedulerOperationsService implements ApplicationContextAware {
 
     public Boolean updateScheduledJob(String jobName, String jobGroup, Date startDate,
                                       Long repeatInterval) {
-        def trigger = quartzScheduler.getTrigger(jobName, jobGroup)
+        def trigger = quartzScheduler.getTrigger(triggerKey(jobName, jobGroup))
         if (!trigger) {
             return Boolean.FALSE
         }
@@ -104,7 +112,7 @@ class SchedulerOperationsService implements ApplicationContextAware {
         trigger.repeatInterval = repeatInterval
         trigger.repeatCount = repeatInterval == 0 ? 0 : SimpleTrigger.REPEAT_INDEFINITELY
         try {
-            quartzScheduler.rescheduleJob(trigger.name, jobGroup, trigger)
+            quartzScheduler.rescheduleJob(triggerKey(trigger.name, jobGroup), trigger)
         } catch(SchedulerException se) {
             log.error("Errors in rescheduling job", se)
             return Boolean.FALSE
@@ -114,7 +122,7 @@ class SchedulerOperationsService implements ApplicationContextAware {
 
     public Boolean deleteScheduledJob(String jobName, String jobGroup) {
         try {
-            quartzScheduler.deleteJob(jobName, jobGroup)
+            quartzScheduler.deleteJob(jobKey(jobName, jobGroup))
         } catch(SchedulerException se) {
             log.error("Errors in deleting Job ${jobName} of group ${jobGroup}", se)
             return Boolean.FALSE
@@ -124,22 +132,27 @@ class SchedulerOperationsService implements ApplicationContextAware {
 
     public Boolean scheduleProcessJob(String processType, Map variables, String requester,
                                       Date startDate, Long repeatInterval) {
-        def job = new JobDetailBean()
-        job.jobClass = ProcessActivatorJob.class
-        job.group = PROCESS_GROUP
 
-        def jobDataMap = new JobDataMap()
-        jobDataMap.variables = variables
-        jobDataMap.processManagerService = applicationContext.getBean("processManagerService")
-        jobDataMap.processType = processType
-        jobDataMap.requester = requester
+        JobDataMap dataMap = new JobDataMap()
+        dataMap.put("variables", variables)
+        dataMap.put("processManagerService", applicationContext.getBean("processManagerService"))
+        dataMap.put("processType", processType)
+        dataMap.put("requester", requester)
 
-        job.jobDataMap = jobDataMap
-        job.name = "${processType}ProcessStarted_${new Date().time}"
+        JobDetail job = JobBuilder.newJob(ProcessActivatorJob.class)
+            .withIdentity("${processType}ProcessStarted_${new Date().time}", PROCESS_GROUP)
+            .usingJobData(dataMap)
+            .build();
 
-        def trigger = new SimpleTrigger("${job.name}Trigger", PROCESS_GROUP, startDate)
-        trigger.repeatInterval = repeatInterval
-        trigger.repeatCount = repeatInterval == 0 ? 0 : SimpleTrigger.REPEAT_INDEFINITELY
+        Trigger trigger = TriggerBuilder.newTrigger()
+            .withIdentity("${processType}ProcessStarted_${new Date().time}Trigger", PROCESS_GROUP)
+            .startAt(startDate)
+            .forJob(job)
+            .withSchedule( SimpleScheduleBuilder.simpleSchedule()
+                .withIntervalInMilliseconds(repeatInterval)
+                .withRepeatCount(repeatInterval == 0 ? 0 : SimpleTrigger.REPEAT_INDEFINITELY))
+            .build();
+
         try {
             quartzScheduler.scheduleJob(job, trigger)
         } catch(SchedulerException se) {
@@ -156,10 +169,10 @@ class SchedulerOperationsService implements ApplicationContextAware {
     private Collection getScheduledGroupJobsInfo(String group) {
         def result = []
         try {
-            quartzScheduler.getJobNames(group)?.each() { jobName ->
-                def triggers = quartzScheduler.getTriggersOfJob(jobName, group)
-                triggers?.each() { trigger ->
-                    def jobDetails = quartzScheduler.getJobDetail(jobName, group)
+            quartzScheduler.getJobKeys(GroupMatcher.jobGroupEquals(group))?.each() { jobKey ->
+                List<Trigger> triggers = quartzScheduler.getTriggersOfJob(jobKey)
+                triggers?.each() { Trigger trigger ->
+                    JobDetail jobDetails = quartzScheduler.getJobDetail(jobKey)
                     def jobsInfo = [:]
                     jobsInfo.job = jobDetails
                     jobsInfo.trigger = trigger
@@ -175,7 +188,7 @@ class SchedulerOperationsService implements ApplicationContextAware {
                     }
 
                     def dataMap = jobDetails?.jobDataMap
-                    if (quartzScheduler.getTriggerState(trigger.name, trigger.group) == Trigger.STATE_PAUSED) {
+                    if (quartzScheduler.getTriggerState(triggerKey(trigger.key.name, trigger.key.group)) == Trigger.TriggerState.PAUSED) {
                         jobsInfo.paused = Boolean.TRUE
                     }
 
@@ -185,11 +198,11 @@ class SchedulerOperationsService implements ApplicationContextAware {
                         def context = currentlyExecutingJob
                         executingJobsNames.add(context.getJobDetail().getName())
                     }
-                    if (executingJobsNames.contains(jobName)) {
+                    if (executingJobsNames.contains(jobKey.name)) {
                         jobsInfo.running = Boolean.TRUE
                     }
 
-                    jobsInfo.executionTimeText = dataMap?.get(trigger.name)
+                    jobsInfo.executionTimeText = dataMap?.get(trigger.key.name)
                     result << jobsInfo
                 }
             }
@@ -202,8 +215,8 @@ class SchedulerOperationsService implements ApplicationContextAware {
     private Map getSchedulerDataMap() {
         def schedulerDetails = [:]
         try {
-            def meta = quartzScheduler.getMetaData()
-            schedulerDetails.isPersistanceSupported = meta.jobStoreSupportsPersistence()
+            SchedulerMetaData meta = quartzScheduler.getMetaData()
+            schedulerDetails.isPersistanceSupported = meta.isJobStoreSupportsPersistence()
             schedulerDetails.schedulerName = quartzScheduler.getSchedulerName()
             schedulerDetails.instanceId = quartzScheduler.getSchedulerInstanceId()
             schedulerDetails.runningSince = meta.getRunningSince()
@@ -224,8 +237,8 @@ class SchedulerOperationsService implements ApplicationContextAware {
     private Collection getRunningJobsInfo(timePatterns) {
         def result = []
         try {
-            def jobExecutionContexts = quartzScheduler.getCurrentlyExecutingJobs()
-            jobExecutionContexts.each() { context ->
+            List<JobExecutionContext> jobExecutionContexts = quartzScheduler.getCurrentlyExecutingJobs()
+            jobExecutionContexts.each() { JobExecutionContext context ->
                 def jobDetails = [:]
                 jobDetails.job = context.getJobDetail()
                 jobDetails.trigger = context.getTrigger()

@@ -14,6 +14,10 @@
 import org.codehaus.groovy.grails.commons.ApplicationAttributes
 
 import org.apache.commons.lang.BooleanUtils
+import org.quartz.impl.matchers.GroupMatcher
+import org.quartz.Trigger
+
+import static org.quartz.TriggerKey.triggerKey
 
 /**
  * Bootstrap class which pauses trigger if it's autoStartup config parameter is set to false.
@@ -35,11 +39,11 @@ class GrailsflowSchedulerBootStrap {
           log.error("quartzScheduler bean not found in application context. Please configure it for using scheduled jobs.")
           return
         }
-        
-        quartzScheduler.getJobNames(JOB_GROUP)?.each() { jobName ->
-          def triggers = quartzScheduler.getTriggersOfJob(jobName, JOB_GROUP)
-          triggers?.each() { trigger ->
-            def config = grailsApplication.config.grailsflow.scheduler.get(trigger.name)
+
+        quartzScheduler.getJobKeys(GroupMatcher.jobGroupEquals(JOB_GROUP))?.each() { jobKey ->
+            List<Trigger> triggers = quartzScheduler.getTriggersOfJob(jobKey)
+            triggers?.each() { Trigger trigger ->
+            def config = grailsApplication.config.grailsflow.scheduler.get(trigger.key.name)
             if (config instanceof ConfigObject) {
               Map properties = config.flatten()
               def autoStart = properties.get(AUTO_START)
@@ -49,7 +53,7 @@ class GrailsflowSchedulerBootStrap {
                 autoStart = Boolean.TRUE
               }
               if (!autoStart) {
-                quartzScheduler.pauseTrigger(trigger.name, trigger.group)
+                quartzScheduler.pauseTrigger(triggerKey(trigger.key.name, trigger.key.group))
               }
             }
             

@@ -50,6 +50,7 @@ import com.jcatalog.grailsflow.process.PostKillProcessHandler
 import org.springframework.transaction.TransactionStatus
 import org.quartz.ObjectAlreadyExistsException
 import org.quartz.SimpleTrigger
+import static org.quartz.TriggerKey.*;
 import java.util.concurrent.ThreadFactory
 import com.jcatalog.grailsflow.status.ProcessStatusEnum
 import com.jcatalog.grailsflow.status.NodeStatusEnum
@@ -57,6 +58,9 @@ import com.jcatalog.grailsflow.engine.execution.ExecutionResultEnum
 import com.jcatalog.grailsflow.model.definition.ProcessNodeDef
 import com.jcatalog.grailsflow.engine.concurrent.ProcessNotifier
 import com.jcatalog.grailsflow.model.definition.ProcessDef
+import org.quartz.Trigger
+import org.quartz.TriggerBuilder
+import org.quartz.JobDataMap
 
 /**
  * Process Manager service is an engine that deals with processes:
@@ -502,15 +506,18 @@ class ProcessManagerService implements InitializingBean {
      */
     public synchronized int invokeAsynchronousNode(BasicProcess process, String nodeID,
                                                    String event, String user, def variables) {
-        def parameters = [:]
+        JobDataMap parameters = new JobDataMap()
         parameters.processID = process?.id
         parameters.nodeID = nodeID
         parameters.event = event
         parameters.user = user
         parameters.variables = variables
 
-        def trigger = new SimpleTrigger("${process?.type}_${process?.id}:${nodeID}".toString(), "PROCESS")
-        trigger.jobDataMap.putAll(parameters)
+        SimpleTrigger trigger = TriggerBuilder.newTrigger()
+            .withIdentity("${process?.type}_${process?.id}:${nodeID}".toString(), "PROCESS")
+            .usingJobData(parameters)
+            .build()
+
         log.debug("Invoking asynchronous node '${nodeID}' of process #${process?.id}(${process?.type})")
         try {
             SendEventJob.schedule(trigger)
@@ -570,7 +577,7 @@ class ProcessManagerService implements InitializingBean {
             // check the quantity of scheduled 'PROCESS' triggers
             def runningThreads = quartzScheduler
                                      .getCurrentlyExecutingJobs()
-                                     .findAll() {it.getTrigger().getGroup() == "PROCESS"}
+                                     .findAll() {it.trigger.key.group == "PROCESS"}
 
             if (!runningThreads || canNewThreadBeStarted(runningThreads.size())) {
                 return invokeAsynchronousNode(basicProcess, nodeID, eventID, user, variables)

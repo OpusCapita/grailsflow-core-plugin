@@ -18,6 +18,7 @@ import org.quartz.SimpleTrigger
 
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
+import org.quartz.impl.triggers.SimpleTriggerImpl
 
 /**
  * ConfigurableSimpleTrigger is quartz SimpleTrigger that gets it's initial
@@ -28,7 +29,7 @@ import org.apache.commons.logging.LogFactory
  *
  * @author Maria Voitovich
  */
-class ConfigurableSimpleTrigger extends SimpleTrigger {
+class ConfigurableSimpleTrigger extends SimpleTriggerImpl {
     protected final Log log = LogFactory.getLog(getClass())
     static final String START_DELAY = "startDelay"
     static final String REPEAT_COUNT = "repeatCount"
@@ -85,4 +86,4 @@ class ConfigurableSimpleTrigger extends SimpleTrigger {
       }
     }
 
-}
+ }

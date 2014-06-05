@@ -17,7 +17,9 @@ package com.jcatalog.grailsflow.actions
 import com.jcatalog.grailsflow.jobs.CallbackJob
 
 import org.quartz.*
-import org.springframework.scheduling.quartz.JobDetailBean
+import org.quartz.impl.triggers.SimpleTriggerImpl
+
+import static org.quartz.JobKey.jobKey
 
 /**
  * An AsynchronousAction abstract class represents asynchronous action
@@ -33,15 +35,15 @@ import org.springframework.scheduling.quartz.JobDetailBean
  * @author July Karpey
  */
 abstract class AsynchronousAction extends Action {
-    protected String resultVarName
-    protected Long delay
+    public String resultVarName
+    public Long delay
 
     protected String group = "GFW_GROUP"
 
     abstract Class getScheduledJobClass()
 
     def executeAsynchronously() {
-        def parameters = new JobDataMap()
+        JobDataMap parameters = new JobDataMap()
         parameters.putAll(executionContext)
         parameters.put("resultVarName", resultVarName)
         
@@ -62,30 +64,27 @@ abstract class AsynchronousAction extends Action {
         // create and schedule job
         def scheduler = getObjectByName("quartzScheduler")
         if(scheduler) {
-            def job = new JobDetailBean()
-
             def jobClass = getScheduledJobClass()
             if (CallbackJob.class.isAssignableFrom(jobClass)) {
-                job.jobClass = jobClass
-                job.group = group
+                def startDate = new Date()
+                JobDetail job = JobBuilder.newJob(jobClass)
+                    .withIdentity("${getScheduledJobClass().simpleName}_${startDate.time}", group)
+                    .usingJobData(parameters)
+                    .build()
+
+                def jobTime = delay ? new Date(startDate.time + delay) : new Date(startDate.time)
+                SimpleTrigger trigger = new SimpleTriggerImpl("${getScheduledJobClass().simpleName}_${startDate.time}Trigger", group, jobTime)
+
+                try{
+                    scheduler.scheduleJob(job, trigger)
+                } catch(Exception ex){
+                    log.error("Error in scheduling Job", ex)
+                }
             } else {
-                 log.error("Scheduled Job should be the instance of GrailsflowCallbackJob class!")
-                 return 
+                log.error("Scheduled Job should be the instance of GrailsflowCallbackJob class!")
+                return
             }
 
-            def startDate = new Date()
-
-            job.setJobDataMap(parameters)
-            job.name = "${getScheduledJobClass().simpleName}_${startDate.time}"
-            
-            def jobTime = delay ? new Date(startDate.time + delay) : new Date(startDate.time)
-            SimpleTrigger trigger = new SimpleTrigger("${job.name}Trigger", group, jobTime)
-
-            try{
-                scheduler.scheduleJob(job, trigger)
-            } catch(Exception ex){
-                log.error("Error in scheduling Job", ex)
-            }
         }
     }
 

@@ -48,11 +48,12 @@ grails.project.dependency.resolution = {
 
         // plugins needed at runtime but not for compilation
         runtime ":hibernate:3.6.10.6"
-        runtime(":resources:1.2.8")
-        runtime(':quartz:0.4.2',
-                ':jquery:1.11.1',
+        runtime ":resources:1.2.8"
+
+        runtime(':jquery:1.11.1',
                 ':jquery-ui:1.8.15',
                 ':jqplot:0.1')
-        compile(':export:1.6')
+        compile ":export:1.6"
+        compile ":quartz:1.0.1"
     }
 }
