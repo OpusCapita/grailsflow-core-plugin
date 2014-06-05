@@ -12,7 +12,7 @@ import com.jcatalog.grailsflow.search.DefaultSearchParameter
 import com.jcatalog.grailsflow.search.DateSearchParameter
 import com.jcatalog.grailsflow.search.DefaultDisplayParameter
 import org.codehaus.groovy.grails.plugins.GrailsPluginUtils
-import org.codehaus.groovy.grails.plugins.PluginManagerHolder
+import grails.util.Holders
 
 import com.jcatalog.grailsflow.status.NodeStatusEnum
 import com.jcatalog.grailsflow.status.ProcessStatusEnum
@@ -30,7 +30,7 @@ class GrailsflowCoreGrailsPlugin {
       ConfigurableSimpleTrigger.metaClass.'static'.getGrailsApplication = { -> application }
 
       def buildSettings = BuildSettingsHolder.settings
-      String fileSystemName = PluginManagerHolder.pluginManager.getGrailsPlugin("grailsflow-core").getFileSystemName()
+      String fileSystemName = Holders.pluginManager.getGrailsPlugin("grailsflow-core").getFileSystemName()
       String i18nDir = "WEB-INF/plugins/${fileSystemName}/grails-app/i18n/"
 
       def bundles = []

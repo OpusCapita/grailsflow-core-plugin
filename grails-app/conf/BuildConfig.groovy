@@ -30,7 +30,8 @@ grails.project.dependency.resolution = {
     
     dependencies {
         compile ('com.sdicons.jsontools:jsontools-core:1.7',
-                 'commons-httpclient:commons-httpclient:3.0.1') {
+                 'commons-httpclient:commons-httpclient:3.0.1',
+                 'commons-beanutils:commons-beanutils:1.9.2') {
             exported=false
         }
         runtime ('javax.mail:mail:1.4',
