@@ -30,10 +30,10 @@
     <g:set var="required" value="${variable.required != null ? variable.required : false}"/>
     
     <!-- Preventing read-only parameter submitting -->
-    <g:set var="parameterName" value="${readOnly ? '' : parameterName}"/>
+    <g:set var="parameterName" value="${readOnly ? ' ' : parameterName}"/>
     <g:set var="styleClass" value="${readOnly ? 'readonly' : ''}"/>
 
     <g:set var="items" value="${view?.items ? view?.items : []}"/>
     
-	  <g:select name="${parameterName}" disabled="${readOnly}"
+	<g:select name="${parameterName}" disabled="${readOnly}"
 	             from="${items}" value="${variable.value}" class="${styleClass}"/>
