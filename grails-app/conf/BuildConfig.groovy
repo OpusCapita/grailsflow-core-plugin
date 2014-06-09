@@ -52,7 +52,7 @@ grails.project.dependency.resolution = {
         runtime ":resources:1.2.8"
 
         runtime(':jquery:1.11.1',
-                ':jquery-ui:1.8.15',
+                ':jquery-ui:1.10.3',
                 ':jqplot:0.1')
         compile ":export:1.6"
         compile ":quartz:1.0.1"
