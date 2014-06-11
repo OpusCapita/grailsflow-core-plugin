@@ -18,7 +18,7 @@ import com.jcatalog.grailsflow.status.NodeStatusEnum
 import com.jcatalog.grailsflow.status.ProcessStatusEnum
 import com.jcatalog.grailsflow.scheduling.triggers.ConfigurableSimpleTrigger
 
-class GrailsflowCoreGrailsPlugin {
+class GrailsflowGrailsPlugin {
     def version = '1.4'
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.0 > *"
@@ -30,7 +30,7 @@ class GrailsflowCoreGrailsPlugin {
       ConfigurableSimpleTrigger.metaClass.'static'.getGrailsApplication = { -> application }
 
       def buildSettings = BuildSettingsHolder.settings
-      String fileSystemName = Holders.pluginManager.getGrailsPlugin("grailsflow-core").getFileSystemName()
+      String fileSystemName = Holders.pluginManager.getGrailsPlugin("grailsflow").getFileSystemName()
       String i18nDir = "WEB-INF/plugins/${fileSystemName}/grails-app/i18n/"
 
       def bundles = []
@@ -38,7 +38,7 @@ class GrailsflowCoreGrailsPlugin {
       if (extraBundles) bundles.addAll(extraBundles)
 
       if (!application.warDeployed){
-        def pluginDir = GrailsPluginUtils.getPluginDirForName("grailsflow-core")
+        def pluginDir = GrailsPluginUtils.getPluginDirForName("grailsflow")
         if (pluginDir != null) {
           i18nDir = "${pluginDir.URL.toExternalForm()}/grails-app/i18n/"
         }

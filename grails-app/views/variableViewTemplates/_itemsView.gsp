@@ -14,16 +14,16 @@
 
 
 <!--
-	Template for displaying processVariable input. 
+        Template for displaying processVariable input. 
 
-	Template parameters:
+        Template parameters:
 
-	required:	
-    	* variable  			variable bean object.
-		* view                  VariableView object.
-	
-	optional:
-		* parameterName         'name' attribute for variable input. Default is empty.
+        required:       
+        * variable                      variable bean object.
+                * view                  VariableView object.
+        
+        optional:
+                * parameterName         'name' attribute for variable input. Default is empty.
  -->
 <gf:messageBundle bundle="grailsflow.link" var="linkType"/>
 <g:hiddenField name="datePattern" value="${gf.datePattern()}"/>
@@ -102,7 +102,7 @@
         }
 
         if(isReadonly == false) {
-            content += '<a href="javascript: void(0)" onclick="deleteItem(\'listItem_'+varName+'_'+index+'\')"><img src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor',file:'delete.gif')}" alt="Delete"/>'
+            content += '<a href="javascript: void(0)" onclick="deleteItem(\'listItem_'+varName+'_'+index+'\')"><img src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'delete.gif')}" alt="Delete"/>'
             content += '</a>'
         }
         content += '</div>'
@@ -133,7 +133,7 @@
       <g:select from="${com.jcatalog.grailsflow.model.definition.ProcessVariableDef.listTypes}" value="${variable.subType}" name="parent_varType_${variable.name}" id="parent_varType_${variable.name}" onchange="checkTypeSelection(this.value, '${variable.name ?: ''}')"/>&nbsp;
     </g:else>
     <a href="javascript: void(0)" onclick="addItem('listItem_', '${variable.name}', '', document.getElementById('parent_varType_'+'${variable.name}').value, false, '${view?.styleClass}')">
-      <img src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor',file:'add.gif')}" alt="Add"/>
+      <img src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'add.gif')}" alt="Add"/>
     </a>
   </div><br/>
 </g:if>

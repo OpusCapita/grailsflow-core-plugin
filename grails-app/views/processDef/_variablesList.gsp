@@ -13,15 +13,15 @@
 -->
 
 <!--
-	Template for displaying processVarDef List. 
+        Template for displaying processVarDef List. 
 
-	Template parameters:
+        Template parameters:
 
-  required:	
-		* variables 						collection of ProcessVariableDef objects
+  required:     
+                * variables                                             collection of ProcessVariableDef objects
 
-	optional:
-	  * showOperations				boolean flag for enabling/disabling operations links in list ("edit", "delete", etc). Default is false
+        optional:
+          * showOperations                              boolean flag for enabling/disabling operations links in list ("edit", "delete", etc). Default is false
  -->
 
 <r:script>
@@ -100,7 +100,7 @@
          </td>
          <td>
            <g:if test="${variable.isProcessIdentifier && variable.isProcessIdentifier == Boolean.TRUE}">
-             <img src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor', file:'checked.gif')}"/>
+             <img src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor', file:'checked.gif')}"/>
            </g:if>
            <g:else>
               &nbsp;
@@ -108,27 +108,27 @@
          </td>
          <td>
            <g:if test="${variable.required && variable.required == Boolean.TRUE}">
-             <img src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor', file:'checked.gif')}"/>
+             <img src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor', file:'checked.gif')}"/>
            </g:if>
            <g:else>
               &nbsp;
            </g:else>
          </td>
          <g:if test="${showOperations}">
-	         <td>
-	           <g:remoteLink controller="processVarDef" action="orderMoveUp" id="${variable.id}"
-	              onSuccess="afterMoveUp(data);"
-	              title="${common['grailsflow.command.up']}"><img alt="${common['grailsflow.command.up']}" src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor',file:'move_up.gif')}"/></g:remoteLink>
-	           &nbsp;&nbsp;
-	           <g:remoteLink controller="processVarDef" action="orderMoveDown" id="${variable.id}"
-	              onSuccess="afterMoveDown(data);"
-	              title="${common['grailsflow.command.down']}"><img alt="${common['grailsflow.command.down']}" src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor',file:'move_down.gif')}"/></g:remoteLink>
-	           &nbsp;&nbsp;
-	           <g:link controller="processVarDef" action="editVarDef" id="${variable.id}" title="${common['grailsflow.command.edit']}">${common['grailsflow.command.edit']}</g:link>
-	           &nbsp;&nbsp;
-	           <g:link onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" controller="processVarDef" action="deleteVarDef" id="${variable.id}" title="${common['grailsflow.command.delete']}">${common['grailsflow.command.delete']}</g:link>
-	         </td>
-	       </g:if>
+                 <td>
+                   <g:remoteLink controller="processVarDef" action="orderMoveUp" id="${variable.id}"
+                      onSuccess="afterMoveUp(data);"
+                      title="${common['grailsflow.command.up']}"><img alt="${common['grailsflow.command.up']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'move_up.gif')}"/></g:remoteLink>
+                   &nbsp;&nbsp;
+                   <g:remoteLink controller="processVarDef" action="orderMoveDown" id="${variable.id}"
+                      onSuccess="afterMoveDown(data);"
+                      title="${common['grailsflow.command.down']}"><img alt="${common['grailsflow.command.down']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'move_down.gif')}"/></g:remoteLink>
+                   &nbsp;&nbsp;
+                   <g:link controller="processVarDef" action="editVarDef" id="${variable.id}" title="${common['grailsflow.command.edit']}">${common['grailsflow.command.edit']}</g:link>
+                   &nbsp;&nbsp;
+                   <g:link onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" controller="processVarDef" action="deleteVarDef" id="${variable.id}" title="${common['grailsflow.command.delete']}">${common['grailsflow.command.delete']}</g:link>
+                 </td>
+               </g:if>
        </tr>
      </g:each>
    </tbody>

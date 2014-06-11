@@ -4,13 +4,13 @@ Add the plugin as a dependency to your application by directly editing your Buil
     ...
     plugins {
         ...
-        runtime ':grailsflow-core:1.4'
+        runtime ':grailsflow:1.4'
     }
 {code}
 
-*Grailsflow-core plugin needs to be configured*
+*Grailsflow plugin needs to be configured*
 
-There is a list of Spring beans that can/should be configured in your application, if it uses the Grailsflow-core plugin.
+There is a list of Spring beans that can/should be configured in your application, if it uses the Grailsflow plugin.
 
 The following configuration (common beans) are already configured in GrailsflowCoreGrailsPlugin.groovy and have default
 values. You can change the default configuration by specifying new beans values in any Spring configuration file.
@@ -57,7 +57,7 @@ default configuration, but can be easily defined in the Spring configuration of 
 
     < !-- Default value for external application ID. It's an Application ID or name of external application: 
      especially important if there are several applications which share the DB 
-     but have Grailsflow-core plugin installed in both of them. In this case Grailsflow Engine  
+     but have Grailsflow plugin installed in both of them. In this case Grailsflow Engine  
      needs to know with which application it currently works. Can have an empty value! -->
     appExternalID(java.lang.String, "grailsflow")    
 

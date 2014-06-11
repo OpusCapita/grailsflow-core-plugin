@@ -64,7 +64,7 @@
             content += ' <input value="'+value+'" type="text" size="30" name="listItemValue_'+varName+'_'+index+'"/>&nbsp;&nbsp;'
         }
 
-        content += '<a href="javascript: void(0)" onclick="deleteItem(\'listItem_'+varName+'_'+index+'\')"><img src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor',file:'delete.gif')}" alt="Delete"/>'
+        content += '<a href="javascript: void(0)" onclick="deleteItem(\'listItem_'+varName+'_'+index+'\')"><img src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'delete.gif')}" alt="Delete"/>'
         content += '</a>'
         content += '</div>'
         jQuery("#"+parentElement+varName).append(content)
@@ -74,7 +74,7 @@
         if(window.confirm('Are you sure? All prepared items will be deleted with changing type.')) {
             jQuery("#"+"listItem_${variable.name ?: ''}").empty();
             jQuery("#"+"previousType_${variable.name ?: ''}").val(selectedValue)
-	        return true;
+                return true;
         } else {
             var prevValue = jQuery("#"+"previousType_${variable.name ?: ''}").val()
             jQuery("#"+"parent_varType_${variable.name ?: ''}").val(prevValue);
@@ -86,7 +86,7 @@
     <div>
       <g:hiddenField name="previousType_${variable.name}" value="${variable.subType}"/>
       <g:select from="${com.jcatalog.grailsflow.model.definition.ProcessVariableDef.listTypes}" value="${variable.subType}" name="parent_varType_${variable.name ?: ''}" id="parent_varType_${variable.name ?: ''}" onchange="checkTypeSelection(this.value)"/>&nbsp;
-      <a href="javascript: void(0)" onclick="addItem('listItem_', '${variable.name}', '', document.getElementById('parent_varType_'+'${variable.name}').value)"><img src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor',file:'add.gif')}" alt="Add"/></a>
+      <a href="javascript: void(0)" onclick="addItem('listItem_', '${variable.name}', '', document.getElementById('parent_varType_'+'${variable.name}').value)"><img src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'add.gif')}" alt="Add"/></a>
     </div><br/>
     <div id="listItem_${variable.name ?: ''}">
       <g:each in="${variable?.items}" var="listItem" status="i">

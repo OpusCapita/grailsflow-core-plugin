@@ -11,10 +11,10 @@ class GrailsflowAdvancedSearchTagLib {
 
 
   def advancedSearchResources = {
-    out << g.javascript(plugin:"grailsflow-core", src:"grailsflow/advancedSearch/searchCriterion.js")
-    out << g.javascript(plugin:"grailsflow-core", src:"grailsflow/advancedSearch/searchItem.js")
-    out << g.javascript(plugin:"grailsflow-core", src:"grailsflow/advancedSearch/search.js")
-    out << g.javascript(plugin:"grailsflow-core", src:"grailsflow/advancedSearch/searchTable.js")
+    out << g.javascript(plugin:"grailsflow", src:"grailsflow/advancedSearch/searchCriterion.js")
+    out << g.javascript(plugin:"grailsflow", src:"grailsflow/advancedSearch/searchItem.js")
+    out << g.javascript(plugin:"grailsflow", src:"grailsflow/advancedSearch/search.js")
+    out << g.javascript(plugin:"grailsflow", src:"grailsflow/advancedSearch/searchTable.js")
 
     out << g.javascript() {
              """
@@ -69,11 +69,11 @@ class GrailsflowAdvancedSearchTagLib {
         """
           var addIcon = document.createElement("img");
           addIcon.alt = "add";
-          addIcon.src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor',file:'add.gif')}"
+          addIcon.src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'add.gif')}"
 
           var deleteIcon = document.createElement("img");
           deleteIcon.alt = "delete";
-          deleteIcon.src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor',file:'delete.gif')}"
+          deleteIcon.src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'delete.gif')}"
 
           var searchTable = new SearchTable("search_table", "${name}");
           searchTable.setIcons(addIcon, deleteIcon);

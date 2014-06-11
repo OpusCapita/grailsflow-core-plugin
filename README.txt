@@ -1,17 +1,17 @@
-Grailsflow-core plugin: Installation Guide and Configuration.
+Grailsflow plugin: Installation Guide and Configuration.
 --------------------------------------------------------------
 
 -------------
 Installation.
 -------------
 
-Grailsflow-core plugin depends on:
+Grailsflow plugin depends on:
 
 * Grails plugins:
   1. Hibernate plugin (tested with version 1.3.1)
   2. Quartz plugin (tested with version 0.4.1)
 
-Grails plugins should be installed using "grails install-plugin" goal BEFORE grailsflow-core plugin installation. 
+Grails plugins should be installed using "grails install-plugin" goal BEFORE grailsflow plugin installation. 
 For example:
 # grails install-plugin quartz
 
@@ -30,7 +30,7 @@ For example:
    (for receiving Events by mail)
 
 
-Use 'grails install-plugin path/to/grailsflow-core-plugin.zip' goal to install grailslow-core plugin
+Use 'grails install-plugin path/to/grailsflow-plugin.zip' goal to install grailslow-core plugin
 in your application.
 
 
@@ -63,25 +63,25 @@ in so-called workarea.
         resourcesUrl = "/myWorkarea"
       }
   
-	2. "processesPath" bean
-	   String value to define directory relative to workarea where Process definitions are stored.
-	   Grailsflow-core plugin will search for processes by <workarea root>/<processesPath>/ path. 
-	   Default value is "processes", so processes are stored in <workarea root>/processes/ 
+        2. "processesPath" bean
+           String value to define directory relative to workarea where Process definitions are stored.
+           Grailsflow plugin will search for processes by <workarea root>/<processesPath>/ path. 
+           Default value is "processes", so processes are stored in <workarea root>/processes/ 
 
-	3. "actionsPath" bean
-	   String value to define directory relative to workarea where Action definitions are stored.
-	   Grailsflow-core plugin will search for actions by <workarea root>/<actionsPath>/ path. 
-	   Default value is "actions", so actions are stored in <workarea root>/actions/ 
+        3. "actionsPath" bean
+           String value to define directory relative to workarea where Action definitions are stored.
+           Grailsflow plugin will search for actions by <workarea root>/<actionsPath>/ path. 
+           Default value is "actions", so actions are stored in <workarea root>/actions/ 
 
-	4. "callbacksPath" bean
-	   String value to define directory relative to workarea where Callback scripts definitions are stored.
-	   Grailsflow-core plugin will search for documents by <workarea root>/<callbacksPath>/ path. 
-	   Default value is "callbacks", so callback scripts are stored in <workarea root>/callbacks/ 
+        4. "callbacksPath" bean
+           String value to define directory relative to workarea where Callback scripts definitions are stored.
+           Grailsflow plugin will search for documents by <workarea root>/<callbacksPath>/ path. 
+           Default value is "callbacks", so callback scripts are stored in <workarea root>/callbacks/ 
 
-	5. "documentsPath" bean
-	   String value to define directory relative to workarea where Documents definitions are stored.
-	   Grailsflow-core plugin will search for documents by <workarea root>/<documentsPath>/ path. 
-	   Default value is "documents", so documents are stored in <workarea root>/documents/ 
+        5. "documentsPath" bean
+           String value to define directory relative to workarea where Documents definitions are stored.
+           Grailsflow plugin will search for documents by <workarea root>/<documentsPath>/ path. 
+           Default value is "documents", so documents are stored in <workarea root>/documents/ 
 
     6. 'grailsflow.threads.maxQuantity' configuration
        Closure which returns integer value which is configuration for threads quantity (threads that can be running
@@ -98,14 +98,14 @@ in so-called workarea.
 
 * UI configuration
 
-	1. "maxResultSize" bean
-	    Integer value used for defining size of page for paginated lists (Worklist, Process list, etc)
-	    Default value is 20
+        1. "maxResultSize" bean
+            Integer value used for defining size of page for paginated lists (Worklist, Process list, etc)
+            Default value is 20
 
-	2. "additionalWorklistColumns" bean
-	    List of string values that are names of ProcessVariables that should be displayed
-	    as additional columns on Worklist UI.
-	    Default value is null
+        2. "additionalWorklistColumns" bean
+            List of string values that are names of ProcessVariables that should be displayed
+            as additional columns on Worklist UI.
+            Default value is null
 
   3.  "datePatterns" bean
       Map of String language -> String Date pattern. Used to format dates displayed on the UI. 
@@ -125,19 +125,19 @@ in so-called workarea.
 
 * Security configuration
 
-Grailsflow-core plugin supports restriction of Processes and Nodes execution by Users, Roles and Groups.
-By default grailsflow-core plugin uses user with name "grailsflow", role "GRAILSFLOW" and group "Grailsflow" as logged user.
+Grailsflow plugin supports restriction of Processes and Nodes execution by Users, Roles and Groups.
+By default grailsflow plugin uses user with name "grailsflow", role "GRAILSFLOW" and group "Grailsflow" as logged user.
 List of available users contains just "grailsflow" username, list of available roles contain just "GRAILSFLOW" role.
 To support security that corresponds to your application you have to implement following interfaces for defining
 following beans:
   
   1. "securityHelper" bean 
       must implement "com.jcatalog.grailsflow.security.SecurityHelper" interface
-      By default bean is of "com.jcatalog.grailsflow.security.GrailsflowSecurityHelper" type	    
+      By default bean is of "com.jcatalog.grailsflow.security.GrailsflowSecurityHelper" type        
 
   2. "usersProvider" bean 
       must implement "com.jcatalog.grailsflow.security.UsersProvider" interface
-      By default bean is of "com.jcatalog.grailsflow.security.GrailsflowUsersProvider" type	    
+      By default bean is of "com.jcatalog.grailsflow.security.GrailsflowUsersProvider" type         
 
   3. "rolesProvider" bean 
       must implement "com.jcatalog.grailsflow.security.RolesProvider" interface
@@ -161,11 +161,11 @@ following beans:
 
 * Other configuration
 
-	1. "appExternalID" bean
-	   String stored in DB as BasicProcess.appGroupID. This value was introduced to distinguish
-	   processes started by different applications in case if they're stored in the same DB.
-	   Can be specified as empty value!
-	   Default value is "grailsflow"
+        1. "appExternalID" bean
+           String stored in DB as BasicProcess.appGroupID. This value was introduced to distinguish
+           processes started by different applications in case if they're stored in the same DB.
+           Can be specified as empty value!
+           Default value is "grailsflow"
 
   2. files uploading
      To define maximum size for uploading files you should define bean of 
@@ -176,7 +176,7 @@ following beans:
 
 * Asynchronous actions (will be reimplemented in future versions)
 
-	1. "clientExecutor" bean
-		 must implement "com.jcatalog.grailsflow.client.ClientExecutor" interface
-		 By default bean is of "com.jcatalog.grailsflow.client.GrilsflowHTTPClientExecutor"
+        1. "clientExecutor" bean
+                 must implement "com.jcatalog.grailsflow.client.ClientExecutor" interface
+                 By default bean is of "com.jcatalog.grailsflow.client.GrilsflowHTTPClientExecutor"
 

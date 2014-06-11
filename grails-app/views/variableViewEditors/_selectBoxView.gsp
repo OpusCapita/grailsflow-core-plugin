@@ -13,11 +13,11 @@
 -->
 
 <!--
-	Template for displaying editor for VariableDef.view 
+        Template for displaying editor for VariableDef.view 
 
-	Template parameters:
-  	* viewType  						View type. Cannot be null.
-		* view 						 VariableView instance of corresponding type. Can be null.
+        Template parameters:
+        * viewType                                              View type. Cannot be null.
+                * view                                           VariableView instance of corresponding type. Can be null.
 
   development note:
     - parameter names for properties should have "<viewType>_<viewPropertyName>" format 
@@ -48,7 +48,7 @@
       linkDelete.href="#"
       linkDelete.onclick = function() { deleteRow(rowOrder); };
       var img1 = document.createElement("img");
-      img1.src = "${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor',file:'delete.gif')}"
+      img1.src = "${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'delete.gif')}"
       img1.style.margin = "3px;"
       linkDelete.appendChild(img1);  
       newColumn2.appendChild(linkDelete);
@@ -107,7 +107,7 @@
   ${msgs['grailsflow.label.addItem']}
 </a>&nbsp;
 <a href="#" title="${msgs['grailsflow.label.addItem']}" onclick="addRow('');">
-  <img src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor',file:'add.gif')}" style="vertical-align: top; border: 0;"/>
+  <img src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'add.gif')}" style="vertical-align: top; border: 0;"/>
 </a>
 
 <div id="selectBoxBlock">

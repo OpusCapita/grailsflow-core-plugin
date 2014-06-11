@@ -13,26 +13,26 @@
 -->
 
 <!--
-	Template for selecting users/roles/groups. 
+        Template for selecting users/roles/groups. 
 
-	Template parameters:
+        Template parameters:
 
-  required:	
-		* usersParameterName 		'name' attribute for user's input
-		* rolesParameterName		'name' attribute for roles's input
-		* groupsParameterName   'name' attribute for group's input
+  required:     
+                * usersParameterName            'name' attribute for user's input
+                * rolesParameterName            'name' attribute for roles's input
+                * groupsParameterName   'name' attribute for group's input
 
-	optional:
-	  * switchParameterName 	'name' attribute for radio-button that switches user/role/group selection. default value is 'authority_type'.
-		* users									initial value for user's input. comma-separated values
-		* usersCount						users count. if not specified then count of "users" parameter items used
-		* roles									initial value for role's input
-		* rolesCount						roles count. if not specified then count of "roles" parameter items used
+        optional:
+          * switchParameterName         'name' attribute for radio-button that switches user/role/group selection. default value is 'authority_type'.
+                * users                                                                 initial value for user's input. comma-separated values
+                * usersCount                                            users count. if not specified then count of "users" parameter items used
+                * roles                                                                 initial value for role's input
+                * rolesCount                                            roles count. if not specified then count of "roles" parameter items used
     * groups                initial value for group's input
     * groupsCount           groups count. if not specified then count of "groups" parameter items used
-		* userElements					comma-separated IDs of elements that should be visible when USER selection is enabled 
-		* roleElements					comma-separated IDs of elements that should be visible when ROLE selection is enabled
-		* groupElements         comma-separated IDs of elements that should be visible when GROUP selection is enabled
+                * userElements                                  comma-separated IDs of elements that should be visible when USER selection is enabled 
+                * roleElements                                  comma-separated IDs of elements that should be visible when ROLE selection is enabled
+                * groupElements         comma-separated IDs of elements that should be visible when GROUP selection is enabled
  -->
 
     <g:set var="users_count" value="${usersCount != null ? usersCount : (users ? users.split(',').size() : 0)}"/>
@@ -51,18 +51,18 @@
         document.getElementById('div_groups').style.display = selectedType == 'groups' ? '' : 'none'
         
         <g:if test="${usersCount == null}"> // recalculate count for hiding section if count is not passed as parameter
-	        if (selectedType != 'users') {
-	          var users = document.getElementById('input_users').value.trim()
-	          var usersCount = users.length > 0 ? users.split(",").length : 0;
-	          document.getElementById("users_count").innerHTML="("+usersCount+")"
-	        }
+                if (selectedType != 'users') {
+                  var users = document.getElementById('input_users').value.trim()
+                  var usersCount = users.length > 0 ? users.split(",").length : 0;
+                  document.getElementById("users_count").innerHTML="("+usersCount+")"
+                }
         </g:if>
         <g:if test="${rolesCount == null}">  // recalculate count for hiding section if count is not passed as parameter
-	        if (selectedType != 'roles') {
-	          var roles = document.getElementById('input_roles').value.trim();
-	          var rolesCount = roles.length > 0 ? roles.split(",").length : 0;
-	          document.getElementById("roles_count").innerHTML="("+rolesCount+")"
-	        }
+                if (selectedType != 'roles') {
+                  var roles = document.getElementById('input_roles').value.trim();
+                  var rolesCount = roles.length > 0 ? roles.split(",").length : 0;
+                  document.getElementById("roles_count").innerHTML="("+rolesCount+")"
+                }
         </g:if>
         <g:if test="${groupsCount == null}">  // recalculate count for hiding section if count is not passed as parameter
           if (selectedType != 'groups') {
@@ -152,36 +152,36 @@
     
     <gf:messageBundle bundle="grailsflow.userRoles" var="userRoles"/>
     
-	<input type="radio" name="authority_type" value="users"
+        <input type="radio" name="authority_type" value="users"
            onclick="if (this.checked) switchAuthoritiesType('users');" ${select_users ? 'checked' : ''}/>
     ${userRoles['grailsflow.label.users']} <span id="users_count">(${users_count})</span>
-	&nbsp;&nbsp;&nbsp;
-	<input type="radio" name="authority_type" value="roles"
+        &nbsp;&nbsp;&nbsp;
+        <input type="radio" name="authority_type" value="roles"
            onclick="if (this.checked) switchAuthoritiesType('roles');" ${select_roles ? 'checked' : ''}/>
     ${userRoles['grailsflow.label.roles']}  <span id="roles_count">(${roles_count})</span>
     &nbsp;&nbsp;&nbsp;
     <input type="radio" name="authority_type" value="groups"
            onclick="if (this.checked) switchAuthoritiesType('groups');" ${select_groups ? 'checked' : ''}/>
     ${userRoles['grailsflow.label.groups']}  <span id="groups_count">(${groups_count})</span>
-	<br/>
+        <br/>
 
     <div id="div_users">
       <input type="text" id="input_users" name="${usersParameterName}" size="40" value="">&nbsp;
       <a href="#" onclick="openUserList();" class="image">
-        <img src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor',file:'add.gif')}" title="${userRoles['grailsflow.title.findUsers']}" style="margin: 3px;"/>
+        <img src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'add.gif')}" title="${userRoles['grailsflow.title.findUsers']}" style="margin: 3px;"/>
       </a>&nbsp;
     </div>
 
     <div id="div_roles" style="display: none">
       <input type="text" id="input_roles" name="${rolesParameterName}" size="40" value="">&nbsp;
       <a href="#" onclick="openRoleList();" class="image">
-        <img title="${userRoles['grailsflow.title.findRoles']}" src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor',file:'add.gif')}" style="margin: 3px;"/>
+        <img title="${userRoles['grailsflow.title.findRoles']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'add.gif')}" style="margin: 3px;"/>
       </a>&nbsp;
     </div>
     <div id="div_groups" style="display: none">
       <input type="text" id="input_groups" name="${groupsParameterName}" size="40" value="">&nbsp;
       <a href="#" onclick="openGroupList();" class="image">
-        <img title="${userRoles['grailsflow.title.findGroups']}" src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor',file:'add.gif')}" style="margin: 3px;"/>
+        <img title="${userRoles['grailsflow.title.findGroups']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'add.gif')}" style="margin: 3px;"/>
       </a>&nbsp;
     </div>
 

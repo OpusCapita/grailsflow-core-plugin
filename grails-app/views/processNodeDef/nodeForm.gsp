@@ -70,13 +70,13 @@
                 <tr>
                   <td>${msgs['grailsflow.label.nodeID']}</td>
                   <td><input name="nodeID" value="${node?.nodeID?.encodeAsHTML()}"/>
-	                 <g:if test="${node?.id != null}">
-	                   &nbsp;&nbsp;&nbsp;
-		                 <g:link controller="${params['controller']}" action="editNodeTranslations" id="${node?.id?.encodeAsHTML()}">
-		                     ${msgs['grailsflow.command.manageTranslations']}
-		                 </g:link>
-		               </g:if>
-	               </td>
+                         <g:if test="${node?.id != null}">
+                           &nbsp;&nbsp;&nbsp;
+                                 <g:link controller="${params['controller']}" action="editNodeTranslations" id="${node?.id?.encodeAsHTML()}">
+                                     ${msgs['grailsflow.command.manageTranslations']}
+                                 </g:link>
+                               </g:if>
+                       </td>
                 </tr>
                 <tr>
                   <td>${msgs['grailsflow.label.type']}</td>
@@ -112,8 +112,8 @@
                    <gf:customizingTemplate template="/common/assigneesEditor"
                        model="['assignees': node?.assignees, 'controller': params['controller']]"/>
                    </gf:section>
-			   </g:if>
-			   <br/>
+                           </g:if>
+                           <br/>
 
                  <gf:section title="${msgs['grailsflow.label.varVisibility']}" selected="true">
                    <table class="standard">
@@ -215,7 +215,7 @@
                                 <g:each in="${multiPages}">
                                   <tr>
                                     <td style="color: green;">${it}</td>
-                                    <td><g:actionSubmitImage onclick="return checkCondition(${node?.id != null}, 'Please save node before')" src="${g.resource(plugin: 'grailsflow-core', dir:'images/editor',file:'delete.gif')}" action="deleteMultiPage" onclick="setPageName('${it}');" value="${msgs['grailsflow.command.delete']}"/></td>
+                                    <td><g:actionSubmitImage onclick="return checkCondition(${node?.id != null}, 'Please save node before')" src="${g.resource(plugin: 'grailsflow', dir:'images/editor',file:'delete.gif')}" action="deleteMultiPage" onclick="setPageName('${it}');" value="${msgs['grailsflow.command.delete']}"/></td>
                                   </tr>
                                 </g:each>
                               </table>

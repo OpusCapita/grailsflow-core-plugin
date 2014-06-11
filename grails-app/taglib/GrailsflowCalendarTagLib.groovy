@@ -45,22 +45,22 @@ class GrailsflowCalendarTagLib {
         def calendar = null
 
         def day = ''
-		def month = ''
-		def year = ''
+                def month = ''
+                def year = ''
 
         if(value) {
 
             if(value instanceof Calendar) {
-			    calendar = value
-		    } else {
-			    calendar = new GregorianCalendar();
-			    calendar.setTime(value)
-		    }
+                            calendar = value
+                    } else {
+                            calendar = new GregorianCalendar();
+                            calendar.setTime(value)
+                    }
 
-		    day = calendar.get(GregorianCalendar.DAY_OF_MONTH)
-			month = calendar.get(GregorianCalendar.MONTH)+1
-			year = calendar.get(GregorianCalendar.YEAR)
-		}
+                    day = calendar.get(GregorianCalendar.DAY_OF_MONTH)
+                        month = calendar.get(GregorianCalendar.MONTH)+1
+                        year = calendar.get(GregorianCalendar.YEAR)
+                }
 
         def dateParam = value ? "new Date(${year},${month -1},$day,0,0)" : null
 
@@ -143,7 +143,7 @@ class GrailsflowCalendarTagLib {
          <span class="jQueryCalendar" >
            <input name="${attrs.property}" id="${attrs.property}" value = "${(attrs.value instanceof Date) ? gf.displayDate(value: attrs.value) : (attrs.value ?: '')}"
                 maxlength="${attrs.maxlength ? attrs.maxlength : "20"}" size="${attrs.size}" class="${attrs.class}" style="${attrs.style}" readonly="true" />
-           <a href="javascript: void(0)" onclick="jQuery('#${attrs.property}').val('')"><img src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor',file:'delete.gif')}" alt="Delete"/></a>
+           <a href="javascript: void(0)" onclick="jQuery('#${attrs.property}').val('')"><img src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'delete.gif')}" alt="Delete"/></a>
          </span>
        """
 

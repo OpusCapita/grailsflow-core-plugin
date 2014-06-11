@@ -92,7 +92,7 @@
                  <td style="padding-right:15px;">
                    <g:select name="variable" id="variable" noSelection="${['':'']}" from='${variables}'></g:select>
                    <img alt="${msgs['grailsflow.command.pasteVariable']}"
-                        src="${g.resource(plugin: 'grailsflow-core', dir: 'images/grailsflow/editor',file:'add.gif')}"
+                        src="${g.resource(plugin: 'grailsflow', dir: 'images/grailsflow/editor',file:'add.gif')}"
                         onClick="pasteVariable()"/>
                  </td>
                  <td style="padding-right:15px;">
@@ -100,7 +100,7 @@
                       optionValue="label" optionKey="value" optionGroup="group">
                    </gf:select>
                    <img alt="${msgs['grailsflow.command.pasteAction']}"
-                        src="${g.resource(plugin: 'grailsflow-core', dir: 'images/grailsflow/editor',file:'add.gif')}"
+                        src="${g.resource(plugin: 'grailsflow', dir: 'images/grailsflow/editor',file:'add.gif')}"
                         onClick="openActionParametersEditor()"/>
                  </td>
                 </tr>

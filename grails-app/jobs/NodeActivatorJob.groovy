@@ -25,7 +25,7 @@ import org.springframework.core.io.Resource
  * Checks all active nodes and invokes their execution.
  *
  * It is possible that several external applications work together 
- * and have Grailsflow-core installed. If several applications share the same DB the job
+ * and have Grailsflow installed. If several applications share the same DB the job
  * running in one application must never invoke events for processes started from another
  * applications. 
  * Therefore, it is important to specify 'appExternalID' bean in Spring configuration.

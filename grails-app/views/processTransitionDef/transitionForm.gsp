@@ -38,7 +38,7 @@
                     <div style="border: #C0C0C0 1px solid; background-color: rgb(235,238,247); padding: 5px;">${transition?.fromNode?.nodeID?.encodeAsHTML()}</div>
                   </td>
                   <td>
-                    <img src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/general',file:'arrow_right_blue.gif')}"/>
+                    <img src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/general',file:'arrow_right_blue.gif')}"/>
                   </td>
                   <td>
                     <div style="border: #C0C0C0 1px solid; background-color: rgb(255,230,242); padding: 7px;">${transition?.event}</div>
@@ -48,7 +48,7 @@
                         <g:each in="${transition.toNodes}">
                          <tr>
                            <td>
-                             <img src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/general',file:'arrow_right_blue.gif')}"/>
+                             <img src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/general',file:'arrow_right_blue.gif')}"/>
                            </td>
                            <td>
                              <div style="border: #C0C0C0 1px solid; background-color: rgb(235,238,247); padding: 5px;">${it.nodeID}</div>

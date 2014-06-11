@@ -98,7 +98,7 @@
                   </g:link>
                   &nbsp;&nbsp;
                   <g:link onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" controller="processTransitionDef" action="deleteTransitonDef" id="${transition.id}">
-                    <img alt="${common['grailsflow.command.delete']}" src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor',file:'delete.gif')}"/>
+                    <img alt="${common['grailsflow.command.delete']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'delete.gif')}"/>
                   </g:link>
                   <br/>
                   <font class="hint"> >> ${transition.toNodes*.nodeID}</font><br/>
@@ -106,7 +106,7 @@
               </td>
               <td align="right">
                 <g:link controller="processTransitionDef" action="addTransitonDef" id="${processDetails.id}" params="[fromNode: node.id]">
-                  <img alt="${nodeEditor['grailsflow.command.addTransition']}" src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor',file:'add.gif')}"/>
+                  <img alt="${nodeEditor['grailsflow.command.addTransition']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'add.gif')}"/>
                 </g:link>
               </td>
             </tr>
@@ -116,11 +116,11 @@
           <td>
             <g:remoteLink controller="processNodeDef" action="orderMoveUp" id="${node.id}"
                 onSuccess="afterMoveNodeUp(data);"
-                title="${common['grailsflow.command.up']}"><img alt="${common['grailsflow.command.up']}" src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor',file:'move_up.gif')}"/></g:remoteLink>
+                title="${common['grailsflow.command.up']}"><img alt="${common['grailsflow.command.up']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'move_up.gif')}"/></g:remoteLink>
             &nbsp;&nbsp;
             <g:remoteLink controller="processNodeDef" action="orderMoveDown" id="${node.id}"
                 onSuccess="afterMoveNodeDown(data);"
-                title="${common['grailsflow.command.down']}"><img alt="${common['grailsflow.command.down']}" src="${g.resource(plugin: 'grailsflow-core', dir:'images/grailsflow/editor',file:'move_down.gif')}"/></g:remoteLink>
+                title="${common['grailsflow.command.down']}"><img alt="${common['grailsflow.command.down']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'move_down.gif')}"/></g:remoteLink>
             &nbsp;&nbsp;
             <g:link controller="processNodeDef" action="editNodeDef" id="${node.id}" title="${common['grailsflow.command.edit']}">${common['grailsflow.command.edit']}</g:link>
             &nbsp;&nbsp;

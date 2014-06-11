@@ -22,7 +22,7 @@ import com.jcatalog.grailsflow.model.process.ProcessNode
  * AWAIT_CALLBACK status) and 'timeout' (for nodes with ACTIVATED status). 
  *
  * It is possible that several external applications work together
- * and have Grailsflow-core installed. So, the job need to send events
+ * and have Grailsflow installed. So, the job need to send events
  * only for nodes of processes that are started in its external application.
  * For this aim, it is important to specify appExternalID bean in Spring configuration.
  *

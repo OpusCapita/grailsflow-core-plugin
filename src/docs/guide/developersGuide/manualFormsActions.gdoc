@@ -1,6 +1,6 @@
 h4. Manual Forms Actions
 
-From version Grailsflow-core-1.2.7 it is recommended to have manual nodes without actions (it means without closure
+From version Grailsflow-1.2.7 it is recommended to have manual nodes without actions (it means without closure
 *action* at all).
 
 We assume that manual node is the form (automatic or manual) and it should not contain any Groovy code for execution.

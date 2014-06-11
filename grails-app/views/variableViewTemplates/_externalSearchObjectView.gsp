@@ -19,7 +19,7 @@
   Template parameters:
 
   required: 
-  	* variable  			variable bean object. Must be not null.
+        * variable                      variable bean object. Must be not null.
     * view                  VariableView object. Must be not null and of corresponding type.
   
   optional:
@@ -124,10 +124,10 @@
       <g:set var="searchString" value="'${searchUrl}?callbackFunctionName=${callbackFunction}'" />
       <g:set var="features" value="'screenX=50,screenY=100,resizable=yes,scrollbars=yes,status=yes,width=700,height=450'"/>
       <a class="search" href="#" onclick="winId=window.open(${searchString}, ${searchTitle}, ${features}); winId.focus(); return false;">
-        <img src="${g.resource(plugin: 'grailsflow-core', dir: 'images/grailsflow/general', file: 'find.gif')}"/></a>
+        <img src="${g.resource(plugin: 'grailsflow', dir: 'images/grailsflow/general', file: 'find.gif')}"/></a>
       &nbsp;
       <a href="#" onclick="${clearFunction}()">
-        <img src="${g.resource(plugin: 'grailsflow-core', dir: 'images/grailsflow/editor', file: 'delete.gif')}"/></a>
+        <img src="${g.resource(plugin: 'grailsflow', dir: 'images/grailsflow/editor', file: 'delete.gif')}"/></a>
 
     </g:if> <!-- if (!readOnly) -->
     

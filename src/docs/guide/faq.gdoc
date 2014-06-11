@@ -103,7 +103,7 @@ Also it is possible to specify start delay and repeat interval for Grailsflow jo
 
 {code}
 
-h4.  5.  How to configure E-mail settings for Grailsflow-core
+h4.  5.  How to configure E-mail settings for Grailsflow
 
 The user can specify mail settings in Config.groovy. There are the following settings:
 
