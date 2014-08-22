@@ -31,10 +31,8 @@ In Process Definition:
     ...
     action {
       ...
-      AssignTo(var:'nextAssignee') {
-        Evaluate(expression: '["ROLE_USER", "ROLE_ADMIN"]')
-      }
-
+      def nextAssignee = Evaluate(expression: '["ROLE_USER", "ROLE_ADMIN"]')
+      
     }
 
 {code}
