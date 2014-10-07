@@ -32,7 +32,7 @@
 	           <g:set var="users" value="${com.jcatalog.grailsflow.utils.AuthoritiesUtils.getUsers(currentAssignees).join(',')}"/>
 	           <g:set var="roles" value="${com.jcatalog.grailsflow.utils.AuthoritiesUtils.getRoles(currentAssignees).join(',')}"/>
 	           <g:set var="groups" value="${com.jcatalog.grailsflow.utils.AuthoritiesUtils.getGroups(currentAssignees).join(',')}"/>
-	           <g:render plugin="grailsflowCore" template="/common/userRoleInput"
+	           <g:render plugin="grailsflow" template="/common/userRoleInput"
 	              model="[ 'usersParameterName': 'processNode_users', 'rolesParameterName': 'processNode_roles', 'groupsParameterName': 'processNode_groups',
 	                       'users': users, 'roles': roles, 'groups': groups]"/>
               <g:submitButton id="processNode_eventForwarding" name="processNode_eventForwarding" value="${msgs['grailsflow.command.assign']}" class="button" />

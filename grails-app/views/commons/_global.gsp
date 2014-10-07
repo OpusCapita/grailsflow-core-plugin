@@ -1,4 +1,4 @@
-<r:require modules="grailsflowCore"/>
+<r:require modules="grailsflow"/>
 
 <g:set var='grailsFlowCoreConfig' value="${grailsApplication.config.grailsFlowCoreConfig}"/>
 <g:if test="${grailsFlowCoreConfig?.cssFile}">

@@ -15,7 +15,7 @@
 <html>
     <head>
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-         <g:render plugin="grailsflowCore" template="/commons/global"/>
+         <g:render plugin="grailsflow" template="/commons/global"/>
          <gf:messageBundle bundle="grailsflow.common" var="common"/>
 
          <title>Action Parameters</title>

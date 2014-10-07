@@ -16,7 +16,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="grailsflow" />
-    <g:render plugin="grailsflowCore" template="/commons/global"/>
+    <g:render plugin="grailsflow" template="/commons/global"/>
     <gf:messageBundle bundle="grailsflow.common" var="common"/>
     <gf:messageBundle bundle="grailsflow.schedulerDetails" var="msgs"/>
 
@@ -36,7 +36,7 @@
     <div class="body">
       <b class="header">${msgs['grailsflow.label.scheduleProcess']}</b>
 
-      <g:render plugin="grailsflowCore" template="/commons/messageInfo"/>
+      <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <g:form controller="${params['controller']}" method="POST" enctype="multipart/form-data">
         <h2 class="headline">${msgs['grailsflow.label.processDetails']}</h2>
@@ -52,12 +52,12 @@
 
         <h2 class="headline">${msgs['grailsflow.label.processVariables']}</h2>
         <div id='variablesForm'>
-          <g:render plugin="grailsflowCore" template="variablesForm"
+          <g:render plugin="grailsflow" template="variablesForm"
               model="[variables: processClass?.variables]"/>
         </div>
 
         <h2 class="headline">${msgs['grailsflow.label.jobParams']}</h2>
-          <g:render plugin="grailsflowCore" template="jobParametersForm"
+          <g:render plugin="grailsflow" template="jobParametersForm"
               model="[bean: bean, repeatingInfo: repeatingInfo]"/>
 
         <br/>  

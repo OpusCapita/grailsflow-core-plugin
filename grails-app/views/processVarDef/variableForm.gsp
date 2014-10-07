@@ -17,7 +17,7 @@
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
       <meta name="layout" content="grailsflow" />
 
-      <g:render plugin="grailsflowCore" template="/commons/global"/>
+      <g:render plugin="grailsflow" template="/commons/global"/>
       <gf:messageBundle bundle="grailsflow.common" var="common"/>
       <gf:messageBundle bundle="grailsflow.processVariableEditor" var="msgs"/>
       <gf:messageBundle bundle="grailsflow.list" var="listType"/>
@@ -37,7 +37,7 @@
            <b class="header">${msgs['grailsflow.label.processVars']}</b>
 
            <br/>
-           <g:render plugin="grailsflowCore" template="/commons/messageInfo"/>
+           <g:render plugin="grailsflow" template="/commons/messageInfo"/>
            <br/><br/>
 
            <g:form controller="${params['controller']}" method="POST">
@@ -87,7 +87,7 @@
                   <td valign="top">${msgs['grailsflow.label.value']}</td>
                   <td>
                     <div id='variableView'>
-                     <g:render plugin="grailsflowCore" template="variableInput" model="[variable: variable, params: params]"/>
+                     <g:render plugin="grailsflow" template="variableInput" model="[variable: variable, params: params]"/>
                     </div>
                   </td>
                 </tr>

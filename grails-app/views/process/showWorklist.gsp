@@ -15,7 +15,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <g:render plugin="grailsflowCore" template="/commons/global"/>
+    <g:render plugin="grailsflow" template="/commons/global"/>
     <g:if test="${params.isEmbedded == 'true'}">
       <meta name="layout" content="" />
       <r:layoutResources/>
@@ -77,7 +77,7 @@
   <body>
     <div class="body">
       <b class="header">${worklist['grailsflow.title.worklist']}</b>
-      <g:render plugin="grailsflowCore" template="/commons/messageInfo"/>
+      <g:render plugin="grailsflow" template="/commons/messageInfo"/>
       <br/><br/>
       <g:form controller="${params['controller']}" method="POST">
         <g:if test="${params.isEmbedded}">

@@ -19,7 +19,7 @@
       <g:layoutTitle default="Grailsflow"/>
     </title>
 
-    <r:require modules="grailsflowCore"/>
+    <r:require modules="grailsflow"/>
     <r:layoutResources/>
     <gf:messageBundle bundle="menu" var="menu_bundle"/>
 

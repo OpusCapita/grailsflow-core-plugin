@@ -17,7 +17,7 @@
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
          <meta name="layout" content="grailsflow" />
 
-         <g:render plugin="grailsflowCore" template="/commons/global"/>
+         <g:render plugin="grailsflow" template="/commons/global"/>
          <gf:messageBundle bundle="grailsflow.common" var="common"/>
          <gf:messageBundle bundle="grailsflow.processEditor" var="msgs"/>
          <gf:messageBundle bundle="grailsflow.processDetails" var="details"/>
@@ -35,7 +35,7 @@
     <body>
         <div class="body">
            <b class="header">${msgs['grailsflow.label.processEditor']}</b>
-            <g:render plugin="grailsflowCore" template="/commons/messageInfo"/>
+            <g:render plugin="grailsflow" template="/commons/messageInfo"/>
             <br/>
             <g:form controller="${params['controller']}">
             <input type="hidden" name="id" value="${processDetails.id}"/>

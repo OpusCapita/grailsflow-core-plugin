@@ -380,11 +380,11 @@ class GrailsflowTagLib {
       List parameters = new ArrayList()
       if (template) {
         parameters.add([contextPath: "", template: template])
-        parameters.add([contextPath: "", template: template, plugin: 'grailsflowCore'])
+        parameters.add([contextPath: "", template: template, plugin: 'grailsflow'])
       }
       if (defaultTemplate) {
         parameters.add([contextPath: "", template: defaultTemplate])
-        parameters.add([contextPath: "", template: defaultTemplate, plugin: 'grailsflowCore'])
+        parameters.add([contextPath: "", template: defaultTemplate, plugin: 'grailsflow'])
       }
 
       for (int i=0; i<parameters.size(); ++i) {
