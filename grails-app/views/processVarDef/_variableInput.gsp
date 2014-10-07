@@ -40,7 +40,7 @@
         globalIndex++;
         var index = globalIndex;
         var content = '<div id="listItem_'+varName+'_'+index+'">';
-        content += '<input size="10" type="text" readonly="true" cass="readonly" style="display: none;" value="'+newType+'" name="listItemType_'+varName+'_'+index+'"/>';
+        content += '<input size="10" type="text" readonly="true" class="readonly" style="display: none;" value="'+newType+'" name="listItemType_'+varName+'_'+index+'"/>';
         if (newType == 'Boolean') {
             content += '<input type="checkbox" name="listItemValue_'+varName+'_'+index+'"';
             if (value == "true") {
