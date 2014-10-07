@@ -12,7 +12,7 @@ Add the plugin as a dependency to your application by directly editing your Buil
 
 There is a list of Spring beans that can/should be configured in your application, if it uses the Grailsflow plugin.
 
-The following configuration (common beans) are already configured in GrailsflowCoreGrailsPlugin.groovy and have default
+The following configuration (common beans) are already configured in GrailsflowGrailsPlugin.groovy and have default
 values. You can change the default configuration by specifying new beans values in any Spring configuration file.
 
 
@@ -258,6 +258,6 @@ default configuration, but can be easily defined in the Spring configuration of 
     ...
 {code}
 
-(The full list of available beans can be found in the GrailsflowCoreGrailsPlugin.groovy file)
+(The full list of available beans can be found in the GrailsflowGrailsPlugin.groovy file)
       
 

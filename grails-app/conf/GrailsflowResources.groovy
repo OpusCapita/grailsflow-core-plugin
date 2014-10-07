@@ -19,7 +19,7 @@ modules = {
             nominify: true, disposition: 'head'
         }
     }
-    grailsflowCore {
+    grailsflow {
         dependsOn 'jquery', 'jquery-ui'
         defaultBundle 'ui'
         resource url:'/js/grailsflow/common.js'

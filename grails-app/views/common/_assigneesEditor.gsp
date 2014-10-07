@@ -162,7 +162,7 @@
 <g:set var="roleSelection" value="${ !userSelection && rolesCount != 0 }"/>
 <g:set var="groupSelection" value="${ !userSelection && !roleSelection }"/>
 
-<g:render plugin="grailsflowCore" template="/common/userRoleInput"
+<g:render plugin="grailsflow" template="/common/userRoleInput"
    model="[ 'usersParameterName': 'userAssignees', 'rolesParameterName': 'roleAssignees', 'groupsParameterName': 'groupAssignees',
        'usersCount': usersCount, 'rolesCount': rolesCount, 'groupsCount': groupsCount,
        'userElements': 'usersTable', 'roleElements': 'rolesTable', 'groupElements': 'groupsTable']"/>

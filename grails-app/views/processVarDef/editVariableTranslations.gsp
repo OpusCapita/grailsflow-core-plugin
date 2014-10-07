@@ -16,7 +16,7 @@
     <head>
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
          <meta name="layout" content="grailsflow" />
-         <g:render plugin="grailsflowCore" template="/commons/global"/>
+         <g:render plugin="grailsflow" template="/commons/global"/>
          <gf:messageBundle bundle="grailsflow.common" var="common"/>
          <gf:messageBundle bundle="grailsflow.processVariableEditor" var="msgs"/>
          <title>${msgs['grailsflow.title.variableTranslations']}</title>
@@ -24,7 +24,7 @@
     <body>
       <div class="body">
         <b class="header">${msgs['grailsflow.title.variableTranslations']}</b>
-        <g:render plugin="grailsflowCore" template="/commons/messageInfo"/>
+        <g:render plugin="grailsflow" template="/commons/messageInfo"/>
         <br/>
         <h2 class="headline">${msgs['grailsflow.label.name']}: ${variable?.name?.encodeAsHTML()}</h2>
         <br/><br/>
@@ -32,11 +32,11 @@
           <input type="hidden" name="id" value="${variable?.id?.encodeAsHTML()}"/>
 
           <h2 class="headline">${msgs['grailsflow.label.label']}</h2>
-          <g:render plugin="grailsflowCore" template="/common/translationsEditor"
+          <g:render plugin="grailsflow" template="/common/translationsEditor"
 	            model="[ 'translations': variable?.label, 'parameterName': 'label']"/>
           <br/><br/>
           <h2 class="headline">${msgs['grailsflow.label.description']}</h2>
-          <g:render plugin="grailsflowCore" template="/common/translationsEditor"
+          <g:render plugin="grailsflow" template="/common/translationsEditor"
 	            model="[ 'translations': variable?.description, 'parameterName': 'description', 'textarea': true]"/>
 
           <div class="buttons">

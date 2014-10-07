@@ -39,7 +39,7 @@ Configuration.
 --------------
 
 Following beans are already configured in
-GrailsflowCoreGrailsPlugin.groovy with default values. You can
+GrailsflowGrailsPlugin.groovy with default values. You can
 change default configuration by specifying new beans values
 in grails-app/conf/spring/resources.xml file or in other place
 where spring beans for your application are defined.

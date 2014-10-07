@@ -16,7 +16,7 @@
     <head>
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
          <meta name="layout" content="grailsflow" />
-         <g:render plugin="grailsflowCore" template="/commons/global"/>
+         <g:render plugin="grailsflow" template="/commons/global"/>
 
          <r:require modules="grailsflowCodeMirror"/>
 
@@ -28,7 +28,7 @@
     <body>
         <div class="body">
           <b class="header">${msgs['grailsflow.label.processScript']}</b>
-           <g:render plugin="grailsflowCore" template="/commons/messageInfo"/>
+           <g:render plugin="grailsflow" template="/commons/messageInfo"/>
            <g:form controller="${params['controller']}" method="POST" >
              <input type="hidden" name="id" value="${processType}"/>
              <br/>

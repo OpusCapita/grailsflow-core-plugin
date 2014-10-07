@@ -16,7 +16,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="grailsflow" />
-    <g:render plugin="grailsflowCore" template="/commons/global"/>
+    <g:render plugin="grailsflow" template="/commons/global"/>
     <gf:messageBundle bundle="grailsflow.common" var="common"/>
     <gf:messageBundle bundle="grailsflow.schedulerDetails" var="msgs"/>
     <title>${msgs['grailsflow.title.editScheduledJob']}</title>
@@ -26,14 +26,14 @@
       <b class="header">${msgs['grailsflow.label.editScheduledJob']}</b>
 
 
-      <g:render plugin="grailsflowCore" template="/commons/messageInfo"/>
+      <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <g:form controller="${params['controller']}">
         <input type="hidden" name="group" value="${jobDetails?.trigger?.group}"/>
         <input type="hidden" name="name" value="${jobDetails?.trigger?.name}"/>
 
         <h2 class="headline">${msgs['grailsflow.label.jobParams']}</h2>
-        <g:render plugin="grailsflowCore" template="jobParametersForm"
+        <g:render plugin="grailsflow" template="jobParametersForm"
               model="[bean: jobDetails, repeatingInfo: repeatingInfo]"/>
         <br/>
         <div class="buttons">

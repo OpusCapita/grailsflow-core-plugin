@@ -16,7 +16,7 @@
     <head>
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
          <meta name="layout" content="grailsflow" />
-         <g:render plugin="grailsflowCore" template="/commons/global"/>
+         <g:render plugin="grailsflow" template="/commons/global"/>
          <gf:messageBundle bundle="grailsflow.common" var="common"/>         
          <gf:messageBundle bundle="grailsflow.processTypes" var="msgs"/>
          <title>${msgs['grailsflow.title.editProcess']}</title>
@@ -25,7 +25,7 @@
         <div class="body">
            <b class="header">${msgs['grailsflow.label.editProcess']}</b>
 
-           <g:render plugin="grailsflowCore" template="/commons/messageInfo"/>
+           <g:render plugin="grailsflow" template="/commons/messageInfo"/>
             
            <br/>
            <g:form controller="${params['controller']}" method="POST">

@@ -17,14 +17,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="grailsflow" />
     <gf:messageBundle bundle="grailsflow.schedulerDetails" var="msgs"/>
-    <g:render plugin="grailsflowCore" template="/commons/global"/>
+    <g:render plugin="grailsflow" template="/commons/global"/>
     <title>${msgs['grailsflow.title.schedulerDetails']}</title>
   </head>
   <body>
     <div class="body">
       <b class="header">${msgs['grailsflow.label.schedulerDetails']}</b>
 
-      <g:render plugin="grailsflowCore" template="/commons/messageInfo"/>
+      <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <p>${msgs['grailsflow.label.schedulerDetails.desc']}</p>
 
