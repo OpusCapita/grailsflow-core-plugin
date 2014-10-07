@@ -81,13 +81,13 @@ class ProcessVarDefController extends GrailsFlowSecureController {
 
     def saveVarDef = {
         flash.errors = []
-        
+
         def process = ProcessDef.get(Long.valueOf(params.id))
         def var
         if (params.varID) {
             var = ProcessVariableDef.get(Long.valueOf(params.varID))
         } else {
-            var = new ProcessVariableDef(processDef:  process)
+            var = new ProcessVariableDef()
         }
 
         if (!params.varName) {
@@ -96,7 +96,7 @@ class ProcessVarDefController extends GrailsFlowSecureController {
             return render(view: 'variableForm', model: [variable: var, process: process])
         } else {
             var.name = StringUtils.trimAllWhitespace(params.varName)
-            
+
             // Validate Variable Name
             if (!NameUtils.isValidIdentifier(var.name)) {
                 flash.errors << grailsflowMessageBundleService
@@ -111,7 +111,7 @@ class ProcessVarDefController extends GrailsFlowSecureController {
                                     .getMessage(RESOURCE_BUNDLE, "grailsflow.message.variableName.duplicated")
                 return render(view: 'variableForm', model: [variable: var, process: process], params: params)
             }
-            
+
             if (params.varType.equals("Object") && params.varObjectType) {
                 // add verifications that Object type is a custom domain class
                 def loadedClass
@@ -192,6 +192,7 @@ class ProcessVarDefController extends GrailsFlowSecureController {
                 return render(view: 'variableForm', model: [variable: var, process: process])
             }
 
+            var.processDef = process
             var.isProcessIdentifier = params.isProcessIdentifier ? true : false
             var.required = params.required ? true : false
 
@@ -210,9 +211,19 @@ class ProcessVarDefController extends GrailsFlowSecureController {
                 var.view = view
             }
 
-            if (!var.save()) {
-                var.errors.allErrors.each { flash.errors << it.defaultMessage }
-                return render(view: 'variableForm', model: [variable: var, process: process], params: params)
+            if (var.id) {
+                // update existing var
+                if (!var.save()) {
+                    var.errors.allErrors.each { flash.errors << it.defaultMessage }
+                    return render(view: 'variableForm', model: [variable: var, process: process], params: params)
+                }
+            } else {
+                // add new variable to variables list
+                process.addToVariables(var)
+                if (!process.save()) {
+                    process.errors.allErrors.each { flash.errors << it.defaultMessage }
+                    return render(view: 'variableForm', model: [variable: var, process: process], params: params)
+                }
             }
 
             redirect(controller: "processDef", action: "editProcess", params: [id: process.id])
