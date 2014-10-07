@@ -30,53 +30,53 @@
 </g:elseif>
 <g:elseif test="${variable?.type == 'List'}">
 
-<script>
-    var globalIndex = 0
+<script type="text/javascript">
+    var globalIndex = 0;
     function deleteItem(element) {
         jQuery("#"+element).remove();
     }
 
     function addItem(parentElement, varName, value, newType) {
-        globalIndex++
-        var index = globalIndex
-        var content = '<div id="listItem_'+varName+'_'+index+'">'
-        content += '<input size="10" type="text" readonly="true" class="readonly" style="display: none;" value="'+newType+'" name="listItemType_'+varName+'_'+index+'"/>'
+        globalIndex++;
+        var index = globalIndex;
+        var content = '<div id="listItem_'+varName+'_'+index+'">';
+        content += '<input size="10" type="text" readonly="true" class="readonly" style="display: none;" value="'+newType+'" name="listItemType_'+varName+'_'+index+'"/>';
         if (newType == 'Boolean') {
-            content += '<input type="checkbox" name="listItemValue_'+varName+'_'+index+'"'
+            content += '<input type="checkbox" name="listItemValue_'+varName+'_'+index+'"';
             if (value == "true") {
                 content += ' checked="checked" '
             }
             content += '/>&nbsp;&nbsp;'
         } else if (newType == 'Link') {
-            content += "${linkType['grailsflow.label.linkUrl']}"
-            if (value == '') value = '  '
-            content += '&nbsp;<input value="'+ value[0]+'" type="text" size="50" name="listItemValue_'+varName+'_path_'+index+'"/>&nbsp;&nbsp;'
-            content += "${linkType['grailsflow.label.linkDescription']}"
+            content += "${linkType['grailsflow.label.linkUrl']}";
+            if (value == '') value = '  ';
+            content += '&nbsp;<input value="'+ value[0]+'" type="text" size="50" name="listItemValue_'+varName+'_path_'+index+'"/>&nbsp;&nbsp;';
+            content += "${linkType['grailsflow.label.linkDescription']}";
             content += '&nbsp;<input value="'+value[1]+'" type="text" size="25" name="listItemValue_'+varName+'_desc_'+index+'"/>&nbsp;&nbsp;'
         } else if (newType == 'Date'){
-            content += " <script type='text/javascript'>jQuery.noConflict();"
-            content += "jQuery(document).ready(function(\$){"
-            content += " \$('#listItemValue_"+varName+"_"+index+"').datepicker({dateFormat: convertDatePatternFromJavaToJqueryDatePicker('"+"${gf.datePattern()}"+"'), showOn: 'button'}); }) <\/script>"
+            content += " <script type='text/javascript'>jQuery.noConflict();";
+            content += "jQuery(document).ready(function(\$){";
+            content += " \$('#listItemValue_"+varName+"_"+index+"').datepicker({dateFormat: convertDatePatternFromJavaToJqueryDatePicker('"+"${gf.datePattern()}"+"'), showOn: 'button'}); }) <\/script>";
             content += ' <input name="listItemValue_'+varName+"_"+index+'" id="listItemValue_'+varName+"_"+index+'" value = "'+value+'" maxlength="20" readonly="true"/>'
         } else if (newType == 'String') {
-            content += ' <textarea value="'+value+'" cols="60" rows="3" name="listItemValue_'+varName+'_'+index+'"/>&nbsp;&nbsp;'
+            content += ' <textarea cols="60" rows="3" name="listItemValue_'+varName+'_'+index+'">' + value + '</textarea>&nbsp;&nbsp;'
         } else {
             content += ' <input value="'+value+'" type="text" size="30" name="listItemValue_'+varName+'_'+index+'"/>&nbsp;&nbsp;'
         }
 
-        content += '<a href="javascript: void(0)" onclick="deleteItem(\'listItem_'+varName+'_'+index+'\')"><img src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'delete.gif')}" alt="Delete"/>'
-        content += '</a>'
-        content += '</div>'
+        content += '<a href="javascript: void(0)" onclick="deleteItem(\'listItem_'+varName+'_'+index+'\')"><img src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'delete.gif')}" alt="Delete"/>';
+        content += '</a>';
+        content += '</div>';
         jQuery("#"+parentElement+varName).append(content)
     }
 
     function checkTypeSelection(selectedValue) {
         if(window.confirm('Are you sure? All prepared items will be deleted with changing type.')) {
             jQuery("#"+"listItem_${variable.name ?: ''}").empty();
-            jQuery("#"+"previousType_${variable.name ?: ''}").val(selectedValue)
+            jQuery("#"+"previousType_${variable.name ?: ''}").val(selectedValue);
                 return true;
         } else {
-            var prevValue = jQuery("#"+"previousType_${variable.name ?: ''}").val()
+            var prevValue = jQuery("#"+"previousType_${variable.name ?: ''}").val();
             jQuery("#"+"parent_varType_${variable.name ?: ''}").val(prevValue);
             return false;
         }
@@ -102,7 +102,7 @@
 </g:else>
 
 <script type="text/javascript">
-    var type = document.getElementById("varType").value
+    var type = document.getElementById("varType").value;
     if (type == 'Object') {
         document.getElementById("objectType").style.display=""
     }
