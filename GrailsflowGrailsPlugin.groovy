@@ -27,6 +27,21 @@ class GrailsflowGrailsPlugin {
             "src/docs/**"
     ]
 
+    def author = "jCatalog AG"
+    def authorEmail = "july.antonicheva@jcatalog.com"
+    def title = "Grailsflow"
+    def description = '''Weceem CMS is a free, open source content management system.'''
+
+    // URL to the plugin's documentation
+    def documentation = "http://jcatalog.github.io/grailsflow-core-plugin/"
+    def license = "APACHE"
+    def organization = [ name: "jCatalog AG", url: "http://grailsflow.org/" ]
+    def developers = [
+            [ name: "July Antonicheva", email: "july.antonicheva@jcatalog.com" ]
+    ]
+    def issueManagement = [ system: "JIRA", url: "http://jira.jcatalog.com/browse/GFW" ]
+    def scm = [ url: "https://github.com/jCatalog/grailsflow-core" ]
+
     def doWithSpring = {
       def grailsFlowCoreConfig = application.config.grailsFlowCoreConfig
 
