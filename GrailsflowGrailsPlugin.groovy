@@ -30,7 +30,7 @@ class GrailsflowGrailsPlugin {
     def author = "jCatalog AG"
     def authorEmail = "july.antonicheva@jcatalog.com"
     def title = "Grailsflow"
-    def description = '''Weceem CMS is a free, open source content management system.'''
+    def description = "GrailsFlow is an open source Workflow and Process Engine."
 
     // URL to the plugin's documentation
     def documentation = "http://jcatalog.github.io/grailsflow-core-plugin/"
