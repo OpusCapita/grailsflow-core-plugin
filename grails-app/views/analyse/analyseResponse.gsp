@@ -115,42 +115,61 @@
          <title>${processDetails['grailsflow.title.analyseResponseTime']}</title>
     </head>
     <body>
-        <div class="body">
-          <b class="header">${processDetails['grailsflow.label.analyseResponseTime']}</b>
 
-          <g:form controller="${params['controller']}" method="GET">
-              <table cellspacing=3 class="blockLayout">
-                <tr>
-                  <td>${processDetails['grailsflow.label.processType']}</td>
-                  <td>
-                    <g:select from="${processClasses}" name='type'
-                      optionKey="${{it.processType}}" optionValue="${{gf.translatedValue(translations: it.label, default: it.processType)}}"
-                      noSelection="['':'']" value="${params.type}"></g:select></td>
-                </tr>
-                <tr>
-                  <td>${processDetails['grailsflow.label.sortBy']}</td>
-                  <td>
-                    <g:select name='sortBy' value="${params.sortBy}" noSelection="['':'']"
-                      from="${[ AnalyseController.SORT_BY_NODE, AnalyseController.SORT_BY_MIN_TIME,
-                          AnalyseController.SORT_BY_MAX_TIME, AnalyseController.SORT_BY_AVERAGE_TIME,
-                          AnalyseController.SORT_BY_INTERACTIVE_NODE, AnalyseController.SORT_BY_NONINTERACTIVE_NODE]}"
-                      optionValue="${{processDetails['grailsflow.label.'+it] ?: ''}}" />
-                </tr>
-                <tr>
-                  <td colspan="2">
-                    <g:actionSubmit action="searchNodesInfo" value="${common['grailsflow.command.search']}" class="button"/>
-                  </td>
-                </tr>
-              </table>
-             
-              <br/><h2 class="headline">${processDetails['grailsflow.label.protocolingNodes']}</h2>
-              <g:if test="${processTypeProtocol}">
-                <div class="jqplot-target" id="graphic" style="width:800px; height: 300px; position: relative;"></div>
-              </g:if>
-              <g:else>${processDetails['grailsflow.label.noProtocolGroups']}</g:else>
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+          <h3>${processDetails['grailsflow.label.analyseResponseTime']}</h3>
+        </div>
+      </div>
 
-              <br/><h2 class="headline">${params.type?.encodeAsHTML()} &nbsp;${processDetails['grailsflow.label.processList']}</h2>
-              <table class="standard" width="100%">
+      <g:form class="form-horizontal" controller="${params['controller']}" method="GET">
+        <div class="row">
+          <div class="col-md-6 col-xs-6 col-lg-6">
+            <div class="form-group">
+              <label class="col-sm-4 col-xs-4 col-md-4 col-lg-4  control-label" for="type">
+                ${processDetails['grailsflow.label.processType']}
+              </label>
+              <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
+                  <g:select from="${processClasses}" name='type' id="type"
+                            optionKey="${{it.processType}}" optionValue="${{gf.translatedValue(translations: it.label, default: it.processType)}}"
+                            noSelection="['':'']" value="${params.type}"></g:select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 col-xs-4 col-md-4 col-lg-4  control-label">
+                ${processDetails['grailsflow.label.sortBy']}
+              </label>
+              <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
+                <g:select name='sortBy' value="${params.sortBy}" noSelection="['':'']"
+                            from="${[ AnalyseController.SORT_BY_NODE, AnalyseController.SORT_BY_MIN_TIME,
+                                    AnalyseController.SORT_BY_MAX_TIME, AnalyseController.SORT_BY_AVERAGE_TIME,
+                                    AnalyseController.SORT_BY_INTERACTIVE_NODE, AnalyseController.SORT_BY_NONINTERACTIVE_NODE]}"
+                            optionValue="${{processDetails['grailsflow.label.'+it] ?: ''}}" />
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                <g:actionSubmit action="searchNodesInfo" value="${common['grailsflow.command.search']}" class="btn btn-primary"/>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 col-xs-12 col-lg-12">
+            <h4>${processDetails['grailsflow.label.protocolingNodes']}</h4>
+            <g:if test="${processTypeProtocol}">
+              <div class="jqplot-target" id="graphic" style="width:800px; height: 300px; position: relative;"></div>
+            </g:if>
+            <g:else>${processDetails['grailsflow.label.noProtocolGroups']}</g:else>
+
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 col-xs-12 col-lg-12">
+            <h4>${params.type?.encodeAsHTML()} &nbsp;${processDetails['grailsflow.label.processList']}</h4>
+            <table class="table table-bordered">
                 <thead>
                   <tr><th>${processDetails['grailsflow.label.nodeID']}</th>
                       <th>${processDetails['grailsflow.label.quantity']}</th>
@@ -172,9 +191,9 @@
                     </tr>
                   </g:each>
                 </tbody>
-              </table>
-          </g:form>
-            
+            </table>
+          </div>
         </div>
+      </g:form>
     </body>
 </html>

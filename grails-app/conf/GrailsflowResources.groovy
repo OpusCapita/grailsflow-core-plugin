@@ -23,7 +23,6 @@ modules = {
         dependsOn 'jquery', 'jquery-ui'
         defaultBundle 'ui'
         resource url:'/js/grailsflow/common.js'
-        resource url:'/css/grailsflow/default.css', disposition: 'head'
     }
     grailsflowGraphics {
         dependsOn 'jquery'
@@ -45,16 +44,11 @@ modules = {
     }
     grailsflowJgplot {
         dependsOn 'jquery'
-        resource url:[ plugin: 'jqplot', dir: 'css/jqplot',
-                  file:'jquery.jqplot.min.css']
-        resource url:[ plugin: 'jqplot', dir: 'js/jqplot',
-                  file:'excanvas.min.js'], wrapper: {s -> "<!--[if IE]>$s<![endif]-->"}
-        resource url:[ plugin: 'jqplot', dir: 'js/jqplot',
-                  file:'jquery.jqplot.min.js']
-        resource url:[ plugin: 'jqplot', dir: 'js/jqplot/plugins',
-                  file:'jqplot.categoryAxisRenderer.min.js']
-        resource url:[ plugin: 'jqplot', dir: 'js/jqplot/plugins',
-                  file:'jqplot.enhancedLegendRenderer.min.js']
+        resource url:'/css/grailsflow/jqplot/jquery.jqplot.min.css'
+        resource url:'/js/grailsflow/jqplot/excanvas.min.js', wrapper: {s -> "<!--[if IE]>$s<![endif]-->"}, disposition: 'head'
+        resource url:'/js/grailsflow/jqplot/jquery.jqplot.min.js'
+        resource url:'/js/grailsflow/jqplot/plugins/jqplot.categoryAxisRenderer.min.js'
+        resource url:'/js/grailsflow/jqplot/plugins/jqplot.enhancedLegendRenderer.min.js'
 
     }
     grailsflowCodeMirror {

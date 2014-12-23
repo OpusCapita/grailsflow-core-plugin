@@ -26,40 +26,80 @@
     <gf:messageBundle bundle="grailsflow.common" var="common"/>
     <gf:messageBundle bundle="grailsflow.worklist" var="msgs"/>
 
-    <b class="header">${msgs['grailsflow.title.nodeDetails']}</b>
-    <br/><br/>
+    <h3>${msgs['grailsflow.title.nodeDetails']}</h3>
 
-    <table class="standard">
-      <tr>
-        <td>${msgs['grailsflow.label.processType']}</td>
-        <td><gf:translatedValue translations="${nodeDetails.process.label}" default="${nodeDetails.process.type}"/></td>
-      </tr>
-      <tr>
-        <td>${msgs['grailsflow.label.nodeID']}</td>
-        <td><gf:translatedValue translations="${nodeDetails.label}" default="${nodeDetails.nodeID}"/></td>
-      </tr>
-      <g:if test="${nodeDetails.description}">
-        <tr>
-          <td>${msgs['grailsflow.label.description']}</td>
-          <td><gf:translatedValue translations="${nodeDetails.description}" default=""/></td>
-        </tr>
-      </g:if>
-      <g:if test="${isStarted}">
-      <tr>
-        <td>${msgs['grailsflow.label.caller']}</td>
-        <td>${nodeDetails.caller}</td>
-      </tr>
-      <tr>
-        <td>${msgs['grailsflow.label.status']}</td>
-        <td>${nodeDetails.status?.statusID ? common['grailsflow.label.status.'+nodeDetails.status?.statusID] : '-'}</td>
-      </tr>
-      <tr>
-        <td>${msgs['grailsflow.label.startedOn']}</td>
-        <td><gf:displayDateTime value="${nodeDetails.startedOn}"/></td>
-      </tr>
-      <tr>
-        <td>${msgs['grailsflow.label.dueOn']}</td>
-        <td><gf:displayDateTime value="${nodeDetails.dueOn}"/></td>
-      </tr>
-      </g:if>
-    </table>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-sm-2 col-md-2 col-lg-2">
+          ${msgs['grailsflow.label.processType']}
+        </div>
+        <div class="col-sm-10 col-md-10 col-lg-10">
+          <gf:translatedValue translations="${nodeDetails.process.label}" default="${nodeDetails.process.type}"/>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-sm-2 col-md-2 col-lg-2">
+            ${msgs['grailsflow.label.nodeID']}
+        </div>
+        <div class="col-sm-10 col-md-10 col-lg-10">
+            <gf:translatedValue translations="${nodeDetails.label}" default="${nodeDetails.nodeID}"/>
+        </div>
+      </div>
+    </div>
+    <g:if test="${nodeDetails.description}">
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-2 col-md-2 col-lg-2">
+            ${msgs['grailsflow.label.description']}
+          </div>
+          <div class="col-sm-10 col-md-10 col-lg-10">
+            <gf:translatedValue translations="${nodeDetails.description}" default=""/>
+          </div>
+        </div>
+      </div>
+    </g:if>
+    <g:if test="${isStarted}">
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-2 col-md-2 col-lg-2">
+            ${msgs['grailsflow.label.caller']}
+          </div>
+          <div class="col-sm-10 col-md-10 col-lg-10">
+            ${nodeDetails.caller}
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-2 col-md-2 col-lg-2">
+            ${msgs['grailsflow.label.status']}
+          </div>
+          <div class="col-sm-10 col-md-10 col-lg-10">
+            ${nodeDetails.status?.statusID ? common['grailsflow.label.status.'+nodeDetails.status?.statusID] : '-'}
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-2 col-md-2 col-lg-2">
+            ${msgs['grailsflow.label.startedOn']}
+          </div>
+          <div class="col-sm-10 col-md-10 col-lg-10">
+            <gf:displayDateTime value="${nodeDetails.startedOn}"/>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-2 col-md-2 col-lg-2">
+            ${msgs['grailsflow.label.dueOn']}
+          </div>
+          <div class="col-sm-10 col-md-10 col-lg-10">
+            <gf:displayDateTime value="${nodeDetails.dueOn}"/>
+          </div>
+        </div>
+      </div>
+    </g:if>
+

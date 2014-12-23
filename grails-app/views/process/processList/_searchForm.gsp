@@ -21,58 +21,74 @@
 <gf:messageBundle bundle="grailsflow.common" var="common"/>
 <gf:messageBundle bundle="grailsflow.processDetails" var="processDetails"/>
 
-<r:require modules="grailsflowCalendar" />
+<r:require modules="grailsflowCalendar"/>
 
-<table cellspacing=3 class="blockLayout">
-    <tr>
-      <td>${processDetails['grailsflow.label.processID']}</td>
-      <td><input name="processID" value="${params.processID?.encodeAsHTML()}"/></td>
-    </tr>
-    <tr>
-      <td>${processDetails['grailsflow.label.processType']}</td>
-      <td><g:select from="${processClasses}" name='type'
-             optionKey="${{it.processType}}" optionValue="${{gf.translatedValue(translations: it.label, default: it.processType)}}"
-             value="${params.type}" noSelection="['':'']"></g:select></td>
-    </tr>
-    <tr>
-      <td valign="top">${processDetails['grailsflow.label.statuses']}</td>
-      <td>
-        <g:select value="${params.statusID}" id="status" multiple="true"
-             optionValue="${{common['grailsflow.label.status.'+it]}}"  size="5"
-             from="${com.jcatalog.grailsflow.status.ProcessStatusEnum.values()*.value()}" name='statusID'></g:select>
+<div class="form-horizontal">
+  <div class="row">
+    <div class="col-md-6 col-lg-6 col-xs-6">
+      <div class="form-group">
+        <label class="col-sm-4 col-xs-4 col-md-4 col-lg-4  control-label" for="processID">${processDetails['grailsflow.label.processID']}</label>
+        <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
+          <input class="form-control" id="processID" name="processID" value="${params.processID?.encodeAsHTML()}"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 col-xs-4 col-md-4 col-lg-4  control-label" for="type">${processDetails['grailsflow.label.processType']}</label>
+        <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
+          <g:select from="${processClasses}" name='type' class="form-control"
+                    optionKey="${{ it.processType }}"
+                    optionValue="${{ gf.translatedValue(translations: it.label, default: it.processType) }}"
+                    value="${params.type}" noSelection="['': '']"></g:select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 col-xs-4 col-md-4 col-lg-4  control-label" for="status">${processDetails['grailsflow.label.statuses']}</label>
+        <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
+          <g:select value="${params.statusID}" id="status" multiple="true" class="form-control"
+                    optionValue="${{ common['grailsflow.label.status.' + it] }}" size="5"
+                    from="${com.jcatalog.grailsflow.status.ProcessStatusEnum.values()*.value()}" name='statusID'></g:select>
+        </div>
+      </div>
 
-     </td>
-    </tr>
-    <tr>
-      <td>${processDetails['grailsflow.label.startedBy']}</td>
-      <td><input name="createdBy" value="${params.createdBy?.encodeAsHTML()}"/></td>
-    </tr>
-    <tr>
-      <td>${processDetails['grailsflow.label.startedFrom']}</td>
-      <td>
-        <gf:jQueryCalendar property="startedFrom" value="${params.startedFrom?.encodeAsHTML()}" />&nbsp;&nbsp;
-        ${processDetails['grailsflow.label.to']}&nbsp;
-        <gf:jQueryCalendar property="startedTo" value="${params.startedTo?.encodeAsHTML()}" />
-      </td>
-    </tr>
-    <tr>
-      <td>${processDetails['grailsflow.label.modifiedBy']}</td>
-      <td><input name="modifiedBy" value="${params.modifiedBy?.encodeAsHTML()}"/></td>
-    </tr>
-    <tr>
-      <td>${processDetails['grailsflow.label.modifiedFrom']}</td>
-      <td>
-        <gf:jQueryCalendar property="modifiedFrom" value="${params.modifiedFrom?.encodeAsHTML()}" />&nbsp;&nbsp;
-        ${processDetails['grailsflow.label.to']}&nbsp;
-        <gf:jQueryCalendar property="modifiedTo" value="${params.modifiedTo?.encodeAsHTML()}" />
-      </td>
-    </tr>
-    <tr>
-      <td>${processDetails['grailsflow.label.finishedFrom']}</td>
-      <td>
-        <gf:jQueryCalendar property="finishedFrom" value="${params.finishedFrom?.encodeAsHTML()}" />&nbsp;&nbsp;
-        ${processDetails['grailsflow.label.to']}&nbsp;
-        <gf:jQueryCalendar property="finishedTo" value="${params.finishedTo?.encodeAsHTML()}" />
-      </td>
-    </tr>
-</table>
+    </div>
+
+    <div class="col-md-6 col-lg-6 col-xs-6">
+      <div class="form-group">
+        <label class="col-sm-4 col-xs-4 col-md-4 col-lg-4 control-label" for="createdBy">${processDetails['grailsflow.label.startedBy']}</label>
+        <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
+          <input class="form-control" id="createdBy" name="createdBy" value="${params.createdBy?.encodeAsHTML()}"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 col-xs-4 col-md-4 col-lg-4 control-label">${processDetails['grailsflow.label.startedFrom']}</label>
+        <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
+          <gf:jQueryCalendar property="startedFrom" value="${params.startedFrom?.encodeAsHTML()}" />&nbsp;&nbsp;
+          ${processDetails['grailsflow.label.to']}&nbsp;
+          <gf:jQueryCalendar property="startedTo" value="${params.startedTo?.encodeAsHTML()}" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4  col-xs-4 col-md-4 col-lg-4 control-label" for="modifiedBy">${processDetails['grailsflow.label.modifiedBy']}</label>
+        <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
+          <input class="form-control" id="modifiedBy" name="modifiedBy" value="${params.modifiedBy?.encodeAsHTML()}"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 col-xs-4 col-md-4 col-lg-4 control-label">${processDetails['grailsflow.label.modifiedFrom']}</label>
+        <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
+          <gf:jQueryCalendar property="modifiedFrom" value="${params.modifiedFrom?.encodeAsHTML()}" />&nbsp;&nbsp;
+          ${processDetails['grailsflow.label.to']}&nbsp;
+          <gf:jQueryCalendar property="modifiedTo" value="${params.modifiedTo?.encodeAsHTML()}" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4  col-xs-4 col-md-4 col-lg-4 control-label">${processDetails['grailsflow.label.finishedFrom']}</label>
+        <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
+          <gf:jQueryCalendar property="finishedFrom" value="${params.finishedFrom?.encodeAsHTML()}" />&nbsp;&nbsp;
+          ${processDetails['grailsflow.label.to']}&nbsp;
+          <gf:jQueryCalendar property="finishedTo" value="${params.finishedTo?.encodeAsHTML()}" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

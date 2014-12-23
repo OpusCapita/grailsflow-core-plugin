@@ -13,52 +13,69 @@
 -->
 
 <html>
-    <head>
-         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-         <meta name="layout" content="grailsflow" />
-         <g:render plugin="grailsflow" template="/commons/global"/>
-         <gf:messageBundle bundle="grailsflow.common" var="common"/>
-         <gf:messageBundle bundle="grailsflow.emailReceiver" var="emailReceiver"/>
-         <title>${emailReceiver['grailsflow.title.emailReciever']}</title>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="layout" content="grailsflow"/>
+  <g:render plugin="grailsflowCore" template="/commons/global"/>
+  <gf:messageBundle bundle="grailsflow.common" var="common"/>
+  <gf:messageBundle bundle="grailsflow.emailReceiver" var="emailReceiver"/>
+  <title>${emailReceiver['grailsflow.title.emailReciever']}</title>
+</head>
 
-    </head>
-    <body>
-        <div class="body">
-          <b class="header">${emailReceiver['grailsflow.title.emailReciever']}</b>
-          <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-          <br/><br/>
-            
-          <g:form controller="${params['controller']}" method="GET">
-            <table cellspacing=3 class="blockLayout">
-              <tr>
-                <td>${emailReceiver['grailsflow.label.enabled']}</td>
-                <td><g:checkBox name="enabled" value="${enabled}"/></td>
-              </tr>
-              <tr>
-                <td>${emailReceiver['grailsflow.label.mailAddress']}</td>
-                <td><input name='mailAddress' value="${mailAddress}"/></td>
-              </tr>
-              <tr>
-                <td>${emailReceiver['grailsflow.label.mailHost']}</td>
-                <td><input name='mailHost' value="${mailHost}"/></td>
-              </tr>
-              <tr>
-                <td>${emailReceiver['grailsflow.label.mailAccount']}</td>
-                <td><input name='mailAccount' value="${mailAccount}"/></td>
-              </tr>
-              <tr>
-                <td>${emailReceiver['grailsflow.label.mailPassword']}</td>
-                <td><input type="password" name='mailPassword' value="${mailPassword}"/></td>
-              </tr>
-              <tr>
-                <td colspan="2">
-                  <g:actionSubmit action="save" value="${common['grailsflow.command.save']}" class="button"/>
-                  &nbsp;&nbsp;&nbsp;
-                  <g:actionSubmit action="back" value="${common['grailsflow.command.back']}" class="button"/>
-                </td>
-              </tr>
-            </table>
-          </g:form>
+<body>
+<h1>${emailReceiver['grailsflow.title.emailReciever']}</h1>
+<g:render plugin="grailsflowCore" template="/commons/messageInfo"/>
+
+<g:form class="form-horizontal" controller="${params['controller']}" method="GET">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label class="col-sm-5 control-label" for="enabled">${emailReceiver['grailsflow.label.enabled']}</label>
+
+        <div class="col-sm-7">
+          <div class="checkbox">
+            <g:checkBox name="enabled" value="${enabled}"/>
+          </div>
         </div>
-    </body>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-5 control-label" for="mailAddress">${emailReceiver['grailsflow.label.mailAddress']}</label>
+
+        <div class="col-sm-7">
+          <input class="form-control" id="mailAddress" name='mailAddress' value="${mailAddress}"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-5 control-label" for="mailHost">${emailReceiver['grailsflow.label.mailHost']}</label>
+
+        <div class="col-sm-7">
+          <input class="form-control" id="mailHost" name='mailHost' value="${mailHost}"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-5 control-label" for="mailAccount">${emailReceiver['grailsflow.label.mailAccount']}</label>
+
+        <div class="col-sm-7">
+          <input class="form-control" id="mailAccount" name='mailAccount' value="${mailAccount}"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-5 control-label" for="password">${emailReceiver['grailsflow.label.mailPassword']}</label>
+
+        <div class="col-sm-7">
+          <input class="form-control" id="password" type="password" name='mailPassword' value="${mailPassword}"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-submit text-right">
+    <g:actionSubmit action="save" value="${common['grailsflow.command.save']}" class="btn btn-primary"/>
+  </div>
+</g:form>
+</body>
 </html>

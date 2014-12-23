@@ -75,155 +75,166 @@
   </head>
 
   <body>
-    <div class="body">
-      <b class="header">${worklist['grailsflow.title.worklist']}</b>
-      <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-      <br/><br/>
-      <g:form controller="${params['controller']}" method="POST">
-        <g:if test="${params.isEmbedded}">
-          <input type="hidden" name="isEmbedded" value="${params.isEmbedded}"/>
+    <div class="row">
+      <div class="col-md-12 col-xs-12 col-lg-12">
+          <h3>${worklist['grailsflow.title.worklist']}</h3>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 col-xs-12 col-lg-12">
+          <g:render plugin="grailsflow" template="/commons/messageInfo"/>
+      </div>
+    </div>
+
+    <g:form controller="${params['controller']}" method="POST">
+      <g:if test="${params.isEmbedded}">
+        <input type="hidden" name="isEmbedded" value="${params.isEmbedded}"/>
+      </g:if>
+      <g:set var="varsFilterString" value="${['isEmbedded': params.isEmbedded]}"/>
+
+      <g:if test="${isFilterAvailable}">
+        <g:each var="parameter" in="${varsFilter?.keySet()}">
+          <g:if test="${varsFilter[parameter] instanceof List}">
+            <g:hiddenField name="varsFilter.${parameter}.list" value="${varsFilter[parameter].inspect()}"/>
+            <g:set var="key" value="${'varsFilter.'+parameter+'.list'}" />
+            <g:set var="varsFilterString" value="${varsFilterString + [key : varsFilter[parameter].inspect()]}"/>
+          </g:if>
+          <g:else>
+            <g:hiddenField name="varsFilter.${parameter}" value="${varsFilter[parameter]}"/>
+            <g:set var="key" value="${'varsFilter.'+parameter}" />
+            <g:set var="varsFilterString" value="${varsFilterString + [key : varsFilter[parameter]]}"/>
+          </g:else>
+        </g:each>
+        <g:set var="varsFilterString" value="${varsFilterString + ['filterVariable' : filterVariable]}"/>
+        <g:set var="varsFilterString" value="${varsFilterString + ['filterVariableValue' : filterVariableValue]}"/>
+
+        <g:if test="${additionalColumns}">
+
+          <div class="row">
+            <div class="col-md-4 col-xs-4 col-lg-4">
+              ${worklist['grailsflow.label.filterVariable']}&nbsp;
+              <g:select id="filterVariable" name="filterVariable" value="${filterVariable}" noSelection="['':'']"
+                          from="${additionalColumns.keySet()}" onchange = "changeFilterVariable();"
+                          optionValue="${{gf.translatedValue(translations: additionalColumns[it], default: it)}}">
+              </g:select>
+            </div>
+            <div class="col-md-3 col-xs-3 col-lg-3">
+              ${worklist['grailsflow.label.filterVariableValue']}&nbsp;
+              <select id="filterVariableValue" name="filterVariableValue" value="${filterVariableValue}"
+                    ${filterVariable && variableValues?.get(filterVariable)?.size() ? '' : 'disabled="true"'}>
+                    <g:if test="${! filterVariable}">
+                        <option value="" selected="true">${worklist['grailsflow.label.emptyFilterVariable']}</option>
+                    </g:if>
+                    <g:else>
+                        <g:if test="${variableValues?.get(filterVariable)?.size()}">
+                            <option value="" selected="${! filterVariableValue}"></option>
+                            <g:each var="value" in="${variableValues[filterVariable]}">
+                                <option value="${value.value}" ${value.value == filterVariableValue ? 'selected="true"' : ''}>
+                                    ${value.variableValue}
+                                </option>
+                            </g:each>
+                        </g:if>
+                        <g:else>
+                            <option value="" selected="true">${worklist['grailsflow.label.emptyFilterVariableValue']}</option>
+                        </g:else>
+                    </g:else>
+              </select>
+            </div>
+            <div class="col-md-5 col-xs-5 col-lg-5">
+              <g:actionSubmit value="${common['grailsflow.command.filter']}" action="showWorklist" class="btn btn-primary"/>
+            </div>
+          </div>
         </g:if>
-        <g:set var="varsFilterString" value="${['isEmbedded': params.isEmbedded]}"/>
+      </g:if>
 
-        <g:if test="${isFilterAvailable}">
-          <g:each var="parameter" in="${varsFilter?.keySet()}">
-            <g:if test="${varsFilter[parameter] instanceof List}">
-              <g:hiddenField name="varsFilter.${parameter}.list" value="${varsFilter[parameter].inspect()}"/>
-              <g:set var="key" value="${'varsFilter.'+parameter+'.list'}" />
-              <g:set var="varsFilterString" value="${varsFilterString + [key : varsFilter[parameter].inspect()]}"/>
-            </g:if>
-            <g:else>
-              <g:hiddenField name="varsFilter.${parameter}" value="${varsFilter[parameter]}"/>
-              <g:set var="key" value="${'varsFilter.'+parameter}" />
-              <g:set var="varsFilterString" value="${varsFilterString + [key : varsFilter[parameter]]}"/>
-            </g:else>
-          </g:each>
-          <g:set var="varsFilterString" value="${varsFilterString + ['filterVariable' : filterVariable]}"/>
-          <g:set var="varsFilterString" value="${varsFilterString + ['filterVariableValue' : filterVariableValue]}"/>
-
-          <g:if test="${additionalColumns}">
-		    <table cellspacing=3 class="blockLayout">
-		      <tr>
-		        <td>${worklist['grailsflow.label.filterVariable']}</td>
-		        <td>
-                  <g:select id="filterVariable" name="filterVariable" value="${filterVariable}" noSelection="['':'']"
-                      from="${additionalColumns.keySet()}" onchange = "changeFilterVariable();"
-		              optionValue="${{gf.translatedValue(translations: additionalColumns[it], default: it)}}">
-                  </g:select>
-                </td>
-		        <td>${worklist['grailsflow.label.filterVariableValue']}</td>
-		        <td>
-                  <select id="filterVariableValue" name="filterVariableValue" value="${filterVariableValue}"
-                      ${filterVariable && variableValues?.get(filterVariable)?.size() ? '' : 'disabled="true"'}>
-		            <g:if test="${! filterVariable}">
-		              <option value="" selected="true">${worklist['grailsflow.label.emptyFilterVariable']}</option>
-		            </g:if>
-		            <g:else>
-		              <g:if test="${variableValues?.get(filterVariable)?.size()}">
-		                <option value="" selected="${! filterVariableValue}"></option>
-		                <g:each var="value" in="${variableValues[filterVariable]}">
-                          <option value="${value.value}" ${value.value == filterVariableValue ? 'selected="true"' : ''}>
-                            ${value.variableValue}
-                          </option>
-		                </g:each>
-		              </g:if>
-		              <g:else>
-		                <option value="" selected="true">${worklist['grailsflow.label.emptyFilterVariableValue']}</option>
-		              </g:else>
-		            </g:else>
-		          </select>
-		        </td>
-		        <td>
-		          <g:actionSubmit value="${common['grailsflow.command.filter']}" action="showWorklist" class="button"/>
-		        </td>
-		      </tr>
-		    </table>
-	      </g:if>
-        </g:if>
-
-        <table width="100%" class="grid">
-          <thead>
-            <tr>
-              <gf:sortableColumn property="nodeLabel"
-                  defaultOrder="desc" controller="${params['controller']}"
-                  title="${worklist['grailsflow.label.nodeID']}"
-                  action="showWorklist" params="${varsFilterString}"/>
-              <th>${worklist['grailsflow.label.externalUrl']}</th>
-              <gf:sortableColumn property="processTypeLabel" defaultOrder="desc" controller="${params['controller']}"
-                  title="${worklist['grailsflow.label.processType']}"
-                  action="showWorklist" params="${varsFilterString}"/>
-              <th>${worklist['grailsflow.label.description']}</th>
-
-              <g:if test="${additionalColumns}">
-                <g:each var="column" in="${additionalColumns.keySet()}">
-                  <gf:sortableColumn property="vars.${column}" defaultOrder="desc" controller="${params['controller']}"
-                      title="${gf.translatedValue(translations: additionalColumns[column], default: column)}"
-                      action="showWorklist" params="${varsFilterString}"/>
-                </g:each>
-              </g:if>
-              <th>${worklist['grailsflow.label.caller']}</th>
-              <gf:sortableColumn property="startedOn" title="${worklist['grailsflow.label.startedOn']}" defaultOrder="desc"
-                  controller="${params['controller']}" action="showWorklist"/>
-              <gf:sortableColumn property="dueOn" title="${worklist['grailsflow.label.dueOn']}" defaultOrder="desc"
-                  controller="${params['controller']}" action="showWorklist"/>
-            </tr>
-          </thead>
-          <tbody>
-            <g:each in="${processNodeList}" var="node">
+      <div class="row margin-top-10">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+          <table width="100%" class="table table-striped table-bordered">
+            <thead>
               <tr>
-                <td>
-                  <g:if test="${node.type == com.jcatalog.grailsflow.utils.ConstantUtils.NODE_TYPE_WAIT}">
-                    <g:set var="detailsParams" value="${params.isEmbedded ? [isEmbedded: params.isEmbedded] : [:]}"/>
-                    <g:link id="${node.id}" controller="${params['controller']}"
-                        params="${detailsParams}" action="showNodeDetails">
-                      <gf:translatedValue translations="${node.label}" default="${node.nodeID}"/>
-                    </g:link>
-                  </g:if>
-                  <g:else>
-                    <gf:translatedValue translations="${node.label}" default="${node.nodeID}"/>
-                  </g:else>
-                </td>
-                <td>
-                  <gf:generateExternalUrl processNodeId="${node.id}" action="openExternalUrl"
-                    controller="process" label="${worklist['grailsflow.message.externalUrl']}"/>
-                </td>
-                <td>
-                  <gf:translatedValue translations="${node.process.label}" default="${node.process.type}"/>
-                </td>
-                <td><gf:translatedValue translations="${node.description}" default=""/></td>
+                  <gf:sortableColumn property="nodeLabel"
+                      defaultOrder="desc" controller="${params['controller']}"
+                      title="${worklist['grailsflow.label.nodeID']}"
+                      action="showWorklist" params="${varsFilterString}"/>
+                  <th>${worklist['grailsflow.label.externalUrl']}</th>
+                  <gf:sortableColumn property="processTypeLabel" defaultOrder="desc" controller="${params['controller']}"
+                      title="${worklist['grailsflow.label.processType']}"
+                      action="showWorklist" params="${varsFilterString}"/>
+                  <th>${worklist['grailsflow.label.description']}</th>
+
                   <g:if test="${additionalColumns}">
-			        <g:each var="column" in="${additionalColumns.keySet()}">
-			          <td>${node.variables[column]?.value?.toString()}</td>
-			        </g:each>
-			      </g:if>
-                <td>${node.caller}</td>
-                <td><gf:displayDateTime value="${node.startedOn}"/></td>
-                <td><gf:displayDateTime value="${node.dueOn}"/></td>
+                    <g:each var="column" in="${additionalColumns.keySet()}">
+                      <gf:sortableColumn property="vars.${column}" defaultOrder="desc" controller="${params['controller']}"
+                          title="${gf.translatedValue(translations: additionalColumns[column], default: column)}"
+                          action="showWorklist" params="${varsFilterString}"/>
+                    </g:each>
+                  </g:if>
+                  <th>${worklist['grailsflow.label.caller']}</th>
+                  <gf:sortableColumn property="startedOn" title="${worklist['grailsflow.label.startedOn']}" defaultOrder="desc"
+                      controller="${params['controller']}" action="showWorklist"/>
+                  <gf:sortableColumn property="dueOn" title="${worklist['grailsflow.label.dueOn']}" defaultOrder="desc"
+                      controller="${params['controller']}" action="showWorklist"/>
               </tr>
-            </g:each>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <g:each in="${processNodeList}" var="node">
+                <tr>
+                  <td>
+                    <g:if test="${node.type == com.jcatalog.grailsflow.utils.ConstantUtils.NODE_TYPE_WAIT}">
+                      <g:set var="detailsParams" value="${params.isEmbedded ? [isEmbedded: params.isEmbedded] : [:]}"/>
+                      <g:link id="${node.id}" controller="${params['controller']}"
+                            params="${detailsParams}" action="showNodeDetails">
+                        <gf:translatedValue translations="${node.label}" default="${node.nodeID}"/>
+                      </g:link>
+                    </g:if>
+                    <g:else>
+                      <gf:translatedValue translations="${node.label}" default="${node.nodeID}"/>
+                    </g:else>
+                  </td>
+                  <td>
+                    <gf:generateExternalUrl processNodeId="${node.id}" action="openExternalUrl"
+                        controller="process" label="${worklist['grailsflow.message.externalUrl']}"/>
+                  </td>
+                  <td>
+                    <gf:translatedValue translations="${node.process.label}" default="${node.process.type}"/>
+                  </td>
+                  <td><gf:translatedValue translations="${node.description}" default=""/></td>
+                    <g:if test="${additionalColumns}">
+                      <g:each var="column" in="${additionalColumns.keySet()}">
+                        <td>${node.variables[column]?.value?.toString()}</td>
+                      </g:each>
+                    </g:if>
+                  <td>${node.caller}</td>
+                  <td><gf:displayDateTime value="${node.startedOn}"/></td>
+                  <td><gf:displayDateTime value="${node.dueOn}"/></td>
+                </tr>
+              </g:each>
+            </tbody>
+          </table>
 
-        <div class="paginateButtons">
-          <g:paginate total="${itemsTotal}" id="${params.id}" params="${params}"
-            controller="${params['controller']}" action="showWorklist"/>
-        </div>
-        <br/>
-        <r:script>
-          function reloadPage() {
-            window.location = "${g.createLink(controller: params['controller'], action: params['action'], params: params)}";
-          }
-        </r:script>
+            <div class="paginateButtons">
+              <g:paginate total="${itemsTotal}" id="${params.id}" params="${params}"
+                controller="${params['controller']}" action="showWorklist"/>
+            </div>
+            <br/>
+            <r:script>
+              function reloadPage() {
+                window.location = "${g.createLink(controller: params['controller'], action: params['action'], params: params)}";
+              }
+            </r:script>
 
-        <div class="buttons">
-          <span class="button">
-            <input type="button" onclick="reloadPage();" value="${common['grailsflow.command.refresh']}" class="button"/>
-          </span>
+            <div class="buttons">
+              <span class="button">
+                <input type="button" onclick="reloadPage();" value="${common['grailsflow.command.refresh']}" class="btn btn-default"/>
+              </span>
+            </div>
+          </div>
         </div>
       </g:form>
-    </div>
-    <g:if test="${params.isEmbedded == 'true'}">
-      <r:layoutResources/>
-    </g:if>
+
+      <g:if test="${params.isEmbedded == 'true'}">
+        <r:layoutResources/>
+      </g:if>
   </body>
 </html>

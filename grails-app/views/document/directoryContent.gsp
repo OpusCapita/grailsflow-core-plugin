@@ -22,48 +22,55 @@
   </head>
 
   <body>
-  <div class="body">
-    <b class="header">${document_bundle['grailsflow.title.directoryContent']}</b>
-    <br/><br/>
-    <table class="standard" width="50%">
-      <thead>
-        <tr>
-          <th width="80%">${document_bundle['grailsflow.label.name']}</th>
-          <th width="20%">${document_bundle['grailsflow.label.size']}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <g:if test="${!isRoot}">
-              <g:link action="showDirectoryContent" params="[file: currentFile?.parentFile?.absolutePath, moveBack:true]">
-                ...
-              </g:link>
-            </g:if>
-          </td>
-        </tr>
-        <g:each in="${currentFile?.listFiles()}" var="file">
-          <tr>
-            <td>
-              <g:if test="${file.isFile()}">
-                <gf:workareaFileLink workareaPath="${rootUrl + file.name}" label="${file.name}"/>
-              </g:if>
-              <g:else>
-                <g:link action="showDirectoryContent" params="[file: file.absolutePath, fileName: file.name]">
-                  ${file.name}
-                </g:link>
-              </g:else>
-            </td>
-            <td>
-              <g:if test="${file.isFile()}">
-                ${file.length()} ${document_bundle['grailsflow.label.bytes']}
-              </g:if>
-            </td>
-          </tr>
-        </g:each>
-      </tbody>
-    </table>
-  </div>
+    <div class="row">
+      <div class="col-md-12 col-xs-12 col-lg-12">
+        <h3>${document_bundle['grailsflow.title.directoryContent']}</h3>
+      </div>
+    </div>
 
+    <div class="row">
+      <div class="col-md-6 col-xs-6 col-lg-6 col-sm-6">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th width="80%">${document_bundle['grailsflow.label.name']}</th>
+              <th width="20%">${document_bundle['grailsflow.label.size']}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <g:if test="${!isRoot}">
+              <tr>
+                <td>
+
+                  <g:link action="showDirectoryContent" params="[file: currentFile?.parentFile?.absolutePath, moveBack:true]">
+                    ...
+                  </g:link>
+
+                </td>
+              </tr>
+            </g:if>
+            <g:each in="${currentFile?.listFiles()}" var="file">
+              <tr>
+                <td>
+                  <g:if test="${file.isFile()}">
+                    <gf:workareaFileLink workareaPath="${rootUrl + file.name}" label="${file.name}"/>
+                  </g:if>
+                  <g:else>
+                    <g:link action="showDirectoryContent" params="[file: file.absolutePath, fileName: file.name]">
+                      ${file.name}
+                    </g:link>
+                  </g:else>
+                </td>
+                <td>
+                  <g:if test="${file.isFile()}">
+                    ${file.length()} ${document_bundle['grailsflow.label.bytes']}
+                  </g:if>
+                </td>
+              </tr>
+            </g:each>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </body>
 </html>

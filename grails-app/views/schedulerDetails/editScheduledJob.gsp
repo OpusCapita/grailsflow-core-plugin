@@ -13,36 +13,37 @@
 -->
 
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="layout" content="grailsflow" />
-    <g:render plugin="grailsflow" template="/commons/global"/>
-    <gf:messageBundle bundle="grailsflow.common" var="common"/>
-    <gf:messageBundle bundle="grailsflow.schedulerDetails" var="msgs"/>
-    <title>${msgs['grailsflow.title.editScheduledJob']}</title>
-  </head>
-  <body>
-    <div class="body">
-      <b class="header">${msgs['grailsflow.label.editScheduledJob']}</b>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="layout" content="grailsflow"/>
+  <g:render plugin="grailsflowCore" template="/commons/global"/>
+  <gf:messageBundle bundle="grailsflow.common" var="common"/>
+  <gf:messageBundle bundle="grailsflow.schedulerDetails" var="msgs"/>
+  <title>${msgs['grailsflow.title.editScheduledJob']}</title>
+</head>
 
+<body>
+<h1>${msgs['grailsflow.label.editScheduledJob']}</h1>
+<g:render plugin="grailsflowCore" template="/commons/messageInfo"/>
 
-      <g:render plugin="grailsflow" template="/commons/messageInfo"/>
+<g:form class="form-horizontal" controller="${params['controller']}">
+  <input type="hidden" name="group" value="${jobDetails?.trigger?.group}"/>
+  <input type="hidden" name="name" value="${jobDetails?.trigger?.name}"/>
 
-      <g:form controller="${params['controller']}">
-        <input type="hidden" name="group" value="${jobDetails?.trigger?.group}"/>
-        <input type="hidden" name="name" value="${jobDetails?.trigger?.name}"/>
+  <h3>${msgs['grailsflow.label.jobParams']}</h3>
 
-        <h2 class="headline">${msgs['grailsflow.label.jobParams']}</h2>
-        <g:render plugin="grailsflow" template="jobParametersForm"
-              model="[bean: jobDetails, repeatingInfo: repeatingInfo]"/>
-        <br/>
-        <div class="buttons">
-          <g:actionSubmit action="updateJob" onclick="if (!checkRepeatInterval()) return false;"  value="${common['grailsflow.command.update']}" class="button"/>
-          &nbsp;
-          <g:actionSubmit action="showSchedulerDetails" value="${common['grailsflow.command.back']}" class="button"/>
-        </div>
-      </g:form>
-
+  <div class="row">
+    <div class="col-md-6">
+      <g:render plugin="grailsflowCore" template="jobParametersForm"
+                model="[bean: jobDetails, repeatingInfo: repeatingInfo]"/>
     </div>
-  </body>
+  </div>
+
+  <div class="form-submit text-right">
+    <g:actionSubmit action="updateJob" onclick="if (!checkRepeatInterval()) return false;"
+                    value="${common['grailsflow.command.update']}" class="btn btn-primary"/>
+    &nbsp;
+  </div>
+</g:form>
+</body>
 </html>

@@ -22,7 +22,8 @@
          <r:layoutResources/>
     </head>
     <body>
-        <div class="body" style="margin: 5px;">
+        <div class="row">
+          <div class="col-md-12 col-xs-12 col-lg-12">
             <b class="header">${msgs['grailsflow.title.showRules']}</b>
             <br/>
             <h2 class="headline">Available Model Beans</h2>
@@ -94,6 +95,7 @@
             <br/><br/>
             <input type="button" class="button" value="Close" onclick="window.close();">
         </div>
+      </div>
         <r:layoutResources/>
     </body>
 </html>

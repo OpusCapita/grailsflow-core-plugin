@@ -22,34 +22,44 @@
          <title>${msgs['grailsflow.title.startProcess']}</title>
     </head>
     <body>
-        <div class="body">
-        <g:form controller="${params['controller']}" method="GET">
-           <b class="header">${msgs['grailsflow.label.startProcess']}</b>
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+          <h3>${msgs['grailsflow.label.startProcess']}</h3>
+        </div>
+      </div>
 
-            <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-            <br/><br/>
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+          <g:render plugin="grailsflow" template="/commons/messageInfo"/>
+        </div>
+      </div>
 
-            <table class="grid" width="100%">
-             <thead>
-               <tr>
+      <g:form controller="${params['controller']}" method="GET">
+        <div class="row">
+          <div class="col-md-12 col-xs-12 col-lg-12">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
                   <g:sortableColumn property="type" title="${msgs['grailsflow.label.processID']}"/>
                   <th width="70%">${msgs['grailsflow.label.description']}</th>
                   <th>${msgs['grailsflow.label.operation']}</th>
-               </tr>
-             </thead>
-             <tbody>
-               <g:each in="${processClasses}" var="item" status="i">
-                    <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                       <td><g:set var="label" value="${gf.translatedValue(['translations': item.label, 'default': item.processType])}" scope="page" />${label?.encodeAsHTML()}</td>
-                       <td><g:set var="description" value="${gf.translatedValue(['translations': item.description, 'default': ''])}" scope="page" />${description?.encodeAsHTML()}</td>
-                       <td>
-                         <g:link action="startProcess" controller="${params['controller']}" id="${item.processType}" title="${common['grailsflow.command.start']}">${common['grailsflow.command.start']}</g:link>
-                       </td>
-                    </tr>
-               </g:each>
-             </tbody>
-           </table>
-          </g:form>
+                </tr>
+              </thead>
+              <tbody>
+                <g:each in="${processClasses}" var="item" status="i">
+                  <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+                    <td><g:set var="label" value="${gf.translatedValue(['translations': item.label, 'default': item.processType])}" scope="page" />${label?.encodeAsHTML()}</td>
+                    <td><g:set var="description" value="${gf.translatedValue(['translations': item.description, 'default': ''])}" scope="page" />${description?.encodeAsHTML()}</td>
+                    <td>
+                      <g:link action="startProcess" controller="${params['controller']}" id="${item.processType}" title="${common['grailsflow.command.start']}">${common['grailsflow.command.start']}</g:link>
+                    </td>
+                  </tr>
+                </g:each>
+              </tbody>
+            </table>
+          </div>
         </div>
+      </g:form>
+
     </body>
 </html>

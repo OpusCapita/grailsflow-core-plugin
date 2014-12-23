@@ -52,9 +52,10 @@ grails.project.dependency.resolution = {
         runtime ":hibernate:3.6.10.6"
         runtime ":resources:1.2.8"
 
+        compile ":twitter-bootstrap:3.3.1"
+
         runtime(':jquery:1.11.1',
-                ':jquery-ui:1.10.3',
-                ':jqplot:0.1')
+                ':jquery-ui:1.10.3')
         compile ":export:1.6"
         compile ":quartz:1.0.1"
     }

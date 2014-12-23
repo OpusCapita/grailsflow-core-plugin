@@ -24,30 +24,35 @@
          <title>${msgs['grailsflow.title.nodeDetails']}</title>
     </head>
     <body>
-        <div class="body">
+        <div class="row">
+          <div class="col-md-12 col-xs-12 col-lg-12">
             <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-            
-            <g:form controller="${params['controller']}" action="sendEvent" method="POST" enctype="multipart/form-data">
-              <!-- data for validating errors -->
-              <input type="hidden" name="nodeFormController" value="${params['controller']}"/>
-              <input type="hidden" name="nodeFormAction" value="${params['action']}"/>
-              <input type="hidden" name="nodeFormID" value="${params['id']}"/>
-
-              <input type="hidden" name="isStarted" value="${nodeDetails.process.id != null}"/>
-              <input type="hidden" name="processID" value="${nodeDetails.process.id}"/>
-              <input type="hidden" name="nodeID" value="${nodeDetails.nodeID}"/>
-              <input type="hidden" name="processType" value="${nodeDetails.process.type}"/>
-              <g:if test="${params.isEmbedded}">
-                <input type="hidden" name="isEmbedded" value="${params.isEmbedded}"/>
-              </g:if>
-
-              <gf:customizingTemplate template="${template}" defaultTemplate="/manualForms/automaticForm"
-                  notFoundMessage="${templateNotFoundMessage}" model="[nodeDetails: nodeDetails]"/>
-              <br/><br/>
-           </g:form>
-
-          <gf:customizingTemplate defaultTemplate="/process/nodeDetailsFooter"
-              notFoundMessage="${templateNotFoundMessage}" model="[nodeDetails: nodeDetails]"/>
+          </div>
         </div>
+
+        <g:form controller="${params['controller']}" action="sendEvent" method="POST" enctype="multipart/form-data">
+          <!-- data for validating errors -->
+          <input type="hidden" name="nodeFormController" value="${params['controller']}"/>
+          <input type="hidden" name="nodeFormAction" value="${params['action']}"/>
+          <input type="hidden" name="nodeFormID" value="${params['id']}"/>
+          <input type="hidden" name="isStarted" value="${nodeDetails.process.id != null}"/>
+          <input type="hidden" name="processID" value="${nodeDetails.process.id}"/>
+          <input type="hidden" name="nodeID" value="${nodeDetails.nodeID}"/>
+          <input type="hidden" name="processType" value="${nodeDetails.process.type}"/>
+          <g:if test="${params.isEmbedded}">
+            <input type="hidden" name="isEmbedded" value="${params.isEmbedded}"/>
+          </g:if>
+
+          <gf:customizingTemplate template="${template}" defaultTemplate="/manualForms/automaticForm"
+                  notFoundMessage="${templateNotFoundMessage}" model="[nodeDetails: nodeDetails]"/>
+        </g:form>
+
+        <div class="row">
+          <div class="col-md-12 col-xs-12 col-lg-12">
+            <gf:customizingTemplate defaultTemplate="/process/nodeDetailsFooter"
+              notFoundMessage="${templateNotFoundMessage}" model="[nodeDetails: nodeDetails]"/>
+          </div>
+        </div>
+
     </body>
 </html>

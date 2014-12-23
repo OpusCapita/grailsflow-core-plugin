@@ -22,29 +22,38 @@
          <title>${msgs['grailsflow.title.nodeTranslations']}</title>
     </head>
     <body>
-      <div class="body">
-        <b class="header">${msgs['grailsflow.label.nodeTranslations']}</b>
-        <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-        <br/>
-        <h2 class="headline">${msgs['grailsflow.label.nodeID']}: ${processNodeDef.nodeID?.encodeAsHTML()}</h2>
-        <br/><br/>
-        <g:form controller="${params['controller']}">
-          <input type="hidden" name="id" value="${processNodeDef.id?.encodeAsHTML()}"/>
-          <h2 class="headline">${msgs['grailsflow.label.label']}</h2>
-          <g:render plugin="grailsflow" template="/common/translationsEditor"
-	            model="[ 'translations': processNodeDef.label, 'parameterName': 'label']"/>
-          
-          <br/><br/>
-          <h2 class="headline">${msgs['grailsflow.label.description']}</h2>
-          <g:render plugin="grailsflow" template="/common/translationsEditor"
-	            model="[ 'translations': processNodeDef.description, 'parameterName': 'description', 'textarea': true]"/>
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+          <h3>${msgs['grailsflow.label.nodeTranslations']}</h3>
+        </div>
+      </div>
 
-          <div class="buttons">
-            <span class="button">
-              <g:actionSubmit action="saveNodeTranslations" value="${common['grailsflow.command.apply']}" class="button"/>
-            </span>
-          </div>
-        </g:form>
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+          <g:render plugin="grailsflow" template="/commons/messageInfo"/>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+            <h4>${msgs['grailsflow.label.nodeID']}: ${processNodeDef.nodeID?.encodeAsHTML()}</h4>
+            <g:form controller="${params['controller']}">
+              <input type="hidden" name="id" value="${processNodeDef.id?.encodeAsHTML()}"/>
+              <h4>${msgs['grailsflow.label.label']}</h4>
+              <g:render plugin="grailsflow" template="/common/translationsEditor"
+                    model="[ 'translations': processNodeDef.label, 'parameterName': 'label']"/>
+
+              <h4>${msgs['grailsflow.label.description']}</h4>
+              <g:render plugin="grailsflow" template="/common/translationsEditor"
+                    model="[ 'translations': processNodeDef.description, 'parameterName': 'description', 'textarea': true]"/>
+
+              <div class="buttons">
+                <span class="button">
+                  <g:actionSubmit action="saveNodeTranslations" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
+                </span>
+              </div>
+            </g:form>
+        </div>
       </div>
     </body>
 </html>

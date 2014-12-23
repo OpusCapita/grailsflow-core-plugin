@@ -30,7 +30,8 @@
          <title>${msgs['grailsflow.title.processScript']}</title>
     </head>
     <body>
-        <div class="body">
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
           <b class="header">${msgs['grailsflow.label.processScript']}</b>
            <g:if test="${flash.message}">
                  <div class="message">${flash.message?.encodeAsHTML()}</div>
@@ -59,5 +60,6 @@
                </div>
             </g:form>
         </div>
+      </div>
     </body>
 </html>

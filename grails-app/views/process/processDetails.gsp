@@ -29,45 +29,93 @@
          </r:script>
     </head>
     <body>
-        <div class="body">
-          <b class="header">${msgs['grailsflow.title.processDetails']}</b>
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+          <h3>${msgs['grailsflow.title.processDetails']}</h3>
+        </div>
+      </div>
 
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
           <g:render plugin="grailsflow" template="/commons/messageInfo"/>
+        </div>
+      </div>
 
-          <g:form controller="${params['controller']}" method="POST">
-            <input type="hidden" name="id" value="${processDetails?.id}"/>
+      <g:form controller="${params['controller']}" method="POST">
+        <input type="hidden" name="id" value="${processDetails?.id}"/>
+        <div class="row">
+          <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-5 col-md-5 col-lg-5">
+                  ${msgs['grailsflow.label.id']}
+                </div>
+                <div class="col-sm-7 col-md-7 col-lg-7">
+                   ${processDetails?.id}
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-5 col-md-5 col-lg-5">
+                  ${msgs['grailsflow.label.type']}
+                </div>
+                <div class="col-sm-7 col-md-7 col-lg-7">
+                  <gf:translatedValue translations="${processDetails?.label}" default="${processDetails?.type}"/>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-5 col-md-5 col-lg-5">
+                  ${msgs['grailsflow.label.status']}
+                </div>
+                <div class="col-sm-7 col-md-7 col-lg-7">
+                  ${processDetails?.status?.statusID ? common['grailsflow.label.status.'+processDetails?.status?.statusID] : '-'}
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-5 col-md-5 col-lg-5">
+                  ${msgs['grailsflow.label.createdBy']}
+                </div>
+                <div class="col-sm-7 col-md-7 col-lg-7">
+                  ${processDetails?.createdBy}
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-5 col-md-5 col-lg-5">
+                  ${msgs['grailsflow.label.createdOn']}
+                </div>
+                <div class="col-sm-7 col-md-7 col-lg-7">
+                  <gf:displayDateTime value="${processDetails?.createdOn}"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6"></div>
+      </div>
 
-            <table class="standard">
-             <tr>
-               <td>${msgs['grailsflow.label.id']}</td>
-               <td>${processDetails?.id}</td>
-             </tr>
-             <tr>
-               <td>${msgs['grailsflow.label.type']}</td>
-               <td><gf:translatedValue translations="${processDetails?.label}" default="${processDetails?.type}"/></td>
-             </tr>
-             <tr>
-               <td>${msgs['grailsflow.label.status']}</td>
-               <td>${processDetails?.status?.statusID ? common['grailsflow.label.status.'+processDetails?.status?.statusID] : '-'}</td>
-             </tr>
-             <tr>
-               <td>${msgs['grailsflow.label.createdBy']}</td>
-               <td>${processDetails?.createdBy}</td>
-             </tr>
-             <tr>
-               <td>${msgs['grailsflow.label.createdOn']}</td>
-               <td><gf:displayDateTime value="${processDetails?.createdOn}"/></td>
-             </tr>
-           </table>
-           <br/>
-           
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
            <gf:customizingTemplate template="variablesList" model="[variables: processDetails.variables.values()]"/>
-           
-           <gf:customizingTemplate template="nodesList" model="[nodes: processDetails.nodes]"/>
-           
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+          <gf:customizingTemplate template="nodesList" model="[nodes: processDetails.nodes]"/>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
            <div class="buttons">
              <span class="button">
-               <g:actionSubmit action="list" value="${common['grailsflow.command.back']}" class="button"/>
+               <g:actionSubmit action="list" value="${common['grailsflow.command.back']}" class="btn btn-default" />
                &nbsp;&nbsp;
                <r:script>
                    function reloadPage() {
@@ -75,12 +123,14 @@
                    }
                </r:script>
                <input type="button" onclick="reloadPage();"
-                        value="${common['grailsflow.command.refresh']}" class="button"/>
+                        value="${common['grailsflow.command.refresh']}" class="btn btn-default" />
                &nbsp;&nbsp;
-               <input type="button" class="button" value="${msgs['grailsflow.command.showGraphicEditor']}" onclick="openGraphic('${processDetails.id}'); return false;"/>
+               <input type="button" class="btn btn-primary" value="${msgs['grailsflow.command.showGraphicEditor']}" onclick="openGraphic('${processDetails.id}'); return false;"/>
              </span>
            </div>
           </g:form>
         </div>
+      </div>
+
     </body>
 </html>

@@ -22,41 +22,44 @@
 
  -->
 <gf:messageBundle bundle="grailsflow.processVariableEditor" var="msgs"/>
-<gf:section title="${msgs['grailsflow.label.processVars']}" selected="false">
- <table class="standard" width="100%">
-     <thead>
-       <th>${msgs['grailsflow.label.name']}</th>
-       <th>${msgs['grailsflow.label.value']}</th>
-     </thead>
-     <tbody>
-     <g:each in="${variables}">
-       <tr>
-         <td><gf:translatedValue translations="${it.label}" default="${it.name}"/></td>
-         <td>
-           <g:if test="${it.type && it.type == 'Document'}">
-             <gf:renderDocument document="${it.value}"/>
-           </g:if>
-           <g:elseif test="${it.type && it.type == 'Link'}">
-             <gf:renderLink link="${it.value}" />
-           </g:elseif>
-           <g:elseif test="${it.type && it.type == 'Date'}">
-             <gf:displayDate value="${it?.value}"/>
-           </g:elseif>
-           <g:elseif test="${it.type && it.type == 'Double'}">
-             <gf:displayDouble value="${it.value}"/>
-           </g:elseif>
-           <g:else>   <!-- Default displaying -->
-             <g:if test="${com.jcatalog.grailsflow.model.process.ProcessVariable.isValueIdentifier(it.type)}">
-               ${it.variableValue}
-             </g:if>
-             <g:else>
-               ${it.value ? org.apache.commons.lang.StringEscapeUtils.escapeHtml(it.value.toString()) : ''}
-             </g:else>
-           </g:else>
-         </td>
-       </tr>
-     </g:each>
-     </tbody>
- </table>
-</gf:section>
-<br/><br/>
+<h3>${msgs['grailsflow.label.processVars']}</h3>
+
+<div class="row">
+  <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">
+    <g:each in="${variables}">
+      <g:if test="${it.value}">
+        <div class="form-group">
+          <div class="row">
+              <div class="col-sm-5 col-md-5 col-lg-5">
+                <gf:translatedValue translations="${it.label}" default="${it.name}"/>
+              </div>
+              <div class="col-sm-7 col-md-7 col-lg-7">
+                <g:if test="${it.type && it.type == 'Document'}">
+                  <gf:renderDocument document="${it.value}"/>
+                </g:if>
+                <g:elseif test="${it.type && it.type == 'Link'}">
+                  <gf:renderLink link="${it.value}"/>
+                </g:elseif>
+                <g:elseif test="${it.type && it.type == 'Date'}">
+                  <gf:displayDate value="${it?.value}"/>
+                </g:elseif>
+                <g:elseif test="${it.type && it.type == 'Double'}">
+                  <gf:displayDouble value="${it.value}"/>
+                </g:elseif>
+                <g:else><!-- Default displaying -->
+                  <g:if test="${com.jcatalog.grailsflow.model.process.ProcessVariable.isValueIdentifier(it.type)}">
+                    ${it.variableValue}
+                  </g:if>
+                  <g:else>
+                    ${it.value ? org.apache.commons.lang.StringEscapeUtils.escapeHtml(it.value.toString()) : ''}
+                  </g:else>
+                </g:else>
+              </div>
+          </div>
+        </div>
+      </g:if>
+    </g:each>
+  </div>
+  <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">
+  </div>
+</div>

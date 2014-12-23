@@ -34,12 +34,16 @@
     </head>
 
     <body>
-	    <div class="body">
-	       <b class="header">${msgs['grailsflow.label.roles']}</b>
-	       <br/>
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+	      <b class="header">${msgs['grailsflow.label.roles']}</b>
+	    </div>
+      </div>
 
-	       <g:form controller="userRoles" method="POST">
-	        <table id="rolesTable" cellspacing="3" class="blockLayout" width="100%">
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+	      <g:form controller="userRoles" method="POST">
+	        <table id="rolesTable" class="standard" width="100%">
 	          <tr>
 	            <th>${msgs['grailsflow.label.role']}</th>
 	          </tr>
@@ -52,6 +56,7 @@
 	      </g:form>
 	      <input type="button" class="button" value="${common['grailsflow.command.close']}" onclick="window.close();"/>
 	    </div>
-        <r:layoutResources/>
+      </div>
+      <r:layoutResources/>
     </body>
 </html>

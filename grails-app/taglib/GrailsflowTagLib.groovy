@@ -454,10 +454,12 @@ class GrailsflowTagLib {
         out << """<div class=\"sectionHeader\"> """
         out << """<a href=\"#\""""
         if (selected) {
-            out << """class=\"selected\" """
+            out << """class=\"selected glyphicon glyphicon-minus\" """
+        } else {
+            out << """class=\"glyphicon glyphicon-plus\" """
         }
-        out << """onclick=\"this.className=(this.className == 'selected' ? '' : 'selected');"""
-        out << """if (this.className =='selected') { """
+        out << """onclick=\"this.className=(this.className.indexOf('selected') > -1 ? 'glyphicon glyphicon-plus' : 'selected glyphicon glyphicon-minus');"""
+        out << """if (this.className.indexOf('selected') > -1 ) { """
         out << """document.getElementById('${sectionID}').style.display=''; """
         out << """} else { document.getElementById('${sectionID}').style.display = 'none'; }"""
         out << """return false;\"> """

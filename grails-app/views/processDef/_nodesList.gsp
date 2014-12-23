@@ -72,7 +72,7 @@
 
 
 <gf:section title="${nodeEditor['grailsflow.label.processNodes']}" selected="true">
-<table class="standard" width="100%">
+<table class="table table-bordered">
   <thead>
     <tr>
       <th>${nodeEditor['grailsflow.label.nodeID']}</th>
@@ -131,6 +131,6 @@
     </g:each>
   </tbody>
 </table>
-<g:actionSubmit action="addNodeDef" value="${common['grailsflow.command.add']}" class="button"/>
+<g:actionSubmit action="addNodeDef" value="${common['grailsflow.command.add']}" class="btn btn-primary"/>
 </gf:section>
 <br/><br/>

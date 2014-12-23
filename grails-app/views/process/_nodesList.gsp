@@ -24,8 +24,9 @@
 <gf:messageBundle bundle="grailsflow.common" var="common"/>
 <gf:messageBundle bundle="grailsflow.processDetails" var="msgs"/>
 
-<gf:section title="${msgs['grailsflow.label.processNodes']}" selected="true">
- <table class="standard" width="100%">
+<h3>${msgs['grailsflow.label.processNodes']}</h3>
+<div class="table-responsive">
+ <table class="table table-bordered">
    <thead>
      <tr>
         <th>${msgs['grailsflow.label.nodeID']}</th>
@@ -53,5 +54,4 @@
      </g:each>
    </tbody>
  </table>
-</gf:section>
-<br/><br/>
+</div>

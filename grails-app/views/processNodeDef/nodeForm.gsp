@@ -56,207 +56,256 @@
          </r:script>
     </head>
     <body>
-        <div class="body">
-           <b class="header">${msgs['grailsflow.label.processNode']}</b>
-           <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-           <br/>
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+           <h3>${msgs['grailsflow.label.processNode']}</h3>
+        </div>
+      </div>
 
-           <g:form controller="${params['controller']}" method="POST">
-              <input type="hidden" name="id" value="${process?.id?.encodeAsHTML()}"/>
-              <input type="hidden" name="processType" value="${process?.processID?.encodeAsHTML()}"/>
-              <input type="hidden" id="ndID" name="ndID" value="${node?.id?.encodeAsHTML()}"/>
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+          <g:render plugin="grailsflow" template="/commons/messageInfo"/>
+        </div>
+      </div>
 
-              <table id="nodeTable" cellspacing="3" class="blockLayout" width="100%">
-                <tr>
-                  <td>${msgs['grailsflow.label.nodeID']}</td>
-                  <td><input name="nodeID" value="${node?.nodeID?.encodeAsHTML()}"/>
-                         <g:if test="${node?.id != null}">
-                           &nbsp;&nbsp;&nbsp;
-                                 <g:link controller="${params['controller']}" action="editNodeTranslations" id="${node?.id?.encodeAsHTML()}">
-                                     ${msgs['grailsflow.command.manageTranslations']}
-                                 </g:link>
-                               </g:if>
-                       </td>
-                </tr>
-                <tr>
-                  <td>${msgs['grailsflow.label.type']}</td>
-                  <td><g:select id="type" name="type" value="${node?.type}" from="${com.jcatalog.grailsflow.utils.ConstantUtils.nodeTypes}"
-                      onchange="updateOptionsView(this);" /></td>
-                </tr>
-                <tr>
-                  <td>${msgs['grailsflow.label.dueDate']}</td>
-                  <td><input name="dueDate_days" size="4" maxlength="4" value="${params.dueDate_days?.encodeAsHTML()}"/>${msgs['grailsflow.label.dueDate.days']}
-                      &nbsp;<input name="dueDate_hours" size="4" maxlength="4" value="${params.dueDate_hours?.encodeAsHTML()}"/>${msgs['grailsflow.label.dueDate.hours']}
-                      &nbsp;<input name="dueDate_minutes" size="4" maxlength="4" value="${params.dueDate_minutes?.encodeAsHTML()}"/>${msgs['grailsflow.label.dueDate.minutes']}
-                      <br/><p style="margin: 3px; font-style:italic">${msgs['grailsflow.label.dueDate.validation']}</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td>${msgs['grailsflow.label.expectedDuration']}</td>
-                  <td><input name="expectedDuration_days" size="4" maxlength="4" value="${params.expectedDuration_days?.encodeAsHTML()}"/>${msgs['grailsflow.label.expectedDuration.days']}
-                      &nbsp;<input name="expectedDuration_hours" size="4" maxlength="4" value="${params.expectedDuration_hours?.encodeAsHTML()}"/>${msgs['grailsflow.label.expectedDuration.hours']}
-                      &nbsp;<input name="expectedDuration_minutes" size="4" maxlength="4" value="${params.expectedDuration_minutes?.encodeAsHTML()}"/>${msgs['grailsflow.label.expectedDuration.minutes']}
-                      <br/><p style="margin: 3px; font-style:italic">${msgs['grailsflow.label.expectedDuration.validation']}</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td>${msgs['grailsflow.label.protocolGroup']}</td>
-                  <td><input name="protocolGroup" value="${node?.protocolGroup?.encodeAsHTML()}"/></td>
-                </tr>
-               </table>
+      <g:form controller="${params['controller']}" method="POST">
+        <input type="hidden" name="id" value="${process?.id?.encodeAsHTML()}"/>
+        <input type="hidden" name="processType" value="${process?.processID?.encodeAsHTML()}"/>
+        <input type="hidden" id="ndID" name="ndID" value="${node?.id?.encodeAsHTML()}"/>
+        <div class="row">
+          <div class="col-md-12 col-xs-12 col-lg-12">
+            <div class="form-horizontal">
 
-              <!-- asynchronously managing assignees -->
-             <div id="waitNodeOptions" ${node && node.type == com.jcatalog.grailsflow.utils.ConstantUtils.NODE_TYPE_WAIT ? '' : 'style="display: none;"' } >
-               <g:if test="${node?.id != null}">
-                 <gf:section title="${msgs['grailsflow.label.assignees']}" selected="true">
-                   <gf:customizingTemplate template="/common/assigneesEditor"
+              <div class="form-group">
+                <label class="col-sm-2 col-xs-2 col-md-2 col-lg-2  control-label" for="nodeID">
+                  ${msgs['grailsflow.label.nodeID']}
+                </label>
+                <div class="col-sm-10 col-md-10 col-lg-10">
+                  <input id="nodeID" name="nodeID" value="${node?.nodeID?.encodeAsHTML()}"/>
+                  <g:if test="${node?.id != null}">
+                    &nbsp;&nbsp;&nbsp;
+                    <g:link controller="${params['controller']}" action="editNodeTranslations" id="${node?.id?.encodeAsHTML()}">
+                      ${msgs['grailsflow.command.manageTranslations']}
+                    </g:link>
+                  </g:if>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 col-xs-2 col-md-2 col-lg-2  control-label" for="type">
+                  ${msgs['grailsflow.label.type']}
+                </label>
+                <div class="col-sm-10 col-md-10 col-lg-10">
+                  <g:select id="type" name="type" value="${node?.type}" from="${com.jcatalog.grailsflow.utils.ConstantUtils.nodeTypes}"
+                      onchange="updateOptionsView(this);" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 col-xs-2 col-md-2 col-lg-2  control-label" for="dueDate">
+                  ${msgs['grailsflow.label.dueDate']}
+                </label>
+                <div class="col-sm-10 col-md-10 col-lg-10">
+                  <input id="dueDate" name="dueDate_days" size="4" maxlength="4" value="${params.dueDate_days?.encodeAsHTML()}"/>${msgs['grailsflow.label.dueDate.days']}
+                  &nbsp;<input name="dueDate_hours" size="4" maxlength="4" value="${params.dueDate_hours?.encodeAsHTML()}"/>${msgs['grailsflow.label.dueDate.hours']}
+                  &nbsp;<input name="dueDate_minutes" size="4" maxlength="4" value="${params.dueDate_minutes?.encodeAsHTML()}"/>${msgs['grailsflow.label.dueDate.minutes']}
+                  <br/><p style="margin: 3px; font-style:italic">${msgs['grailsflow.label.dueDate.validation']}</p>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 col-xs-2 col-md-2 col-lg-2  control-label" for="expectedDuration">
+                  ${msgs['grailsflow.label.expectedDuration']}
+                </label>
+                <div class="col-sm-10 col-md-10 col-lg-10">
+                  <input id="expectedDuration" name="expectedDuration_days" size="4" maxlength="4" value="${params.expectedDuration_days?.encodeAsHTML()}"/>${msgs['grailsflow.label.expectedDuration.days']}
+                  &nbsp;<input name="expectedDuration_hours" size="4" maxlength="4" value="${params.expectedDuration_hours?.encodeAsHTML()}"/>${msgs['grailsflow.label.expectedDuration.hours']}
+                  &nbsp;<input name="expectedDuration_minutes" size="4" maxlength="4" value="${params.expectedDuration_minutes?.encodeAsHTML()}"/>${msgs['grailsflow.label.expectedDuration.minutes']}
+                  <br/><p style="margin: 3px; font-style:italic">${msgs['grailsflow.label.expectedDuration.validation']}</p>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 col-xs-2 col-md-2 col-lg-2  control-label" for="protocolGroup">
+                  ${msgs['grailsflow.label.protocolGroup']}
+                </label>
+                <div class="col-sm-10 col-md-10 col-lg-10">
+                  <input name="protocolGroup" id="protocolGroup" value="${node?.protocolGroup?.encodeAsHTML()}"/>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- asynchronously managing assignees -->
+        <div id="waitNodeOptions" ${node && node.type == com.jcatalog.grailsflow.utils.ConstantUtils.NODE_TYPE_WAIT ? '' : 'style="display: none;"' } >
+          <g:if test="${node?.id != null}">
+            <div class="row">
+              <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+                <gf:section title="${msgs['grailsflow.label.assignees']}" selected="true">
+                  <gf:customizingTemplate template="/common/assigneesEditor"
                        model="['assignees': node?.assignees, 'controller': params['controller']]"/>
-                   </gf:section>
-                           </g:if>
-                           <br/>
+                </gf:section>
+              </div>
+            </div>
+          </g:if>
 
-                 <gf:section title="${msgs['grailsflow.label.varVisibility']}" selected="true">
-                   <table class="standard">
-                     <thead>
-                       <tr>
-                         <th>${msgs['grailsflow.label.visibility']}</th>
-                         <th>${varMsgs['grailsflow.label.name']}</th>
-                         <th>${varMsgs['grailsflow.label.value']}</th>
-                       </tr>
-                     </thead>
-                     <tbody>
-                       <g:each in="${process.variables}">
-                         <tr>
-                           <td><g:select name="visibility_${it.name}" from="${com.jcatalog.grailsflow.utils.ConstantUtils.visibilityTypes}"
+          <div class="row">
+            <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+              <gf:section title="${msgs['grailsflow.label.varVisibility']}" selected="true">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>${msgs['grailsflow.label.visibility']}</th>
+                      <th>${varMsgs['grailsflow.label.name']}</th>
+                      <th>${varMsgs['grailsflow.label.value']}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <g:each in="${process.variables}">
+                      <tr>
+                        <td><g:select name="visibility_${it.name}" from="${com.jcatalog.grailsflow.utils.ConstantUtils.visibilityTypes}"
                                          optionKey='key' optionValue='value'
                                          value='${node.variablesVisibility[it]}' />
-                           </td>
-                           <td>${it.name?.encodeAsHTML()}</td>
-                           <td>${it.defaultValue?.encodeAsHTML()}</td>
-                         </tr>
-                        </g:each>
-                     </tbody>
-                   </table>
-                   <div class="buttons">
-                     <span class="button">
-                        <g:actionSubmit action="previewGeneratedForm" value="${msgs['grailsflow.command.previewForm']}" class="button"/>
-                     </span>
-                   </div>
-                 </gf:section>
-
-                 <gf:section title="${msgs['grailsflow.label.manualForm']}" selected="true">
-                    <div id="externalEditor">
-                      <table>
-                        <tr>
-                          <td valign="top">${msgs['grailsflow.label.externalUrl']}</td>
-                          <td><input name="externalUrl" value="${externalUrl?.encodeAsHTML()}" size="100"/></td>
-                        </tr>
-                        <tr>
-                          <td valign="top">&nbsp;</td>
-                          <td>
-                            <p style="margin: 3px; font-style:italic">
-                              ${msgs['grailsflow.hint.externalUrl.placeholder']}
-                            </p>
-                          </td>
-                        </tr>
-                      </table>
-                    </div>
-                    <div id="radioButtons">
-                      <table>
-                        <tr>
-                          <td valign="top">
-                            <g:radio name="manualForm" value="1" checked="${params.formType == '1'}" onclick="setActiveOption(1);"/>${msgs['grailsflow.label.form.automatic']}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td valign="top">
-                            <g:radio name="manualForm" value="2" checked="${params.formType == '2'}" onclick="setActiveOption(2);"/>${msgs['grailsflow.label.form.customForm']}
-                          </td>
-                        </tr>
-                        <g:if test="${grails.util.Environment.current == grails.util.Environment.DEVELOPMENT}">
-                            <tr>
-                              <td>
-                                <g:radio name="manualForm" value="3" checked="${params.formType == '3'}" onclick="setActiveOption(3);"/>${msgs['grailsflow.label.form.customFormAndController']} <i>${msgs['grailsflow.label.devMode.only']}</i>
-                              </td>
-                            </tr>
-                        </g:if>
-                      </table>
-                    </div>
-                    <br/>
-
-                    <g:link title="${msgs['grailsflow.command.showRules']}" onclick="showRules(); return false;">${msgs['grailsflow.command.showRules']}</g:link><br/><br/>
-
-                    <div id="customPage" ${params.formType == '2' ? '' : 'style="display: none;"'}>
-                    <table>
-                      <tr>
-                        <td valign="top">${msgs['grailsflow.label.manualForm']}</td>
-                        <td><textarea cols="80" rows="25" name="formTextArea">${formTextArea?.encodeAsHTML()}</textarea></td>
+                        </td>
+                        <td>${it.name?.encodeAsHTML()}</td>
+                        <td>${it.defaultValue?.encodeAsHTML()}</td>
                       </tr>
-                      <tr>
-                        <td>&nbsp;</td>
-                        <td><g:actionSubmit onclick="return checkCondition(${node?.id != null}, 'Please save node before')" action="generateManualForm" value="${msgs['grailsflow.command.generate']}" class="button"/></td>
-                      </tr>
-                    </table>
-                    </div>
+                    </g:each>
+                  </tbody>
+                </table>
 
-                    <div id="customContrAndPage" ${params.formType == '3' ? '' : 'style="display: none;"'}>
-                      <table>
-                        <tr>
-                          <td valign="top">${msgs['grailsflow.label.manualForm']}</td>
-                          <td><textarea cols="80" rows="15" name="pageTextArea">${pageTextArea?.encodeAsHTML()}</textarea></td>
-                        </tr>
-                        <tr>
-                          <td>&nbsp;</td>
-                          <td>${msgs['grailsflow.label.availablePages']}&nbsp;
-                              <a name="pages" href="#" onclick="document.getElementById('multiPage').style.display=''; document.forms[0].multiStepPage.focus(); return false;">
+                <div class="buttons">
+                  <span class="button">
+                    <g:actionSubmit action="previewGeneratedForm" value="${msgs['grailsflow.command.previewForm']}" class="bn btn-primary"/>
+                  </span>
+                </div>
+              </gf:section>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+              <gf:section title="${msgs['grailsflow.label.manualForm']}" selected="true">
+                <div id="externalEditor" class="form-horizontal">
+                  <div class="form-group">
+                    <label class="col-sm-2 col-xs-2 col-md-2 col-lg-2  control-label" for="externalUrl">
+                      ${msgs['grailsflow.label.externalUrl']}
+                    </label>
+                    <div class="col-sm-10 col-md-10 col-lg-10">
+                      <input id="externalUrl" name="externalUrl" value="${externalUrl?.encodeAsHTML()}" size="100"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                      <p style="margin: 3px; font-style:italic">
+                        ${msgs['grailsflow.hint.externalUrl.placeholder']}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div id="radioButtons">
+                  <table>
+                    <tr>
+                      <td valign="top">
+                        <g:radio name="manualForm" value="1" checked="${params.formType == '1'}" onclick="setActiveOption(1);"/>${msgs['grailsflow.label.form.automatic']}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td valign="top">
+                        <g:radio name="manualForm" value="2" checked="${params.formType == '2'}" onclick="setActiveOption(2);"/>${msgs['grailsflow.label.form.customForm']}
+                      </td>
+                    </tr>
+                    <g:if test="${grails.util.Environment.current == grails.util.Environment.DEVELOPMENT}">
+                      <tr>
+                        <td>
+                          <g:radio name="manualForm" value="3" checked="${params.formType == '3'}" onclick="setActiveOption(3);"/>${msgs['grailsflow.label.form.customFormAndController']} <i>${msgs['grailsflow.label.devMode.only']}</i>
+                        </td>
+                      </tr>
+                    </g:if>
+                  </table>
+                </div>
+                <br/>
+
+                <g:link title="${msgs['grailsflow.command.showRules']}" onclick="showRules(); return false;">${msgs['grailsflow.command.showRules']}</g:link><br/><br/>
+
+                <div id="customPage" ${params.formType == '2' ? '' : 'style="display: none;"'}>
+                  <table>
+                    <tr>
+                      <td valign="top">${msgs['grailsflow.label.manualForm']}</td>
+                      <td><textarea cols="80" rows="25" name="formTextArea">${formTextArea?.encodeAsHTML()}</textarea></td>
+                    </tr>
+                    <tr>
+                      <td>&nbsp;</td>
+                      <td><g:actionSubmit onclick="return checkCondition(${node?.id != null}, 'Please save node before')" action="generateManualForm" value="${msgs['grailsflow.command.generate']}" class="button"/></td>
+                    </tr>
+                  </table>
+                </div>
+
+                <div id="customContrAndPage" ${params.formType == '3' ? '' : 'style="display: none;"'}>
+                  <table>
+                    <tr>
+                      <td valign="top">${msgs['grailsflow.label.manualForm']}</td>
+                      <td><textarea cols="80" rows="15" name="pageTextArea">${pageTextArea?.encodeAsHTML()}</textarea></td>
+                    </tr>
+                    <tr>
+                      <td>&nbsp;</td>
+                      <td>${msgs['grailsflow.label.availablePages']}&nbsp;
+                        <a name="pages" href="#" onclick="document.getElementById('multiPage').style.display=''; document.forms[0].multiStepPage.focus(); return false;">
                                 ${msgs['grailsflow.command.addStepPage']}
-                              </a><br/>
-                              <table>
-                                <g:each in="${multiPages}">
-                                  <tr>
-                                    <td style="color: green;">${it}</td>
-                                    <td><g:actionSubmitImage onclick="return checkCondition(${node?.id != null}, 'Please save node before')" src="${g.resource(plugin: 'grailsflow', dir:'images/editor',file:'delete.gif')}" action="deleteMultiPage" onclick="setPageName('${it}');" value="${msgs['grailsflow.command.delete']}"/></td>
-                                  </tr>
-                                </g:each>
-                              </table>
-                              <br/>
-                              <div id="multiPage" style="display: none;">
+                        </a><br/>
+                        <table>
+                          <g:each in="${multiPages}">
+                            <tr>
+                              <td style="color: green;">${it}</td>
+                              <td><g:actionSubmitImage onclick="return checkCondition(${node?.id != null}, 'Please save node before')" src="${g.resource(plugin: 'grailsflow', dir:'images/editor',file:'delete.gif')}" action="deleteMultiPage" onclick="setPageName('${it}');" value="${msgs['grailsflow.command.delete']}"/></td>
+                            </tr>
+                          </g:each>
+                        </table>
+                        <br/>
+                        <div id="multiPage" style="display: none;">
                                 <textarea cols="80" rows="10" name="multiStepPage">${multiStepPage?.encodeAsHTML()}</textarea><br/>
                                 ${msgs['grailsflow.label.pageName']}&nbsp;&nbsp;<input size="35" name="pageName"  id="pageName"/>&nbsp;&nbsp;<g:actionSubmit onclick="return checkCondition(${node?.id != null}, 'Please save node before')" action="addMultiPage" value="${msgs['grailsflow.command.addPage']}" class="button"/>
                                 &nbsp;&nbsp;<g:actionSubmit onclick="document.getElementById('multiPage').style.display='none'; return false;" value="${common['grailsflow.command.cancel']}" class="button"/>
-                              </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td valign="top">${msgs['grailsflow.label.controller']}</td>
-                          <td><textarea cols="80" rows="15" name="controllerTextArea">${controllerTextArea?.encodeAsHTML()}</textarea></td>
-                        </tr>
-                        <g:if test="${grails.util.Environment.current == grails.util.Environment.DEVELOPMENT}">
-                            <tr>
-                              <td>&nbsp;</td>
-                              <td><g:actionSubmit onclick="return checkCondition(${node?.id != null}, 'Please save node before')" action="generateManualActivity" value="${msgs['grailsflow.command.generate']}" class="button"/></td>
-                            </tr>
-                        </g:if>
-                      </table>
-                      <br/>
-                    </div>
-                  </gf:section>
-
-              </div>
-
-              <div class="buttons">
-                <span class="button">
-                  <g:actionSubmit action="saveNodeDef" value="${common['grailsflow.command.apply']}" class="button"/>&nbsp;&nbsp;
-
-                  <g:if test="${node && node.id}">
-                    <g:actionSubmit action="editNodeAction" value="${msgs['grailsflow.command.editNodeActions']}" class="button"/>&nbsp;&nbsp;
-                  </g:if>
-
-                  <g:actionSubmit action="showProcessEditor" value="${common['grailsflow.command.back']}" class="button"/>
-                </span>
-              </div>
-           </g:form>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td valign="top">${msgs['grailsflow.label.controller']}</td>
+                      <td><textarea cols="80" rows="15" name="controllerTextArea">${controllerTextArea?.encodeAsHTML()}</textarea></td>
+                    </tr>
+                    <g:if test="${grails.util.Environment.current == grails.util.Environment.DEVELOPMENT}">
+                      <tr>
+                        <td>&nbsp;</td>
+                        <td><g:actionSubmit onclick="return checkCondition(${node?.id != null}, 'Please save node before')" action="generateManualActivity" value="${msgs['grailsflow.command.generate']}" class="button"/></td>
+                      </tr>
+                    </g:if>
+                  </table>
+                  <br/>
+                </div>
+              </gf:section>
+            </div>
+          </div>
 
         </div>
+
+        <div class="row">
+          <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+            <div class="buttons">
+              <span class="button">
+                <g:actionSubmit action="saveNodeDef" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>&nbsp;&nbsp;
+
+                <g:if test="${node && node.id}">
+                  <g:actionSubmit action="editNodeAction" value="${msgs['grailsflow.command.editNodeActions']}" class="btn btn-primary"/>&nbsp;&nbsp;
+                </g:if>
+
+                <g:actionSubmit action="showProcessEditor" value="${common['grailsflow.command.back']}" class="btn btn-default"/>
+              </span>
+            </div>
+          </div>
+        </div>
+      </g:form>
+
     </body>
 </html>

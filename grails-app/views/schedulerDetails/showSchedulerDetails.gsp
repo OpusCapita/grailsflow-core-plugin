@@ -13,50 +13,82 @@
 -->
 
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="layout" content="grailsflow" />
-    <gf:messageBundle bundle="grailsflow.schedulerDetails" var="msgs"/>
-    <g:render plugin="grailsflow" template="/commons/global"/>
-    <title>${msgs['grailsflow.title.schedulerDetails']}</title>
-  </head>
-  <body>
-    <div class="body">
-      <b class="header">${msgs['grailsflow.label.schedulerDetails']}</b>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="layout" content="grailsflow"/>
+  <gf:messageBundle bundle="grailsflow.schedulerDetails" var="msgs"/>
+  <g:render plugin="grailsflowCore" template="/commons/global"/>
+  <title>${msgs['grailsflow.title.schedulerDetails']}</title>
+</head>
 
-      <g:render plugin="grailsflow" template="/commons/messageInfo"/>
+<body>
+  <div class="row">
+    <div class="col-md-12 col-xs-12 col-lg-12">
+      <h3>${msgs['grailsflow.label.schedulerDetails']}</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 col-xs-12 col-lg-12">
+      <g:render plugin="grailsflowCore" template="/commons/messageInfo"/>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 col-xs-12 col-lg-12">
+      <div class="bs-callout bs-callout-info">
+        ${msgs['grailsflow.label.schedulerDetails.desc']}
+      </div>
 
-      <p>${msgs['grailsflow.label.schedulerDetails.desc']}</p>
+      <h4>${msgs['grailsflow.label.schedulerInfo']}</h4>
 
-      <h2 class="headline">${msgs['grailsflow.label.schedulerInfo']}</h2>
-      <p>${schedulerDetails?.schedulerInfo}</p>
+      <div class="bs-callout bs-callout-info">
+        ${schedulerDetails?.schedulerInfo}
+      </div>
+    </div>
+  </div>
 
-      <g:form controller="${params['controller']}" method="POST">
-        <h2 class="headline">${msgs['grailsflow.label.schedulerStatus']}</h2>
-        <p>${msgs['grailsflow.label.schedulerStatus.desc']}</p>
-        <table>
-          <tr><td>${msgs['grailsflow.label.paused']}: <b>${msgs[(schedulerDetails?.schedulerStatus?.paused) ? 'grailsflow.boolean.yes' : 'grailsflow.boolean.no']}</b></td></tr>
-          <tr><td>${msgs['grailsflow.label.shutdown']}:<b>${msgs[(schedulerDetails?.schedulerStatus?.shutdown) ? 'grailsflow.boolean.yes' : 'grailsflow.boolean.no']}</b></td></tr>
-          <tr>
-            <td>
-              <g:actionSubmit class="button" action="pauseScheduler" value="${msgs[(schedulerDetails?.schedulerStatus?.paused) ? 'grailsflow.label.scheduler.resume' : 'grailsflow.label.scheduler.pause']}"/>
-            </td>
-          </tr>
-        </table>
+  <g:form class="form-horizontal" controller="${params['controller']}" method="POST">
 
-        <h2 class="headline">${msgs['grailsflow.label.runningJobs']}</h2>
-        <table class="standard">
-          <thead>
-            <th>${msgs['grailsflow.label.groupName']}</th>
-            <th>${msgs['grailsflow.label.jobName']}</th>
-            <th>${msgs['grailsflow.label.startTime']}</th>
-            <th>${msgs['grailsflow.label.runningTime']}</th>
-            <th>${msgs['grailsflow.label.description']}</th>
-            <th>${msgs['grailsflow.label.attributes']}</th>
-            <th>${msgs['grailsflow.label.triggerName']}</th>
-          </thead>
-          <tbody>
-            <g:if test="${schedulerDetails?.runningJobs}">
+    <div class="row">
+      <div class="col-md-12 col-xs-12 col-lg-12">
+        <h4>${msgs['grailsflow.label.schedulerStatus']}</h4>
+
+        <div class="bs-callout bs-callout-info">
+          ${msgs['grailsflow.label.schedulerStatus.desc']}
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-1">${msgs['grailsflow.label.paused']}</label>
+          <div class="col-sm-11">${msgs[(schedulerDetails?.schedulerStatus?.paused) ? 'grailsflow.boolean.yes' : 'grailsflow.boolean.no']}</div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-1">${msgs['grailsflow.label.shutdown']}</label>
+          <div class="col-sm-11">${msgs[(schedulerDetails?.schedulerStatus?.shutdown) ? 'grailsflow.boolean.yes' : 'grailsflow.boolean.no']}</div>
+        </div>
+
+        <div>
+          <g:actionSubmit class="btn btn-default" action="pauseScheduler"
+                        value="${msgs[(schedulerDetails?.schedulerStatus?.paused) ? 'grailsflow.label.scheduler.resume' : 'grailsflow.label.scheduler.pause']}"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 col-xs-12 col-lg-12">
+        <h4>${msgs['grailsflow.label.runningJobs']}</h4>
+        <g:if test="${schedulerDetails?.runningJobs}">
+            <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+              <th>${msgs['grailsflow.label.groupName']}</th>
+              <th>${msgs['grailsflow.label.jobName']}</th>
+              <th>${msgs['grailsflow.label.startTime']}</th>
+              <th>${msgs['grailsflow.label.runningTime']}</th>
+              <th>${msgs['grailsflow.label.description']}</th>
+              <th>${msgs['grailsflow.label.attributes']}</th>
+              <th>${msgs['grailsflow.label.triggerName']}</th>
+              </thead>
+              <tbody>
               <g:each in="${schedulerDetails?.runningJobs}" var="jobInfo">
                 <tr>
                   <td>${jobInfo?.job?.group}</td>
@@ -66,45 +98,61 @@
                   <td>${jobInfo?.job?.description}</td>
                   <td>
                     ${msgs['grailsflow.label.volatile']}&#160;
-                    ${msgs[(jobInfo?.job ? jobInfo?.job.persistJobDataAfterExecution : false) ? 'grailsflow.boolean.yes' : 'grailsflow.boolean.no']}<br/>
+                    ${msgs[(jobInfo?.job ? jobInfo?.job["volatile"] : false) ? 'grailsflow.boolean.yes' : 'grailsflow.boolean.no']}<br/>
                     ${msgs['grailsflow.label.durable']}&#160;
                     ${msgs[(jobInfo.job.durable) ? 'grailsflow.boolean.yes' : 'grailsflow.boolean.no']}<br/>
                     ${msgs['grailsflow.label.stateful']}&#160;
-                    ${msgs[(jobInfo?.job?.concurrentExectionDisallowed) ? 'grailsflow.boolean.yes' : 'grailsflow.boolean.no']}<br/>
+                    ${msgs[(jobInfo?.job?.stateful) ? 'grailsflow.boolean.yes' : 'grailsflow.boolean.no']}<br/>
                   </td>
-                  <td>${jobInfo?.trigger?.key?.name}</td>
+                  <td>${jobInfo?.trigger?.name}</td>
                 </tr>
               </g:each>
-            </g:if>
-            <g:else>
-              <tr><td><b>${msgs['grailsflow.label.noEntries']}</b></td></tr>
-            </g:else>
-          </tbody>
-        </table>
-          
-        <br/>
+              </tbody>
+            </table>
+            </div>
+        </g:if>
+        <g:else>
+          <div class="bs-callout bs-callout-info">
+            ${msgs['grailsflow.label.noEntries']}
+          </div>
+        </g:else>
+      </div>
+    </div>
 
-        <h2 class="headline">${msgs['grailsflow.label.scheduledJobs']}</h2>
-        <p>${msgs['grailsflow.label.scheduledJobs.desc']}</p>
-        <table class="standard">
-          <thead>
-            <th>${msgs['grailsflow.label.groupName']}</th>
-            <th>${msgs['grailsflow.label.jobName']}</th>
-            <th>${msgs['grailsflow.label.description']}</th>
-            <th>${msgs['grailsflow.label.lastFired']}</th>
-            <th>${msgs['grailsflow.label.nextFired']}</th>
-            <th>${msgs['grailsflow.label.schedulingDetails']}</th>
-            <th>${msgs['grailsflow.label.manageJobSchedule']}</th>
-          </thead>
-          <tbody>
-            <g:if test="${schedulerDetails?.scheduledJobs}">
+    <div class="row">
+      <div class="col-md-12 col-xs-12 col-lg-12">
+        <h4>${msgs['grailsflow.label.scheduledJobs']}</h4>
+
+        <div class="bs-callout bs-callout-info">
+          ${msgs['grailsflow.label.scheduledJobs.desc']}
+        </div>
+
+        <g:if test="${schedulerDetails?.scheduledJobs}">
+            <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+              <th>${msgs['grailsflow.label.groupName']}</th>
+              <th>${msgs['grailsflow.label.jobName']}</th>
+              <th>${msgs['grailsflow.label.description']}</th>
+              <th>${msgs['grailsflow.label.lastFired']}</th>
+              <th>${msgs['grailsflow.label.nextFired']}</th>
+              <th>
+                <nobr>
+                  ${msgs['grailsflow.label.schedulingDetails']}
+                </nobr>
+              </th>
+              <th>${msgs['grailsflow.label.manageJobSchedule']}</th>
+              </thead>
+              <tbody>
               <g:each in="${schedulerDetails?.scheduledJobs}" var="jobInfo">
                 <tr>
                   <td>${jobInfo?.job?.group}</td>
                   <td>
-                    <g:set var="jobController" value="${grailsApplication.getArtefact('Controller', jobInfo?.job?.name+'Controller')}"/>
+                    <g:set var="jobController"
+                           value="${grailsApplication.getArtefact('Controller', jobInfo?.job?.name + 'Controller')}"/>
                     <g:if test="${jobController}">
-                      <g:link controller="${jobController.logicalPropertyName}" title="${msgs['grailsflow.label.configuration']}">
+                      <g:link controller="${jobController.logicalPropertyName}"
+                              title="${msgs['grailsflow.label.configuration']}">
                         ${jobInfo?.job?.name}
                       </g:link>
                     </g:if>
@@ -114,43 +162,62 @@
                   </td>
                   <td>${jobInfo?.job?.description}</td>
                   <td><gf:displayDateTime value="${jobInfo?.previosFireTime}"/></td>
-                  <td><gf:displayDateTime value="${jobInfo?.nextFireTime}" /></td>
+                  <td><gf:displayDateTime value="${jobInfo?.nextFireTime}"/></td>
                   <td>${jobInfo?.executionTimeText}</td>
                   <td>
                     <g:if test="${jobInfo?.running}">
                       ${msgs['grailsflow.label.running']}
                     </g:if>
                     <g:else>
-	                    <g:link controller="${params['controller']}" action="pause"
-	                           params="${[name: jobInfo?.job?.name, group: jobInfo?.job?.group, isPaused: jobInfo?.paused ? jobInfo?.paused : 'false', isRunning: jobInfo?.running ? jobInfo.running : 'false']}"
-	                           title=" ${msgs[(jobInfo?.paused) ? 'grailsflow.label.resume' : 'grailsflow.label.pause']}">
-	                      ${msgs[(jobInfo?.paused) ? 'grailsflow.label.resume' : 'grailsflow.label.pause']}
-	                    </g:link>&nbsp;
-	                    <g:link controller="${params['controller']}" action="delete"
-	                           params="${[name: jobInfo?.job?.name, group: jobInfo?.job?.group]}"
-	                           onclick="return window.confirm('${msgs['grailsflow.message.job.delete']}');"
-	                           title="${msgs['grailsflow.label.delete']}">
-	                      ${msgs['grailsflow.label.delete']}
-	                    </g:link>&nbsp;
-	                    <g:link controller="${params['controller']}" action="edit"
-	                           params="${[name: jobInfo?.trigger?.name, group: jobInfo?.trigger?.group]}"
-	                           title="${msgs['grailsflow.label.edit']}">
-	                      ${msgs['grailsflow.label.edit']}
-	                    </g:link>&nbsp;
+                      <div class="btn-group input-group-btn">
+                        <nobr>
+                          <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="pause"
+                                  params="${[name: jobInfo?.job?.name, group: jobInfo?.job?.group, isPaused: jobInfo?.paused ? jobInfo?.paused : 'false', isRunning: jobInfo?.running ? jobInfo.running : 'false']}"
+                                  title="${msgs[(jobInfo?.paused) ? 'grailsflow.label.resume' : 'grailsflow.label.pause']}">
+                            <g:if test="${jobInfo?.paused}">
+                              <span class="glyphicon glyphicon-play"></span>&nbsp;
+                            </g:if>
+                            <g:else>
+                              <span class="glyphicon glyphicon-pause"></span>&nbsp;
+                            </g:else>
+                            ${msgs[(jobInfo?.paused) ? 'grailsflow.label.resume' : 'grailsflow.label.pause']}
+                          </g:link>
+                          <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="delete"
+                                  params="${[name: jobInfo?.job?.name, group: jobInfo?.job?.group]}"
+                                  onclick="return window.confirm('${msgs['grailsflow.message.job.delete']}');"
+                                  title="${msgs['grailsflow.label.delete']}">
+                            <span class="glyphicon glyphicon-trash"></span>&nbsp;
+                            ${msgs['grailsflow.label.delete']}
+                          </g:link>
+                          <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="edit"
+                                  params="${[name: jobInfo?.trigger?.name, group: jobInfo?.trigger?.group]}"
+                                  title="${msgs['grailsflow.label.edit']}">
+                            <span class="glyphicon glyphicon-edit"></span>&nbsp;
+                            ${msgs['grailsflow.label.edit']}
+                          </g:link>
+                        </nobr>
+                      </div>
                     </g:else>
                   </td>
                 </tr>
               </g:each>
-            </g:if>
-            <g:else>
-              <tr><td><b>${msgs['grailsflow.label.noEntries']}</b></td></tr>
-            </g:else>
-          </tbody>
-        </table>
+              </tbody>
+            </table>
+            </div>
+        </g:if>
+        <g:else>
+          <div class="bs-callout bs-callout-info">
+            ${msgs['grailsflow.label.noEntries']}
+          </div>
+        </g:else>
 
-        <g:actionSubmit class="button" action="scheduleProcess" value="${msgs['grailsflow.command.scheduleProcess']}"/>
-          
-      </g:form>
+        <div>
+          <g:actionSubmit class="btn btn-primary" action="scheduleProcess"
+                            value="${msgs['grailsflow.command.scheduleProcess']}"/>
+        </div>
+      </div>
     </div>
-  </body>
+  </g:form>
+
+</body>
 </html>

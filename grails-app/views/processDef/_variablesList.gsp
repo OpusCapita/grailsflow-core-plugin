@@ -71,7 +71,7 @@
 <gf:messageBundle bundle="grailsflow.common" var="common"/>
 
  <gf:section title="${variableEditor['grailsflow.label.processVars']}" selected="true">
- <table class="standard" width="100%">
+ <table class="table table-bordered">
      <thead>
        <th>${variableEditor['grailsflow.label.name']}</th>
        <th>${variableEditor['grailsflow.label.type']}</th>
@@ -133,6 +133,6 @@
      </g:each>
    </tbody>
  </table>
- <g:actionSubmit action="addVarDef" value="${common['grailsflow.command.add']}" class="button"/>
+ <g:actionSubmit action="addVarDef" value="${common['grailsflow.command.add']}" class="btn btn-primary"/>
  </gf:section>
  <br/><br/>

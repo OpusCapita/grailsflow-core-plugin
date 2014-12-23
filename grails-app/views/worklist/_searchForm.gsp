@@ -24,7 +24,7 @@
 <gf:advancedSearchResources />
 <r:require modules="grailsflowCalendar"/>
 
-<table id="search_table" cellspacing=3 class="blockLayout">
+<table id="search_table" class="standard">
 <!-- Content is added dynamically -->
 </table>
 

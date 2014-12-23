@@ -21,20 +21,39 @@
     <title>${msgs['grailsflow.title.processDetails']}</title>
   </head>
   <body>
-    <div class="body">
       <g:form controller="${params['controller']}" method="post">
         <input type="hidden" name="id" value="${processDetails?.id}"/>
 
-        <gf:customizingTemplate template="blocks/header" model="[processDetails: processDetails]"/>
+        <div class="row">
+          <div class="col-md-12 col-xs-12 col-lg-12">
+            <gf:customizingTemplate template="blocks/header" model="[processDetails: processDetails]"/>
+          </div>
+        </div>
 
-        <gf:customizingTemplate template="blocks/processInfo" model="[processDetails: processDetails]"/>
+        <div class="row">
+          <div class="col-md-12 col-xs-12 col-lg-12">
+            <gf:customizingTemplate template="blocks/processInfo" model="[processDetails: processDetails]"/>
+          </div>
+        </div>
 
-        <gf:customizingTemplate template="blocks/processVariables" model="[variables: processDetails.variables]"/>
+        <div class="row">
+          <div class="col-md-12 col-xs-12 col-lg-12">
+            <gf:customizingTemplate template="blocks/processVariables" model="[variables: processDetails.variables]"/>
+          </div>
+        </div>
 
-        <gf:customizingTemplate template="blocks/processNodes" model="[nodes: processDetails.nodes]"/>
+        <div class="row">
+          <div class="col-md-12 col-xs-12 col-lg-12">
+            <gf:customizingTemplate template="blocks/processNodes" model="[nodes: processDetails.nodes]"/>
+          </div>
+        </div>
 
-        <gf:customizingTemplate template="blocks/footer" model="[processDetails: processDetails]"/>
+        <div class="row">
+          <div class="col-md-12 col-xs-12 col-lg-12">
+            <gf:customizingTemplate template="blocks/footer" model="[processDetails: processDetails]"/>
+          </div>
+        </div>
+
       </g:form>
-    </div>
   </body>
 </html>

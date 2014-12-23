@@ -20,65 +20,64 @@
     </title>
 
     <r:require modules="grailsflow"/>
+    <r:require modules="bootstrap"/>
     <r:layoutResources/>
+
     <gf:messageBundle bundle="menu" var="menu_bundle"/>
 
     <g:layoutHead/>
   </head>
   <body>
-  <div>
-
-    <table border="0px" cellspacing="0" cellpadding="0" width="100%" height="380">
-      <tbody>
-        <tr>
-          <td id="menu">
-            <dl id="menuList">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2 col-lg-2 col-xs-2">
+          <dl id="menuList">
               <dt>${menu_bundle['grailsflow.menu.header.useProcesses']}</dt>
               <dd>
-                <ul>
-                  <li><g:link controller="processDef" action="editTypes">${menu_bundle['grailsflow.menu.editProcesTypes']}</g:link></li>
-                </ul>
+                  <ul>
+                      <li><g:link controller="processDef" action="editTypes">${menu_bundle['grailsflow.menu.editProcesTypes']}</g:link></li>
+                  </ul>
               </dd>
               <dd>
-                <ul>
-                  <li><g:link controller="process" action="showTypes">${menu_bundle['grailsflow.menu.startProcesType']}</g:link></li>
-                </ul>
+                  <ul>
+                      <li><g:link controller="process" action="showTypes">${menu_bundle['grailsflow.menu.startProcesType']}</g:link></li>
+                  </ul>
               </dd>
               <dd>
-                <ul>
-                  <li><g:link controller="process" action="showWorklist">${menu_bundle['grailsflow.menu.showWorklist']}</g:link></li>
-                </ul>
+                  <ul>
+                      <li><g:link controller="process" action="showWorklist">${menu_bundle['grailsflow.menu.showWorklist']}</g:link></li>
+                  </ul>
               </dd>
               <dd>
-                <ul>
-                  <li><g:link controller="process">${menu_bundle['grailsflow.menu.listProcesses']}</g:link></li>
-                </ul>
+                  <ul>
+                      <li><g:link controller="process">${menu_bundle['grailsflow.menu.listProcesses']}</g:link></li>
+                  </ul>
               </dd>
               <dt>${menu_bundle['grailsflow.menu.header.administration']}</dt>
               <dd>
-                <ul>
-                  <li><g:link controller="document">${menu_bundle['grailsflow.menu.showDocuments']}</g:link></li>
-                </ul>
+                  <ul>
+                      <li><g:link controller="document">${menu_bundle['grailsflow.menu.showDocuments']}</g:link></li>
+                  </ul>
               </dd>
               <dd>
-                <ul>
-                  <li><g:link controller="analyse">${menu_bundle['grailsflow.menu.analyseResponse']}</g:link></li>
-                </ul>
+                  <ul>
+                      <li><g:link controller="analyse">${menu_bundle['grailsflow.menu.analyseResponse']}</g:link></li>
+                  </ul>
               </dd>
               <dd>
-                <ul>
-                  <li><g:link controller="schedulerDetails">${menu_bundle['grailsflow.menu.viewSchedulerDetails']}</g:link></li>
-                </ul>
+                  <ul>
+                      <li><g:link controller="schedulerDetails">${menu_bundle['grailsflow.menu.viewSchedulerDetails']}</g:link></li>
+                  </ul>
               </dd>
-            </dl>
-          </td>
-          <td height="100%" width="100%" valign="top" id="content">
-             <g:layoutBody/>
-             <r:layoutResources/>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-</div>
+          </dl>
+      </div>
+
+      <div class="col-md-10 col-lg-10 col-xs-10">
+         <g:layoutBody/>
+         <r:layoutResources/>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

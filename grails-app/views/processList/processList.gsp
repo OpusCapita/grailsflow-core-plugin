@@ -24,11 +24,21 @@
     <body>
       <gf:storeBackPoint />
 
-      <div class="body">
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
           <b class="header">${processList['grailsflow.label.processList']}</b>
-          <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-          <br/><br/>
+        </div>
+      </div>
 
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+          <g:render plugin="grailsflow" template="/commons/messageInfo"/>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+          <br/>
           <g:form name="processListForm" method="GET"
             controller="${gf.currentController()}" action="${gf.currentAction()}">
 
@@ -56,8 +66,8 @@
               </span>
             </div>
 
-        </g:form>
-
+          </g:form>
+        </div>
       </div>
     </body>
 </html>

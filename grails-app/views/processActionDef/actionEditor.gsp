@@ -59,62 +59,92 @@
 
     </head>
     <body>
-        <div class="body">
-          <b class="header">${msgs['grailsflow.label.actionEditor']}</b>
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+          <h3>${msgs['grailsflow.label.actionEditor']}</h3>
+
            <g:if test="${flash.message}">
-             <div class="message">${flash.message}</div>
+             <div class="alert-info">${flash.message}</div>
            </g:if>
            <g:if test="${processNodeDef?.type == ConstantUtils.NODE_TYPE_WAIT}">
-             <div class="warnings" style="color: #CCCC00;">*${msgs["grailsflow.message.action.warning"]}</div>
+             <div class="alert-warning">*${msgs["grailsflow.message.action.warning"]}</div>
            </g:if>
-           <g:form controller="${params['controller']}" method="POST">
-             <input type="hidden" name="nodeID" value="${processNodeDef?.id}"/>
-             <br/>
-             <table cellspacing=3>
-                <tr>
-                  <td>${msgs['grailsflow.label.processType']}:</td>
-                  <td>${processNodeDef?.processDef?.processID}</td>
-                </tr>
-                <tr>
-                  <td>${msgs['grailsflow.label.nodeID']}:</td>
-                  <td>${processNodeDef?.nodeID}
-                  </td>
-                </tr>
-              </table>
-              <br/><br/>
-
-              <table>
-                <tr>
-                 <td>${msgs['grailsflow.label.variables']}</td>
-                 <td>${msgs['grailsflow.label.actions']}</td>
-                </tr>
-                <tr>
-                 <td style="padding-right:15px;">
-                   <g:select name="variable" id="variable" noSelection="${['':'']}" from='${variables}'></g:select>
-                   <img alt="${msgs['grailsflow.command.pasteVariable']}"
-                        src="${g.resource(plugin: 'grailsflow', dir: 'images/grailsflow/editor',file:'add.gif')}"
-                        onClick="pasteVariable()"/>
-                 </td>
-                 <td style="padding-right:15px;">
-                   <gf:select name="action" id="action" noSelection="${['':'']}" from='${actions}'
-                      optionValue="label" optionKey="value" optionGroup="group">
-                   </gf:select>
-                   <img alt="${msgs['grailsflow.command.pasteAction']}"
-                        src="${g.resource(plugin: 'grailsflow', dir: 'images/grailsflow/editor',file:'add.gif')}"
-                        onClick="openActionParametersEditor()"/>
-                 </td>
-                </tr>
-              </table>
-
-              <g:textArea id="actionsCode" name="actionsCode" value="${actionsCode}" rows="20" cols="80"/>
-
-              <br/>
-              <div class="buttons">
-                 <g:actionSubmit action="saveActions" value="${common['grailsflow.command.apply']}" class="button"/>&nbsp;
-                 <g:actionSubmit action="showProcessNodeEditor" value="${common['grailsflow.command.back']}" class="button"/>
-              </div>
-
-           </g:form>
         </div>
+      </div>
+
+      <g:form controller="${params['controller']}" method="POST">
+        <input type="hidden" name="nodeID" value="${processNodeDef?.id}"/>
+
+        <div class="row">
+          <div class="col-md-10 col-xs-10 col-lg-10">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                  ${msgs['grailsflow.label.processType']}
+                </div>
+                <div class="col-sm-10 col-md-10 col-lg-10">
+                  ${processNodeDef?.processDef?.processID}
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                  ${msgs['grailsflow.label.nodeID']}
+                </div>
+                <div class="col-sm-10 col-md-10 col-lg-10">
+                  ${processNodeDef?.nodeID}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8 col-xs-8 col-lg-8 col-sm-8">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3">
+                  ${msgs['grailsflow.label.variables']}
+                </div>
+                <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3">
+                  <g:select name="variable" id="variable" noSelection="${['':'']}" from='${variables}'></g:select>
+                  <img alt="${msgs['grailsflow.command.pasteVariable']}"
+                               src="${g.resource(plugin: 'grailsflow', dir: 'images/grailsflow/editor',file:'add.gif')}"
+                               onClick="pasteVariable()"/>
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2 col-xs-2">
+                  ${msgs['grailsflow.label.actions']}
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                  <gf:select name="action" id="action" noSelection="${['':'']}" from='${actions}'
+                                     optionValue="label" optionKey="value" optionGroup="group">
+                  </gf:select>
+                  <img alt="${msgs['grailsflow.command.pasteAction']}"
+                               src="${g.resource(plugin: 'grailsflow', dir: 'images/grailsflow/editor',file:'add.gif')}"
+                               onClick="openActionParametersEditor()"/>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                  <g:textArea id="actionsCode" name="actionsCode" value="${actionsCode}" rows="20" cols="80"/>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                  <g:actionSubmit action="saveActions" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>&nbsp;
+                  <g:actionSubmit action="showProcessNodeEditor" value="${common['grailsflow.command.back']}" class="btn btn-default"/>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </g:form>
+
     </body>
 </html>

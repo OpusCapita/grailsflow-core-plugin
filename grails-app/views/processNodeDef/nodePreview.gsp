@@ -22,8 +22,14 @@
          <title>${msgs['grailsflow.label.previewForm']}</title>
     </head>
     <body>
-        <div class="body">
-          <g:render plugin="grailsflow" template="/commons/messageInfo"/>
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+            <g:render plugin="grailsflow" template="/commons/messageInfo"/>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
           <fieldset>
             <legend>${msgs['grailsflow.label.previewForm']}</legend>
             <br/>
@@ -38,5 +44,6 @@
             </span>
           </div>
         </div>
+      </div>
     </body>
 </html>

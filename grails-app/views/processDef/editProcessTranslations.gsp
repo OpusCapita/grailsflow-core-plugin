@@ -23,29 +23,41 @@
          <title>${details['grailsflow.title.processTranslations']}</title>
     </head>
     <body>
-      <div class="body">
-        <b class="header">${details['grailsflow.title.processTranslations']}</b>
-        <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-        <br/>
-        <h2 class="headline">${types['grailsflow.label.processID']}: ${processDef.processID}</h2>
-        <br/><br/>
-        <g:form controller="${params['controller']}">
-          <input type="hidden" name="id" value="${processDef.id}"/>
-          <gf:section title="${details['grailsflow.label.label']}" selected="true">
-            <g:render plugin="grailsflow" template="/common/translationsEditor"
-	            model="[ 'translations': processDef.label, 'parameterName': 'label']"/>
-          </gf:section>
-          <br/><br/>
-          <gf:section title="${details['grailsflow.label.description']}" selected="true">
-            <g:render plugin="grailsflow" template="/common/translationsEditor"
-	            model="[ 'translations': processDef.description, 'parameterName': 'description', 'textarea': true]"/>
-          </gf:section>
-          <div class="buttons">
-            <span class="button">
-              <g:actionSubmit action="saveProcessTranslations" value="${common['grailsflow.command.apply']}" class="button"/>
-            </span>
-          </div>
-        </g:form>
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+          <h3>${details['grailsflow.title.processTranslations']}</h3>
+        </div>
       </div>
+
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+          <g:render plugin="grailsflow" template="/commons/messageInfo"/>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+          <h4>${types['grailsflow.label.processID']}: ${processDef.processID}</h4>
+
+          <g:form controller="${params['controller']}">
+              <input type="hidden" name="id" value="${processDef.id}"/>
+              <gf:section title="${details['grailsflow.label.label']}" selected="true">
+                <g:render plugin="grailsflow" template="/common/translationsEditor"
+                    model="[ 'translations': processDef.label, 'parameterName': 'label']"/>
+              </gf:section>
+              <br/><br/>
+              <gf:section title="${details['grailsflow.label.description']}" selected="true">
+                <g:render plugin="grailsflow" template="/common/translationsEditor"
+                    model="[ 'translations': processDef.description, 'parameterName': 'description', 'textarea': true]"/>
+              </gf:section>
+              <div class="buttons">
+                <span class="button">
+                  <g:actionSubmit action="saveProcessTranslations" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
+                </span>
+              </div>
+            </g:form>
+        </div>
+      </div>
+
     </body>
 </html>

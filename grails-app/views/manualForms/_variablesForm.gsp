@@ -34,41 +34,31 @@
  -->
 
 <gf:messageBundle bundle="grailsflow.worklist" var="msgs"/>
-<h2 class="headline">${msgs['grailsflow.label.processVars']}</h2>
+<h3>${msgs['grailsflow.label.processVars']}</h3>
 
 <g:setProvider library="jquery"/>
 <r:require modules="grailsflowCalendar" />
-<table>
-  <g:each in="${variables.values()}" var="variable">
 
-    <g:set var="readOnly" value="${variable.visibility == com.jcatalog.grailsflow.utils.ConstantUtils.READ_ONLY}"/>
-    <g:set var="required" value="${variable.required != null ? variable.required : false}"/>
-    <g:set var="view" value="${variable.view}"/>
-    <g:set var="parameterName" value="var_${variable.name}"/>
+<g:each in="${variables.values()}" var="variable">
 
-     <tr>
-       <!-- label -->
-       <td valign="top">
-		     <font class="${required ? 'required' : 'label'}">
-		       <gf:translatedValue translations="${variable.label}" default="${variable.name}" />
-		     </font>
-       </td>
+        <g:set var="readOnly" value="${variable.visibility == com.jcatalog.grailsflow.utils.ConstantUtils.READ_ONLY}"/>
+        <g:set var="required" value="${variable.required != null ? variable.required : false}"/>
+        <g:set var="view" value="${variable.view}"/>
+        <g:set var="parameterName" value="var_${variable.name}"/>
 
-       <!-- variable input -->
-       <td>
-				 <!-- render variable -->
-         <gf:customizingTemplate template="${variable.view?.template}"
-             defaultTemplate="${com.jcatalog.grailsflow.model.view.VariableView.getDefaultTemplateForType(variable.type)}"
-		     model="[variable: variable, view: variable.view, parameterName: parameterName]"/>
-
-         <!-- variable hint -->
-         <br/>
-         <font class="hint">
-           <gf:translatedValue translations="${variable.description}" default="" />
-         </font>
-       </td>
-
-     </tr>
-
-  </g:each>
-</table> 
+        <div class="form-group">
+          <label class="col-sm-2 col-xs-2 col-md-2 col-lg-2  control-label">
+            <gf:translatedValue translations="${variable.label}" default="${variable.name}" />
+            <g:if test="${required}">*</g:if>
+          </label>
+          <div class="col-sm-10 col-md-10 col-lg-10 col-xs-10">
+            <gf:customizingTemplate template="${variable.view?.template}"
+                defaultTemplate="${com.jcatalog.grailsflow.model.view.VariableView.getDefaultTemplateForType(variable.type)}"
+                model="[variable: variable, view: variable.view, parameterName: parameterName]"/>
+            <br/>
+            <p class="help-block">
+              <gf:translatedValue translations="${variable.description}" default="" />
+            </p>
+          </div>
+        </div>
+</g:each>

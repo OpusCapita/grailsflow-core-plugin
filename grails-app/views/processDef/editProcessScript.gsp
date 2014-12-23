@@ -26,9 +26,20 @@
 
     </head>
     <body>
-        <div class="body">
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
           <b class="header">${msgs['grailsflow.label.processScript']}</b>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
            <g:render plugin="grailsflow" template="/commons/messageInfo"/>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
            <g:form controller="${params['controller']}" method="POST" >
              <input type="hidden" name="id" value="${processType}"/>
              <br/>
@@ -67,5 +78,6 @@
                </div>
             </g:form>
         </div>
+      </div>
     </body>
 </html>

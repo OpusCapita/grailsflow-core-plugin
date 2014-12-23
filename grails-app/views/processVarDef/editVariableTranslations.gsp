@@ -22,29 +22,39 @@
          <title>${msgs['grailsflow.title.variableTranslations']}</title>
     </head>
     <body>
-      <div class="body">
-        <b class="header">${msgs['grailsflow.title.variableTranslations']}</b>
-        <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-        <br/>
-        <h2 class="headline">${msgs['grailsflow.label.name']}: ${variable?.name?.encodeAsHTML()}</h2>
-        <br/><br/>
-        <g:form controller="${params['controller']}">
-          <input type="hidden" name="id" value="${variable?.id?.encodeAsHTML()}"/>
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+          <h3>${msgs['grailsflow.title.variableTranslations']}</h3>
+        </div>
+      </div>
 
-          <h2 class="headline">${msgs['grailsflow.label.label']}</h2>
-          <g:render plugin="grailsflow" template="/common/translationsEditor"
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+          <g:render plugin="grailsflow" template="/commons/messageInfo"/>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+          <h4>${msgs['grailsflow.label.name']}: ${variable?.name?.encodeAsHTML()}</h4>
+
+          <g:form controller="${params['controller']}">
+            <input type="hidden" name="id" value="${variable?.id?.encodeAsHTML()}"/>
+
+            <h4>${msgs['grailsflow.label.label']}</h4>
+            <g:render plugin="grailsflow" template="/common/translationsEditor"
 	            model="[ 'translations': variable?.label, 'parameterName': 'label']"/>
-          <br/><br/>
-          <h2 class="headline">${msgs['grailsflow.label.description']}</h2>
-          <g:render plugin="grailsflow" template="/common/translationsEditor"
+            <h4>${msgs['grailsflow.label.description']}</h4>
+            <g:render plugin="grailsflow" template="/common/translationsEditor"
 	            model="[ 'translations': variable?.description, 'parameterName': 'description', 'textarea': true]"/>
 
-          <div class="buttons">
-            <span class="button">
-              <g:actionSubmit action="saveVariableTranslations" value="${common['grailsflow.command.apply']}" class="button"/>
-            </span>
-          </div>
-        </g:form>
+            <div class="buttons">
+              <span class="button">
+                <g:actionSubmit action="saveVariableTranslations" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
+              </span>
+            </div>
+         </g:form>
+       </div>
       </div>
     </body>
 </html>

@@ -25,7 +25,7 @@
    <div class="buttons">
       <g:hiddenField name="backPage" value="${nodeDetails.process.id ? 'showWorklist' : 'showTypes'}" />
       <span class="button">
-        <g:actionSubmit action="returnBack" value="${common['grailsflow.command.back']}" class="button"/>
+        <g:actionSubmit action="returnBack" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
       </span>
    </div>
  </g:form>

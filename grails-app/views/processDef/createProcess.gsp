@@ -22,30 +22,42 @@
          <title>${msgs['grailsflow.title.editProcess']}</title>
     </head>
     <body>
-        <div class="body">
-           <b class="header">${msgs['grailsflow.label.editProcess']}</b>
-
-           <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-            
-           <br/>
-           <g:form controller="${params['controller']}" method="POST">
-              <table cellspacing=3 class="blockLayout">
-                <tr>
-                  <td>${msgs['grailsflow.label.processID']}</td>
-                  <td><input name="processID" size="50" value="${params.processID?.encodeAsHTML()}" maxlength="255"/></td>
-                </tr>
-                <tr>
-                  <td>${msgs['grailsflow.label.description']}</td>
-                  <td><textarea name="description" cols="47" rows="2">${params.description?.encodeAsHTML()}</textarea></td>
-                </tr>
-              </table>
-
-              <div class="buttons">
-                <span class="button">
-                  <g:actionSubmit action="processDefinition" value="${common['grailsflow.command.create']}" class="button"/>
-                </span>
-              </div>
-           </g:form>
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+          <h3>${msgs['grailsflow.label.editProcess']}</h3>
         </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+          <g:render plugin="grailsflow" template="/commons/messageInfo"/>
+        </div>
+      </div>
+
+      <g:form class="form-horizontal" controller="${params['controller']}" method="POST">
+        <div class="row">
+          <div class="col-md-6 col-xs-6 col-lg-6">
+            <div class="form-group">
+              <label class="col-sm-4 col-xs-4 col-md-4 col-lg-4  control-label" for="processID">${msgs['grailsflow.label.processID']}</label>
+              <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
+                <input id="processID" name="processID" size="50" value="${params.processID?.encodeAsHTML()}" maxlength="255"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 col-xs-4 col-md-4 col-lg-4  control-label" for="description">${msgs['grailsflow.label.description']}</label>
+              <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
+                <textarea id="description" name="description" cols="47" rows="2">${params.description?.encodeAsHTML()}</textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+                <g:actionSubmit action="processDefinition" value="${common['grailsflow.command.create']}" class="btn btn-primary"/>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </g:form>
+
     </body>
 </html>

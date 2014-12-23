@@ -1,23 +1,26 @@
-<g:if test="${flash.message}">
-  <div class="message"  style="color: green;">${flash.message}</div>
-</g:if>
+<g:if test="${flash.message || flash.errors || flash.warnings}">
+    <g:if test="${flash.message}">
+      <div class="alert-info">
+        <h4>${flash.message}</h4>
+      </div>
+    </g:if>
 
-<g:if test="${flash.errors}">
-  <div class="errors" style="color:red;">
-    <ul>
-      <g:each in="${flash.errors}">
-        <li>${it?.encodeAsHTML()}</li>
-      </g:each>
-    </ul>
-  </div>
-</g:if>
+    <g:if test="${flash.errors}">
+      <div class="alert-danger">
+        <g:each in="${flash.errors}">
+          ${it?.encodeAsHTML()}
+          <br/>
+        </g:each>
+      </div>
+    </g:if>
 
-<g:if test="${flash.warnings}">
-  <div class="warnings" style="color: #CCCC00;">
-    <ul>
-      <g:each in="${flash.warnings}">
-        <li>${it}</li>
-      </g:each>
-    </ul>
-  </div>
+    <g:if test="${flash.warnings}">
+      <div class="alert-warning">
+        <g:each in="${flash.warnings}">
+          ${it}
+          <br/>
+        </g:each>
+      </div>
+    </g:if>
+
 </g:if>

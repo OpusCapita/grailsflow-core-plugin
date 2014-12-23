@@ -13,42 +13,46 @@
 -->
 
 <html>
-    <head>
-         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-         <meta name="layout" content="grailsflow" />
-         <g:render plugin="grailsflow" template="/commons/global"/>
-         <gf:messageBundle bundle="grailsflow.common" var="common"/>
-         <gf:messageBundle bundle="grailsflow.processDetails" var="processDetails"/>
-         <title>${processDetails['grailsflow.title.processList']}</title>
-    </head>
-    <body>
-      <div class="body">
-          <gf:customizingTemplate template="/${params['controller']}/processList/header" defaultTemplate="/process/processList/header"/>
-            
-          <g:form name="processListForm" controller="${params['controller']}" method="POST">
-            <gf:customizingTemplate template="/${params['controller']}/processList/searchForm" defaultTemplate="/process/processList/searchForm"/>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="layout" content="grailsflow" />
+  <g:render plugin="grailsflow" template="/commons/global"/>
+  <gf:messageBundle bundle="grailsflow.common" var="common"/>
+  <gf:messageBundle bundle="grailsflow.processDetails" var="processDetails"/>
+  <title>${processDetails['grailsflow.title.processList']}</title>
+</head>
 
-            <div class="buttons">
-              <span class="button">
-                <g:actionSubmit action="search" value="${common['grailsflow.command.search']}" class="button"/>
-              </span>
-            </div>
+<body>
+  <gf:customizingTemplate template="/${params['controller']}/processList/header"
+                        defaultTemplate="/process/processList/header"/>
 
-            <gf:customizingTemplate template="/${params['controller']}/processList/searchResults" defaultTemplate="/process/processList/searchResults"/>
+  <g:form name="processListForm" controller="${params['controller']}" method="POST">
+    <div class="row">
+      <div class="col-md-12 col-xs-12 col-lg-12">
+        <gf:customizingTemplate template="/${params['controller']}/processList/searchForm"
+                          defaultTemplate="/process/processList/searchForm"/>
 
-            <g:if test="${itemsTotal}">
-              <div class="paginateButtons">
-                <g:paginate total="${itemsTotal}" id="${params.id}" params="${params}" controller="${params['controller']}" action="search"/>
-              </div>
-            </g:if>
-
-            <div class="buttons">
-              <span class="button">
-                <g:actionSubmit action="search" value="${common['grailsflow.command.refresh']}" class="button"/>
-              </span>
-            </div>
-
-        </g:form>
+        <div class="form-submit text-right">
+          <g:actionSubmit action="search" value="${common['grailsflow.command.refresh']}" class="btn btn-link"/>
+          <g:actionSubmit action="search" value="${common['grailsflow.command.search']}" class="btn btn-primary"/>
+        </div>
       </div>
-    </body>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 col-xs-12 col-lg-12">
+
+        <gf:customizingTemplate template="/${params['controller']}/processList/searchResults"
+                                  defaultTemplate="/process/processList/searchResults"/>
+
+        <g:if test="${itemsTotal}">
+          <div class="paginateButtons">
+            <g:paginate total="${itemsTotal}" id="${params.id}" params="${params}" controller="${params['controller']}" action="search"/>
+          </div>
+        </g:if>
+      </div>
+    </div>
+
+</g:form>
+</body>
 </html>
