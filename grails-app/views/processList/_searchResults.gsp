@@ -25,8 +25,8 @@
 <gf:messageBundle bundle="grailsflow.processList" var="processList"/>
 
 <br/>
-<h2 class="headline">${processList['grailsflow.label.processList']}</h2>
-<table class="grid" width="100%">
+<h3>${processList['grailsflow.label.processList']}</h3>
+<table class="table table-bordered">
 <thead>
   <tr>
     <gf:displayHeaders bundle="${processList}" displayParameters="${displayParameters}" labelPrefix="grailsflow."/>

@@ -48,20 +48,28 @@
          <r:layoutResources/>
     </head>
     <body>
-        <h2 class="headline">Action ${actionName}</h2>
-        <br/>
-        <h2 class="headline">Action Call Parameters</h2>
-        <br/>
-        <table id="propsTable" width="100%">
-         <g:each in="${actionParameters}">
-           <tr>
-             <gf:customizingTemplate template="parameterForm" model="[param: it, variables: variables]"/>
-           </tr>
-         </g:each>
-        </table>
-        <input type="button" class="button"  value="${common['grailsflow.command.apply']}" onclick="addAction();"/>&nbsp;
-        <input type="button" class="button" value="${common['grailsflow.command.cancel']}" onclick="window.close();"/>
-        <r:layoutResources/>
+      <div class="container">
+        <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12 col-xs-12 col-lg-12">
+            <div class="panel panel-default">
+              <div class="panel-heading"><h3>Action ${actionName}</h3></div>
+              <div class="panel-body">
+                <h3>Action Call Parameters</h3>
+                <table id="propsTable" class="table table-bordered">
+                  <g:each in="${actionParameters}">
+                    <tr>
+                      <gf:customizingTemplate template="parameterForm" model="[param: it, variables: variables]"/>
+                    </tr>
+                  </g:each>
+                </table>
+                <input type="button" class="btn btn-primary"  value="${common['grailsflow.command.apply']}" onclick="addAction();"/>&nbsp;
+                <input type="button" class="btn btn-default" value="${common['grailsflow.command.cancel']}" onclick="window.close();"/>
+                <r:layoutResources/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </body>
 </html>
 

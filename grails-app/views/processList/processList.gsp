@@ -26,7 +26,7 @@
 
       <div class="row">
         <div class="col-md-12 col-xs-12 col-lg-12">
-          <b class="header">${processList['grailsflow.label.processList']}</b>
+          <h3>${processList['grailsflow.label.processList']}</h3>
         </div>
       </div>
 
@@ -62,7 +62,7 @@
 
             <div class="buttons">
               <span class="button">
-                <gf:refreshButton value="${common['grailsflow.command.refresh']}" class="button"/>
+                <gf:refreshButton value="${common['grailsflow.command.refresh']}" class="btn btn-default"/>
               </span>
             </div>
 
