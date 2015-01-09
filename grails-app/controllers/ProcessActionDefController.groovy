@@ -38,7 +38,12 @@ class ProcessActionDefController extends GrailsFlowSecureController {
 
     def showEditor = {
       def processNodeDef = ProcessNodeDef.get(Long.valueOf(params.ndID))
-      def actionsCode = processNodeDef?.actionStatements ? processNodeDef?.actionStatements*.content.join('\n') : ""
+      def actionsCode = ""
+      if (processNodeDef?.actionStatements) {
+          actionsCode = processNodeDef?.actionStatements.collect({
+              it.content ?: ""
+          }).join('\n')
+      }
 
       def processDef = processNodeDef?.processDef
       def variables = processDef?.variables ? processDef.variables*.name : []
@@ -101,12 +106,10 @@ class ProcessActionDefController extends GrailsFlowSecureController {
         processNodeDef.actionStatements?.clear()
         if (params.actionsCode) {
             params.actionsCode.eachLine() { line ->
-                // fix for Oracle which means that empty lines in actions
-                // will be converted to " " (since Oracle treats empty string as NULL)
-                processNodeDef.addToActionStatements(new ActionStatement(content: line ?: " "))
+                processNodeDef.addToActionStatements(new ActionStatement(content: line))
             }
         }
-        processNodeDef.processDef.save()
+        processNodeDef.save()
        
         redirect(action: showEditor, params: [id: processNodeDef.processDef.id, ndID: processNodeDef.id]) 
     }

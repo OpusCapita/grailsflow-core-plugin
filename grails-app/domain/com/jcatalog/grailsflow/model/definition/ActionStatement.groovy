@@ -26,7 +26,8 @@ class ActionStatement {
     static belongsTo = [ processNodeDef: ProcessNodeDef ]
 
     static constraints = {
-        content(size:1..2000)
+        content(size:0..2000)
+        content(nullable:true, blank: true)
     }
 
 }

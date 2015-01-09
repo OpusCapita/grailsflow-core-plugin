@@ -322,7 +322,7 @@ class GenerateProcessService {
                 nodeCode << "        action { \n"
 
                 node.actionStatements?.each() { line ->
-                    nodeCode << "            "+line.content + "\n"
+                    nodeCode << "            "+(line.content ?: "") + "\n"
                 }
                 nodeCode << "        } \n"
             }
@@ -411,9 +411,6 @@ class GenerateProcessService {
             scriptNode.actionStatements?.each() {
                 def statement = new ActionStatement()
                 statement.properties = it.properties
-                // fix for Oracle which means that empty lines in actions
-                // will be converted to " " (since Oracle treats empty string as NULL)
-                if (!statement.content) statement.content = " "
                 nodeDef.addToActionStatements( statement )
             }
 
