@@ -613,7 +613,9 @@ class ProcessManagerService implements InitializingBean {
      * @return result code of sending event
      */
     public Integer invokeNodeExecution(Long processID, String nodeID, String eventID, String user, Map variables) {
-        return threadRuntimeInfoService.invokeInCurrentThread(processID,{ ProcessNotifier notifier ->
+        def executionResult
+        try {
+            executionResult = threadRuntimeInfoService.invokeInCurrentThread(processID, { ProcessNotifier notifier ->
                 try {
                     BasicProcess basicProcess
                     ProcessNode node
@@ -816,7 +818,13 @@ class ProcessManagerService implements InitializingBean {
                     log.error("Unexpected exception occurred in synchronized block of node invocation!", ex)
                     return ExecutionResultEnum.FAILED_WITH_EXCEPTION.value()
                 } // try-catch
-        });
+            });
+        } catch (InterruptedException e) {
+            log.warn("Sending event for process [${processID}] was interrupted because the process was killed. ${e.message}")
+            executionResult = ExecutionResultEnum.INTERRUPTED_BY_KILLING.value()
+        }
+        return executionResult
+
     } // invokeNodeExecution
 
     /**
