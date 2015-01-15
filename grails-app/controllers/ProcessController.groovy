@@ -37,6 +37,7 @@ import com.jcatalog.grailsflow.status.NodeStatusEnum
 
 import com.jcatalog.grailsflow.process.ProcessSearchParameters
 import java.text.ParseException
+import grails.converters.JSON
 
 /**
  * Process controller class is used for displaying process-related views.
@@ -75,8 +76,11 @@ class ProcessController extends GrailsFlowSecureController {
     * ProcessList UI
     */
     def list = {
-        return [processDetailsList: [],  // show empty list by default
-               processClasses: processManagerService.supportedProcessClasses, params: params]
+        withFormat {
+            html { return [processDetailsList: [],  // show empty list by default
+                processClasses: processManagerService.supportedProcessClasses, params: params]}
+            json { render([errors: flash.errors, processClasses: processManagerService.supportedProcessClasses] as JSON) }
+        }
     }
 
     /**
@@ -264,7 +268,14 @@ class ProcessController extends GrailsFlowSecureController {
 
         model.executionTime = System.currentTimeMillis()- startOperationTime
         log.info("Show worklist: execution time is ${model.executionTime} msec.")
-        render(view: 'showWorklist',model: model, params: params)
+
+        withFormat {
+            html { render(view: 'showWorklist',model: model, params: params) }
+            json {
+                model.processNodeList = worklist
+                render model as JSON
+            }
+        }
     }
 
 
@@ -297,7 +308,11 @@ class ProcessController extends GrailsFlowSecureController {
         if (processManagerService.errors) {
             flash.message = processManagerService.errors.join("<br/>")
         }
-        render(view: 'showTypes', model: [processClasses: processClasses])
+
+        withFormat {
+            html { render(view: 'showTypes', model: [processClasses: processClasses]) }
+            json { render([errors:  flash.errors, processClasses: processClasses] as JSON) }
+        }
     }
 
 
@@ -430,12 +445,17 @@ class ProcessController extends GrailsFlowSecureController {
             def processClass = processClasses?.find() { it.processType == basicProcess.type }
             processDetailsList << new ProcessDetails(basicProcess, processClass)
         }
-
-        render(view: 'list', params: params,
+        withFormat {
+            html { render(view: 'list', params: params,
                model: [processDetailsList: processDetailsList,
-                       itemsTotal: itemsTotal ? itemsTotal : 0,
-                       processClasses: processClasses])
+                   itemsTotal: itemsTotal ? itemsTotal : 0,
+                   processClasses: processClasses]) }
+            json { render([processDetailsList: processList,itemsTotal: itemsTotal ? itemsTotal : 0,
+                   processClasses: processClasses, params: params,
+                   errors:  flash.errors, message: flash.message] as JSON) }
+        }
     }
+
 
     def exportProcess = {
         if (!params.format) {
@@ -549,16 +569,26 @@ class ProcessController extends GrailsFlowSecureController {
             if (!processClass) {
                 flash.message = grailsflowMessageBundleService
                     .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processScript.notExisted", [process?.type])
-                return forward(action: 'showTypes', params: params )
+                withFormat {
+                    html { return forward(action: 'showTypes', params: params )  }
+                    json { render([errors : flash.message, params: params] as JSON)}
+                }
+
             }
             def processDetails = new ProcessDetails(process, processClass)
+            withFormat {
+                html { render(view: 'processDetails',
+                        model: [processDetails: processDetails, params: params])}
+                json { render([processDetails: process, params: params] as JSON) }
+            }
 
-            render(view: 'processDetails',
-                   model: [processDetails: processDetails, params: params])
         } else {
             flash.message = grailsflowMessageBundleService
                 .getMessage(RESOURCE_BUNDLE, "grailsflow.message.process.notStarted", [params?.toString()])
-            forward(action: 'showTypes', params: params )
+            withFormat {
+                html { forward(action: 'showTypes', params: params )  }
+                json { render([errors : flash.message, params: params] as JSON)}
+            }
         }
     }
 
@@ -649,9 +679,16 @@ class ProcessController extends GrailsFlowSecureController {
       } else {
         templatePath = "/manualForms/automaticForm"
       }
-      render(view: 'nodeDetails', model: [template: templatePath,
+
+      withFormat {
+          html { render(view: 'nodeDetails', model: [template: templatePath,
               templateNotFoundMessage: templateNotFoundMessage,
               nodeDetails: nodeDetails, params: params])
+          }
+          json { render([template: templatePath,
+              templateNotFoundMessage: templateNotFoundMessage,
+              nodeDetails: node, params: params] as JSON) }
+      }
 
     }
 
