@@ -80,14 +80,6 @@ class ThreadRuntimeInfoService{
               notifier.invocationThreadLock.writeLock().unlock()
               notifier.lock.writeLock().unlock() //unlock process
             }
-
-            // If current thread was killed it must generate exception
-            // to avoid https://jira.terracotta.org/jira/browse/QTZ-471
-            // interrupted() is used instead of isInterrupted() because interrupted status must be cleared
-            if (Thread.currentThread().interrupted()) {
-                throw new InterruptedException("Invocation of a closure in current thread was interrupted. The result of execution of the closure is ${r}")
-            }
-            
         }finally{
             //remove execution info only if there is no more threads are interested 
             //for doing some action with the process

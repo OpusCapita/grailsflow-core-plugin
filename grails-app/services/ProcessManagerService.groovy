@@ -819,8 +819,13 @@ class ProcessManagerService implements InitializingBean {
                     return ExecutionResultEnum.FAILED_WITH_EXCEPTION.value()
                 } // try-catch
             });
-        } catch (InterruptedException e) {
-            log.warn("Sending event for process [${processID}] was interrupted because the process was killed. ${e.message}")
+        } finally {
+            // If current thread was killed it must clear interrupted status
+            // to avoid https://jira.terracotta.org/jira/browse/QTZ-471
+            // interrupted() is used instead of isInterrupted() because interrupted status must be cleared
+            if (Thread.currentThread().interrupted()) {
+                log.warn("The process [${processID}] was killed after node [${nodeID}] was compleated with code ${executionResult}")
+            }
             executionResult = ExecutionResultEnum.INTERRUPTED_BY_KILLING.value()
         }
         return executionResult
