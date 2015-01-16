@@ -80,6 +80,7 @@ class ThreadRuntimeInfoService{
               notifier.invocationThreadLock.writeLock().unlock()
               notifier.lock.writeLock().unlock() //unlock process
             }
+            
         }finally{
             //remove execution info only if there is no more threads are interested 
             //for doing some action with the process
