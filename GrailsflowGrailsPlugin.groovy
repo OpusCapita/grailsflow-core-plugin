@@ -40,7 +40,7 @@ class GrailsflowGrailsPlugin {
             [ name: "July Antonicheva", email: "july.antonicheva@jcatalog.com" ]
     ]
     def issueManagement = [ system: "JIRA", url: "http://jira.jcatalog.com/browse/GFW" ]
-    def scm = [ url: "https://github.com/jCatalog/grailsflow-core" ]
+    def scm = [ url: "https://github.com/jCatalog/grailsflow-core-plugin" ]
 
     def doWithSpring = {
       def grailsFlowCoreConfig = application.config.grailsFlowCoreConfig
