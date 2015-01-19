@@ -1,5 +1,4 @@
-grailsflow-plugin
-======================
+![](https://github.com/jCatalog/grailsflow-app/blob/master/web-app/images/layout/grailsflowLogo.jpg)
 
 ## GrailsFlow is an open source Workflow and Process Engine.
 
