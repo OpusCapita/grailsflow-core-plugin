@@ -168,8 +168,10 @@ class ProcessVarDefController extends GrailsFlowSecureController {
                     ProcessVariable tempVariable = new ProcessVariable()
                     Set preparedItems = new HashSet<ProcessVarDefListItem>(newItems?.size())
                     newItems?.each() { Object listValue ->
-                        tempVariable.value = listValue
-                        preparedItems.add(new ProcessVarDefListItem(content: tempVariable.variableValue, processVariableDef: var))
+                        if (listValue) {
+                            tempVariable.value = listValue
+                            preparedItems.add(new ProcessVarDefListItem(content: tempVariable.variableValue, processVariableDef: var))
+                        }
                     }
 
                     Collection<ProcessVarDefListItem> items = var.items
