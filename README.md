@@ -10,3 +10,9 @@ It is now compatible with **Grails 2.3.x**, current released version: **1.4.1** 
 For the latest updates and release information visit [Grailsflow site](http://grailsflow.org) and follow [@grailsflow](https://twitter.com/grailsflow) on twitter.
 
 Lead: [July Antonicheva](https://github.com/julyantonicheva)
+
+## Additional information
+
+* Check documentation on [GitHib](http://jcatalog.github.io/grailsflow-core-plugin/)
+* For a full standalone fully-functioning Grailsflow workflow example, check out [Grailsflow Demo App](https://github.com/jCatalog/grailsflow-app)
+* Have questions or found a bug? Open an issue in [JIRA](http://jira.jcatalog.com/browse/GFW) or put question on [Stackoverflow](http://stackoverflow.com/tags/grailsflow)
