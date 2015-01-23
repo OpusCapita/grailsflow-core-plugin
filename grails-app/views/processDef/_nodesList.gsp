@@ -113,7 +113,7 @@
           </table>
         </td>
         <g:if test="${showOperations}">
-          <td>
+          <td style="white-space: nowrap;">
             <g:remoteLink controller="processNodeDef" action="orderMoveUp" id="${node.id}"
                 onSuccess="afterMoveNodeUp(data);"
                 title="${common['grailsflow.command.up']}"><img alt="${common['grailsflow.command.up']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'move_up.gif')}"/></g:remoteLink>

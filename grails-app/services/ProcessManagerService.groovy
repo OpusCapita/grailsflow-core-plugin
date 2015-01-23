@@ -825,8 +825,8 @@ class ProcessManagerService implements InitializingBean {
             // interrupted() is used instead of isInterrupted() because interrupted status must be cleared
             if (Thread.currentThread().interrupted()) {
                 log.warn("The process [${processID}] was killed after node [${nodeID}] was compleated with code ${executionResult}")
+                executionResult = ExecutionResultEnum.INTERRUPTED_BY_KILLING.value()
             }
-            executionResult = ExecutionResultEnum.INTERRUPTED_BY_KILLING.value()
         }
         return executionResult
 
