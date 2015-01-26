@@ -62,8 +62,8 @@
       <div class="form-group">
         <label class="col-sm-4 col-xs-4 col-md-4 col-lg-4 control-label">${processDetails['grailsflow.label.startedFrom']}</label>
         <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
-          <gf:jQueryCalendar property="startedFrom" value="${params.startedFrom?.encodeAsHTML()}" />&nbsp;&nbsp;
-          ${processDetails['grailsflow.label.to']}&nbsp;
+          <p style="white-space: nowrap;"><gf:jQueryCalendar property="startedFrom" value="${params.startedFrom?.encodeAsHTML()}" />&nbsp;&nbsp;
+          ${processDetails['grailsflow.label.to']}</p>
           <gf:jQueryCalendar property="startedTo" value="${params.startedTo?.encodeAsHTML()}" />
         </div>
       </div>
@@ -76,16 +76,16 @@
       <div class="form-group">
         <label class="col-sm-4 col-xs-4 col-md-4 col-lg-4 control-label">${processDetails['grailsflow.label.modifiedFrom']}</label>
         <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
-          <gf:jQueryCalendar property="modifiedFrom" value="${params.modifiedFrom?.encodeAsHTML()}" />&nbsp;&nbsp;
-          ${processDetails['grailsflow.label.to']}&nbsp;
+          <p style="white-space: nowrap;"><gf:jQueryCalendar property="modifiedFrom" value="${params.modifiedFrom?.encodeAsHTML()}" />&nbsp;&nbsp;
+          ${processDetails['grailsflow.label.to']}</p>
           <gf:jQueryCalendar property="modifiedTo" value="${params.modifiedTo?.encodeAsHTML()}" />
         </div>
       </div>
       <div class="form-group">
         <label class="col-sm-4  col-xs-4 col-md-4 col-lg-4 control-label">${processDetails['grailsflow.label.finishedFrom']}</label>
         <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
-          <gf:jQueryCalendar property="finishedFrom" value="${params.finishedFrom?.encodeAsHTML()}" />&nbsp;&nbsp;
-          ${processDetails['grailsflow.label.to']}&nbsp;
+          <p style="white-space: nowrap;"><gf:jQueryCalendar property="finishedFrom" value="${params.finishedFrom?.encodeAsHTML()}" />&nbsp;&nbsp;
+          ${processDetails['grailsflow.label.to']}</p>
           <gf:jQueryCalendar property="finishedTo" value="${params.finishedTo?.encodeAsHTML()}" />
         </div>
       </div>

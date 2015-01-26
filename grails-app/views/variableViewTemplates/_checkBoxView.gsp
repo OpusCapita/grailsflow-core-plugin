@@ -30,6 +30,4 @@
     <g:set var="parameterName" value="${readOnly ? '' : parameterName}"/>
     <g:set var="styleClass" value="${readOnly ? 'readonly' : view?.styleClass}"/>
 
-    <div class="checkbox">
       <g:checkBox name="${parameterName}" value="${variable.value}" disabled="${readOnly ?: 'false'}"/>
-    </div>
