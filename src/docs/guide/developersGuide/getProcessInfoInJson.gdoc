@@ -1,0 +1,28 @@
+*How to get Process Management Results in JSON*
+
+Sometimes the developers don't want to get Grailsflow core pages with results of process management
+(e.g. process details, or search results), but need information for their own pages. So, it is possible to get
+Process Management Results in JSON format. For this reason simply put additional parameter
+*format=JSON* in your request. For more details about implementation, please check Grails closure
+ [withFormat|http://grails.org/doc/2.3.x/ref/Controllers/withFormat.html]
+
+The mechanism is working for process management actions such as
+ * 'showTypes'
+ * 'search'
+ * 'showWorklist'
+ * 'showProcessDetails'
+ * 'showNodeDetails'
+ * 'startProcess'
+ * 'killProcess'
+ * 'sendEvent'
+
+ For example,
+
+ {code}
+  http://localhost:8080/grailsflow-demo/process/showWorklist?format=json
+ {code}
+
+ or
+ {code}
+  http://localhost:8080/grailsflow-demo/process/search?format=json
+ {code}

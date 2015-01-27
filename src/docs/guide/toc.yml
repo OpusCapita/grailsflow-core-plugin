@@ -64,6 +64,8 @@ developersGuide:
       title: PostKillOperation Handler
   customizeDueDate:
       title: Customize Due Dates calculation
+  getProcessInfoInJson:
+      title: How to get Process Management Results in JSON
 
 faq:
   title: Frequently Asked Questions
