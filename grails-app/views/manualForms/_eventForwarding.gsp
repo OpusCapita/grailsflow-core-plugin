@@ -40,7 +40,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
-                <g:submitButton id="processNode_eventForwarding" name="processNode_eventForwarding" value="${msgs['grailsflow.command.assign']}" class="button" />
+                <g:submitButton id="processNode_eventForwarding" name="processNode_eventForwarding" value="${msgs['grailsflow.command.assign']}" class="btn btn-primary" />
             </div>
         </div>
 
