@@ -19,7 +19,7 @@ import com.jcatalog.grailsflow.status.ProcessStatusEnum
 import com.jcatalog.grailsflow.scheduling.triggers.ConfigurableSimpleTrigger
 
 class GrailsflowGrailsPlugin {
-    def version = '1.5'
+    def version = '1.6-SNAPSHOT'
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.0 > *"
     def dependsOn = [quartz: "0.4 > *"]
