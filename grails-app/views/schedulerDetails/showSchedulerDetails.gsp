@@ -98,13 +98,13 @@
                   <td>${jobInfo?.job?.description}</td>
                   <td>
                     ${msgs['grailsflow.label.volatile']}&#160;
-                    ${msgs[(jobInfo?.job ? jobInfo?.job["volatile"] : false) ? 'grailsflow.boolean.yes' : 'grailsflow.boolean.no']}<br/>
+                    ${msgs[jobInfo?.job?.persistJobDataAfterExecution ? 'grailsflow.boolean.yes' : 'grailsflow.boolean.no']}<br/>
                     ${msgs['grailsflow.label.durable']}&#160;
-                    ${msgs[(jobInfo.job.durable) ? 'grailsflow.boolean.yes' : 'grailsflow.boolean.no']}<br/>
+                    ${msgs[jobInfo?.job?.durable ? 'grailsflow.boolean.yes' : 'grailsflow.boolean.no']}<br/>
                     ${msgs['grailsflow.label.stateful']}&#160;
-                    ${msgs[(jobInfo?.job?.stateful) ? 'grailsflow.boolean.yes' : 'grailsflow.boolean.no']}<br/>
+                    ${msgs[jobInfo?.job?.concurrentExectionDisallowed ? 'grailsflow.boolean.yes' : 'grailsflow.boolean.no']}<br/>
                   </td>
-                  <td>${jobInfo?.trigger?.name}</td>
+                  <td>${jobInfo?.trigger?.key?.name}</td>
                 </tr>
               </g:each>
               </tbody>
