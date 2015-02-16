@@ -68,7 +68,7 @@
         </div>
       </div>
 
-      <g:form controller="${params['controller']}" method="POST">
+      <g:form controller="processNodeDef" method="POST">
         <input type="hidden" name="id" value="${process?.id?.encodeAsHTML()}"/>
         <input type="hidden" name="processType" value="${process?.processID?.encodeAsHTML()}"/>
         <input type="hidden" id="ndID" name="ndID" value="${node?.id?.encodeAsHTML()}"/>
