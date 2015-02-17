@@ -1,12 +1,25 @@
-*.class
+# Directory-based project format:
+.idea/
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# File-based project format:
+*.iml
+*.ipr
+*.iws
 
-# Package Files #
-*.jar
-*.war
-*.ear
+# web application files
+/web-app/WEB-INF/classes
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# project release file
+/*.war
+
+# plugin release files
+/*.zip
+/*.zip.sha1
+/plugin.xml
+
+# older plugin install locations
+/plugins
+/web-app/plugins
+
+# "temporary" build files
+/target
