@@ -612,9 +612,9 @@ class ProcessDefController extends GrailsFlowSecureController {
     }
 
     def editNodeDef = {
-      def process = ProcessDef.get(Long.valueOf(params.processID))
-      def node = ProcessNodeDef.findWhere(processDef: process, nodeID: params.nodeID)
-      forward(controller: "processNodeDef", action: "editNodeDef", params: [id: node.id])
+        def process = ProcessDef.get(Long.valueOf(params.processID))
+        def node = ProcessNodeDef.findWhere(processDef: process, nodeID: params.nodeID)
+        redirect(controller: "processNodeDef", action: "editNodeDef", params: [id: node.id])
     }
 
     def showGraphic = {
