@@ -29,33 +29,34 @@ grails.project.dependency.resolution = {
     }
     
     dependencies {
-        compile ('com.sdicons.jsontools:jsontools-core:1.7',
-                 'commons-httpclient:commons-httpclient:3.0.1',
-                 'commons-beanutils:commons-beanutils:1.9.2') {
+        compile ("com.sdicons.jsontools:jsontools-core:1.7",
+                 "commons-httpclient:commons-httpclient:3.0.1",
+                 "commons-beanutils:commons-beanutils:1.9.2",
+                 "javax.validation:validation-api:1.1.0.Final") {
             exported=false
         }
-        runtime ('javax.mail:mail:1.4',
-                 'javax.activation:activation:1.1',
-                 'org.apache.ant:ant:1.7.1',
-                 'org.apache.ant:ant-launcher:1.7.1',
-                 'org.springframework:spring-test:3.1.2.RELEASE'){
+
+        runtime ("javax.mail:mail:1.4",
+                 "javax.activation:activation:1.1",
+                 "org.apache.ant:ant:1.7.1",
+                 "org.apache.ant:ant-launcher:1.7.1",
+                 "org.hibernate:hibernate-validator:5.0.3.Final",
+                 "org.springframework:spring-test:3.2.2.RELEASE"){
             exported=false
         }
     }
     
     plugins {
         // plugins for the build system only
-        build ":tomcat:7.0.47"
-        build ":release:3.0.1"
+        build   ":tomcat:7.0.55"
+        build   ":release:3.0.1"
 
-        // plugins needed at runtime but not for compilation
-        runtime ":hibernate:3.6.10.6"
-        runtime ":resources:1.2.8"
+        runtime ":hibernate:3.6.10.18"
+        runtime(":resources:1.2.8",
+                ":jquery:1.11.1",
+                ":jquery-ui:1.10.4")
 
         compile ":twitter-bootstrap:3.3.1"
-
-        runtime(':jquery:1.11.1',
-                ':jquery-ui:1.10.3')
         compile ":export:1.6"
         compile ":quartz:1.0.1"
     }

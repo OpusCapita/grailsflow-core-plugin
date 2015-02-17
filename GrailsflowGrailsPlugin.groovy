@@ -5,7 +5,6 @@ import com.jcatalog.grailsflow.messagebundle.DefaultMessageBundleProvider
 
 import com.jcatalog.grailsflow.model.process.FlowStatus
 
-import org.springframework.orm.hibernate3.HibernateTemplate
 import com.jcatalog.grailsflow.grails.ListFactoryBean
 
 import com.jcatalog.grailsflow.search.DefaultSearchParameter
@@ -17,12 +16,13 @@ import grails.util.Holders
 import com.jcatalog.grailsflow.status.NodeStatusEnum
 import com.jcatalog.grailsflow.status.ProcessStatusEnum
 import com.jcatalog.grailsflow.scheduling.triggers.ConfigurableSimpleTrigger
+import org.springframework.orm.hibernate3.HibernateTemplate
 
 class GrailsflowGrailsPlugin {
     def version = '1.6-SNAPSHOT'
     // the version or versions of Grails the plugin is designed for
-    def grailsVersion = "2.0 > *"
-    def dependsOn = [quartz: "0.4 > *"]
+    def grailsVersion = "2.3 > *"
+    def dependsOn = [quartz: "1.0.1 > *"]
     def pluginExcludes = [
             "src/docs/**"
     ]
