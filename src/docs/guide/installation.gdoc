@@ -4,7 +4,7 @@ Add the plugin as a dependency to your application by directly editing your Buil
     ...
     plugins {
         ...
-        compile ':grailsflow:1.4'
+        compile ':grailsflow:1.6'
     }
 {code}
 
