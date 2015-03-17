@@ -16,7 +16,6 @@ import grails.util.Holders
 import com.jcatalog.grailsflow.status.NodeStatusEnum
 import com.jcatalog.grailsflow.status.ProcessStatusEnum
 import com.jcatalog.grailsflow.scheduling.triggers.ConfigurableSimpleTrigger
-import org.springframework.orm.hibernate3.HibernateTemplate
 
 class GrailsflowGrailsPlugin {
     def version = '1.6'
@@ -269,7 +268,6 @@ class GrailsflowGrailsPlugin {
     def doWithApplicationContext = { applicationContext ->
 
         def sessionFactory = applicationContext.sessionFactory
-        def hTemplate  = new HibernateTemplate(sessionFactory)
 
         FlowStatus.withTransaction {
             // Insert process statuses into DB if they're missing
@@ -277,7 +275,7 @@ class GrailsflowGrailsPlugin {
                 def statusID = it.value()
                 if (!FlowStatus.findByStatusID(statusID)) {
                     def status = new FlowStatus(statusID: statusID, description: statusID, isFinal: it.isFinal())
-                    hTemplate.save(status)
+                    status.save()
                 }
             }
 
@@ -286,7 +284,7 @@ class GrailsflowGrailsPlugin {
                 def statusID = it.value()
                 if (!FlowStatus.findByStatusID(statusID)) {
                     def status = new FlowStatus(statusID: statusID, description: statusID, isFinal: it.isFinal())
-                    hTemplate.save(status)
+                    status.save()
                 }
             }
         }
