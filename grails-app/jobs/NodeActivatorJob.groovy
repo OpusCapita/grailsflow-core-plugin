@@ -80,7 +80,7 @@ class NodeActivatorJob {
             log.info "*** Amount of Nodes to execute ${activeNodes.size()} ***"
 
             activeNodes.each {
-                processManagerService.sendEvent(it.process?.id, it.nodeID, null, it.caller)
+                processManagerService.sendEvent(it.process, it, null, it.caller)
             }
 
             // restart the execution of manual nodes if they were interrupted by Server
@@ -102,7 +102,7 @@ class NodeActivatorJob {
                     // check if the node is executed in separate thread or recently finished. if no - execute it
                     if(!threadRuntimeInfoService.isExecutingOrRecentlyFinished(node.process.id)){
                         log.info "*** No Thread Info for thread [${namePrefix}]: sending event [${node.event}] to node [${node.nodeID}] ***"
-                        processManagerService.sendEvent(node.process.id, node.nodeID, node.event, node.caller)
+                        processManagerService.sendEvent(node.process, node, node.event, node.caller)
                     }
                 }
             }

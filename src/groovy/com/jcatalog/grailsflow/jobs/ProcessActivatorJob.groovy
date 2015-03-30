@@ -12,10 +12,10 @@ import org.apache.commons.logging.LogFactory
  * with the given initial parameters.
  *
  * @author Stephan Albers
- * @author July Karpey
+ * @author July Antonicheva
  */
 class ProcessActivatorJob extends QuartzJobBean {
-    private static final Log log = LogFactory.getLog(getClass())
+    private static final Log log = LogFactory.getLog(ProcessActivatorJob.getClass())
 
     protected void executeInternal(JobExecutionContext ctx) throws JobExecutionException {
         def dataMap = ctx.jobDataMap
@@ -30,7 +30,9 @@ class ProcessActivatorJob extends QuartzJobBean {
                 return 
             }
             
-            def result = dataMap.processManagerService.startProcess(dataMap.processType, dataMap.requester, dataMap.variables) 
+            def result = dataMap.processManagerService.startProcess(dataMap.processType, dataMap.requester, dataMap.variables)
+            log.debug("Started process of type ${dataMap.processType} with is ${result}")
+
             return
         }
     }

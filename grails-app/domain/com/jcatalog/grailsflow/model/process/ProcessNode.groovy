@@ -19,7 +19,7 @@ import com.jcatalog.grailsflow.model.definition.ProcessNodeDef
  * Process Node represents a node for the process.
  *
  * @author Stephan Albers
- * @author July Karpey
+ * @author July Antonicheva
  * @author Maria Voitovich
  */
 class ProcessNode {
@@ -60,6 +60,7 @@ class ProcessNode {
     static mapping = {
       status index: 'IDX_PROCESS_NODE_1'
       nodeID index:'IDX_PROCESS_NODE_3'
+      process index:'IDX_PROCESS_NODE_3'
       previousNodes joinTable:[name:'process_node_transition', key:'to_node', column: "from_node"], cascade: "none"
       nextNodes joinTable:[name:'process_node_transition', key:'from_node', column: "to_node"]
     }

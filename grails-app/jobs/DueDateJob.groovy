@@ -83,10 +83,7 @@ class DueDateJob {
                      event = "overdue"
                 }
                 log.debug("Sending event '${event}' to overdue node '${it.nodeID}' of process #${it.process.id}")
-                processManagerService.sendEvent(it.process.id,
-                                                it.nodeID,
-                                                event,
-                                                it.caller)
+                processManagerService.sendEvent(it.process, it, event, it.caller)
             } // each
         } catch (Throwable ex){
             log.error("Unexpected Problems appear during DueDateJob execution.",ex)

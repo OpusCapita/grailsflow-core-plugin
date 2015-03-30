@@ -306,8 +306,8 @@ class ProcessManagementController extends GrailsFlowSecureController {
                     json { render(errors: flash.errors, params: params) as JSON}
                 }
             } else {
-              def process = BasicProcess.get(result)
-              node = ProcessNode.findWhere("nodeID": node.nodeID, "process": process)
+                def process = BasicProcess.get(result)
+                node = process.nodes.find() { it.nodeID == node.nodeID }
             }
         }
 
@@ -320,8 +320,7 @@ class ProcessManagementController extends GrailsFlowSecureController {
         }
 
         log.debug("Sending event ${event} to node ${node.nodeID} of process #${node.process.id}")
-        def res = processManagerService.sendEvent(node.process.id, node.nodeID, event,
-            securityHelper.getUser(session), variables)
+        def res = processManagerService.sendEvent(node.process, node, event, securityHelper.getUser(session), variables)
         log.debug("The result of sending event is: $res")
 
         // TODO get rid of "isEmbeded"
