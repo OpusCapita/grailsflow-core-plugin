@@ -40,10 +40,10 @@ grails.project.dependency.resolution = {
                  "javax.activation:activation:1.1",
                  "org.apache.ant:ant:1.7.1",
                  "org.apache.ant:ant-launcher:1.7.1",
-                 "org.hibernate:hibernate-validator:5.0.3.Final",
-                 "org.springframework:spring-test:3.2.2.RELEASE"){
+                 "org.hibernate:hibernate-validator:5.0.3.Final"){
             exported=false
         }
+        test "org.grails:grails-datastore-test-support:1.0.1-grails-2.4"
     }
     
     plugins {
