@@ -74,7 +74,7 @@ class TestVariableTypesProcess {
         on("okay").to([ "editValues" ]) 
       } 
 
-      editValuesWait(editorType: ConstantUtils.EDITOR_AUTO) { 
+      editValuesWait(dueDate: 60000, editorType: ConstantUtils.EDITOR_AUTO) {
         variable( link_var: ConstantUtils.WRITE_READ, double_var: ConstantUtils.WRITE_READ, selectbox_var: ConstantUtils.WRITE_READ, string_var: ConstantUtils.REQUIRED, date_var: ConstantUtils.WRITE_READ, object_list: ConstantUtils.WRITE_READ, string_noview: ConstantUtils.WRITE_READ, textarea_var: ConstantUtils.WRITE_READ, object_search: ConstantUtils.WRITE_READ, document_var: ConstantUtils.REQUIRED, boolean_var: ConstantUtils.WRITE_READ, long_var: ConstantUtils.WRITE_READ, integer_var: ConstantUtils.WRITE_READ, booleanItems: ConstantUtils.READ_ONLY, stringItems: ConstantUtils.WRITE_READ, linkItems: ConstantUtils.WRITE_READ, longItems: ConstantUtils.READ_ONLY, dateItems: ConstantUtils.WRITE_READ)
         action { 
 
@@ -83,7 +83,7 @@ class TestVariableTypesProcess {
         on("finish").to([ "finish" ]) 
       } 
 
-      viewValuesWait(editorType: ConstantUtils.EDITOR_AUTO) { 
+      viewValuesWait(dueDate: 60000, editorType: ConstantUtils.EDITOR_AUTO) {
         variable( object_list: ConstantUtils.READ_ONLY, link_var: ConstantUtils.READ_ONLY, textarea_var: ConstantUtils.READ_ONLY, double_var: ConstantUtils.READ_ONLY, boolean_var: ConstantUtils.READ_ONLY, string_noview: ConstantUtils.READ_ONLY, date_var: ConstantUtils.READ_ONLY, integer_var: ConstantUtils.READ_ONLY, document_var: ConstantUtils.READ_ONLY, long_var: ConstantUtils.READ_ONLY, selectbox_var: ConstantUtils.READ_ONLY, string_var: ConstantUtils.READ_ONLY, object_search: ConstantUtils.READ_ONLY, booleanItems: ConstantUtils.WRITE_READ, stringItems: ConstantUtils.WRITE_READ, linkItems: ConstantUtils.WRITE_READ, longItems: ConstantUtils.READ_ONLY)
         action { 
 

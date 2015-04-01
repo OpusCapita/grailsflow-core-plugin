@@ -29,7 +29,7 @@ import com.jcatalog.grailsflow.model.process.ProcessNode
  * Job is running according to 'timeout' value.
  *
  * @author Stephan Albers
- * @author July Karpey
+ * @author July Antonicheva
  *
  */
 import com.jcatalog.grailsflow.utils.ConstantUtils
@@ -49,17 +49,18 @@ class DueDateJob {
     def processManagerService
     def appExternalID
     def sessionFactory
+    def grailsApplication
     
     def execute(){
         try{
-            def activatedStatus = FlowStatus.findByStatusID(NodeStatusEnum.ACTIVATED.value())
-            def awaitCallbackStatus = FlowStatus.findByStatusID(NodeStatusEnum.AWAIT_CALLBACK.value())
-            def now = new Date()
+            FlowStatus activatedStatus = FlowStatus.findByStatusID(NodeStatusEnum.ACTIVATED.value())
+            FlowStatus awaitCallbackStatus = FlowStatus.findByStatusID(NodeStatusEnum.AWAIT_CALLBACK.value())
+            Date now = new Date()
 
             log.debug("Searching nodes that overdue at ${now}")
 
             // select overdue nodes form active "Wait" nodes and nodes that await for callback
-            ProcessNode.withCriteria {
+            List<ProcessNode> dueDateNodes = ProcessNode.withCriteria {
               and {
                 createAlias("process", "p")
                 eq("p.appGroupID", appExternalID)
@@ -74,17 +75,28 @@ class DueDateJob {
                 lt("dueOn", now)
                 fetchMode('p', FetchMode.JOIN)
               }
-            }.each {
+              order("startedOn", "asc")
+            }
+
+            // compare nodes according to configured nodes comparator
+            def nodesComparator = grailsApplication.config.grailsflow.nodeActivator.comparator
+            if (nodesComparator) {
+                dueDateNodes = dueDateNodes.sort(nodesComparator)
+            }
+
+            dueDateNodes.each {
                 log.debug("Node '${it.nodeID}' of process #${it.process.id} overdue at ${it.dueOn}")
                 def event
                 if (it.status == awaitCallbackStatus) {
                     event = "timeout"
                 } else {
-                     event = "overdue"
+                    event = "overdue"
                 }
+
                 log.debug("Sending event '${event}' to overdue node '${it.nodeID}' of process #${it.process.id}")
                 processManagerService.sendEvent(it.process, it, event, it.caller)
             } // each
+
         } catch (Throwable ex){
             log.error("Unexpected Problems appear during DueDateJob execution.",ex)
             //discard any changes of persistence objects

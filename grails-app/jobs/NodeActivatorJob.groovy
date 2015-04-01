@@ -60,11 +60,13 @@ class NodeActivatorJob {
     def threadRuntimeInfoService
     def appExternalID
     def sessionFactory
+    def grailsApplication
     
     def execute(){
         try{
             FlowStatus activeStatus = FlowStatus.findByStatusID(NodeStatusEnum.ACTIVATED.value())
             FlowStatus runningStatus = FlowStatus.findByStatusID(NodeStatusEnum.RUNNING.value())
+
             List<ProcessNode> activeNodes = ProcessNode.withCriteria {
               and {
                 createAlias("process", "p")
@@ -74,7 +76,12 @@ class NodeActivatorJob {
                 inList("status", [activeStatus, runningStatus])
                 fetchMode('p', FetchMode.JOIN)
               }
-              order("id", "asc")
+              order("startedOn", "asc")
+            }
+            // compare nodes according to configured nodes comparator
+            def nodesComparator = grailsApplication.config.grailsflow.nodeActivator.comparator
+            if (nodesComparator) {
+                activeNodes = activeNodes.sort(nodesComparator)
             }
 
             log.info "*** Amount of Nodes to execute ${activeNodes.size()} ***"
@@ -97,6 +104,10 @@ class NodeActivatorJob {
 
             if (waitNodes) {
                 log.info "*** Amount of Manual Nodes that are in running state: ${waitNodes.size()} ***"
+
+                if (nodesComparator) {
+                    waitNodes = waitNodes.sort(nodesComparator)
+                }
                 waitNodes.each() { node ->
                     String namePrefix = "#${node.process?.id}(${node.process?.type})-${node.nodeID}"
                     // check if the node is executed in separate thread or recently finished. if no - execute it
