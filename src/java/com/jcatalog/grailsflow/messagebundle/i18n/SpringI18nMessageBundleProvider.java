@@ -60,6 +60,7 @@ public class SpringI18nMessageBundleProvider extends CachingI18nMessageBundlePro
         messageSource.setResourceLoader(resourceLoader);
         messageSource.setBasenames(bundlePathes);
         messageSource.setCacheSeconds(cacheSeconds);
+        messageSource.setFallbackToSystemLocale(false);
         return new SpringReloadableI18nMessageBundle(messageSource);
     }
 
