@@ -61,8 +61,9 @@ import com.jcatalog.grailsflow.model.definition.ProcessDef
 import org.quartz.Trigger
 import org.quartz.TriggerBuilder
 import org.quartz.JobDataMap
+import com.jcatalog.grailsflow.cluster.GrailsflowLock
 
-/**
+/**                                                                                                         se
  * Process Manager service is an engine that deals with processes:
  * starts it, executes it, checks it state, kills it.
  *
@@ -99,6 +100,7 @@ class ProcessManagerService implements InitializingBean {
     def workareaPathProvider
     def processLogDir
     def grailsApplication
+    def grailsflowLockService
     PostKillProcessHandler postKillProcessHandler
     ThreadRuntimeInfoService threadRuntimeInfoService
 
@@ -513,8 +515,12 @@ class ProcessManagerService implements InitializingBean {
         parameters.user = user
         parameters.variables = variables
 
+        String currentClusterName = (grailsApplication.config.grailsflow.clusterName instanceof Closure) ?
+            grailsApplication.config.grailsflow.clusterName()?.toString() :
+            grailsApplication.config.grailsflow.clusterName?.toString()
+
         SimpleTrigger trigger = TriggerBuilder.newTrigger()
-            .withIdentity("${process?.type}_${process?.id}:${nodeID}".toString(), "PROCESS")
+            .withIdentity("${currentClusterName}:${process?.type}(${process?.id})-${nodeID}".toString(), "PROCESS")
             .usingJobData(parameters)
             .build()
 
@@ -647,11 +653,11 @@ class ProcessManagerService implements InitializingBean {
      */
     public Integer invokeNodeExecution(Long processID, String nodeID, String eventID, String user, Map variables) {
         def executionResult
+        BasicProcess basicProcess
+        ProcessNode node
         try {
             executionResult = threadRuntimeInfoService.invokeInCurrentThread(processID, { ProcessNotifier notifier ->
                 try {
-                    BasicProcess basicProcess
-                    ProcessNode node
                     ProcessNodeDef nodeDef
                     Class processClass
                     ActionContext context
@@ -1207,7 +1213,6 @@ class ProcessManagerService implements InitializingBean {
       }
       return nextAssignees
     }
-
 
     public Collection getSupportedProcessClasses() {
       def types = processFactory.getProcessTypes()

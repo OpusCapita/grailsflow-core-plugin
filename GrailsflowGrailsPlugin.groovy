@@ -62,6 +62,20 @@ class GrailsflowGrailsPlugin {
       }
       bundles << i18nDir
 
+      def clusterName = (application.config.grailsflow.clusterName instanceof Closure) ?
+          application.config.grailsflow.clusterName() : application.config.grailsflow.clusterName
+      if (!clusterName) {
+          application.config.grailsflow.clusterName = "gfw_${new Date().time}_${new Random().nextInt(1000000)}"
+      }
+
+      def lockExpiredInterval = (application.config.grailsflow.clusterChecker.lockExpiredInterval instanceof Closure) ?
+          application.config.grailsflow.clusterChecker.lockExpiredInterval() :
+          application.config.grailsflow.clusterChecker.lockExpiredInterval
+      if (!lockExpiredInterval) {
+          application.config.grailsflow.clusterChecker.lockExpiredInterval = 300000
+      }
+
+
       grailsflowMessageBundleProvider(DefaultMessageBundleProvider) {
         i18nMessageBundleProvider = {SpringI18nMessageBundleProvider provider ->
             bundlesLocations = bundles*.toString()
@@ -96,7 +110,7 @@ class GrailsflowGrailsPlugin {
       maxResultSize(java.lang.Integer, "20")
 
       // default configuration for threads quantity (threads that can be running concurrently)
-      maxThreadsQuantity(java.lang.Integer, "10")
+      maxThreadsQuantity(java.lang.Integer, "7")
 
       // default configuration for quantity of restricted processes that used in SQL
       // 'in' clause

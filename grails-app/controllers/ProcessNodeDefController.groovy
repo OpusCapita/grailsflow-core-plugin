@@ -643,7 +643,7 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
             default: break
         }
 
-        if (!node.save()){
+        if (!node.save(flush: true)){
           node.errors.each() {
             log.error(it)
           }
@@ -691,7 +691,7 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
         def processID = process.id
         def nodeID = node.nodeID
         node.removeFromAssociations()
-        node.delete()
+        node.delete(flush:true)
 
         flash.message = "Process Node '${nodeID}' was deleted."
         redirect(controller: "processDef", action: 'editProcess', params: [id: processID])

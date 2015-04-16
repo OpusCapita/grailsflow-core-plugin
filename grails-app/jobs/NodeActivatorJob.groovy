@@ -35,19 +35,16 @@ import org.springframework.core.io.Resource
  *
  *
  * @author Stephan Albers
- * @author July Karpey
+ * @author July Antonicheva
  * @author Ivan Baidakou
  */
 
-import com.jcatalog.grailsflow.model.process.BasicProcess
 import com.jcatalog.grailsflow.model.process.FlowStatus
 import com.jcatalog.grailsflow.model.process.ProcessNode
 import com.jcatalog.grailsflow.utils.ConstantUtils
-import org.hibernate.FetchMode
 import com.jcatalog.grailsflow.status.NodeStatusEnum
-import java.lang.management.ThreadInfo
-import java.lang.management.ThreadMXBean
-import java.lang.management.ManagementFactory
+import com.jcatalog.grailsflow.cluster.GrailsflowLock
+import org.hibernate.FetchMode
 
 class NodeActivatorJob {
     static triggers = {
@@ -58,6 +55,7 @@ class NodeActivatorJob {
 
     def processManagerService
     def threadRuntimeInfoService
+    def grailsflowLockService
     def appExternalID
     def sessionFactory
     def grailsApplication
@@ -111,9 +109,11 @@ class NodeActivatorJob {
                 waitNodes.each() { node ->
                     String namePrefix = "#${node.process?.id}(${node.process?.type})-${node.nodeID}"
                     // check if the node is executed in separate thread or recently finished. if no - execute it
-                    if(!threadRuntimeInfoService.isExecutingOrRecentlyFinished(node.process.id)){
+                    if(!threadRuntimeInfoService.isExecutingOrRecentlyFinished(node.process.id)
+                        && grailsflowLockService.lockProcessExecution(node)){
                         log.info "*** No Thread Info for thread [${namePrefix}]: sending event [${node.event}] to node [${node.nodeID}] ***"
                         processManagerService.sendEvent(node.process, node, node.event, node.caller)
+                        grailsflowLockService.unlockProcessExecution(node)
                     }
                 }
             }
@@ -123,4 +123,5 @@ class NodeActivatorJob {
             sessionFactory.currentSession.clear()
         }
     }
+
 }

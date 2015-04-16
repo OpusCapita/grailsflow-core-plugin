@@ -238,7 +238,7 @@ class ProcessVarDefController extends GrailsFlowSecureController {
         if (var) {
             def varName = var.name
             var.removeFromAssociations()
-            var.delete()
+            var.delete(flush: true)
             flash.message = grailsflowMessageBundleService.getMessage(RESOURCE_BUNDLE,
                     "grailsflow.message.variable.deleted", [varName])
         }

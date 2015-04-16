@@ -109,7 +109,7 @@ class ProcessActionDefController extends GrailsFlowSecureController {
                 processNodeDef.addToActionStatements(new ActionStatement(content: line))
             }
         }
-        processNodeDef.save()
+        processNodeDef.save(flush:true)
        
         redirect(action: showEditor, params: [id: processNodeDef.processDef.id, ndID: processNodeDef.id]) 
     }

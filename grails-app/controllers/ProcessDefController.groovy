@@ -567,7 +567,7 @@ class ProcessDefController extends GrailsFlowSecureController {
         if (assignee) {
             removedAssignee = params.assigneeID
             processDef.removeFromAssignees(assignee)
-            processDef.save()
+            processDef.save(flush: true)
         }
         def result = [authorityType: params.authority_type, removedAssignee: removedAssignee]
         render result as JSON

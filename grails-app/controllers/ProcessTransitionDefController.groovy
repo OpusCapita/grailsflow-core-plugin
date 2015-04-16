@@ -121,7 +121,7 @@ class ProcessTransitionDefController extends GrailsFlowSecureController {
         def transition = ProcessTransitionDef.get(Long.valueOf(params.id))
         def processDefID = transition.fromNode.processDef.id
         transition.removeFromAssociations()
-        transition.delete()
+        transition.delete(flush: true)
         redirect(controller: "processDef", action: 'editProcess', params: [id: processDefID])
     }
 
