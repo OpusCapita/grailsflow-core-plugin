@@ -33,7 +33,7 @@ class GrailsflowLock {
     }
 
     static mapping = {
-        process index:'IDX_PROCESS_NODE_1'
-        nodeID index:'IDX_PROCESS_NODE_1'
+        process index:'IDX_PROCESS_NODE_LOCK'
+        nodeID index:'IDX_PROCESS_NODE_LOCK'
     }
 }
