@@ -1,6 +1,5 @@
 import com.jcatalog.grailsflow.model.process.ProcessNode
 import com.jcatalog.grailsflow.cluster.GrailsflowLock
-import com.jcatalog.grailsflow.cluster.ProcessLockHistory
 import com.jcatalog.grailsflow.utils.ConstantUtils
 import org.hibernate.FetchMode
 import com.jcatalog.grailsflow.status.ProcessStatusEnum
