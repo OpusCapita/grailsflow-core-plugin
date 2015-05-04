@@ -38,11 +38,21 @@ import com.jcatalog.grailsflow.model.process.ProcessNode
 import com.jcatalog.grailsflow.model.process.FlowStatus
 import org.hibernate.FetchMode
 import com.jcatalog.grailsflow.status.NodeStatusEnum
+import grails.util.Holders
+import com.jcatalog.grailsflow.scheduling.triggers.ConfigurableSimpleTrigger
 
 class DueDateJob {
     static triggers = {
-        custom name: 'nodeDueDate', triggerClass: com.jcatalog.grailsflow.scheduling.triggers.ConfigurableSimpleTrigger
+        def nodeDueDate = Holders.config.grailsflow.scheduler.nodeDueDate
+        if (nodeDueDate && nodeDueDate.containsKey(ConfigurableSimpleTrigger.AUTO_START)) {
+            if (nodeDueDate.get(ConfigurableSimpleTrigger.AUTO_START)) {
+                custom name: 'nodeDueDate', triggerClass: ConfigurableSimpleTrigger
+            }
+        } else {
+            custom name: 'nodeDueDate', triggerClass: ConfigurableSimpleTrigger
+        }
     }
+
     def concurrent = false
     def group = "GRAILSFLOW"
 

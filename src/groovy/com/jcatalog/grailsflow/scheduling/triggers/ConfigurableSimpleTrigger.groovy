@@ -34,6 +34,7 @@ class ConfigurableSimpleTrigger extends SimpleTriggerImpl {
     static final String START_DELAY = "startDelay"
     static final String REPEAT_COUNT = "repeatCount"
     static final String REPEAT_INTERVAL = "repeatInterval"
+    static final String AUTO_START = "autoStart"
     
     static final long DEFAULT_START_DELAY = 30000l  // 30 seconds
     static final long DEFAULT_REPEAT_INTERVAL = 60000l  // one minute
@@ -54,36 +55,41 @@ class ConfigurableSimpleTrigger extends SimpleTriggerImpl {
      *
      */
     private void initTriggerProperties() {
-      def config = this.getGrailsApplication()?.config?.grailsflow?.scheduler?.get(getName())
-      if (config instanceof ConfigObject) {
-        Map properties = config.flatten()
-        if (properties) {
-          log.debug("Setting properties ${properties} for the trigger ${getName()}")
+        def config = this.getGrailsApplication()?.config?.grailsflow?.scheduler?.get(getName())
+        if (config instanceof ConfigObject) {
+            Map properties = config.flatten()
+            if (properties) {
+                log.debug("Setting properties ${properties} for the trigger ${getName()}")
+
+                // start delay
+                if(properties.containsKey(START_DELAY)) {
+                    Number startDelay = (Number) properties.remove(START_DELAY);
+                    this.setStartTime(new Date(System.currentTimeMillis() + startDelay.longValue()))
+                } else {
+                    this.setStartTime(new Date(System.currentTimeMillis() + DEFAULT_START_DELAY))
+                }
+
+                // repeat interval
+                if (!properties.containsKey(REPEAT_INTERVAL)) {
+                    this.setRepeatInterval(DEFAULT_REPEAT_INTERVAL)
+                } else {
+                    this.setRepeatInterval((Number) properties.remove(REPEAT_INTERVAL))
+                }
+
+                // repeat count
+                if (!properties.containsKey(REPEAT_COUNT)) {
+                    this.setRepeatCount(DEFAULT_REPEAT_COUNT)
+                } else {
+                    this.setRepeatCount((Number) properties.remove(REPEAT_COUNT))
+                }
           
-          // start delay
-          if(properties.containsKey(START_DELAY)) {
-              Number startDelay = (Number) properties.remove(START_DELAY);
-              this.setStartTime(new Date(System.currentTimeMillis() + startDelay.longValue()))
-          } else {
-              this.setStartTime(new Date(System.currentTimeMillis() + DEFAULT_START_DELAY))
-          }
-          
-          // repeat interval
-          if (!properties.containsKey(REPEAT_INTERVAL)) {
-            this.setRepeatInterval(DEFAULT_REPEAT_INTERVAL)
-          } else {
-            this.setRepeatInterval((Number) properties.remove(REPEAT_INTERVAL))
-          }
-          
-          // repeat count
-          if (!properties.containsKey(REPEAT_COUNT)) {
-            this.setRepeatCount(DEFAULT_REPEAT_COUNT)
-          } else {
-            this.setRepeatCount((Number) properties.remove(REPEAT_COUNT))
-          }
-          
+            } else {
+                log.debug("Setting default properties for the trigger ${getName()}")
+                this.setStartTime(new Date(System.currentTimeMillis() + DEFAULT_START_DELAY))
+                this.setRepeatInterval(DEFAULT_REPEAT_INTERVAL)
+                this.setRepeatCount(DEFAULT_REPEAT_COUNT)
+            }
         }
-      }
     }
 
  }

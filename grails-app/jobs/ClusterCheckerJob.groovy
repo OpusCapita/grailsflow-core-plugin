@@ -1,5 +1,6 @@
 import com.jcatalog.grailsflow.cluster.GrailsflowLock
 import grails.util.Holders
+import com.jcatalog.grailsflow.scheduling.triggers.ConfigurableSimpleTrigger
 
 /*
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,8 +26,16 @@ import grails.util.Holders
 
 class ClusterCheckerJob {
     static triggers = {
-        custom name: 'clusterChecker', triggerClass: com.jcatalog.grailsflow.scheduling.triggers.ConfigurableSimpleTrigger
+        def clusterChecker = Holders.config.grailsflow.scheduler.clusterChecker
+        if (clusterChecker && clusterChecker.containsKey(ConfigurableSimpleTrigger.AUTO_START)) {
+            if (clusterChecker.get(ConfigurableSimpleTrigger.AUTO_START)) {
+                custom name: 'clusterChecker', triggerClass: ConfigurableSimpleTrigger
+            }
+        } else {
+            custom name: 'clusterChecker', triggerClass: ConfigurableSimpleTrigger
+        }
     }
+
     def group = "GRAILSFLOW"
     def concurrent = false
 
@@ -37,20 +46,29 @@ class ClusterCheckerJob {
 
     def execute(){
         try{
+            log.info "Running ClusterCheckerJob"
             grailsflowLockService.updateClusterInfo()
 
             grailsflowLockService.removeLocksForStoppedClusters()
 
             // check expired nodes -> delete locks for nodes with expired lock time
-            String lockExpiredInterval = (grailsApplication.config.grailsflow.clusterChecker.lockExpiredInterval instanceof Closure) ?
-                grailsApplication.config.grailsflow.clusterChecker.lockExpiredInterval()?.toString() :
-                grailsApplication.config.grailsflow.clusterChecker.lockExpiredInterval?.toString()
+            def lockExpiredIntervalValue = (grailsApplication.config.grailsflow.clusterChecker.lockExpiredInterval instanceof Closure) ?
+                grailsApplication.config.grailsflow.clusterChecker.lockExpiredInterval() :
+                grailsApplication.config.grailsflow.clusterChecker.lockExpiredInterval
+            long lockExpiredInterval = ConfigurableSimpleTrigger.DEFAULT_REPEAT_INTERVAL*10
 
-            if (lockExpiredInterval) {
-                grailsflowLockService.getExpiredLocks(Long.valueOf(lockExpiredInterval)).each() { GrailsflowLock lock->
+            if (lockExpiredIntervalValue) {
+                try {
+                    lockExpiredInterval = Long.valueOf(lockExpiredIntervalValue.toString())
+                } catch (NumberFormatException nfe) {
+                    log.error("Exception during converting lockExpiredInterval to Long value: " + nfe.message)
+                    lockExpiredInterval = ConfigurableSimpleTrigger.DEFAULT_REPEAT_INTERVAL*10
+                }
+
+                grailsflowLockService.getExpiredLocks(lockExpiredInterval).each() { GrailsflowLock lock->
                     processManagerService.killProcess(lock.process.id, ClusterCheckerJob.getCanonicalName())
                 }
-                grailsflowLockService.removeExpiredLocks(Long.valueOf(lockExpiredInterval))
+                grailsflowLockService.removeExpiredLocks(lockExpiredInterval)
             }
 
         } catch (Throwable throwable){

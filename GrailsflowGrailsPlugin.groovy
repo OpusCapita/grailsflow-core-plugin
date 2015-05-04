@@ -68,14 +68,6 @@ class GrailsflowGrailsPlugin {
           application.config.grailsflow.clusterName = "gfw_${new Date().time}_${new Random().nextInt(1000000)}"
       }
 
-      def lockExpiredInterval = (application.config.grailsflow.clusterChecker.lockExpiredInterval instanceof Closure) ?
-          application.config.grailsflow.clusterChecker.lockExpiredInterval() :
-          application.config.grailsflow.clusterChecker.lockExpiredInterval
-      if (!lockExpiredInterval) {
-          application.config.grailsflow.clusterChecker.lockExpiredInterval = 300000
-      }
-
-
       grailsflowMessageBundleProvider(DefaultMessageBundleProvider) {
         i18nMessageBundleProvider = {SpringI18nMessageBundleProvider provider ->
             bundlesLocations = bundles*.toString()

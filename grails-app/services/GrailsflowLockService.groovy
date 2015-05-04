@@ -13,6 +13,7 @@ import org.quartz.JobDetail
 
 import static org.quartz.JobKey.jobKey
 import com.jcatalog.grailsflow.cluster.ClusterInfo
+import com.jcatalog.grailsflow.scheduling.triggers.ConfigurableSimpleTrigger
 
 /*
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -89,11 +90,21 @@ class GrailsflowLockService {
             List<ClusterInfo> stoppedList = new ArrayList()
             clusters?.each() { clusterInfo ->
                 // check when the cluster is last fired
-                String clusterRepeatInterval = (grailsApplication.config.grailsflow.scheduler.clusterChecker.repeatInterval instanceof Closure) ?
-                    grailsApplication.config.grailsflow.scheduler.clusterChecker.repeatInterval()?.toString() :
-                    grailsApplication.config.grailsflow.scheduler.clusterChecker.repeatInterval?.toString()
+                def clusterRepeatIntervalValue = (grailsApplication.config.grailsflow.scheduler.clusterChecker.repeatInterval instanceof Closure) ?
+                    grailsApplication.config.grailsflow.scheduler.clusterChecker.repeatInterval() :
+                    grailsApplication.config.grailsflow.scheduler.clusterChecker.repeatInterval
+                long clusterRepeatInterval = ConfigurableSimpleTrigger.DEFAULT_REPEAT_INTERVAL
 
-                Date clusterExpiredTime = new Date(now.time-Long.valueOf(clusterRepeatInterval)*2)
+                if (clusterRepeatIntervalValue) {
+                    try {
+                        clusterRepeatInterval = Long.valueOf(clusterRepeatIntervalValue.toString())
+                    } catch (NumberFormatException nfe) {
+                        log.error("Exception during converting ReleatInterval to Long value", nfe)
+                        clusterRepeatInterval = ConfigurableSimpleTrigger.DEFAULT_REPEAT_INTERVAL
+                    }
+                }
+
+                Date clusterExpiredTime = new Date(now.time-clusterRepeatInterval*2)
                 if (clusterInfo.lastCheckedOn < clusterExpiredTime) {
                     GrailsflowLock.findAllByClusterName(clusterInfo.clusterName)*.delete()
                     stoppedList << clusterInfo
@@ -104,6 +115,7 @@ class GrailsflowLockService {
             }
 
         } catch(Exception ex) {
+            log.error(ex)
             return Boolean.FALSE
         }
         return Boolean.TRUE

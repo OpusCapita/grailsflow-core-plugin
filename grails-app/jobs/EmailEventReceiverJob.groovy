@@ -12,9 +12,6 @@
  * limitations under the License.
  */
 
-import java.util.Properties
-import java.util.regex.Pattern
-
 import javax.mail.Folder
 import javax.mail.Flags
 import javax.mail.Message
@@ -24,6 +21,8 @@ import javax.mail.Store
 import org.apache.commons.lang.BooleanUtils
 
 import com.jcatalog.grailsflow.extension.email.EventEmailProcessor
+import grails.util.Holders
+import com.jcatalog.grailsflow.scheduling.triggers.ConfigurableSimpleTrigger
 
 /**
  * EmailEventReceiverJob class gets Events sent to the Nodes via Email.
@@ -37,7 +36,14 @@ import com.jcatalog.grailsflow.extension.email.EventEmailProcessor
  */
 class EmailEventReceiverJob {
     static triggers = {
-        custom name: 'eventsEmailCheck', triggerClass: com.jcatalog.grailsflow.scheduling.triggers.ConfigurableSimpleTrigger
+        def eventsEmailCheck = Holders.config.grailsflow.scheduler.eventsEmailCheck
+        if (eventsEmailCheck && eventsEmailCheck.containsKey(ConfigurableSimpleTrigger.AUTO_START)) {
+            if (eventsEmailCheck.get(ConfigurableSimpleTrigger.AUTO_START)) {
+                custom name: 'eventsEmailCheck', triggerClass: ConfigurableSimpleTrigger
+            }
+        } else {
+            custom name: 'eventsEmailCheck', triggerClass: ConfigurableSimpleTrigger
+        }
     }
     def grailsApplication
     def concurrent = false

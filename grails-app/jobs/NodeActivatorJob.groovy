@@ -43,13 +43,22 @@ import com.jcatalog.grailsflow.model.process.FlowStatus
 import com.jcatalog.grailsflow.model.process.ProcessNode
 import com.jcatalog.grailsflow.utils.ConstantUtils
 import com.jcatalog.grailsflow.status.NodeStatusEnum
-import com.jcatalog.grailsflow.cluster.GrailsflowLock
 import org.hibernate.FetchMode
+import grails.util.Holders
+import com.jcatalog.grailsflow.scheduling.triggers.ConfigurableSimpleTrigger
 
 class NodeActivatorJob {
     static triggers = {
-        custom name: 'nodeActivator', triggerClass: com.jcatalog.grailsflow.scheduling.triggers.ConfigurableSimpleTrigger
+        def nodeActivator = Holders.config.grailsflow.scheduler.nodeActivator
+        if (nodeActivator && nodeActivator.containsKey(ConfigurableSimpleTrigger.AUTO_START)) {
+            if (nodeActivator.get(ConfigurableSimpleTrigger.AUTO_START)) {
+                custom name: 'nodeActivator', triggerClass: ConfigurableSimpleTrigger
+            }
+        } else {
+            custom name: 'nodeActivator', triggerClass: ConfigurableSimpleTrigger
+        }
     }
+
     def group = "GRAILSFLOW"
     def concurrent = false
 
