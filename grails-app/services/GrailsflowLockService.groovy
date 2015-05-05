@@ -84,6 +84,7 @@ class GrailsflowLockService {
     @Synchronized("lock")
     @Transactional(propagation = Propagation.REQUIRED)
     public boolean removeLocksForStoppedClusters()  {
+        log.debug("Starting check for stopped clusters")
         try {
             Date now = new Date()
             List<ClusterInfo> clusters = ClusterInfo.list()
@@ -110,6 +111,7 @@ class GrailsflowLockService {
                     stoppedList << clusterInfo
                 }
             }
+            log.debug("Removing locks for stopped clusters: "+stoppedList*.clusterName)
             if (!stoppedList.isEmpty()) {
                 stoppedList*.delete(flush: true)
             }
@@ -124,8 +126,10 @@ class GrailsflowLockService {
     @Synchronized("lock")
     @Transactional(propagation = Propagation.REQUIRED)
     public boolean removeExpiredLocks(Long expiredInterval)  {
+        log.debug("Starting removing expired locks for interval [${expiredInterval}]")
         try {
             List<GrailsflowLock> expiredLocks = getOverdueLocks(expiredInterval)
+            log.debug("Delete expired locks [${expiredLocks}]")
             expiredLocks*.delete()
         } catch (Exception exception) {
             log.error("Exception during expired locks deletion", exception)
@@ -139,6 +143,7 @@ class GrailsflowLockService {
     public List<GrailsflowLock> getExpiredLocks(Long expiredInterval)  {
         try {
             List<GrailsflowLock> expiredLocks = getOverdueLocks(expiredInterval)
+            log.debug("Getting expired locks: [${expiredLocks}]")
             return expiredLocks
         } catch (Exception exception) {
             log.error("Exception during expired locks deletion", exception)
@@ -154,6 +159,7 @@ class GrailsflowLockService {
         String currentClusterName = (grailsApplication.config.grailsflow.clusterName instanceof Closure) ?
             grailsApplication.config.grailsflow.clusterName()?.toString() :
             grailsApplication.config.grailsflow.clusterName?.toString()
+        log.debug("Updating cluster information for cluster [${currentClusterName}] ")
         ClusterInfo clusterInfo = ClusterInfo.findByClusterName(currentClusterName)
         if (!clusterInfo) {
             clusterInfo = new ClusterInfo(clusterName:  currentClusterName, lastCheckedOn: now)
@@ -173,7 +179,7 @@ class GrailsflowLockService {
         }
         List<GrailsflowLock> locks = GrailsflowLock
             .findAllByLockedOnLessThan(new Date(now.time-expiredInterval))
-
+        log.debug("Overdue locks for expiredInterval [${expiredInterval}] are [${locks}]")
         return locks
     }
 }

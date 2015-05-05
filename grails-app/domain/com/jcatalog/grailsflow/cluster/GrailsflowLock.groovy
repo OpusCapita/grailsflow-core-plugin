@@ -36,4 +36,8 @@ class GrailsflowLock {
         process index:'IDX_PROCESS_NODE_LOCK'
         nodeID index:'IDX_PROCESS_NODE_LOCK'
     }
+
+    String toString() {
+        return "GrailsflowLock(${this.id}): process[${this.process.id}], nodeID[${this.nodeID}]";
+    }
 }

@@ -47,28 +47,35 @@ class ClusterCheckerJob {
     def execute(){
         try{
             log.info "Running ClusterCheckerJob"
-            grailsflowLockService.updateClusterInfo()
 
-            grailsflowLockService.removeLocksForStoppedClusters()
+            if (!grailsflowLockService.updateClusterInfo()) {
+                log.error("Cluster Information was not updated due to some problems")
+            }
+
+            if (!grailsflowLockService.removeLocksForStoppedClusters()) {
+                log.error("Removing locks for stopped clusters failed")
+            }
 
             // check expired nodes -> delete locks for nodes with expired lock time
             def lockExpiredIntervalValue = (grailsApplication.config.grailsflow.clusterChecker.lockExpiredInterval instanceof Closure) ?
                 grailsApplication.config.grailsflow.clusterChecker.lockExpiredInterval() :
                 grailsApplication.config.grailsflow.clusterChecker.lockExpiredInterval
-            long lockExpiredInterval = ConfigurableSimpleTrigger.DEFAULT_REPEAT_INTERVAL*10
+            long lockExpiredInterval = ConfigurableSimpleTrigger.DEFAULT_REPEAT_INTERVAL*100
 
             if (lockExpiredIntervalValue) {
                 try {
                     lockExpiredInterval = Long.valueOf(lockExpiredIntervalValue.toString())
                 } catch (NumberFormatException nfe) {
-                    log.error("Exception during converting lockExpiredInterval to Long value: " + nfe.message)
-                    lockExpiredInterval = ConfigurableSimpleTrigger.DEFAULT_REPEAT_INTERVAL*10
+                    log.error("Exception during converting lockExpiredInterval to Long value: ${nfe.message}")
+                    lockExpiredInterval = ConfigurableSimpleTrigger.DEFAULT_REPEAT_INTERVAL*100
                 }
 
                 grailsflowLockService.getExpiredLocks(lockExpiredInterval).each() { GrailsflowLock lock->
                     processManagerService.killProcess(lock.process.id, ClusterCheckerJob.getCanonicalName())
                 }
-                grailsflowLockService.removeExpiredLocks(lockExpiredInterval)
+                if (!grailsflowLockService.removeExpiredLocks(lockExpiredInterval)) {
+                    log.error("Removing expired locks failed due to some reasons.")
+                }
             }
 
         } catch (Throwable throwable){
