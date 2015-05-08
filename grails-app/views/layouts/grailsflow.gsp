@@ -56,6 +56,11 @@
               <dt>${menu_bundle['grailsflow.menu.header.administration']}</dt>
               <dd>
                   <ul>
+                      <li><g:link controller="process" action="deleteProcesses">${menu_bundle['grailsflow.menu.deleteProcesses']}</g:link></li>
+                  </ul>
+              </dd>
+              <dd>
+                  <ul>
                       <li><g:link controller="document">${menu_bundle['grailsflow.menu.showDocuments']}</g:link></li>
                   </ul>
               </dd>

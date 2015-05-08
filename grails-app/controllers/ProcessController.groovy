@@ -38,6 +38,7 @@ import com.jcatalog.grailsflow.status.NodeStatusEnum
 import com.jcatalog.grailsflow.process.ProcessSearchParameters
 import java.text.ParseException
 import grails.converters.JSON
+import com.jcatalog.grailsflow.status.ProcessStatusEnum
 
 /**
  * Process controller class is used for displaying process-related views.
@@ -59,6 +60,7 @@ class ProcessController extends GrailsFlowSecureController {
 
     def processManagerService
     def processWorklistService
+    def processAdministrationService
     def grailsflowMessageBundleService
     def datePatterns
     // Export service provided by Export plugin
@@ -334,126 +336,47 @@ class ProcessController extends GrailsFlowSecureController {
     *     -- offset
     */
     def search = {
-        // define paging parameters
-        if (!params.sort) { params.sort = "createdOn" }
-        if (!params.order) { params.order = "desc" }
-        if (params.max){
-            params.max = params.max.toInteger()
-        } else {
-            params.max = maxResultSize
-        }
-        if (params.offset) {
-            params.offset = params.offset.toInteger()
-        }
-
-        ProcessSearchParameters searchParameters = new ProcessSearchParameters()
-        searchParameters.sortBy = params.sort
-        searchParameters.maxResult = params.max
-        searchParameters.offset = params.offset
-        searchParameters.ascending = params.order
-
         flash.errors = []
         try {
-            Date startedFromDate = getStartOfParsedDate(params.startedFrom)
-            Date startedToDate = getEndOfParsedDate(params.startedTo)
-            Date finishedFromDate = getStartOfParsedDate(params.finishedFrom)
-            Date finishedToDate = getEndOfParsedDate(params.finishedTo)
-            Date modifiedFromDate = getStartOfParsedDate(params.modifiedFrom)
-            Date modifiedToDate = getEndOfParsedDate(params.modifiedTo)
+            ProcessSearchParameters searchParameters = getSearchParameters(params)
 
-            if ((startedToDate && startedFromDate?.after(startedToDate))
-                || (finishedToDate && finishedFromDate?.after(finishedToDate))
-                || (finishedToDate && startedFromDate?.after(finishedToDate))
-                || (finishedToDate && modifiedFromDate?.after(finishedToDate))) {
-                flash.errors << grailsflowMessageBundleService
-                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.dateRanges.invalid")
-                return forward(controller: "process", action: "list", params: params)
+            // get size of list
+            Integer itemsTotal = processWorklistService
+                .getProcessListSize(searchParameters)
+
+            // get current page items
+            Collection processList = processWorklistService
+                .getProcessList(searchParameters)
+
+
+            Collection processDetailsList = []
+            Collection processClasses = processManagerService.supportedProcessClasses
+            processList?.each() { basicProcess ->
+                def processClass = processClasses?.find() { it.processType == basicProcess.type }
+                processDetailsList << new ProcessDetails(basicProcess, processClass)
             }
 
-            searchParameters.startedBy = params.createdBy
-            searchParameters.startedFrom = startedFromDate
-            searchParameters.startedTo = startedToDate
-            searchParameters.finishedFrom = finishedFromDate
-            searchParameters.finishedTo = finishedToDate
-            searchParameters.modifiedFrom = modifiedFromDate
-            searchParameters.modifiedTo = modifiedToDate
-            searchParameters.modifiedBy = params.modifiedBy
-        } catch (ParseException pe) {
-            flash.errors << pe.message
-            return forward(controller: "process", action: "list", params: params)
-        }
-        // define request variables filter
-        Map varsFilter = [:]
-        params.keySet()?.each() { parameter ->
-            if (parameter.startsWith("vars.")
-                && parameter.size() > "vars.".size()) {
-
-                String procVariable = StringUtils.substringAfter(parameter, "vars.")
-                def varValue = params[parameter]
-
-                if (procVariable.endsWith(".list")
-                    && procVariable.size() > ".list".size()) {
-                    // evaluate parameter value to List
-                    try {
-                        params[parameter] = params[parameter].trim()
-                        if (!params[parameter].startsWith("[")) {
-                            params[parameter] = "[${params[parameter]}]"
-                        }
-                        varValue = new GroovyShell().evaluate(params[parameter])
-                        procVariable = StringUtils.substringBeforeLast(procVariable,".list")
-                    } catch (Exception e) {
-                        log.error(" Parameter value cannot be evaluated to List value", e)
-                        varValue = null
-                    }
-                }
-                if (varValue) {
-                  varsFilter[procVariable] = varValue
-                }
+            withFormat {
+                html { render(view: params.returnPage ?: 'list', params: params,
+                   model: [processDetailsList: processDetailsList,
+                       itemsTotal: itemsTotal ? itemsTotal : 0,
+                       processClasses: processClasses]) }
+                json { render([processDetailsList: processList,itemsTotal: itemsTotal ? itemsTotal : 0,
+                       processClasses: processClasses, params: params,
+                       errors:  flash.errors, message: flash.message] as JSON) }
             }
-        }
-        searchParameters.variablesFilter = varsFilter
-
-        Collection processClasses = processManagerService.supportedProcessClasses
-        String type = params.type ?: processClasses*.processType?.join(",")
-        searchParameters.type = type
-
-        if (params.statusID) {
-            params.statusID = Arrays.asList(request.getParameterValues("statusID"))
-            searchParameters.statusID = params.statusID?.join(",")
-        }
-
-        try {
-            searchParameters.processID = params.processID ? Long.valueOf(params.processID): null
-        } catch(NumberFormatException ex) {
-            log.error("Impossible to parse ${params.processID} as Long value. ",ex)
-            flash.errors = [grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processID.invalid")]
+        } catch (Exception e) {
+            flash.errors << e.message
             return forward(controller: "process", action: "list", params: params)
         }
+    }
 
-        // get size of list
-        Integer itemsTotal = processWorklistService
-            .getProcessListSize(searchParameters)
-
-        // get current page items
-        Collection processList = processWorklistService
-            .getProcessList(searchParameters)
-
-
-        Collection processDetailsList = []
-        processList?.each() { basicProcess ->
-            def processClass = processClasses?.find() { it.processType == basicProcess.type }
-            processDetailsList << new ProcessDetails(basicProcess, processClass)
+    def searchFinishedProcesses = {
+        if (!params.statusID) {
+            params.statusID = [ProcessStatusEnum.COMPLETED.value(), ProcessStatusEnum.KILLED.value()]
         }
-        withFormat {
-            html { render(view: 'list', params: params,
-               model: [processDetailsList: processDetailsList,
-                   itemsTotal: itemsTotal ? itemsTotal : 0,
-                   processClasses: processClasses]) }
-            json { render([processDetailsList: processList,itemsTotal: itemsTotal ? itemsTotal : 0,
-                   processClasses: processClasses, params: params,
-                   errors:  flash.errors, message: flash.message] as JSON) }
-        }
+        flash.message = ""
+        return forward(controller: "process", action: "search", params: params)
     }
 
 
@@ -662,6 +585,70 @@ class ProcessController extends GrailsFlowSecureController {
         redirect(action: params.backPage)
     }
 
+    def deleteAllProcesses = {
+        try {
+            Long quantity = processAdministrationService.deleteAllProcesses()
+            flash.message = grailsflowMessageBundleService
+                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.deleteProcess.all", [quantity?.toString()])
+        } catch (Exception e) {
+            log.error(e)
+            flash.error = e.message
+        }
+        withFormat {
+            html { render(view: 'deleteProcesses', model: [ processDetailsList: [],  // show empty list by default
+                    processClasses: processManagerService.supportedProcessClasses], params: params)}
+            json { render([errors: flash.errors, processClasses: processManagerService.supportedProcessClasses] as JSON) }
+        }
+    }
+
+    def deleteSearchedProcesses = {
+        try {
+            ProcessSearchParameters searchParameters = getSearchParameters(params)
+            searchParameters.offset = null
+            searchParameters.maxResult = null
+            if (!searchParameters.statusID) {
+                searchParameters.statusID = [ProcessStatusEnum.COMPLETED.value(), ProcessStatusEnum.KILLED.value()].join(",")
+            }
+            Long filteredQuantity = processAdministrationService.deleteFilteredProcesses(searchParameters)
+            flash.message = grailsflowMessageBundleService
+                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.deleteProcess.filtered", [filteredQuantity?.toString()])
+        } catch (Exception e) {
+            log.error(e)
+            flash.error = e.message
+        }
+        withFormat {
+            html { render(view: 'deleteProcesses', model: [ processDetailsList: [],  // show empty list by default
+                    processClasses: processManagerService.supportedProcessClasses], params: params)}
+            json { render([errors: flash.errors, processClasses: processManagerService.supportedProcessClasses] as JSON) }
+        }
+    }
+
+    def deleteProcesses = {
+        withFormat {
+            html { return [processDetailsList: [],  // show empty list by default
+                    processClasses: processManagerService.supportedProcessClasses, params: params]}
+            json { render([errors: flash.errors, processClasses: processManagerService.supportedProcessClasses] as JSON) }
+        }
+    }
+
+    def deleteProcess = {
+        if (!params.processId) {
+            flash.error = grailsflowMessageBundleService
+                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.deleteProcess.noIdentifier")
+        } else {
+            try {
+                processAdministrationService.deleteProcess(params.processId as Long)
+                flash.message = grailsflowMessageBundleService
+                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.deleteProcess.selected",[params.processId as String])
+                params.returnPage = "deleteProcesses"
+            } catch (Exception e) {
+                log.error("Exception during process [${params.processId}] deletion", e)
+                flash.error = e.message
+            }
+        }
+        forward(controller: "process", action: "search", params: params)
+
+    }
 
    /**
     * Helper method for rendering NodeDetails page
@@ -792,6 +779,108 @@ class ProcessController extends GrailsFlowSecureController {
             nodePosition.save()
         }
         render ""
+    }
+
+    private ProcessSearchParameters getSearchParameters(def parameters) {
+        // define paging parameters
+        if (!parameters.sort) { parameters.sort = "createdOn" }
+        if (!parameters.order) { parameters.order = "desc" }
+        if (parameters.max){
+            parameters.max = parameters.max.toInteger()
+        } else {
+            parameters.max = maxResultSize
+        }
+        if (parameters.offset) {
+            parameters.offset = parameters.offset.toInteger()
+        }
+
+        ProcessSearchParameters searchParameters = new ProcessSearchParameters()
+        searchParameters.sortBy = parameters.sort
+        searchParameters.maxResult = parameters.max
+        searchParameters.offset = parameters.offset
+        searchParameters.ascending = parameters.order
+
+        try {
+            Date startedFromDate = getStartOfParsedDate(parameters.startedFrom)
+            Date startedToDate = getEndOfParsedDate(parameters.startedTo)
+            Date finishedFromDate = getStartOfParsedDate(parameters.finishedFrom)
+            Date finishedToDate = getEndOfParsedDate(parameters.finishedTo)
+            Date modifiedFromDate = getStartOfParsedDate(parameters.modifiedFrom)
+            Date modifiedToDate = getEndOfParsedDate(parameters.modifiedTo)
+
+            if ((startedToDate && startedFromDate?.after(startedToDate))
+                    || (finishedToDate && finishedFromDate?.after(finishedToDate))
+                    || (finishedToDate && startedFromDate?.after(finishedToDate))
+                    || (finishedToDate && modifiedFromDate?.after(finishedToDate))) {
+                log.error(grailsflowMessageBundleService
+                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.dateRanges.invalid"))
+                throw new Exception(grailsflowMessageBundleService
+                        .getMessage(RESOURCE_BUNDLE, "grailsflow.message.dateRanges.invalid"))
+            }
+
+            searchParameters.startedBy = parameters.createdBy
+            searchParameters.startedFrom = startedFromDate
+            searchParameters.startedTo = startedToDate
+            searchParameters.finishedFrom = finishedFromDate
+            searchParameters.finishedTo = finishedToDate
+            searchParameters.modifiedFrom = modifiedFromDate
+            searchParameters.modifiedTo = modifiedToDate
+            searchParameters.modifiedBy = parameters.modifiedBy
+        } catch (ParseException pe) {
+            log.error("Exception during parsing dates: ",pe)
+            throw pe
+        }
+        // define request variables filter
+        Map varsFilter = [:]
+        parameters.keySet()?.each() { parameter ->
+            if (parameter.startsWith("vars.")
+                    && parameter.size() > "vars.".size()) {
+
+                String procVariable = StringUtils.substringAfter(parameter, "vars.")
+                def varValue = parameters[parameter]
+
+                if (procVariable.endsWith(".list")
+                        && procVariable.size() > ".list".size()) {
+                    // evaluate parameter value to List
+                    try {
+                        parameters[parameter] = parameters[parameter].trim()
+                        if (!parameters[parameter].startsWith("[")) {
+                            parameters[parameter] = "[${parameters[parameter]}]"
+                        }
+                        varValue = new GroovyShell().evaluate(parameters[parameter])
+                        procVariable = StringUtils.substringBeforeLast(procVariable,".list")
+                    } catch (Exception e) {
+                        log.error("Parameter value cannot be evaluated to List value", e)
+                       // varValue = null
+                        throw e
+                    }
+                }
+                if (varValue) {
+                    varsFilter[procVariable] = varValue
+                }
+            }
+        }
+        searchParameters.variablesFilter = varsFilter
+
+        Collection processClasses = processManagerService.supportedProcessClasses
+        String type = parameters.type ?: processClasses*.processType?.join(",")
+        searchParameters.type = type
+
+        if (parameters.statusID) {
+            parameters.statusID = parameters.statusID instanceof List ?
+                parameters.statusID :  Arrays.asList(request.getParameterValues("statusID"))
+            searchParameters.statusID = parameters.statusID?.join(",")
+        }
+
+        try {
+            searchParameters.processID = parameters.processID ? Long.valueOf(parameters.processID): null
+        } catch(NumberFormatException ex) {
+            log.error("Impossible to parse processID = ${params.processID} as Long value. ", ex)
+            throw ex
+        }
+
+        return searchParameters
+
     }
 
     private List getVariablesFromProcesses(String varName, List processes) {

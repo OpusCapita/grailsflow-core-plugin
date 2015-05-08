@@ -19,23 +19,25 @@
   <g:render plugin="grailsflow" template="/commons/global"/>
   <gf:messageBundle bundle="grailsflow.common" var="common"/>
   <gf:messageBundle bundle="grailsflow.processDetails" var="processDetails"/>
-  <title>${processDetails['grailsflow.title.processList']}</title>
+  <title>${processDetails['grailsflow.title.deleteProcesses']}</title>
 </head>
 
 <body>
   <gf:customizingTemplate template="/${params['controller']}/processList/header"
-                        defaultTemplate="/process/processList/header"/>
+                        defaultTemplate="/process/processList/header" model="${['header': 'deleteProcesses']}"/>
 
   <g:form name="processListForm" controller="${params['controller']}" method="POST">
-    <input type="hidden" name="returnPage" value="list">
+    <input type="hidden" name="returnPage" value="deleteProcesses">
     <div class="row">
       <div class="col-md-12 col-xs-12 col-lg-12">
         <gf:customizingTemplate template="/${params['controller']}/processList/searchForm"
-                          defaultTemplate="/process/processList/searchForm"/>
+            defaultTemplate="/process/processList/searchForm"
+            model="${['statuses': com.jcatalog.grailsflow.status.ProcessStatusEnum.values().findAll {it.isFinal()}, 'returnPage': 'deleteProcesses']}"/>
 
         <div class="form-submit text-right">
-          <g:actionSubmit action="search" value="${common['grailsflow.command.refresh']}" class="btn btn-link"/>
-          <g:actionSubmit action="search" value="${common['grailsflow.command.search']}" class="btn btn-primary"/>
+          <g:actionSubmit action="searchFinishedProcesses" value="${common['grailsflow.command.search']}" class="btn btn-default"/>
+          <g:actionSubmit action="deleteSearchedProcesses" value="${common['grailsflow.command.delete']}" class="btn btn-default"/>
+          <g:actionSubmit action="deleteAllProcesses" value="${common['grailsflow.command.deleteAll']}" class="btn btn-primary"/>
         </div>
       </div>
     </div>

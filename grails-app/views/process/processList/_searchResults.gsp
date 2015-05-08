@@ -72,6 +72,11 @@
                   ${common['grailsflow.command.refresh']}
                 </g:link>
               </g:elseif>
+              <g:elseif test="${process.status.isFinal}">
+                  <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="deleteProcess" params="${['processId': process.id]}">
+                      ${common['grailsflow.command.delete']}
+                  </g:link>
+              </g:elseif>
               <g:link class="btn btn-sm btn-default" onclick="openGraphic('${process.id}'); return false;">${processDetails['grailsflow.command.showGraphic']}</g:link>
               <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="exportProcess" params="${['processID': process.id, 'format': 'csv', 'extension': 'csv']}">${processDetails['grailsflow.command.exportCSV']}</g:link>
               <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="exportProcess" params="${['processID': process.id, 'format': 'excel', 'extension': 'xls']}">${processDetails['grailsflow.command.exportExcel']}</g:link>

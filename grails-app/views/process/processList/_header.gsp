@@ -1,7 +1,7 @@
 <gf:messageBundle bundle="grailsflow.processDetails" var="processDetails"/>
 <div class="row">
   <div class="col-md-12 col-xs-12 col-lg-12">
-    <h3>${processDetails['grailsflow.label.processList']}</h3>
+    <h3>${header ? processDetails['grailsflow.title.'+header]: processDetails['grailsflow.label.processList']}</h3>
   </div>
 </div>
 

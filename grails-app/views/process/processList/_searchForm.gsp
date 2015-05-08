@@ -46,7 +46,7 @@
         <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
           <g:select value="${params.statusID}" id="status" multiple="true" class="form-control"
                     optionValue="${{ common['grailsflow.label.status.' + it] }}" size="5"
-                    from="${com.jcatalog.grailsflow.status.ProcessStatusEnum.values()*.value()}" name='statusID'></g:select>
+                    from="${statuses ? statuses*.value() : com.jcatalog.grailsflow.status.ProcessStatusEnum.values()*.value()}" name='statusID'></g:select>
         </div>
       </div>
 
@@ -77,7 +77,7 @@
         <label class="col-sm-4 col-xs-4 col-md-4 col-lg-4 control-label">${processDetails['grailsflow.label.modifiedFrom']}</label>
         <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
           <p style="white-space: nowrap;"><gf:jQueryCalendar property="modifiedFrom" value="${params.modifiedFrom?.encodeAsHTML()}" />&nbsp;&nbsp;
-          ${processDetails['grailsflow.label.to']}</p>
+            ${processDetails['grailsflow.label.to']}</p>
           <gf:jQueryCalendar property="modifiedTo" value="${params.modifiedTo?.encodeAsHTML()}" />
         </div>
       </div>
