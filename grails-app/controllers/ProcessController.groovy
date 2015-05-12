@@ -355,7 +355,8 @@ class ProcessController extends GrailsFlowSecureController {
                 def processClass = processClasses?.find() { it.processType == basicProcess.type }
                 processDetailsList << new ProcessDetails(basicProcess, processClass)
             }
-
+            flash.message = grailsflowMessageBundleService
+                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.searchResult", [itemsTotal?.toString()])
             withFormat {
                 html { render(view: params.returnPage ?: 'list', params: params,
                    model: [processDetailsList: processDetailsList,

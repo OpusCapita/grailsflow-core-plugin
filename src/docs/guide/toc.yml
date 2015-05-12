@@ -66,7 +66,8 @@ developersGuide:
       title: Customize Due Dates calculation
   getProcessInfoInJson:
       title: How to get Process Management Results in JSON
-
+  supportClustering:
+      title: Support of clustering
 faq:
   title: Frequently Asked Questions
 
