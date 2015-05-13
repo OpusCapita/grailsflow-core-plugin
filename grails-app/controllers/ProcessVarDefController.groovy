@@ -87,7 +87,7 @@ class ProcessVarDefController extends GrailsFlowSecureController {
         if (params.varID) {
             var = ProcessVariableDef.get(Long.valueOf(params.varID))
         } else {
-            var = new ProcessVariableDef()
+            var = new ProcessVariableDef(processDef: process)
         }
 
         if (!params.varName) {
@@ -194,7 +194,6 @@ class ProcessVarDefController extends GrailsFlowSecureController {
                 return render(view: 'variableForm', model: [variable: var, process: process])
             }
 
-            var.processDef = process
             var.isProcessIdentifier = params.isProcessIdentifier ? true : false
             var.required = params.required ? true : false
 
@@ -212,20 +211,9 @@ class ProcessVarDefController extends GrailsFlowSecureController {
                 }
                 var.view = view
             }
-
-            if (var.id) {
-                // update existing var
-                if (!var.save()) {
-                    var.errors.allErrors.each { flash.errors << it.defaultMessage }
-                    return render(view: 'variableForm', model: [variable: var, process: process], params: params)
-                }
-            } else {
-                // add new variable to variables list
-                process.addToVariables(var)
-                if (!process.save()) {
-                    process.errors.allErrors.each { flash.errors << it.defaultMessage }
-                    return render(view: 'variableForm', model: [variable: var, process: process], params: params)
-                }
+            if (!var.save(flush: true)) {
+                var.errors.allErrors.each { flash.errors << it.defaultMessage }
+                return render(view: 'variableForm', model: [variable: var, process: process], params: params)
             }
 
             redirect(controller: "processDef", action: "editProcess", params: [id: process.id])

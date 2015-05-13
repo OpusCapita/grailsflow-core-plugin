@@ -13,7 +13,7 @@
 -->
 
 <gf:messageBundle bundle="grailsflow.link" var="linkType"/>
-<r:require modules="grailsflowCalendar" />
+
 <g:hiddenField name="datePattern" value="${gf.datePattern()}"/>
 
 <g:if test="${variable?.type == 'Boolean'}">

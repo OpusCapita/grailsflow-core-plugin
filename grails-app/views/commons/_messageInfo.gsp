@@ -4,7 +4,11 @@
         <h4>${flash.message}</h4>
       </div>
     </g:if>
-
+    <g:if test="${flash.error}">
+        <div class="alert-danger">
+          <h4>${flash.error}</h4>
+        </div>
+    </g:if>
     <g:if test="${flash.errors}">
       <div class="alert-danger">
         <g:each in="${flash.errors}">

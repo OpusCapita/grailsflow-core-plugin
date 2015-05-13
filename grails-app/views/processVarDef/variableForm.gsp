@@ -26,8 +26,10 @@
       <r:script>
         function updateVarView(){
             document.getElementById("objectType").style.display="none"
+            var varID = document.getElementById('varID').value
+            var varType = document.getElementById('varType').value
             ${g.remoteFunction(controller: params['controller'], action: "changeVarInput", id: process.id,
-                update: 'variableView', params:"'varID='+document.getElementById('varID').value+'&varType='+document.getElementById('varType').value" )}
+                update: 'variableView', params:"'varID='+varID+'&varType='+varType" )}
         }
       </r:script>
       <r:require modules="grailsflowCalendar"/>

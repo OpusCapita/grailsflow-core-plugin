@@ -84,6 +84,7 @@ class ProcessDefController extends GrailsFlowSecureController {
     def datePatterns
 
     def index = {
+        flash.message = ""
         redirect(action: "editTypes")
     }
 
