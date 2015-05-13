@@ -78,7 +78,7 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
             log.debug("Updating nodes order for process ${processDef.processID}")
             def oldOrder = processDef.nodes.findIndexOf() { it == node }
             processDef.nodes = moveElementUp(processDef.nodes, node)
-            if (!processDef.save()) {
+            if (!processDef.save(flush: true)) {
                 processDef.errors.each() {
                     log.error(it)
                 }
@@ -103,7 +103,7 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
             log.debug("Updating nodes order for process ${processDef.processID}")
             def oldOrder = processDef.nodes.findIndexOf() { it == node }
             processDef.nodes = moveElementDown(processDef.nodes, node)
-            if (!processDef.save()) {
+            if (!processDef.save(flush: true)) {
                 processDef.errors.each() {
                     log.error(it)
                 }

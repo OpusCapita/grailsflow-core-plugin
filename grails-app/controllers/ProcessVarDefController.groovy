@@ -248,7 +248,7 @@ class ProcessVarDefController extends GrailsFlowSecureController {
 	      log.debug("Updating variables order for process ${processDef.processID}")
 	      def oldOrder = processDef.variables.findIndexOf() { it == variable }
 	      processDef.variables = moveElementUp(processDef.variables, variable)
-	      if (!processDef.save()) {
+	      if (!processDef.save(flush: true)) {
 		      processDef.errors.each() {
 		        log.error(it)
 		      }
@@ -273,7 +273,7 @@ class ProcessVarDefController extends GrailsFlowSecureController {
 	      log.debug("Updating variables order for process ${processDef.processID}")
 	      def oldOrder = processDef.variables.findIndexOf() { it == variable }
 	      processDef.variables = moveElementDown(processDef.variables, variable)
-	      if (!processDef.save()) {
+	      if (!processDef.save(flush: true)) {
 		      processDef.errors.each() {
 		        log.error(it)
 		      }

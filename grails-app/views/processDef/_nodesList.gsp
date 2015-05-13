@@ -25,6 +25,23 @@
  -->
 
 <r:script>
+  function orderMoveNodeUp(id) {
+      jQuery.ajax({
+          url: "${request.contextPath}/processNodeDef/orderMoveUp/"+id ,
+          success:function(data) {
+              afterMoveNodeUp(data)
+          }
+      })
+  }
+
+  function orderMoveNodeDown(id) {
+      jQuery.ajax({
+          url: "${request.contextPath}/processNodeDef/orderMoveDown/"+id ,
+          success:function(data) {
+              afterMoveNodeDown(data)
+          }
+      })
+  }
 
   function moveNodeUp(oldOrder) {
     var row = document.getElementById("node_"+oldOrder)
@@ -114,13 +131,15 @@
         </td>
         <g:if test="${showOperations}">
           <td style="white-space: nowrap;">
-            <g:remoteLink controller="processNodeDef" action="orderMoveUp" id="${node.id}"
-                onSuccess="afterMoveNodeUp(data);"
-                title="${common['grailsflow.command.up']}"><img alt="${common['grailsflow.command.up']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'move_up.gif')}"/></g:remoteLink>
+            <a href="javascript:void(0)" onclick="orderMoveNodeUp(${node.id}); return false;"
+                title="${common['grailsflow.command.up']}">
+                <img alt="${common['grailsflow.command.up']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'move_up.gif')}"/>
+            </a>
             &nbsp;&nbsp;
-            <g:remoteLink controller="processNodeDef" action="orderMoveDown" id="${node.id}"
-                onSuccess="afterMoveNodeDown(data);"
-                title="${common['grailsflow.command.down']}"><img alt="${common['grailsflow.command.down']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'move_down.gif')}"/></g:remoteLink>
+            <a href="javascript:void(0)" onclick="orderMoveNodeDown(${node.id}); return false;"
+                title="${common['grailsflow.command.down']}">
+                <img alt="${common['grailsflow.command.down']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'move_down.gif')}"/>
+            </a>
             &nbsp;&nbsp;
             <g:link controller="processNodeDef" action="editNodeDef" id="${node.id}" title="${common['grailsflow.command.edit']}">${common['grailsflow.command.edit']}</g:link>
             &nbsp;&nbsp;

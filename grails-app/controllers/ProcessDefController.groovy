@@ -520,7 +520,7 @@ class ProcessDefController extends GrailsFlowSecureController {
           }
         }
         if (!addedAssignees.isEmpty()) {
-          processDef.save()
+          processDef.save(flush: true)
         }
         switch (params.authority_type) {
           case 'users':

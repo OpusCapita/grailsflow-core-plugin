@@ -119,7 +119,7 @@
   function afterDeleteAssignee(json, textStatus, jqXHR) {
     var type = json.authorityType
     var removedAssignee = json.removedAssignee
-    if (!json.removedAssignee) {
+    if (!removedAssignee) {
       // TODO: show errors
       return;
     }

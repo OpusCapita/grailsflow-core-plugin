@@ -25,6 +25,23 @@
  -->
 
 <r:script>
+  function orderMoveVarUp(id) {
+      jQuery.ajax({
+          url: "${request.contextPath}/processVarDef/orderMoveUp/"+id ,
+          success:function(data) {
+              afterMoveVarUp(data)
+          }
+      })
+  }
+
+  function orderMoveVarDown(id) {
+      jQuery.ajax({
+          url: "${request.contextPath}/processVarDef/orderMoveDown/"+id ,
+          success:function(data) {
+              afterMoveVarDown(data)
+          }
+      })
+  }
 
   function moveUp(oldOrder) {
     var row = document.getElementById("variable_"+oldOrder)
@@ -43,7 +60,7 @@
     previousRow.className = (oldOrder % 2 == 0 ? 'odd' : 'even')
   }
 
-  function afterMoveUp(json){
+  function afterMoveVarUp(json){
     if (!json.orderChanged) {
       alert('Nothing changed')
       // TODO: show errors
@@ -52,7 +69,7 @@
     moveUp(json.oldOrder)
   }
 
-  function afterMoveDown(json){
+  function afterMoveVarDown(json){
     if (!json.orderChanged) {
       alert('Nothing changed')
       // TODO: show errors
@@ -116,13 +133,15 @@
          </td>
          <g:if test="${showOperations}">
                  <td style="white-space: nowrap;">
-                   <g:remoteLink controller="processVarDef" action="orderMoveUp" id="${variable.id}"
-                      onSuccess="afterMoveUp(data);"
-                      title="${common['grailsflow.command.up']}"><img alt="${common['grailsflow.command.up']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'move_up.gif')}"/></g:remoteLink>
+                   <a href="javascript:void(0)" onclick="orderMoveVarUp(${variable.id}); return false;"
+                      title="${common['grailsflow.command.up']}">
+                       <img alt="${common['grailsflow.command.up']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'move_up.gif')}"/>
+                   </a>
                    &nbsp;&nbsp;
-                   <g:remoteLink controller="processVarDef" action="orderMoveDown" id="${variable.id}"
-                      onSuccess="afterMoveDown(data);"
-                      title="${common['grailsflow.command.down']}"><img alt="${common['grailsflow.command.down']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'move_down.gif')}"/></g:remoteLink>
+                   <a href="javascript:void(0)"  onclick="orderMoveVarDown(${variable.id}); return false;"
+                      title="${common['grailsflow.command.down']}">
+                       <img alt="${common['grailsflow.command.down']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'move_down.gif')}"/>
+                   </a>
                    &nbsp;&nbsp;
                    <g:link controller="processVarDef" action="editVarDef" id="${variable.id}" title="${common['grailsflow.command.edit']}">${common['grailsflow.command.edit']}</g:link>
                    &nbsp;&nbsp;
