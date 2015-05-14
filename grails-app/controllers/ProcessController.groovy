@@ -497,7 +497,7 @@ class ProcessController extends GrailsFlowSecureController {
                     html { return forward(action: 'showTypes', params: params )  }
                     json { render([errors : flash.message, params: params] as JSON)}
                 }
-
+                return
             }
             def processDetails = new ProcessDetails(process, processClass)
             withFormat {

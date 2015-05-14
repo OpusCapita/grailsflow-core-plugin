@@ -98,11 +98,12 @@ class ProcessManagementController extends GrailsFlowSecureController {
         def processClass = processManagerService.getProcessClass(params.id)
         if (!processClass) {
             flash.errors << grailsflowMessageBundleService
-                                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processScript.invalid", [params.id])
+                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processScript.invalid", [params.id])
             withFormat {
                 html { gotoError() }
                 json { render(errors: flash.errors, params: params) as JSON}
             }
+            return
         }
 
         // validate process definition
@@ -122,6 +123,7 @@ class ProcessManagementController extends GrailsFlowSecureController {
                   html { gotoError() }
                   json { render(errors: flash.errors, warnings: flash.warnings, params: params) as JSON}
               }
+              return
           }
         }
 
@@ -136,6 +138,7 @@ class ProcessManagementController extends GrailsFlowSecureController {
                 html { gotoError() }
                 json { render(errors: flash.errors, params: params) as JSON}
             }
+            return
         }
 
         // TODO: may be handle this on UI?
@@ -149,6 +152,7 @@ class ProcessManagementController extends GrailsFlowSecureController {
                     html { gotoError() }
                     json { render(errors: flash.errors, params: params) as JSON}
                 }
+                return
             }
 
             def result = processManagerService.startProcess(params.id, securityHelper.getUser(session), null)
@@ -158,15 +162,15 @@ class ProcessManagementController extends GrailsFlowSecureController {
                     html { gotoError() }
                     json { render(errors: flash.errors, params: params) as JSON}
                 }
-
+                return
             } else {
                 params.id = null
                 params.processID = result
                 withFormat {
-                    html {  gotoResult() }
+                    html { gotoResult() }
                     json { render params as JSON}
                 }
-
+                return
             }
         }
 
@@ -210,18 +214,20 @@ class ProcessManagementController extends GrailsFlowSecureController {
                                 .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processScript.invalid",
                                             [params.processType])
             withFormat {
-                html { return gotoError() }
+                html { gotoError() }
                 json { render(errors: flash.errors, params: params) as JSON }
             }
+            return
         }
 
         if (!node) {
             flash.errors << grailsflowMessageBundleService
                                 .getMessage(RESOURCE_BUNDLE, "grailsflow.message.parameters.invalid")
             withFormat {
-                html { return gotoError() }
+                html { gotoError() }
                 json { render(errors: flash.errors, params: params) as JSON }
             }
+            return
         }
 
         def nodeID = node.nodeID
@@ -234,9 +240,10 @@ class ProcessManagementController extends GrailsFlowSecureController {
             flash.errors << grailsflowMessageBundleService
                                 .getMessage(RESOURCE_BUNDLE, "grailsflow.message.nodeAuthorities.invalid")
             withFormat {
-                html { return gotoError() }
+                html { gotoError() }
                 json { render(errors: flash.errors, params: params) as JSON }
             }
+            return
         }
 
         // Map of variables passed by user
@@ -267,20 +274,21 @@ class ProcessManagementController extends GrailsFlowSecureController {
         // if there were errors in flash scope after variables filling
         if (!flash.errors.isEmpty()) {
             if (params.nodeFormController && params.nodeFormAction && params.nodeFormID != null) {
-              params.id = params.nodeFormID
-              params.controller = params.nodeFormController
-              params.action = params.nodeFormAction
-              withFormat {
-                html { return forward(controller: params.nodeFormController, action: params.nodeFormAction, params: params) }
-                json { render(errors: flash.errors, params: params) as JSON }
-              }
-
+                params.id = params.nodeFormID
+                params.controller = params.nodeFormController
+                params.action = params.nodeFormAction
+                withFormat {
+                    html { return forward(controller: params.nodeFormController, action: params.nodeFormAction, params: params) }
+                    json { render(errors: flash.errors, params: params) as JSON }
+                }
+                return
             } else {
-              params.id = params.processType
-              withFormat {
-                html { return gotoError() }
-                json { render(errors: flash.errors, params: params) as JSON }
-              }
+                params.id = params.processType
+                withFormat {
+                    html { gotoError() }
+                    json { render(errors: flash.errors, params: params) as JSON }
+                }
+                return
             }
         }
 
@@ -292,9 +300,10 @@ class ProcessManagementController extends GrailsFlowSecureController {
                                     .getMessage(RESOURCE_BUNDLE, "grailsflow.message.process.parallel",
                                                 [params.processType])
                 withFormat {
-                    html { return gotoError() }
+                    html { gotoError() }
                     json { render(errors: flash.errors, params: params) as JSON }
                 }
+                return
             }
 
             // starting process
@@ -302,9 +311,10 @@ class ProcessManagementController extends GrailsFlowSecureController {
             if (!result) {
                 flash.errors.addAll(processManagerService.errors)
                 withFormat {
-                    html { return gotoError() }
+                    html { gotoError() }
                     json { render(errors: flash.errors, params: params) as JSON}
                 }
+                return
             } else {
                 def process = BasicProcess.get(result)
                 node = process.nodes.find() { it.nodeID == node.nodeID }
@@ -330,8 +340,9 @@ class ProcessManagementController extends GrailsFlowSecureController {
             flash.errors << grailsflowMessageBundleService.getMessage(RESOURCE_BUNDLE, "grailsflow.message.sendEvent.error.${res}",
                 [params.processType, node.process.id.toString(), node.nodeID, node.id.toString(), event])
             withFormat {
-                html { return gotoError() }
+                html { gotoError() }
                 json { render(errors: flash.errors, params: params) as JSON }
+                return
             }
         } else {
             if (node.type == ConstantUtils.NODE_TYPE_WAIT
@@ -341,10 +352,10 @@ class ProcessManagementController extends GrailsFlowSecureController {
             }
             params.putAll([id: null, "processID": node.process.id, nodeID: node.nodeID])
             withFormat {
-                html {return gotoResult()}
+                html {gotoResult()}
                 json {render params as JSON}
             }
-
+            return
         }
     }
 
