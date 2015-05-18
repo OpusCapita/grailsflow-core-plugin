@@ -51,6 +51,9 @@
             <g:paginate total="${itemsTotal}" id="${params.id}" params="${params}" controller="${params['controller']}" action="search"/>
           </div>
         </g:if>
+        <g:else>
+          <div class="bs-callout bs-callout-info">${common['grailsflow.message.noItems']}</div>
+        </g:else>
       </div>
     </div>
 

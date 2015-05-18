@@ -104,14 +104,14 @@
         <g:if test="${additionalColumns}">
 
           <div class="row">
-            <div class="col-md-4 col-xs-4 col-lg-4">
+            <div class="col-md-4">
               ${worklist['grailsflow.label.filterVariable']}&nbsp;
               <g:select id="filterVariable" name="filterVariable" value="${filterVariable}" noSelection="['':'']"
                           from="${additionalColumns.keySet()}" onchange = "changeFilterVariable();"
                           optionValue="${{gf.translatedValue(translations: additionalColumns[it], default: it)}}">
               </g:select>
             </div>
-            <div class="col-md-3 col-xs-3 col-lg-3">
+            <div class="col-md-3">
               ${worklist['grailsflow.label.filterVariableValue']}&nbsp;
               <select id="filterVariableValue" name="filterVariableValue" value="${filterVariableValue}"
                     ${filterVariable && variableValues?.get(filterVariable)?.size() ? '' : 'disabled="true"'}>
@@ -133,15 +133,16 @@
                     </g:else>
               </select>
             </div>
-            <div class="col-md-5 col-xs-5 col-lg-5">
+            <div class="col-md-5">
               <g:actionSubmit value="${common['grailsflow.command.filter']}" action="showWorklist" class="btn btn-primary"/>
             </div>
           </div>
         </g:if>
       </g:if>
 
+      <g:if test="${processNodeList}">
       <div class="row margin-top-10">
-        <div class="col-md-12 col-xs-12 col-lg-12">
+        <div class="col-md-12">
           <table width="100%" class="table table-striped table-bordered">
             <thead>
               <tr>
@@ -222,7 +223,11 @@
               </span>
             </div>
           </div>
-        </div>
+      </div>
+      </g:if>
+      <g:else>
+        <div class="bs-callout bs-callout-info">${common['grailsflow.message.noItems']}</div>
+      </g:else>
       </g:form>
 
       <g:if test="${params.isEmbedded == 'true'}">
