@@ -26,17 +26,9 @@
 
     </head>
     <body>
-      <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-          <b class="header">${msgs['grailsflow.label.processScript']}</b>
-        </div>
-      </div>
+      <h1>${msgs['grailsflow.label.processScript']}</h1>
 
-      <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-           <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-        </div>
-      </div>
+      <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <div class="row">
         <div class="col-md-12 col-xs-12 col-lg-12">

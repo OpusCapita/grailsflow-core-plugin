@@ -22,11 +22,7 @@
   </head>
 
   <body>
-    <div class="row">
-      <div class="col-md-12 col-xs-12 col-lg-12">
-        <h3>${document_bundle['grailsflow.title.directoryContent']}</h3>
-      </div>
-    </div>
+    <h1>${document_bundle['grailsflow.title.directoryContent']}</h1>
 
     <div class="row">
       <div class="col-md-6 col-xs-6 col-lg-6 col-sm-6">

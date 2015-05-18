@@ -22,17 +22,9 @@
          <title>${msgs['grailsflow.title.variableTranslations']}</title>
     </head>
     <body>
-      <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-          <h3>${msgs['grailsflow.title.variableTranslations']}</h3>
-        </div>
-      </div>
+      <h1>${msgs['grailsflow.title.variableTranslations']}</h1>
 
-      <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-          <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-        </div>
-      </div>
+      <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <div class="row">
         <div class="col-md-12 col-xs-12 col-lg-12">

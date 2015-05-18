@@ -76,17 +76,8 @@
   </head>
 
   <body>
-    <div class="row">
-      <div class="col-md-12 col-xs-12 col-lg-12">
-          <h3>${worklist['grailsflow.title.worklist']}</h3>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12 col-xs-12 col-lg-12">
-          <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-      </div>
-    </div>
+    <h1>${worklist['grailsflow.title.worklist']}</h1>
+    <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
     <g:form controller="${params['controller']}" method="POST">
       <g:if test="${params.isEmbedded}">

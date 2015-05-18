@@ -32,53 +32,45 @@
 </head>
 
 <body>
-<div class="row">
-  <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-    <h3>${msgs['grailsflow.label.scheduleProcess']}</h3>
-  </div>
-</div>
+  <h1>${msgs['grailsflow.label.scheduleProcess']}</h1>
 
-<div class="row">
-  <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-    <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-  </div>
-</div>
+  <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
-<g:form class="form-horizontal" controller="${params['controller']}" method="POST" enctype="multipart/form-data">
-  <div class="row">
-    <div class="col-md-8 col-xs-8 col-lg-8">
-      <h4>${msgs['grailsflow.label.processDetails']}</h4>
+  <g:form class="form-horizontal" controller="${params['controller']}" method="POST" enctype="multipart/form-data">
+      <div class="row">
+        <div class="col-md-8 col-xs-8 col-lg-8">
+          <h4>${msgs['grailsflow.label.processDetails']}</h4>
 
-      <div class="form-group">
-        <label class="col-sm-4 col-md-4 col-lg-4 col-xs-4 control-label" for="processClass">${msgs['grailsflow.label.processType']}</label>
+          <div class="form-group">
+            <label class="col-sm-4 col-md-4 col-lg-4 col-xs-4 control-label" for="processClass">${msgs['grailsflow.label.processType']}</label>
 
-        <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
-          <g:select id="processClass" from="${processClasses}" name='processID' class="form-control"
-                    optionKey="${{ it.processType }}"
-                    optionValue="${{ gf.translatedValue(translations: it.label, default: it.processType) }}"
-                    value="${params.processID}" onchange="changeProcessType(this.value);"/>
+            <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
+              <g:select id="processClass" from="${processClasses}" name='processID' class="form-control"
+                        optionKey="${{ it.processType }}"
+                        optionValue="${{ gf.translatedValue(translations: it.label, default: it.processType) }}"
+                        value="${params.processID}" onchange="changeProcessType(this.value);"/>
+            </div>
+          </div>
+
+          <h4>${msgs['grailsflow.label.processVariables']}</h4>
+
+          <div id='variablesForm'>
+            <g:render plugin="grailsflow" template="variablesForm"
+                      model="[variables: processClass?.variables]"/>
+          </div>
+
+          <h4>${msgs['grailsflow.label.jobParams']}</h4>
+          <g:render plugin="grailsflow" template="jobParametersForm"
+                    model="[bean: bean, repeatingInfo: repeatingInfo]"/>
         </div>
       </div>
 
-      <h4>${msgs['grailsflow.label.processVariables']}</h4>
-
-      <div id='variablesForm'>
-        <g:render plugin="grailsflow" template="variablesForm"
-                  model="[variables: processClass?.variables]"/>
+      <div class="form-submit text-right">
+        <g:actionSubmit action="showSchedulerDetails" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
+        <g:actionSubmit action="addJob" onclick="if (!checkRepeatInterval()) return false;"
+                        value="${msgs['grailsflow.command.addJob']}" class="btn btn-primary"/>
       </div>
-
-      <h4>${msgs['grailsflow.label.jobParams']}</h4>
-      <g:render plugin="grailsflow" template="jobParametersForm"
-                model="[bean: bean, repeatingInfo: repeatingInfo]"/>
-    </div>
-  </div>
-
-  <div class="form-submit text-right">
-    <g:actionSubmit action="showSchedulerDetails" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
-    <g:actionSubmit action="addJob" onclick="if (!checkRepeatInterval()) return false;"
-                    value="${msgs['grailsflow.command.addJob']}" class="btn btn-primary"/>
-  </div>
-</g:form>
+  </g:form>
 
 </body>
 </html>

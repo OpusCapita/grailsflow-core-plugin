@@ -26,7 +26,7 @@
     <gf:messageBundle bundle="grailsflow.common" var="common"/>
     <gf:messageBundle bundle="grailsflow.worklist" var="msgs"/>
 
-    <h3>${msgs['grailsflow.title.nodeDetails']}</h3>
+    <h1>${msgs['grailsflow.title.nodeDetails']}</h1>
 
     <div class="form-group">
       <div class="row">

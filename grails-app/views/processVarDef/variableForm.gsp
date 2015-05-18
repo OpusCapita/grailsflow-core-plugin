@@ -35,18 +35,9 @@
       <r:require modules="grailsflowCalendar"/>
     </head>
     <body>
-      <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-          <h3>${msgs['grailsflow.label.processVars']}</h3>
-        </div>
-      </div>
+      <h1>${msgs['grailsflow.label.processVars']}</h1>
 
-      <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-           <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-        </div>
-      </div>
-      <br/>
+      <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <g:form controller="${params['controller']}" method="POST">
         <input type="hidden" name="id" value="${process?.id}"/>

@@ -26,7 +26,7 @@
         <div class="row" style="margin-top: 10px;">
           <div class="col-md-12 col-xs-12 col-lg-12">
             <div class="panel panel-default">
-              <div class="panel-heading"><h3>${msgs['grailsflow.title.showRules']}</h3></div>
+              <div class="panel-heading"><h1>${msgs['grailsflow.title.showRules']}</h1></div>
               <div class="panel-body">
 
                 <h3>Available Model Beans</h3>

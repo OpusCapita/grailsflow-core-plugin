@@ -23,18 +23,9 @@
     </head>
     <body>
       <gf:storeBackPoint />
+      <h1>${worklist['grailsflow.label.worklist']}</h1>
 
-      <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-          <b class="header">${worklist['grailsflow.label.worklist']}</b>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-          <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-        </div>
-      </div>
+      <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <div class="row">
         <div class="col-md-12 col-xs-12 col-lg-12"><br/>

@@ -484,6 +484,7 @@ class ProcessController extends GrailsFlowSecureController {
     *   - processID -- if id is null, processID is tried
     */
     def showProcessDetails = {
+        flash.message = ""
         if (params.id == null) {
           params.id = params.processID
         }

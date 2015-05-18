@@ -22,16 +22,10 @@
 </head>
 
 <body>
-  <div class="row">
-    <div class="col-md-12 col-xs-12 col-lg-12">
-      <h3>${msgs['grailsflow.label.schedulerDetails']}</h3>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12 col-xs-12 col-lg-12">
-      <g:render plugin="grailsflowCore" template="/commons/messageInfo"/>
-    </div>
-  </div>
+  <h1>${msgs['grailsflow.label.schedulerDetails']}</h1>
+
+  <g:render plugin="grailsflowCore" template="/commons/messageInfo"/>
+
   <div class="row">
     <div class="col-md-12 col-xs-12 col-lg-12">
       <div class="bs-callout bs-callout-info">

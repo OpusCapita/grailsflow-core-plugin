@@ -53,7 +53,7 @@
         <div class="row" style="margin-top: 10px;">
           <div class="col-md-12 col-xs-12 col-lg-12">
             <div class="panel panel-default">
-              <div class="panel-heading"><h3>Action ${actionName}</h3></div>
+              <div class="panel-heading"><h1>Action ${actionName}</h1></div>
               <div class="panel-body">
                 <h3>Action Call Parameters</h3>
                 <table id="propsTable" class="table table-bordered">

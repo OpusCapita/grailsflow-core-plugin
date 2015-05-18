@@ -22,17 +22,8 @@
          <title>${msgs['grailsflow.title.startProcess']}</title>
     </head>
     <body>
-      <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-          <h3>${msgs['grailsflow.label.startProcess']}</h3>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-          <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-        </div>
-      </div>
+      <h1>${msgs['grailsflow.label.startProcess']}</h1>
+      <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <g:form controller="${params['controller']}" method="GET">
         <div class="row">

@@ -22,17 +22,9 @@
          <title>${msgs['grailsflow.title.editProcess']}</title>
     </head>
     <body>
-      <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-          <h3>${msgs['grailsflow.label.editProcess']}</h3>
-        </div>
-      </div>
+      <h1>${msgs['grailsflow.label.editProcess']}</h1>
 
-      <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-          <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-        </div>
-      </div>
+      <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <g:form class="form-horizontal" controller="${params['controller']}" method="POST">
         <div class="row">

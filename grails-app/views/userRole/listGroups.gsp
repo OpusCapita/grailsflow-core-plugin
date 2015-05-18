@@ -35,11 +35,8 @@
 
     <body>
     <div class="container">
-      <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
-	       <h3>${msgs['grailsflow.label.groups']}</h3>
-	    </div>
-      </div>
+
+	  <h1>${msgs['grailsflow.label.groups']}</h1>
 
       <div class="row">
         <div class="col-md-6 col-xs-6 col-lg-6 col-sm-6">

@@ -30,12 +30,12 @@
          <title>${msgs['grailsflow.title.processScript']}</title>
     </head>
     <body>
+      <h1>${msgs['grailsflow.label.processScript']}</h1>
+
+      <g:render plugin="grailsflow" template="/commons/messageInfo"/>
+
       <div class="row">
         <div class="col-md-12 col-xs-12 col-lg-12">
-          <b class="header">${msgs['grailsflow.label.processScript']}</b>
-           <g:if test="${flash.message}">
-                 <div class="message">${flash.message?.encodeAsHTML()}</div>
-           </g:if>
            <g:form controller="${params['controller']}" method="POST" >
                <input type="hidden" name="id" value="${processID?.encodeAsHTML()}"/>
                <div class="dialog">

@@ -24,11 +24,7 @@
          <title>${msgs['grailsflow.title.nodeDetails']}</title>
     </head>
     <body>
-        <div class="row">
-          <div class="col-md-12 col-xs-12 col-lg-12">
-            <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-          </div>
-        </div>
+        <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
         <g:form controller="${params['controller']}" action="sendEvent" method="POST" enctype="multipart/form-data">
           <!-- data for validating errors -->

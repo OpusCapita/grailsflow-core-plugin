@@ -34,7 +34,7 @@
  -->
 
 <gf:messageBundle bundle="grailsflow.worklist" var="msgs"/>
-<h3>${msgs['grailsflow.label.processVars']}</h3>
+<h1>${msgs['grailsflow.label.processVars']}</h1>
 
 <g:setProvider library="jquery"/>
 <r:require modules="grailsflowCalendar" />

@@ -23,27 +23,28 @@
 </head>
 
 <body>
-<h1>${msgs['grailsflow.label.editScheduledJob']}</h1>
-<g:render plugin="grailsflowCore" template="/commons/messageInfo"/>
+  <h1>${msgs['grailsflow.label.editScheduledJob']}</h1>
 
-<g:form class="form-horizontal" controller="${params['controller']}">
-  <input type="hidden" name="group" value="${jobDetails?.trigger?.group}"/>
-  <input type="hidden" name="name" value="${jobDetails?.trigger?.name}"/>
+  <g:render plugin="grailsflowCore" template="/commons/messageInfo"/>
 
-  <h3>${msgs['grailsflow.label.jobParams']}</h3>
+  <g:form class="form-horizontal" controller="${params['controller']}">
+      <input type="hidden" name="group" value="${jobDetails?.trigger?.group}"/>
+      <input type="hidden" name="name" value="${jobDetails?.trigger?.name}"/>
 
-  <div class="row">
-    <div class="col-md-6">
-      <g:render plugin="grailsflowCore" template="jobParametersForm"
-                model="[bean: jobDetails, repeatingInfo: repeatingInfo]"/>
-    </div>
-  </div>
+      <h3>${msgs['grailsflow.label.jobParams']}</h3>
 
-  <div class="form-submit text-right">
-    <g:actionSubmit action="updateJob" onclick="if (!checkRepeatInterval()) return false;"
-                    value="${common['grailsflow.command.update']}" class="btn btn-primary"/>
-    &nbsp;
-  </div>
-</g:form>
+      <div class="row">
+        <div class="col-md-6">
+          <g:render plugin="grailsflowCore" template="jobParametersForm"
+                    model="[bean: jobDetails, repeatingInfo: repeatingInfo]"/>
+        </div>
+      </div>
+
+      <div class="form-submit text-right">
+        <g:actionSubmit action="updateJob" onclick="if (!checkRepeatInterval()) return false;"
+                        value="${common['grailsflow.command.update']}" class="btn btn-primary"/>
+        &nbsp;
+      </div>
+  </g:form>
 </body>
 </html>

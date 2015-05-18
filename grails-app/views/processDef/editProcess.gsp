@@ -33,17 +33,9 @@
 
     </head>
     <body>
-      <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-          <h3>${msgs['grailsflow.label.processEditor']}</h3>
-        </div>
-      </div>
+      <h1>${msgs['grailsflow.label.processEditor']}</h1>
 
-      <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-          <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-        </div>
-      </div>
+      <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <g:form controller="${params['controller']}">
 

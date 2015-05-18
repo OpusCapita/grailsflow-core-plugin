@@ -23,17 +23,9 @@
          <title>${details['grailsflow.title.processTranslations']}</title>
     </head>
     <body>
-      <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-          <h3>${details['grailsflow.title.processTranslations']}</h3>
-        </div>
-      </div>
+      <h1>${details['grailsflow.title.processTranslations']}</h1>
 
-      <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-          <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-        </div>
-      </div>
+      <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <div class="row">
         <div class="col-md-12 col-xs-12 col-lg-12">

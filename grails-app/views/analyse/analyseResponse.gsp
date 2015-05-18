@@ -115,12 +115,7 @@
          <title>${processDetails['grailsflow.title.analyseResponseTime']}</title>
     </head>
     <body>
-
-      <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-          <h3>${processDetails['grailsflow.label.analyseResponseTime']}</h3>
-        </div>
-      </div>
+      <h1>${processDetails['grailsflow.label.analyseResponseTime']}</h1>
 
       <g:form class="form-horizontal" controller="${params['controller']}" method="GET">
         <div class="row">

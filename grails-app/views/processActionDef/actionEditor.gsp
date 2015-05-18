@@ -59,18 +59,13 @@
 
     </head>
     <body>
-      <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-          <h3>${msgs['grailsflow.label.actionEditor']}</h3>
+      <h1>${msgs['grailsflow.label.actionEditor']}</h1>
 
-           <g:if test="${flash.message}">
-             <div class="alert-info">${flash.message}</div>
-           </g:if>
-           <g:if test="${processNodeDef?.type == ConstantUtils.NODE_TYPE_WAIT}">
-             <div class="alert-warning">*${msgs["grailsflow.message.action.warning"]}</div>
-           </g:if>
-        </div>
-      </div>
+      <g:render plugin="grailsflowCore" template="/commons/messageInfo"/>
+
+      <g:if test="${processNodeDef?.type == ConstantUtils.NODE_TYPE_WAIT}">
+        <div class="alert-warning">*${msgs["grailsflow.message.action.warning"]}</div>
+      </g:if>
 
       <g:form controller="${params['controller']}" method="POST">
         <input type="hidden" name="nodeID" value="${processNodeDef?.id}"/>
