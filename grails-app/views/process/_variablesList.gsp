@@ -25,15 +25,15 @@
 <h3>${msgs['grailsflow.label.processVars']}</h3>
 
 <div class="row">
-  <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">
+  <div class="col-md-6">
     <g:each in="${variables}">
       <g:if test="${it.value}">
         <div class="form-group">
           <div class="row">
-              <div class="col-sm-5 col-md-5 col-lg-5">
+              <div class="col-md-5">
                 <gf:translatedValue translations="${it.label}" default="${it.name}"/>
               </div>
-              <div class="col-sm-7 col-md-7 col-lg-7">
+              <div class="col-md-7">
                 <g:if test="${it.type && it.type == 'Document'}">
                   <gf:renderDocument document="${it.value}"/>
                 </g:if>
@@ -60,6 +60,6 @@
       </g:if>
     </g:each>
   </div>
-  <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">
+  <div class="col-md-6">
   </div>
 </div>

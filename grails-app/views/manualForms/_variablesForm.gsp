@@ -47,11 +47,11 @@
         <g:set var="parameterName" value="var_${variable.name}"/>
 
         <div class="form-group">
-          <label class="col-sm-2 col-xs-2 col-md-2 col-lg-2  control-label">
+          <label class="col-md-2 control-label">
             <gf:translatedValue translations="${variable.label}" default="${variable.name}" />
             <g:if test="${required}">*</g:if>
           </label>
-          <div class="col-sm-10 col-md-10 col-lg-10 col-xs-10">
+          <div class="col-md-10">
             <gf:customizingTemplate template="${variable.view?.template}"
                 defaultTemplate="${com.jcatalog.grailsflow.model.view.VariableView.getDefaultTemplateForType(variable.type)}"
                 model="[variable: variable, view: variable.view, parameterName: parameterName]"/>

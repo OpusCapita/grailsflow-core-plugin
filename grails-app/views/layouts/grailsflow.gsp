@@ -30,7 +30,7 @@
   <body>
   <div class="container">
     <div class="row">
-      <div class="col-md-2 col-lg-2 col-xs-2">
+      <div class="col-md-2">
           <dl id="menuList">
               <dt>${menu_bundle['grailsflow.menu.header.useProcesses']}</dt>
               <dd>
@@ -77,7 +77,7 @@
           </dl>
       </div>
 
-      <div class="col-md-10 col-lg-10 col-xs-10">
+      <div class="col-md-10">
          <g:layoutBody/>
          <r:layoutResources/>
       </div>

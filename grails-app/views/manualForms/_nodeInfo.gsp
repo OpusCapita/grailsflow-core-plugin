@@ -30,20 +30,20 @@
 
     <div class="form-group">
       <div class="row">
-        <div class="col-sm-2 col-md-2 col-lg-2">
+        <div class="col-md-2">
           ${msgs['grailsflow.label.processType']}
         </div>
-        <div class="col-sm-10 col-md-10 col-lg-10">
+        <div class="col-md-10">
           <gf:translatedValue translations="${nodeDetails.process.label}" default="${nodeDetails.process.type}"/>
         </div>
       </div>
     </div>
     <div class="form-group">
       <div class="row">
-        <div class="col-sm-2 col-md-2 col-lg-2">
+        <div class="col-md-2">
             ${msgs['grailsflow.label.nodeID']}
         </div>
-        <div class="col-sm-10 col-md-10 col-lg-10">
+        <div class="col-md-10">
             <gf:translatedValue translations="${nodeDetails.label}" default="${nodeDetails.nodeID}"/>
         </div>
       </div>
@@ -51,10 +51,10 @@
     <g:if test="${nodeDetails.description}">
       <div class="form-group">
         <div class="row">
-          <div class="col-sm-2 col-md-2 col-lg-2">
+          <div class="col-md-2">
             ${msgs['grailsflow.label.description']}
           </div>
-          <div class="col-sm-10 col-md-10 col-lg-10">
+          <div class="col-md-10">
             <gf:translatedValue translations="${nodeDetails.description}" default=""/>
           </div>
         </div>
@@ -63,40 +63,40 @@
     <g:if test="${isStarted}">
       <div class="form-group">
         <div class="row">
-          <div class="col-sm-2 col-md-2 col-lg-2">
+          <div class="col-md-2">
             ${msgs['grailsflow.label.caller']}
           </div>
-          <div class="col-sm-10 col-md-10 col-lg-10">
+          <div class="col-md-10">
             ${nodeDetails.caller}
           </div>
         </div>
       </div>
       <div class="form-group">
         <div class="row">
-          <div class="col-sm-2 col-md-2 col-lg-2">
+          <div class="col-md-2">
             ${msgs['grailsflow.label.status']}
           </div>
-          <div class="col-sm-10 col-md-10 col-lg-10">
+          <div class="col-md-10">
             ${nodeDetails.status?.statusID ? common['grailsflow.label.status.'+nodeDetails.status?.statusID] : '-'}
           </div>
         </div>
       </div>
       <div class="form-group">
         <div class="row">
-          <div class="col-sm-2 col-md-2 col-lg-2">
+          <div class="col-md-2">
             ${msgs['grailsflow.label.startedOn']}
           </div>
-          <div class="col-sm-10 col-md-10 col-lg-10">
+          <div class="col-md-10">
             <gf:displayDateTime value="${nodeDetails.startedOn}"/>
           </div>
         </div>
       </div>
       <div class="form-group">
         <div class="row">
-          <div class="col-sm-2 col-md-2 col-lg-2">
+          <div class="col-md-2">
             ${msgs['grailsflow.label.dueOn']}
           </div>
-          <div class="col-sm-10 col-md-10 col-lg-10">
+          <div class="col-md-10">
             <gf:displayDateTime value="${nodeDetails.dueOn}"/>
           </div>
         </div>

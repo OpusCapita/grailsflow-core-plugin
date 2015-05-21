@@ -35,7 +35,7 @@
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
+        <div class="col-md-12">
            <g:form controller="${params['controller']}" method="POST" >
                <input type="hidden" name="id" value="${processID?.encodeAsHTML()}"/>
                <div class="dialog">

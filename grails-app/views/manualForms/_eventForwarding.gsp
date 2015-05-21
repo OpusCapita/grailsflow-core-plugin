@@ -24,12 +24,12 @@
 
     <gf:section sectionId="section_forwarding" title="${msgs['grailsflow.label.forwarding']}" selected="false">
         <div class="form-group">
-            <label class="col-sm-12 col-xs-12 col-md-12 col-lg-12  control-label">
+            <label class="col-md-12 control-label">
                 ${msgs['grailsflow.message.forwarding']}
             </label>
         </div>
         <div class="form-group">
-            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+            <div class="col-md-12">
                 <g:set var="users" value="${com.jcatalog.grailsflow.utils.AuthoritiesUtils.getUsers(currentAssignees).join(',')}"/>
                 <g:set var="roles" value="${com.jcatalog.grailsflow.utils.AuthoritiesUtils.getRoles(currentAssignees).join(',')}"/>
                 <g:set var="groups" value="${com.jcatalog.grailsflow.utils.AuthoritiesUtils.getGroups(currentAssignees).join(',')}"/>
@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+            <div class="col-md-12">
                 <g:submitButton id="processNode_eventForwarding" name="processNode_eventForwarding" value="${msgs['grailsflow.command.assign']}" class="btn btn-primary" />
             </div>
         </div>

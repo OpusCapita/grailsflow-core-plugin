@@ -73,7 +73,7 @@
     <g:set var="isStarted" value="${nodeDetails.process.id != null}"/>
 
     <div class="row">
-      <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+      <div class="col-md-12">
         <gf:customizingTemplate template="/manualForms/nodeInfo"
            model="[nodeDetails: nodeDetails]"/>
       </div>
@@ -81,7 +81,7 @@
 
     <g:if test="${isStarted}">
       <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+        <div class="col-md-12">
           <gf:customizingTemplate template="/manualForms/eventForwarding"
               model="[currentAssignees: nodeDetails.assignees]"/>
         </div>
@@ -89,14 +89,14 @@
     </g:if>
 
     <div class="row">
-      <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+      <div class="col-md-12">
         <gf:customizingTemplate template="/manualForms/variablesForm"
             model="[variables: nodeDetails.variables]" />
       </div>
     </div>
 
     <div class="row">
-      <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+      <div class="col-md-12">
         <g:set var="app_language" value="${params.lang ? params.lang : RequestContextUtils.getLocale(request)?.language.toString()}" />
           <g:each in="${nodeDetails.events.sort(){ a, b ->
             TranslationUtils.getTranslatedValue(a.label, a.event, app_language)

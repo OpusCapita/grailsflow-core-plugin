@@ -29,7 +29,7 @@
   <g:form name="processListForm" controller="${params['controller']}" method="POST">
     <input type="hidden" name="returnPage" value="deleteProcesses">
     <div class="row">
-      <div class="col-md-12 col-xs-12 col-lg-12">
+      <div class="col-md-12">
         <gf:customizingTemplate template="/${params['controller']}/processList/searchForm"
             defaultTemplate="/process/processList/searchForm"
             model="${['statuses': com.jcatalog.grailsflow.status.ProcessStatusEnum.values().findAll {it.isFinal()}, 'returnPage': 'deleteProcesses']}"/>
@@ -43,7 +43,7 @@
     </div>
 
     <div class="row">
-      <div class="col-md-12 col-xs-12 col-lg-12">
+      <div class="col-md-12">
 
         <gf:customizingTemplate template="/${params['controller']}/processList/searchResults"
                                   defaultTemplate="/process/processList/searchResults"/>

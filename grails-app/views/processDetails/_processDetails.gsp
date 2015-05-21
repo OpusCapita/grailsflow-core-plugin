@@ -25,31 +25,31 @@
         <input type="hidden" name="id" value="${processDetails?.id}"/>
 
         <div class="row">
-          <div class="col-md-12 col-xs-12 col-lg-12">
+          <div class="col-md-12">
             <gf:customizingTemplate template="blocks/header" model="[processDetails: processDetails]"/>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-md-12 col-xs-12 col-lg-12">
+          <div class="col-md-12">
             <gf:customizingTemplate template="blocks/processInfo" model="[processDetails: processDetails]"/>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-md-12 col-xs-12 col-lg-12">
+          <div class="col-md-12">
             <gf:customizingTemplate template="blocks/processVariables" model="[variables: processDetails.variables]"/>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-md-12 col-xs-12 col-lg-12">
+          <div class="col-md-12">
             <gf:customizingTemplate template="blocks/processNodes" model="[nodes: processDetails.nodes]"/>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-md-12 col-xs-12 col-lg-12">
+          <div class="col-md-12">
             <gf:customizingTemplate template="blocks/footer" model="[processDetails: processDetails]"/>
           </div>
         </div>

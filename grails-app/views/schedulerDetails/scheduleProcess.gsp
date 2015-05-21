@@ -38,13 +38,13 @@
 
   <g:form class="form-horizontal" controller="${params['controller']}" method="POST" enctype="multipart/form-data">
       <div class="row">
-        <div class="col-md-8 col-xs-8 col-lg-8">
+        <div class="col-md-8">
           <h4>${msgs['grailsflow.label.processDetails']}</h4>
 
           <div class="form-group">
-            <label class="col-sm-4 col-md-4 col-lg-4 col-xs-4 control-label" for="processClass">${msgs['grailsflow.label.processType']}</label>
+            <label class="col-md-4 control-label" for="processClass">${msgs['grailsflow.label.processType']}</label>
 
-            <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
+            <div class="col-md-8">
               <g:select id="processClass" from="${processClasses}" name='processID' class="form-control"
                         optionKey="${{ it.processType }}"
                         optionValue="${{ gf.translatedValue(translations: it.label, default: it.processType) }}"

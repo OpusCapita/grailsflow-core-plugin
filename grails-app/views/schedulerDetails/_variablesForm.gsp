@@ -7,9 +7,9 @@
                    'visibility': com.jcatalog.grailsflow.utils.ConstantUtils.WRITE_READ]
   ])}"/>
   <div class="form-group">
-    <label class="col-sm-4 col-xs-4 col-md-4 col-lg-4 control-label" for="var_${variable.name}"><gf:translatedValue translations="${variable.label}" default="${variable.name}"/></label>
+    <label class="col-md-4 control-label" for="var_${variable.name}"><gf:translatedValue translations="${variable.label}" default="${variable.name}"/></label>
 
-    <div class="col-sm-8 col-xs-8 col-lg-8 col-md-8">
+    <div class="col-md-8">
       <gf:customizingTemplate template="${variable.view?.template}" id="var_${variable.name}"
                               defaultTemplate="${com.jcatalog.grailsflow.model.view.VariableView.getDefaultTemplateForType(variable.type)}"
                               model='[variable: variable, view: variable.view, parameterName: parameterName ? parameterName : "var_${variable.name}".toString()]'/>

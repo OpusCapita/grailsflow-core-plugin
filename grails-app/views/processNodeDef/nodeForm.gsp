@@ -65,14 +65,14 @@
         <input type="hidden" name="processType" value="${process?.processID?.encodeAsHTML()}"/>
         <input type="hidden" id="ndID" name="ndID" value="${node?.id?.encodeAsHTML()}"/>
         <div class="row">
-          <div class="col-md-12 col-xs-12 col-lg-12">
+          <div class="col-md-12">
             <div class="form-horizontal">
 
               <div class="form-group">
-                <label class="col-sm-2 col-xs-2 col-md-2 col-lg-2  control-label" for="nodeID">
+                <label class="col-md-2 control-label" for="nodeID">
                   ${msgs['grailsflow.label.nodeID']}
                 </label>
-                <div class="col-sm-10 col-md-10 col-lg-10">
+                <div class="col-md-10">
                   <input id="nodeID" name="nodeID" value="${node?.nodeID?.encodeAsHTML()}"/>
                   <g:if test="${node?.id != null}">
                     &nbsp;&nbsp;&nbsp;
@@ -84,20 +84,20 @@
               </div>
 
               <div class="form-group">
-                <label class="col-sm-2 col-xs-2 col-md-2 col-lg-2  control-label" for="type">
+                <label class="col-md-2 control-label" for="type">
                   ${msgs['grailsflow.label.type']}
                 </label>
-                <div class="col-sm-10 col-md-10 col-lg-10">
+                <div class="col-md-10">
                   <g:select id="type" name="type" value="${node?.type}" from="${com.jcatalog.grailsflow.utils.ConstantUtils.nodeTypes}"
                       onchange="updateOptionsView(this);" />
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="col-sm-2 col-xs-2 col-md-2 col-lg-2  control-label" for="dueDate">
+                <label class="col-md-2 control-label" for="dueDate">
                   ${msgs['grailsflow.label.dueDate']}
                 </label>
-                <div class="col-sm-10 col-md-10 col-lg-10">
+                <div class="col-md-10">
                   <input id="dueDate" name="dueDate_days" size="4" maxlength="4" value="${params.dueDate_days?.encodeAsHTML()}"/>${msgs['grailsflow.label.dueDate.days']}
                   &nbsp;<input name="dueDate_hours" size="4" maxlength="4" value="${params.dueDate_hours?.encodeAsHTML()}"/>${msgs['grailsflow.label.dueDate.hours']}
                   &nbsp;<input name="dueDate_minutes" size="4" maxlength="4" value="${params.dueDate_minutes?.encodeAsHTML()}"/>${msgs['grailsflow.label.dueDate.minutes']}
@@ -106,10 +106,10 @@
               </div>
 
               <div class="form-group">
-                <label class="col-sm-2 col-xs-2 col-md-2 col-lg-2  control-label" for="expectedDuration">
+                <label class="col-md-2 control-label" for="expectedDuration">
                   ${msgs['grailsflow.label.expectedDuration']}
                 </label>
-                <div class="col-sm-10 col-md-10 col-lg-10">
+                <div class="col-md-10">
                   <input id="expectedDuration" name="expectedDuration_days" size="4" maxlength="4" value="${params.expectedDuration_days?.encodeAsHTML()}"/>${msgs['grailsflow.label.expectedDuration.days']}
                   &nbsp;<input name="expectedDuration_hours" size="4" maxlength="4" value="${params.expectedDuration_hours?.encodeAsHTML()}"/>${msgs['grailsflow.label.expectedDuration.hours']}
                   &nbsp;<input name="expectedDuration_minutes" size="4" maxlength="4" value="${params.expectedDuration_minutes?.encodeAsHTML()}"/>${msgs['grailsflow.label.expectedDuration.minutes']}
@@ -118,10 +118,10 @@
               </div>
 
               <div class="form-group">
-                <label class="col-sm-2 col-xs-2 col-md-2 col-lg-2  control-label" for="protocolGroup">
+                <label class="col-md-2 control-label" for="protocolGroup">
                   ${msgs['grailsflow.label.protocolGroup']}
                 </label>
-                <div class="col-sm-10 col-md-10 col-lg-10">
+                <div class="col-md-10">
                   <input name="protocolGroup" id="protocolGroup" value="${node?.protocolGroup?.encodeAsHTML()}"/>
                 </div>
               </div>
@@ -134,7 +134,7 @@
         <div id="waitNodeOptions" ${node && node.type == com.jcatalog.grailsflow.utils.ConstantUtils.NODE_TYPE_WAIT ? '' : 'style="display: none;"' } >
           <g:if test="${node?.id != null}">
             <div class="row">
-              <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+              <div class="col-md-12">
                 <gf:section title="${msgs['grailsflow.label.assignees']}" selected="true">
                   <gf:customizingTemplate template="/common/assigneesEditor"
                        model="['assignees': node?.assignees, 'controller': params['controller']]"/>
@@ -144,7 +144,7 @@
           </g:if>
 
           <div class="row">
-            <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+            <div class="col-md-12">
               <gf:section title="${msgs['grailsflow.label.varVisibility']}" selected="true">
                 <table class="table table-bordered">
                   <thead>
@@ -178,19 +178,19 @@
           </div>
 
           <div class="row">
-            <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+            <div class="col-md-12">
               <gf:section title="${msgs['grailsflow.label.manualForm']}" selected="true">
                 <div id="externalEditor" class="form-horizontal">
                   <div class="form-group">
-                    <label class="col-sm-2 col-xs-2 col-md-2 col-lg-2  control-label" for="externalUrl">
+                    <label class="col-md-2 control-label" for="externalUrl">
                       ${msgs['grailsflow.label.externalUrl']}
                     </label>
-                    <div class="col-sm-10 col-md-10 col-lg-10">
+                    <div class="col-md-10">
                       <input id="externalUrl" name="externalUrl" value="${externalUrl?.encodeAsHTML()}" size="100"/>
                     </div>
                   </div>
                   <div class="form-group">
-                    <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="col-md-12">
                       <p style="margin: 3px; font-style:italic">
                         ${msgs['grailsflow.hint.externalUrl.placeholder']}
                       </p>
@@ -283,16 +283,16 @@
         </div>
 
         <div class="row">
-          <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+          <div class="col-md-12">
             <div class="buttons">
               <span class="button">
                 <g:actionSubmit action="saveNodeDef" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>&nbsp;&nbsp;
 
                 <g:if test="${node && node.id}">
-                  <g:actionSubmit action="editNodeAction" value="${msgs['grailsflow.command.editNodeActions']}" class="btn btn-primary"/>&nbsp;&nbsp;
+                  <g:actionSubmit action="editNodeAction" value="${msgs['grailsflow.command.editNodeActions']}" class="btn btn-default"/>&nbsp;&nbsp;
                 </g:if>
 
-                <g:actionSubmit action="showProcessEditor" value="${common['grailsflow.command.back']}" class="btn btn-default"/>
+                <g:actionSubmit action="showProcessEditor" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
               </span>
             </div>
           </div>

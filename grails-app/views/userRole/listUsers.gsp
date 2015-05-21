@@ -38,7 +38,7 @@
       <h1>${msgs['grailsflow.label.users']}</h1>
 
       <div class="row">
-        <div class="col-md-6 col-xs-6 col-lg-6 col-sm-6">
+        <div class="col-md-6">
 	       <g:form controller="userRoles" method="POST">
 	        <table id="usersTable" class="table table-bordered">
 	          <tr>

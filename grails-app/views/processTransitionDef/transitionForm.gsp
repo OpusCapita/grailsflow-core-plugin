@@ -32,7 +32,7 @@
 
         <g:if test="${transition?.id}">
           <div class="row">
-            <div class="col-md-12 col-xs-12 col-lg-12">
+            <div class="col-md-12">
               <table>
                 <tr>
                   <td>
@@ -67,22 +67,22 @@
         </g:if>
 
         <div class="row">
-          <div class="col-md-12 col-xs-12 col-lg-12">
+          <div class="col-md-12">
             <div class="form-horizontal">
               <div class="form-group">
-                <label class="col-sm-2 col-xs-2 col-md-2 col-lg-2  control-label" for="fromNode">
+                <label class="col-md-2 control-label" for="fromNode">
                   ${msgs['grailsflow.label.fromNode']}
                 </label>
-                <div class="col-sm-10 col-md-10 col-lg-10">
+                <div class="col-md-10">
                   <input id="fromNode" readOnly="true" class="readonly" value="${transition?.fromNode?.nodeID?.encodeAsHTML()}" size="30"/>
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="col-sm-2 col-xs-2 col-md-2 col-lg-2  control-label" for="eventID">
+                <label class="col-md-2 control-label" for="eventID">
                   ${msgs['grailsflow.label.event']}
                 </label>
-                <div class="col-sm-10 col-md-10 col-lg-10">
+                <div class="col-md-10">
                   <input name="eventID" id="eventID"  value="${transition?.event?.encodeAsHTML()}"/>
                   <g:if test="${transition?.id != null}">
                     &nbsp;&nbsp;&nbsp;
@@ -97,7 +97,7 @@
         </div>
 
         <div class="row">
-          <div class="col-md-6 col-xs-6 col-lg-6 col-sm-6">
+          <div class="col-md-6">
             <table class="table table-bordered">
               <thead>
                 <tr>
@@ -132,7 +132,7 @@
                   <g:actionSubmit onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" action="deleteTransitonDef" value="${common['grailsflow.command.delete']}" class="btn btn-default"/>
                   &nbsp;&nbsp;
                 </g:if>
-                <g:actionSubmit action="toProcessEditor" id="${transition?.fromNode?.processDef?.id}" value="${common['grailsflow.command.back']}" class="btn btn-default"/>
+                <g:actionSubmit action="toProcessEditor" id="${transition?.fromNode?.processDef?.id}" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
               </span>
             </div>
           </div>

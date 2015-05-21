@@ -27,7 +27,7 @@
 
         <g:form controller="${params['controller']}" method="GET">
           <div class="row">
-            <div class="col-md-12 col-xs-12 col-lg-12">
+            <div class="col-md-12">
                   <g:actionSubmit action="createProcess" value="${common['grailsflow.command.add']}" class="btn btn-primary" style="margin-bottom:8px;"/>
 
             <table class="table table-bordered" width="100%">

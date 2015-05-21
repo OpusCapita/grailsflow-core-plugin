@@ -29,7 +29,7 @@
   <g:form name="processListForm" controller="${params['controller']}" method="POST">
     <input type="hidden" name="returnPage" value="list">
     <div class="row">
-      <div class="col-md-12 col-xs-12 col-lg-12">
+      <div class="col-md-12">
         <gf:customizingTemplate template="/${params['controller']}/processList/searchForm"
                           defaultTemplate="/process/processList/searchForm"/>
 
@@ -41,7 +41,7 @@
     </div>
 
     <div class="row">
-      <div class="col-md-12 col-xs-12 col-lg-12">
+      <div class="col-md-12">
 
         <gf:customizingTemplate template="/${params['controller']}/processList/searchResults"
                                   defaultTemplate="/process/processList/searchResults"/>

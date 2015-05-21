@@ -42,9 +42,9 @@
 </r:script>
 
 <div class="form-group">
-  <label class="col-sm-4 control-label" for="repeating">${msgs['grailsflow.label.repeating']}</label>
+  <label class="col-md-4 control-label" for="repeating">${msgs['grailsflow.label.repeating']}</label>
 
-  <div class="col-sm-8">
+  <div class="col-md-8">
     <g:select class="form-control" id="repeating" from="${repeatingInfo}" optionKey="key" optionValue="value"
               name="repeating" value="${bean?.repeating}"
               noSelection="['': '-Specify custom value-']"
@@ -53,14 +53,14 @@
 </div>
 
 <div id="customRepeating" class="form-group" style="display: none;">
-  <div class="col-sm-8 col-sm-offset-4">
+  <div class="col-md-8 col-md-offset-4">
     <div class="row">
-      <div class="col-sm-7">
+      <div class="col-md-7">
         <input name="customRepeating" size="10" maxlength="10" id="customRepeatingInput" class="form-control"
                value="${bean?.customRepeating ? bean?.customRepeating : (bean?.repeating ? bean?.repeating : '0')}"/>
       </div>
 
-      <div class="col-sm-5">
+      <div class="col-md-5">
         <div class="control-label">${msgs['grailsflow.label.milliseconds']}</div>
       </div>
     </div>
@@ -73,24 +73,24 @@
 <h4>${msgs['grailsflow.label.startTime']}</h4>
 
 <div class="form-group">
-  <label class="col-sm-4 control-label" for="startDay">${msgs['grailsflow.label.day']}</label>
+  <label class="col-md-4 control-label" for="startDay">${msgs['grailsflow.label.day']}</label>
 
-  <div class="col-sm-8">
+  <div class="col-md-8">
     <g:set var="startDay" value="${bean?.startDay ? bean.startDay : new Date()}"/>
     <gf:jQueryCalendar property="startDay" value="${startDay}" />
   </div>
 </div>
 
 <div class="form-group">
-  <label class="col-sm-4 control-label" for="repeating">${msgs['grailsflow.label.time']}</label>
+  <label class="col-md-4 control-label" for="repeating">${msgs['grailsflow.label.time']}</label>
 
-  <div class="col-sm-2">
+  <div class="col-md-2">
     <input type="number" step="1" id="startTime_hours" class="form-control" name="startTime_hours" size="3"
            maxlength="2"
            value="${bean?.startTime_hours ? bean?.startTime_hours : Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 10 ? '0' + Calendar.getInstance().get(Calendar.HOUR_OF_DAY) : Calendar.getInstance().get(Calendar.HOUR_OF_DAY)}"/>
   </div>
 
-  <div class="col-sm-1">
+  <div class="col-md-1">
     <div class="text-center">
       <label class="control-label">
         :
@@ -98,13 +98,13 @@
     </div>
   </div>
 
-  <div class="col-sm-2">
+  <div class="col-md-2">
     <input type="number" step="1" id="startTime_minutes" class="form-control" name="startTime_minutes" size="3"
            maxlength="2"
            value="${bean?.startTime_minutes ? bean?.startTime_minutes : Calendar.getInstance().get(Calendar.MINUTE) < 10 ? '0' + Calendar.getInstance().get(Calendar.MINUTE) : Calendar.getInstance().get(Calendar.MINUTE)}"/>
   </div>
 
-  <div class="col-sm-3">
+  <div class="col-md-3">
     <div class="control-label">
       ${msgs['grailsflow.label.clockTime']}
     </div>

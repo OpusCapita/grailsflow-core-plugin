@@ -40,41 +40,41 @@
       <g:form controller="${params['controller']}">
 
         <div class="row">
-          <div class="col-md-12 col-xs-12 col-lg-12">
+          <div class="col-md-12">
             <input type="hidden" name="id" value="${processDetails.id}"/>
             <div class="form-horizontal">
             <div class="form-group">
-                <label class="col-sm-2 col-xs-2 col-md-2 col-lg-2  control-label" for="type">
+                <label class="col-md-2 control-label" for="type">
                     ${msgs['grailsflow.label.process.type']}
                 </label>
-                <div class="col-sm-10 col-md-10 col-lg-10">
+                <div class="col-md-10">
                     <input id="type" name="processID" value= "${processDetails.processID}" size="50"/>
                 </div>
             </div>
             <div class="form-group">
-                    <label  class="col-sm-2 col-md-2 col-lg-2 control-label" for="validFrom">
+                    <label  class="col-md-2 control-label" for="validFrom">
                         ${msgs['grailsflow.label.process.validFrom']}
                     </label>
-                    <div class="col-sm-10 col-md-10 col-lg-10">
+                    <div class="col-md-10">
                         <gf:jQueryCalendar property="validFrom" value="${processDetails.validFrom}" />
                     </div>
             </div>
             <div class="form-group">
-                    <label class="col-sm-2 col-md-2 col-lg-2  control-label" for="validTo">
+                    <label class="col-md-2 control-label" for="validTo">
                         ${msgs['grailsflow.label.process.validTo']}
                     </label>
-                    <div class="col-sm-10 col-md-10 col-lg-10">
+                    <div class="col-md-10">
                         <gf:jQueryCalendar property="validTo" value="${processDetails.validTo}" />
                     </div>
             </div>
             <div class="form-group">
-                    <label class="col-sm-2 col-md-2 col-lg-2  control-label" for="description">
+                    <label class="col-md-2 control-label" for="description">
                         ${msgs['grailsflow.label.process.description']}
                     </label>
-                    <div class="col-sm-6 col-md-6 col-lg-6">
+                    <div class="col-md-6">
                         <textarea id="description" name="description" cols="47" rows="2">${processDetails.description[request.locale.language]?.encodeAsHTML()}</textarea>
                     </div>
-                    <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="col-md-4">
                         <g:link controller="${params['controller']}" action="editProcessTranslations" id="${processDetails.id}">
                             ${details['grailsflow.command.manageProcessTranslations']}
                         </g:link>
@@ -102,11 +102,11 @@
              <span class="button">
                <g:actionSubmit action="saveProcess" value="${common['grailsflow.command.apply']}" class="btn btn-default"/>
                &nbsp;&nbsp;
-               <g:actionSubmit action="editTypes" value="${common['grailsflow.command.back']}" class="btn btn-default"/>
-               &nbsp;&nbsp;
                <input type="button" value="${details['grailsflow.command.showGraphicEditor']}" class="btn btn-default" onclick="return openGraphic('${processDetails.id}')"/>
                &nbsp;&nbsp;
                <g:actionSubmit action="exportAsHTML" value="${details['grailsflow.command.exportAsHTML']}" class="btn btn-default"/>
+               &nbsp;&nbsp;
+               <g:actionSubmit action="editTypes" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
              </span>
            </div>
            <br/><br/>

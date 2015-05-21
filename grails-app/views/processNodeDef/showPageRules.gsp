@@ -24,12 +24,12 @@
     <body>
       <div class="container">
         <div class="row" style="margin-top: 10px;">
-          <div class="col-md-12 col-xs-12 col-lg-12">
+          <div class="col-md-12">
             <div class="panel panel-default">
               <div class="panel-heading"><h1>${msgs['grailsflow.title.showRules']}</h1></div>
               <div class="panel-body">
 
-                <h3>Available Model Beans</h3>
+                <h1>Available Model Beans</h1>
                   Following beans are available for the page:<br/>
                   <dl>
                    <dt>nodeDetails</dt>bean of com.jcatalog.grailsflow.bean.NodeDetails type
@@ -45,7 +45,7 @@
                   </li>
                 </li>
                 </ol>
-                <h2 class="headline">Customer Controller Usage</h2>
+                <h1>Customer Controller Usage</h1>
                 If you will use customer controller you should specify its name like:<br/><br/>
                 <i>'{processID}'_'{nodeID}'</i><br/>
                 <pre>&lt;g:link controller="waitTest_waitingAnswer" action="test"&gt;New Action&lt;/g:link&gt;</pre>
@@ -61,7 +61,7 @@
                 Customer controller will be saved with name:<br/><br/>
                   {processID}_{nodeID}Controller
 
-                <h3>Multi-Step Page Rules</h3>
+                <h1>Multi-Step Page Rules</h1>
                 The code for multi-step page should contains body for generated GSP page.
                 Please see the following example of page code:<br/>
                 <pre>
@@ -84,7 +84,7 @@
       &lt;/g:form&gt;
                 </pre>
                 <br/>
-                <h2 class="headline">Customize Return Controller and Action.</h2>
+                <h1>Customize Return Controller and Action.</h1>
                 By default after manual step  form execution you will be forwarded to the Process Details page.
                 You can customize this behavior by specifying return controller and action in your custom manual page.<br/>
                 For example you can set it to 'showWorklist' - it means that after

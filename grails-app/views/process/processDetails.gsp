@@ -36,78 +36,78 @@
       <g:form controller="${params['controller']}" method="POST">
         <input type="hidden" name="id" value="${processDetails?.id}"/>
         <div class="row">
-          <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">
+          <div class="col-md-6">
             <div class="form-group">
               <div class="row">
-                <div class="col-sm-5 col-md-5 col-lg-5">
+                <div class="col-md-5">
                   ${msgs['grailsflow.label.id']}
                 </div>
-                <div class="col-sm-7 col-md-7 col-lg-7">
+                <div class="col-md-7">
                    ${processDetails?.id}
                 </div>
               </div>
             </div>
             <div class="form-group">
               <div class="row">
-                <div class="col-sm-5 col-md-5 col-lg-5">
+                <div class="col-md-5">
                   ${msgs['grailsflow.label.type']}
                 </div>
-                <div class="col-sm-7 col-md-7 col-lg-7">
+                <div class="col-md-7">
                   <gf:translatedValue translations="${processDetails?.label}" default="${processDetails?.type}"/>
                 </div>
               </div>
             </div>
             <div class="form-group">
               <div class="row">
-                <div class="col-sm-5 col-md-5 col-lg-5">
+                <div class="col-md-5">
                   ${msgs['grailsflow.label.status']}
                 </div>
-                <div class="col-sm-7 col-md-7 col-lg-7">
+                <div class="col-md-7">
                   ${processDetails?.status?.statusID ? common['grailsflow.label.status.'+processDetails?.status?.statusID] : '-'}
                 </div>
               </div>
             </div>
             <div class="form-group">
               <div class="row">
-                <div class="col-sm-5 col-md-5 col-lg-5">
+                <div class="col-md-5">
                   ${msgs['grailsflow.label.createdBy']}
                 </div>
-                <div class="col-sm-7 col-md-7 col-lg-7">
+                <div class="col-md-7">
                   ${processDetails?.createdBy}
                 </div>
               </div>
             </div>
             <div class="form-group">
               <div class="row">
-                <div class="col-sm-5 col-md-5 col-lg-5">
+                <div class="col-md-5">
                   ${msgs['grailsflow.label.createdOn']}
                 </div>
-                <div class="col-sm-7 col-md-7 col-lg-7">
+                <div class="col-md-7">
                   <gf:displayDateTime value="${processDetails?.createdOn}"/>
                 </div>
               </div>
             </div>
           </div>
-        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6"></div>
+        <div class="col-md-6"></div>
       </div>
 
       <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
+        <div class="col-md-12">
            <gf:customizingTemplate template="variablesList" model="[variables: processDetails.variables.values()]"/>
         </div>
       </div>
 
       <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
+        <div class="col-md-12">
           <gf:customizingTemplate template="nodesList" model="[nodes: processDetails.nodes]"/>
         </div>
       </div>
 
       <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
+        <div class="col-md-12">
            <div class="buttons">
              <span class="button">
-               <g:actionSubmit action="list" value="${common['grailsflow.command.back']}" class="btn btn-default" />
+               <g:actionSubmit action="list" value="${common['grailsflow.command.back']}" class="btn btn-link" />
                &nbsp;&nbsp;
                <r:script>
                    function reloadPage() {

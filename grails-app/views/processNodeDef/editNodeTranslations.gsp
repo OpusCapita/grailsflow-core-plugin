@@ -27,7 +27,7 @@
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
+        <div class="col-md-12">
             <h4>${msgs['grailsflow.label.nodeID']}: ${processNodeDef.nodeID?.encodeAsHTML()}</h4>
             <g:form controller="${params['controller']}">
               <input type="hidden" name="id" value="${processNodeDef.id?.encodeAsHTML()}"/>

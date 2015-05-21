@@ -25,7 +25,7 @@
 <gf:messageBundle bundle="grailsflow.processList" var="processList"/>
 
 <br/>
-<h3>${processList['grailsflow.label.processList']}</h3>
+<h1>${processList['grailsflow.label.processList']}</h1>
 <table class="table table-bordered">
 <thead>
   <tr>

@@ -143,9 +143,9 @@
                        <img alt="${common['grailsflow.command.down']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'move_down.gif')}"/>
                    </a>
                    &nbsp;&nbsp;
-                   <g:link controller="processVarDef" action="editVarDef" id="${variable.id}" title="${common['grailsflow.command.edit']}">${common['grailsflow.command.edit']}</g:link>
+                   <g:link controller="processVarDef" action="editVarDef" id="${variable.id}" title="${common['grailsflow.command.edit']}" class="btn btn-sm btn-default">${common['grailsflow.command.edit']}</g:link>
                    &nbsp;&nbsp;
-                   <g:link onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" controller="processVarDef" action="deleteVarDef" id="${variable.id}" title="${common['grailsflow.command.delete']}">${common['grailsflow.command.delete']}</g:link>
+                   <g:link onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" controller="processVarDef" action="deleteVarDef" id="${variable.id}" title="${common['grailsflow.command.delete']}" class="btn btn-sm btn-default">${common['grailsflow.command.delete']}</g:link>
                  </td>
                </g:if>
        </tr>

@@ -39,7 +39,7 @@
 	  <h1>${msgs['grailsflow.label.groups']}</h1>
 
       <div class="row">
-        <div class="col-md-6 col-xs-6 col-lg-6 col-sm-6">
+        <div class="col-md-6">
 	      <g:form controller="userGroups" method="POST">
 	        <table id="groupsTable" class="standard" width="100%">
 	          <tr>

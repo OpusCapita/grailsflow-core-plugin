@@ -25,7 +25,7 @@
     <h1>${document_bundle['grailsflow.title.directoryContent']}</h1>
 
     <div class="row">
-      <div class="col-md-6 col-xs-6 col-lg-6 col-sm-6">
+      <div class="col-md-6">
         <table class="table table-bordered">
           <thead>
             <tr>

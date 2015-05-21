@@ -44,7 +44,7 @@
         </g:form>
 
         <div class="row">
-          <div class="col-md-12 col-xs-12 col-lg-12">
+          <div class="col-md-12">
             <gf:customizingTemplate defaultTemplate="/process/nodeDetailsFooter"
               notFoundMessage="${templateNotFoundMessage}" model="[nodeDetails: nodeDetails]"/>
           </div>
