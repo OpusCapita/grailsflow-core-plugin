@@ -1,0 +1,41 @@
+It is possible to forward Node to another assignee. The forwarding is available on automatically generated manual forms
+or can be added to custom form using Grailsflow template, e.g.
+{code}
+    <gf:customizingTemplate template="/manualForms/eventForwarding"
+        model="[currentAssignees: nodeDetails.assignees]"/>
+{code}
+
+!usersGuide/forwardNode.jpg!
+
+
+The node can be forwarded to another Users, Roles or Groups. To define assignment correctly, the special prefixes are
+used. For Users it is *'USER_'*, for Roles - *'ROLE_'*, for Group - *'GROUP_'*
+
+The assignment for Nodes can be done in process definition, e.g.
+{code}
+      ManagerApproveHolidaysWait(dueDate: 432300000, editorType: ConstantUtils.EDITOR_MANUAL) {
+        variable( message: ConstantUtils.READ_ONLY, requesterName: ConstantUtils.READ_ONLY, holidaysEnd: ConstantUtils.READ_ONLY, resolution: ConstantUtils.WRITE_READ, holidaysStart: ConstantUtils.READ_ONLY)
+        assignees( roles: [ "MANAGER", "ADMIN" ] )
+        action {
+            Log(logMessage: 'Manager makes decision...')
+        }
+        on("approve").to([ "ApprovedOperation" ])
+        on("reject").to([ "RejectNotification" ])
+      }
+{code}
+
+
+The forwarding is available through Grailsflow service and can be called directly using the following method
+{code}
+    processManagerService.forwardProcessNode(node, newAssignees, loggedUser)
+{code}
+
+where the method parameters are
+
+# *node* - is a ProcessNode instance to be forwarded
+# *newAssignees* - is a collection *Collection<String> forwardedTo* of new assignees with special prefixes (for Users it is *'USER_'*, for Roles - *'ROLE_'*, for Group - *'GROUP_'*)
+# *loggedUser* - is a name of user who forwards node
+
+The method doesn't check node for available assignees, so pay attention that if you use method from your own code, you
+should check firstly if the node is available for *loggedUser*.
+

@@ -20,6 +20,8 @@ usersGuide:
           title: Show Worklist
       showEmbeddedWorklist:
           title: Show Embedded Worklist
+      forwardNode:
+          title: Forward Node
       listProcesses:
           title: List Processes
       killProcess:
