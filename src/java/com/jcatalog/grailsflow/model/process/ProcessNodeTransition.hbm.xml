@@ -6,7 +6,7 @@
 
 <hibernate-mapping>
     <database-object>
-        <create>CREATE INDEX idx_process_node_transition_20131112_3 ON process_node_transition (from_node)</create>
+        <create>CREATE INDEX IDX_PROCESS_TRANSITION_1 ON process_node_transition (from_node)</create>
         <drop/>
     </database-object>
 </hibernate-mapping>
