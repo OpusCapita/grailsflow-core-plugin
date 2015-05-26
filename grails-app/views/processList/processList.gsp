@@ -34,10 +34,10 @@
             controller="${gf.currentController()}" action="${gf.currentAction()}">
 
             <gf:customizingTemplate template="searchForm" defaultTemplate="/processList/searchForm"/>
-
+            <br/>
             <div class="buttons">
               <span class="button">
-                <g:actionSubmit action="${gf.currentAction()}" value="${common['grailsflow.command.search']}" class="button"/>
+                <g:actionSubmit action="${gf.currentAction()}" value="${common['grailsflow.command.search']}" class="btn btn-primary"/>
               </span>
             </div>
 

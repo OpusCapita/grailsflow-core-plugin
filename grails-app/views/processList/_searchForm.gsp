@@ -23,7 +23,7 @@
 
 <gf:advancedSearchResources />
 
-<gf:calendarResources />
+<r:require modules="grailsflowCalendar"/>
 
 <table id="search_table" class="standard">
 <!-- Content is added dynamically -->

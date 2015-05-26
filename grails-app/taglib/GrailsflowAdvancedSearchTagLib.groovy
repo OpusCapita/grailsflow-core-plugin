@@ -73,7 +73,7 @@ class GrailsflowAdvancedSearchTagLib {
 
           var deleteIcon = document.createElement("img");
           deleteIcon.alt = "delete";
-          deleteIcon.src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'delete.gif')}"
+          deleteIcon.src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'clear.gif')}"
 
           var searchTable = new SearchTable("search_table", "${name}");
           searchTable.setIcons(addIcon, deleteIcon);

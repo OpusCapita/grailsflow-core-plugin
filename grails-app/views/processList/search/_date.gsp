@@ -5,4 +5,5 @@ Template parameters:
 
 -->
 
-<gf:datePicker name="${name}" value="${value}" format="${gf.datePattern()}"/>
+<gf:jQueryCalendar property="${name}_${new java.util.Date().time}" value="${value}" />
+
