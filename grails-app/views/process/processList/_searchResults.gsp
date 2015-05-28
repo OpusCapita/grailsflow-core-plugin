@@ -73,7 +73,7 @@
                 </g:link>
               </g:elseif>
               <g:elseif test="${process.status.isFinal}">
-                  <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="deleteProcess" params="${['processId': process.id]}">
+                  <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="deleteProcess" params="${['processId': process.id, 'returnPage': returnPage]}">
                       ${common['grailsflow.command.delete']}
                   </g:link>
               </g:elseif>

@@ -78,6 +78,7 @@ class ProcessController extends GrailsFlowSecureController {
     * ProcessList UI
     */
     def list = {
+        flash.message=""
         withFormat {
             html { return [processDetailsList: [],  // show empty list by default
                 processClasses: processManagerService.supportedProcessClasses, params: params]}
@@ -358,7 +359,7 @@ class ProcessController extends GrailsFlowSecureController {
             flash.message = grailsflowMessageBundleService
                 .getMessage(RESOURCE_BUNDLE, "grailsflow.message.searchResult", [itemsTotal?.toString()])
             withFormat {
-                html { render(view: params.returnPage ?: 'list', params: params,
+                html { render(view: params.returnPage ? params.returnPage : 'list', params: params,
                    model: [processDetailsList: processDetailsList,
                        itemsTotal: itemsTotal ? itemsTotal : 0,
                        processClasses: processClasses]) }
@@ -626,6 +627,7 @@ class ProcessController extends GrailsFlowSecureController {
     }
 
     def deleteProcesses = {
+        flash.message = ""
         withFormat {
             html { return [processDetailsList: [],  // show empty list by default
                     processClasses: processManagerService.supportedProcessClasses, params: params]}
@@ -642,13 +644,16 @@ class ProcessController extends GrailsFlowSecureController {
                 processAdministrationService.deleteProcess(params.processId as Long)
                 flash.message = grailsflowMessageBundleService
                     .getMessage(RESOURCE_BUNDLE, "grailsflow.message.deleteProcess.selected",[params.processId as String])
-                params.returnPage = "deleteProcesses"
             } catch (Exception e) {
                 log.error("Exception during process [${params.processId}] deletion", e)
                 flash.error = e.message
             }
         }
-        forward(controller: "process", action: "search", params: params)
+        if (params.returnPage && params.returnPage == "deleteProcesses") {
+            forward(controller: "process", action: "searchFinishedProcesses", params: params)
+        } else {
+            forward(controller: "process", action: "search", params: params)
+        }
 
     }
 

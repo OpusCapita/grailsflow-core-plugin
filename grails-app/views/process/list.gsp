@@ -44,7 +44,8 @@
       <div class="col-md-12">
 
         <gf:customizingTemplate template="/${params['controller']}/processList/searchResults"
-                                  defaultTemplate="/process/processList/searchResults"/>
+                                  defaultTemplate="/process/processList/searchResults"
+                                  model="${['returnPage': 'list']}"/>
 
         <g:if test="${itemsTotal}">
           <div class="paginateButtons">

@@ -36,8 +36,8 @@
 
         <div class="form-submit text-right">
           <g:actionSubmit action="searchFinishedProcesses" value="${common['grailsflow.command.search']}" class="btn btn-default"/>
-          <g:actionSubmit action="deleteSearchedProcesses" value="${common['grailsflow.command.delete']}" class="btn btn-default"/>
-          <g:actionSubmit action="deleteAllProcesses" value="${common['grailsflow.command.deleteAll']}" class="btn btn-primary"/>
+          <g:actionSubmit action="deleteSearchedProcesses" onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" value="${common['grailsflow.command.delete']}" class="btn btn-default"/>
+          <g:actionSubmit action="deleteAllProcesses" onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" value="${common['grailsflow.command.deleteAll']}" class="btn btn-primary"/>
         </div>
       </div>
     </div>
@@ -46,7 +46,7 @@
       <div class="col-md-12">
 
         <gf:customizingTemplate template="/${params['controller']}/processList/searchResults"
-                                  defaultTemplate="/process/processList/searchResults"/>
+                                  defaultTemplate="/process/processList/searchResults" model="${['returnPage': 'deleteProcesses']}"/>
 
         <g:if test="${itemsTotal}">
           <div class="paginateButtons">
