@@ -143,7 +143,7 @@ class ProcessVarDefController extends GrailsFlowSecureController {
                     flash.errors << grailsflowMessageBundleService
                         .getMessage(RESOURCE_BUNDLE, "grailsflow.message.specifiedValue.notSuitable")
                     return render(view: 'variableForm', model: [variable: var, process: process])
-                }
+                } else { var.defaultValue = null }
             } else if (params.varType.equals("Boolean")) {
                 if (params.varValue) var.defaultValue = true
                 else var.defaultValue = false

@@ -20,7 +20,7 @@
   <g:checkBox name="varValue" value="${variable?.value ? variable?.value == 'true' : params.varValue}"/>
 </g:if>
 <g:elseif test="${variable?.type == 'Date'}">
-  <gf:jQueryCalendar property="varValue" pattern="${gf.datePattern()}" value="${variable?.value ? new Date(new Long(variable?.value)) : null}" />
+  <gf:jQueryCalendar property="varValue" pattern="${gf.datePattern()}" value="${(variable?.value && variable.value.isNumber()) ? new Date(new Long(variable?.value)) : null}" />
 </g:elseif>
 <g:elseif test="${variable?.type == 'Document'}">
 </g:elseif>
