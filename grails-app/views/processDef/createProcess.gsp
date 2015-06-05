@@ -28,24 +28,23 @@
 
       <g:form class="form-horizontal" controller="${params['controller']}" method="POST">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-8">
             <div class="form-group">
               <label class="col-md-4 control-label" for="processID">${msgs['grailsflow.label.processID']}</label>
               <div class="col-md-8">
-                <input id="processID" name="processID" size="50" value="${params.processID?.encodeAsHTML()}" maxlength="255"/>
+                <input id="processID" name="processID" size="50" class="form-control"  value="${params.processID?.encodeAsHTML()}" maxlength="255"/>
               </div>
             </div>
             <div class="form-group">
               <label class="col-md-4 control-label" for="description">${msgs['grailsflow.label.description']}</label>
               <div class="col-md-8">
-                <textarea id="description" name="description" cols="47" rows="2">${params.description?.encodeAsHTML()}</textarea>
+                <textarea id="description" name="description" cols="47" rows="2" class="form-control" >${params.description?.encodeAsHTML()}</textarea>
               </div>
             </div>
             <div class="form-group">
-              <div class="col-md-12">
+              <div class="form-submit text-right">
                 <g:actionSubmit action="processDefinition" value="${common['grailsflow.command.create']}" class="btn btn-primary"/>
               </div>
-
             </div>
           </div>
         </div>

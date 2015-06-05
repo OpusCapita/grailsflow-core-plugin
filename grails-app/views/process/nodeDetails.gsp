@@ -18,7 +18,7 @@
          <meta name="layout"
                content="${params.isEmbedded == 'true' ? '' : 'grailsflow'}" />
          <g:render plugin="grailsflow" template="/commons/global"/>
-         <r:require modules="grailsflowCalendar"/>
+         <r:require modules="grailsflowDatepicker"/>
          <gf:messageBundle bundle="grailsflow.common" var="common"/>
          <gf:messageBundle bundle="grailsflow.worklist" var="msgs"/>
          <title>${msgs['grailsflow.title.nodeDetails']}</title>
@@ -42,13 +42,6 @@
           <gf:customizingTemplate template="${template}" defaultTemplate="/manualForms/automaticForm"
                   notFoundMessage="${templateNotFoundMessage}" model="[nodeDetails: nodeDetails]"/>
         </g:form>
-
-        <div class="row">
-          <div class="col-md-12">
-            <gf:customizingTemplate defaultTemplate="/process/nodeDetailsFooter"
-              notFoundMessage="${templateNotFoundMessage}" model="[nodeDetails: nodeDetails]"/>
-          </div>
-        </div>
 
     </body>
 </html>

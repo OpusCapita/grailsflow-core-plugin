@@ -28,7 +28,7 @@
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
           <h4>${types['grailsflow.label.processID']}: ${processDef.processID}</h4>
 
           <g:form controller="${params['controller']}">
@@ -42,10 +42,8 @@
                 <g:render plugin="grailsflow" template="/common/translationsEditor"
                     model="[ 'translations': processDef.description, 'parameterName': 'description', 'textarea': true]"/>
               </gf:section>
-              <div class="buttons">
-                <span class="button">
-                  <g:actionSubmit action="saveProcessTranslations" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
-                </span>
+              <div class="form-submit text-right">
+                <g:actionSubmit action="saveProcessTranslations" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
               </div>
             </g:form>
         </div>

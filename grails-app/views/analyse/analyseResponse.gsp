@@ -125,7 +125,7 @@
                 ${processDetails['grailsflow.label.processType']}
               </label>
               <div class="col-md-8">
-                  <g:select from="${processClasses}" name='type' id="type"
+                  <g:select from="${processClasses}" name='type' id="type" class="form-control"
                             optionKey="${{it.processType}}" optionValue="${{gf.translatedValue(translations: it.label, default: it.processType)}}"
                             noSelection="['':'']" value="${params.type}"></g:select>
               </div>
@@ -135,15 +135,15 @@
                 ${processDetails['grailsflow.label.sortBy']}
               </label>
               <div class="col-md-8">
-                <g:select name='sortBy' value="${params.sortBy}" noSelection="['':'']"
-                            from="${[ AnalyseController.SORT_BY_NODE, AnalyseController.SORT_BY_MIN_TIME,
+                <g:select name='sortBy' value="${params.sortBy}" noSelection="['':'']" class="form-control"
+                          from="${[ AnalyseController.SORT_BY_NODE, AnalyseController.SORT_BY_MIN_TIME,
                                     AnalyseController.SORT_BY_MAX_TIME, AnalyseController.SORT_BY_AVERAGE_TIME,
                                     AnalyseController.SORT_BY_INTERACTIVE_NODE, AnalyseController.SORT_BY_NONINTERACTIVE_NODE]}"
                             optionValue="${{processDetails['grailsflow.label.'+it] ?: ''}}" />
               </div>
             </div>
             <div class="form-group">
-              <div class="col-md-12">
+              <div class="form-submit text-right">
                 <g:actionSubmit action="searchNodesInfo" value="${common['grailsflow.command.search']}" class="btn btn-primary"/>
               </div>
             </div>
@@ -166,7 +166,8 @@
         <div class="row">
           <div class="col-md-12">
             <h1>${params.type?.encodeAsHTML()} &nbsp;${processDetails['grailsflow.label.processList']}</h1>
-            <table class="table table-bordered">
+            <g:if test="${processNodes}">
+              <table class="table">
                 <thead>
                   <tr><th>${processDetails['grailsflow.label.nodeID']}</th>
                       <th>${processDetails['grailsflow.label.quantity']}</th>
@@ -188,7 +189,11 @@
                     </tr>
                   </g:each>
                 </tbody>
-            </table>
+              </table>
+            </g:if>
+            <g:else>
+              <div class="bs-callout bs-callout-info">${common['grailsflow.message.noItems']}</div>
+            </g:else>
           </div>
         </div>
       </g:form>

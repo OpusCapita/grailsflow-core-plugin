@@ -96,7 +96,11 @@
     </div>
 
     <div class="row">
-      <div class="col-md-12">
+      <div class="form-submit text-right">
+        <g:if test="${params.isEmbedded != 'true'}">
+          <g:hiddenField name="backPage" value="${nodeDetails.process.id ? 'showWorklist' : 'showTypes'}" />
+          <g:actionSubmit action="returnBack" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
+        </g:if>
         <g:set var="app_language" value="${params.lang ? params.lang : RequestContextUtils.getLocale(request)?.language.toString()}" />
           <g:each in="${nodeDetails.events.sort(){ a, b ->
             TranslationUtils.getTranslatedValue(a.label, a.event, app_language)
@@ -106,8 +110,7 @@
             <g:if test="${eventDetails.event != 'overdue'}">
               <g:submitButton name="event_${eventDetails.event}"
                            value="${gf.translatedValue(translations: eventDetails.label, default: eventDetails.event)}"
-                           class="btn btn-primary"/>
-              &nbsp;&nbsp;
+                           class="btn btn-default"/>
             </g:if>
           </g:each>
     </div>

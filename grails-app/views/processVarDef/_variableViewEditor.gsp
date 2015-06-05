@@ -45,7 +45,7 @@
 <g:set var="viewType" value="${view?.type ? view?.type : params.variableViewType}"/>
 
 <label for="variableViewType">${msgs['grailsflow.label.type']}</label>
-<g:select id="variableViewType" name="variableViewType" value="${viewType}" from="${supportedViewTypes}" noSelection="${['' : '']}"  onchange="return changeViewType();"></g:select>
+<g:select id="variableViewType" name="variableViewType" value="${viewType}" from="${supportedViewTypes}" noSelection="${['' : '']}" class="form-control" onchange="return changeViewType();"></g:select>
 
 <g:each var="type" in="${supportedViewTypes}">
   <div id="${type}Div" ${type == viewType ? '' : 'style="display: none"'}>

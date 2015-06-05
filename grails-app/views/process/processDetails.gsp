@@ -104,25 +104,18 @@
       </div>
 
       <div class="row">
-        <div class="col-md-12">
-           <div class="buttons">
-             <span class="button">
-               <g:actionSubmit action="list" value="${common['grailsflow.command.back']}" class="btn btn-link" />
-               &nbsp;&nbsp;
-               <r:script>
+        <div class="form-submit text-right">
+          <g:actionSubmit action="list" value="${common['grailsflow.command.back']}" class="btn btn-link" />
+          <r:script>
                    function reloadPage() {
                        window.location = "${g.createLink(controller: params['controller'], action: params['action'], params: params)}";
                    }
-               </r:script>
-               <input type="button" onclick="reloadPage();"
-                        value="${common['grailsflow.command.refresh']}" class="btn btn-default" />
-               &nbsp;&nbsp;
-               <input type="button" class="btn btn-primary" value="${msgs['grailsflow.command.showGraphicEditor']}" onclick="openGraphic('${processDetails.id}'); return false;"/>
-             </span>
-           </div>
-          </g:form>
+          </r:script>
+          <input type="button" onclick="reloadPage();"
+            value="${common['grailsflow.command.refresh']}" class="btn btn-default" />
+          <input type="button" class="btn btn-primary" value="${msgs['grailsflow.command.showGraphicEditor']}" onclick="openGraphic('${processDetails.id}'); return false;"/>
         </div>
       </div>
-
+      </g:form>
     </body>
 </html>

@@ -127,7 +127,8 @@
         <img src="${g.resource(plugin: 'grailsflow', dir: 'images/grailsflow/general', file: 'find.gif')}"/></a>
       &nbsp;
       <a href="#" onclick="${clearFunction}()">
-        <img src="${g.resource(plugin: 'grailsflow', dir: 'images/grailsflow/editor', file: 'delete.gif')}"/></a>
+        <span class="glyphicon glyphicon-remove text-danger"></span>
+      </a>
 
     </g:if> <!-- if (!readOnly) -->
     

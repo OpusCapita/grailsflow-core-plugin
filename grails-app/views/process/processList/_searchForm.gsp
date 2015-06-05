@@ -21,7 +21,7 @@
 <gf:messageBundle bundle="grailsflow.common" var="common"/>
 <gf:messageBundle bundle="grailsflow.processDetails" var="processDetails"/>
 
-<r:require modules="grailsflowCalendar"/>
+<r:require modules="grailsflowDatepicker"/>
 
 <div class="form-horizontal">
   <div class="row">
@@ -60,11 +60,11 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="col-md-4 control-label">${processDetails['grailsflow.label.startedFrom']}</label>
+        <label class="col-md-4 control-label">${processDetails['grailsflow.label.startedRange']}</label>
         <div class="col-md-8">
-          <p style="white-space: nowrap;"><gf:jQueryCalendar property="startedFrom" value="${params.startedFrom?.encodeAsHTML()}" />&nbsp;&nbsp;
-          ${processDetails['grailsflow.label.to']}</p>
-          <gf:jQueryCalendar property="startedTo" value="${params.startedTo?.encodeAsHTML()}" />
+          <gf:dateRangePicker fromId = "startedFrom" toId="startedTo" fromValue="${params.startedFrom?.encodeAsHTML()}"
+              toValue="${params.startedTo?.encodeAsHTML()}"
+              fromLabel="${processDetails['grailsflow.label.from']}" toLabel="${processDetails['grailsflow.label.to']}"/>
         </div>
       </div>
       <div class="form-group">
@@ -74,19 +74,19 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="col-md-4 control-label">${processDetails['grailsflow.label.modifiedFrom']}</label>
+        <label class="col-md-4 control-label">${processDetails['grailsflow.label.modifiedRange']}</label>
         <div class="col-md-8">
-          <p style="white-space: nowrap;"><gf:jQueryCalendar property="modifiedFrom" value="${params.modifiedFrom?.encodeAsHTML()}" />&nbsp;&nbsp;
-            ${processDetails['grailsflow.label.to']}</p>
-          <gf:jQueryCalendar property="modifiedTo" value="${params.modifiedTo?.encodeAsHTML()}" />
+          <gf:dateRangePicker fromId = "modifiedFrom" toId="modifiedTo" fromValue="${params.modifiedFrom?.encodeAsHTML()}"
+              toValue="${params.modifiedTo?.encodeAsHTML()}"
+              fromLabel="${processDetails['grailsflow.label.from']}" toLabel="${processDetails['grailsflow.label.to']}"/>
         </div>
       </div>
       <div class="form-group">
-        <label class="col-md-4 control-label">${processDetails['grailsflow.label.finishedFrom']}</label>
+        <label class="col-md-4 control-label">${processDetails['grailsflow.label.finishedRange']}</label>
         <div class="col-md-8">
-          <p style="white-space: nowrap;"><gf:jQueryCalendar property="finishedFrom" value="${params.finishedFrom?.encodeAsHTML()}" />&nbsp;&nbsp;
-          ${processDetails['grailsflow.label.to']}</p>
-          <gf:jQueryCalendar property="finishedTo" value="${params.finishedTo?.encodeAsHTML()}" />
+          <gf:dateRangePicker fromId = "finishedFrom" toId="finishedTo" fromValue="${params.finishedFrom?.encodeAsHTML()}"
+              toValue="${params.finishedTo?.encodeAsHTML()}"
+              fromLabel="${processDetails['grailsflow.label.from']}" toLabel="${processDetails['grailsflow.label.to']}"/>
         </div>
       </div>
     </div>

@@ -28,4 +28,4 @@
 
 <h3>${msgs['grailsflow.label.linkView']}</h3>
 <label for="linkView_styleClass">${msgs['grailsflow.label.styleClass']}</label>
-<input type="text" id="linkView_styleClass" name="linkView_styleClass" value="${view?.styleClass?.encodeAsHTML()}"/>
+<input type="text" id="linkView_styleClass" name="linkView_styleClass" value="${view?.styleClass?.encodeAsHTML()}" class="form-control" />

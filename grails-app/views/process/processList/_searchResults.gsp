@@ -34,7 +34,7 @@
 
 <g:if test="${processDetailsList}">
   <div class="table-responsive">
-  <table class="table table-bordered" width="100%">
+  <table class="table" width="100%">
   <thead>
     <tr>
          <th>${processDetails['grailsflow.label.id']}</th>
@@ -59,7 +59,8 @@
           <td><gf:displayDateTime value="${process.finishedOn}"/>&nbsp;${process.finishedBy}
           </td>
           <td class="text-right">
-            <div class="btn-group">
+            <div class="btn-group input-group-btn form-submit text-right">
+              <nobr>
               <g:if test="${!process.status.isFinal && (process.status.statusID != com.jcatalog.grailsflow.status.ProcessStatusEnum.KILLING.value())}">
                 <g:link class="btn btn-sm btn-default" onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" controller="${params['controller']}" action="killProcess" id="${process.id}" title="${processDetails['grailsflow.command.kill']}"
                    params="['type': params.type, 'statusID': params.statusID,
@@ -74,12 +75,13 @@
               </g:elseif>
               <g:elseif test="${process.status.isFinal}">
                   <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="deleteProcess" params="${['processId': process.id, 'returnPage': returnPage]}">
-                      ${common['grailsflow.command.delete']}
+                    <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;${common['grailsflow.command.delete']}
                   </g:link>
               </g:elseif>
               <g:link class="btn btn-sm btn-default" onclick="openGraphic('${process.id}'); return false;">${processDetails['grailsflow.command.showGraphic']}</g:link>
               <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="exportProcess" params="${['processID': process.id, 'format': 'csv', 'extension': 'csv']}">${processDetails['grailsflow.command.exportCSV']}</g:link>
               <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="exportProcess" params="${['processID': process.id, 'format': 'excel', 'extension': 'xls']}">${processDetails['grailsflow.command.exportExcel']}</g:link>
+             </nobr>
             </div>
           </td>
       </tr>

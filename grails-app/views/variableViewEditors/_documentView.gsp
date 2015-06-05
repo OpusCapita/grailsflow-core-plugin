@@ -28,7 +28,7 @@
 
 <h3>${msgs['grailsflow.label.documentView']}</h3>
 <label for="documentView_styleClass">${msgs['grailsflow.label.styleClass']}</label>
-<input type="text" id="documentView_styleClass" name="documentView_styleClass" value="${view?.styleClass?.encodeAsHTML()}"/>
+<input type="text" id="documentView_styleClass" class="form-control" name="documentView_styleClass" value="${view?.styleClass?.encodeAsHTML()}"/>
 <br/>
 <label for="documentView_size">${msgs['grailsflow.label.size']}</label>
-<input type="text" id="documentView_size" name="documentView_size" value="${view?.size?.encodeAsHTML()}"/>
+<input type="text" id="documentView_size" class="form-control" name="documentView_size" value="${view?.size?.encodeAsHTML()}"/>

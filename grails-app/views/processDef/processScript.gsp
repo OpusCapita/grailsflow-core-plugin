@@ -35,31 +35,27 @@
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <div class="row">
-        <div class="col-md-12">
-           <g:form controller="${params['controller']}" method="POST" >
-               <input type="hidden" name="id" value="${processID?.encodeAsHTML()}"/>
-               <div class="dialog">
-               <br/>
-                <table>
-                    <tbody>
-                      <tr class='prop'>
-                        <td valign='top'> ${processType}&nbsp;${msgs['grailsflow.label.processCode']}: </td>
-                      </tr>
-                      <tr>
-                        <td valign='top' colspan="2">
-                          <textarea cols="95" rows="35" class="brush: groovy">${processCode?.encodeAsHTML()}</textarea>
-                        </td>
-                      </tr>
-                    </tbody>
-               </table>
-               </div>
-               <div class="buttons">
-                 <span class="menuButton" style="padding-left:3px; margin-bottom:8px;">
-                    <g:actionSubmit action="editProcess" value="${common['grailsflow.command.back']}" class="button"/>
-                 </span>
-               </div>
-            </g:form>
-        </div>
+        <g:form controller="${params['controller']}" method="POST" >
+          <input type="hidden" name="id" value="${processID?.encodeAsHTML()}"/>
+          <div class="dialog">
+            <br/>
+            <table>
+              <tbody>
+                <tr class='prop'>
+                  <td valign='top'> ${processType}&nbsp;${msgs['grailsflow.label.processCode']}: </td>
+                </tr>
+                <tr>
+                  <td valign='top' colspan="2">
+                    <textarea cols="95" rows="35" class="brush: groovy">${processCode?.encodeAsHTML()}</textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="form-submit text-right">
+            <g:actionSubmit action="editProcess" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
+          </div>
+        </g:form>
       </div>
     </body>
 </html>

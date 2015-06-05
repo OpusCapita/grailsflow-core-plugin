@@ -452,19 +452,21 @@ class GrailsflowTagLib {
         def sectionID = Math.abs(title.hashCode())
         def selected = attrs.selected != null ? Boolean.valueOf(attrs.selected) : true
         out << """<div class=\"sectionHeader\"> """
-        out << """<a href=\"#\""""
-        if (selected) {
-            out << """class=\"selected glyphicon glyphicon-minus\" """
-        } else {
-            out << """class=\"glyphicon glyphicon-plus\" """
-        }
-        out << """onclick=\"this.className=(this.className.indexOf('selected') > -1 ? 'glyphicon glyphicon-plus' : 'selected glyphicon glyphicon-minus');"""
-        out << """if (this.className.indexOf('selected') > -1 ) { """
+        out << """<h4><a href=\"#\""""
+        out << """onclick=\"this.firstChild.className=(this.firstChild.className.indexOf('selected') > -1 ? 'fa fa-angle-up' : 'selected fa fa-angle-down');"""
+        out << """if (this.firstChild.className.indexOf('selected') > -1 ) { """
         out << """document.getElementById('${sectionID}').style.display=''; """
         out << """} else { document.getElementById('${sectionID}').style.display = 'none'; }"""
-        out << """return false;\"> """
+        out << """return false;\">"""
+        out << "<span "
+        if (selected) {
+            out << """class=\"selected fa fa-angle-down\" """
+        } else {
+            out << """class=\"fa fa-angle-up\" """
+        }
+        out << "> </span> "
         out << title
-        out << """</a></div>"""
+        out << """</a></h4></div>"""
         out << """<div id='${sectionID}' ${selected ? "" : "style='display: none'"}>"""
         out << body()
         out << """</div>"""

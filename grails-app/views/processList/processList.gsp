@@ -28,37 +28,30 @@
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <div class="row">
-        <div class="col-md-12">
-          <br/>
-          <g:form name="processListForm" method="GET"
+        <g:form name="processListForm" method="GET"
             controller="${gf.currentController()}" action="${gf.currentAction()}">
 
-            <gf:customizingTemplate template="searchForm" defaultTemplate="/processList/searchForm"/>
-            <br/>
-            <div class="buttons">
-              <span class="button">
-                <g:actionSubmit action="${gf.currentAction()}" value="${common['grailsflow.command.search']}" class="btn btn-primary"/>
-              </span>
-            </div>
+        <gf:customizingTemplate template="searchForm" defaultTemplate="/processList/searchForm"/>
+        <br/>
+        <div class="form-submit text-right">
+          <g:actionSubmit action="${gf.currentAction()}" value="${common['grailsflow.command.search']}" class="btn btn-primary"/>
+        </div>
 
-            <gf:customizingTemplate template="searchResults" defaultTemplate="/processList/searchResults"/>
+        <gf:customizingTemplate template="searchResults" defaultTemplate="/processList/searchResults"/>
 
-            <g:if test="${itemsTotal}">
-              <div class="paginateButtons">
-                <g:paginate total="${itemsTotal}"  
+        <g:if test="${itemsTotal}">
+          <div class="paginateButtons">
+            <g:paginate total="${itemsTotal}"
                   controller="${gf.currentController()}" action="${gf.currentAction()}"
                   params="${gf.currentParams()}"/>
-              </div>
-            </g:if>
+          </div>
+        </g:if>
 
-            <div class="buttons">
-              <span class="button">
-                <gf:refreshButton value="${common['grailsflow.command.refresh']}" class="btn btn-default"/>
-              </span>
-            </div>
-
-          </g:form>
+        <div class="form-submit text-right">
+          <gf:refreshButton value="${common['grailsflow.command.refresh']}" class="btn btn-link"/>
         </div>
+
+        </g:form>
       </div>
     </body>
 </html>

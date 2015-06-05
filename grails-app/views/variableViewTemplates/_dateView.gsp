@@ -33,12 +33,12 @@
     <g:set var="styleClass" value="${readOnly ? 'readonly' : view?.styleClass}"/>
     <g:set var="dateFormat" value="${view?.dateFormat ? view?.dateFormat : gf.datePattern().toString()}"/>
 
-    <r:require modules="grailsflowCalendar" />
+    <r:require modules="grailsflowDatepicker" />
 
     <g:if test="${readOnly}">
 	  <input value="${gf.displayDate(pattern: dateFormat, value: variable.value)}" size="${size}" class="${styleClass}"/>
 	</g:if>
 	<g:else>
-      <gf:jQueryCalendar property="${parameterName}" value="${variable.value}" pattern="${dateFormat}"
+      <gf:bootstrapCalendar property="${parameterName}" value="${variable.value}" pattern="${dateFormat}"
                          size="${size}" class="${styleClass}"/>
 	</g:else>

@@ -89,14 +89,14 @@
 
 
 <gf:section title="${nodeEditor['grailsflow.label.processNodes']}" selected="true">
-<table class="table table-bordered">
+<table class="table">
   <thead>
     <tr>
       <th>${nodeEditor['grailsflow.label.nodeID']}</th>
       <th>${nodeEditor['grailsflow.label.type']}</th>
       <th>${nodeEditor['grailsflow.label.transitions']}</th>
       <g:if test="${showOperations}">
-        <th width="15%">${common['grailsflow.label.operations']}</th>
+        <th width="15%">&nbsp;</th>
       </g:if>
      </tr>
   </thead>
@@ -114,42 +114,53 @@
                     <b>${transition.event}</b>
                   </g:link>
                   &nbsp;&nbsp;
-                  <g:link onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" controller="processTransitionDef" action="deleteTransitonDef" id="${transition.id}">
-                    <img alt="${common['grailsflow.command.delete']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'delete.gif')}"/>
+                  <g:link title="${common['grailsflow.command.delete']}" onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" controller="processTransitionDef" action="deleteTransitonDef" id="${transition.id}">
+                    <span class="glyphicon glyphicon-remove text-danger"></span>
                   </g:link>
                   <br/>
                   <font class="hint"> >> ${transition.toNodes*.nodeID}</font><br/>
                 </g:each>
               </td>
               <td align="right">
-                <g:link controller="processTransitionDef" action="addTransitonDef" id="${processDetails.id}" params="[fromNode: node.id]">
-                  <img alt="${nodeEditor['grailsflow.command.addTransition']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'add.gif')}"/>
+                <g:link title="${nodeEditor['grailsflow.command.addTransition']}" controller="processTransitionDef" action="addTransitonDef" id="${processDetails.id}" params="[fromNode: node.id]">
+                  <span class="glyphicon glyphicon-plus text-success"></span>
                 </g:link>
               </td>
             </tr>
           </table>
         </td>
         <g:if test="${showOperations}">
-          <td style="white-space: nowrap;">
-            <a href="javascript:void(0)" onclick="orderMoveNodeUp(${node.id}); return false;"
-                title="${common['grailsflow.command.up']}">
-                <img alt="${common['grailsflow.command.up']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'move_up.gif')}"/>
-            </a>
-            &nbsp;&nbsp;
-            <a href="javascript:void(0)" onclick="orderMoveNodeDown(${node.id}); return false;"
-                title="${common['grailsflow.command.down']}">
-                <img alt="${common['grailsflow.command.down']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'move_down.gif')}"/>
-            </a>
-            &nbsp;&nbsp;
-            <g:link controller="processNodeDef" action="editNodeDef" id="${node.id}" title="${common['grailsflow.command.edit']}" class="btn btn-sm btn-default">${common['grailsflow.command.edit']}</g:link>
-            &nbsp;&nbsp;
-            <g:link onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" controller="processNodeDef" action="deleteNodeDef" id="${node.id}" title="${common['grailsflow.command.delete']}" class="btn btn-sm btn-default">${common['grailsflow.command.delete']}</g:link>
+          <td>
+            <div class="btn-group input-group-btn">
+              <nobr>
+                <a href="javascript:void(0)" title="${common['grailsflow.command.up']}" onclick="orderMoveNodeUp(${node.id}); return false;"
+                    title="${common['grailsflow.command.up']}" class="btn btn-sm btn-link">
+                  <span class="glyphicon glyphicon-arrow-up"></span>
+                </a>
+                &nbsp;
+                <a href="javascript:void(0)" title="${common['grailsflow.command.down']}" onclick="orderMoveNodeDown(${node.id}); return false;"
+                    title="${common['grailsflow.command.down']}" class="btn btn-sm btn-link">
+                  <span class="glyphicon glyphicon-arrow-down"></span>
+                </a>
+                &nbsp;
+                <g:link controller="processNodeDef" action="editNodeDef" id="${node.id}" title="${common['grailsflow.command.edit']}" class="btn btn-sm btn-default">
+                  <span class="glyphicon glyphicon-edit"></span>&nbsp;
+                  ${common['grailsflow.command.edit']}
+                </g:link>
+                <g:link onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" controller="processNodeDef" action="deleteNodeDef" id="${node.id}" title="${common['grailsflow.command.delete']}" class="btn btn-sm btn-default">
+                  <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;
+                  ${common['grailsflow.command.delete']}
+                </g:link>
+              </nobr>
+            </div>
           </td>
         </g:if>
       </tr>
     </g:each>
   </tbody>
 </table>
-<g:actionSubmit action="addNodeDef" value="${common['grailsflow.command.add']}" class="btn btn-primary"/>
+<div class="form-submit text-right">
+  <g:actionSubmit action="addNodeDef" value="${common['grailsflow.command.add']}" class="btn btn-primary"/>
+</div>
 </gf:section>
 <br/><br/>

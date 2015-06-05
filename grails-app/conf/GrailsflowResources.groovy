@@ -20,9 +20,9 @@ modules = {
         }
     }
     grailsflow {
-        dependsOn 'jquery', 'jquery-ui'
-        defaultBundle 'ui'
+        dependsOn 'jquery'
         resource url:'/js/grailsflow/common.js'
+        resource url: '/js/grailsflow/jquery/config.js'
     }
     grailsflowGraphics {
         dependsOn 'jquery'
@@ -39,9 +39,15 @@ modules = {
         resource url:'/js/grailsflow/draw2d/node/NodeOutputPort.js'
         resource url:'/js/grailsflow/draw2d/node/TransitionDecorator.js'
     }
-    grailsflowCalendar {
-        resource url:'/js/grailsflow/jquery/config.js', disposition: 'head'
+
+    grailsflowDatepicker {
+        dependsOn('jquery')
+        resource url: '/css/grailsflow/datepicker/bootstrap-datepicker.min.css'
+        resource url: '/js/grailsflow/datepicker/bootstrap-datepicker.min.js'
+        resource url: '/js/grailsflow/datepicker/bootstrap-datepicker.de.min.js'
+        resource url: '/js/grailsflow/datepicker/bootstrap-datepicker.es.min.js'
     }
+
     grailsflowJgplot {
         dependsOn 'jquery'
         resource url:'/css/grailsflow/jqplot/jquery.jqplot.min.css'

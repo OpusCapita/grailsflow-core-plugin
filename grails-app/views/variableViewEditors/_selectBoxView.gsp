@@ -47,10 +47,9 @@
       var linkDelete = document.createElement("a");
       linkDelete.href="#"
       linkDelete.onclick = function() { deleteRow(rowOrder); };
-      var img1 = document.createElement("img");
-      img1.src = "${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'delete.gif')}"
-      img1.style.margin = "3px;"
-      linkDelete.appendChild(img1);  
+      var span = document.createElement("span");
+      span.className = "glyphicon glyphicon-remove text-danger"
+      linkDelete.appendChild(span);
       newColumn2.appendChild(linkDelete);
 
       newRow.appendChild(newColumn1);
@@ -107,7 +106,7 @@
   ${msgs['grailsflow.label.addItem']}
 </a>&nbsp;
 <a href="#" title="${msgs['grailsflow.label.addItem']}" onclick="addRow('');">
-  <img src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'add.gif')}" style="vertical-align: top; border: 0;"/>
+  <span class="glyphicon glyphicon-plus text-success"></span>
 </a>
 
 <div id="selectBoxBlock">

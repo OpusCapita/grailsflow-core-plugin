@@ -85,8 +85,11 @@
             // remove link
             var removeLink = cloneSampleElement('sample_assigee_delete_link')
             removeLink.onclick = getDeleteAssigneeFunction(parentForm, assignee)
+            var divButton = document.createElement('div')
+            divButton.className ="form-submit text-right"
+            divButton.appendChild(removeLink)
             var linkCell = row.insertCell(1)
-            linkCell.appendChild(removeLink)
+            linkCell.appendChild(divButton)
         }
     }
     document.getElementById(assigneesType+"_count").innerHTML="("+table.rows.length+")"
@@ -162,23 +165,30 @@
 <g:set var="roleSelection" value="${ !userSelection && rolesCount != 0 }"/>
 <g:set var="groupSelection" value="${ !userSelection && !roleSelection }"/>
 
-<g:render plugin="grailsflow" template="/common/userRoleInput"
-   model="[ 'usersParameterName': 'userAssignees', 'rolesParameterName': 'roleAssignees', 'groupsParameterName': 'groupAssignees',
+<div class="row">
+  <div class="col-md-6">
+     <g:render plugin="grailsflow" template="/common/userRoleInput"
+       model="[ 'usersParameterName': 'userAssignees', 'rolesParameterName': 'roleAssignees', 'groupsParameterName': 'groupAssignees',
        'usersCount': usersCount, 'rolesCount': rolesCount, 'groupsCount': groupsCount,
        'userElements': 'usersTable', 'roleElements': 'rolesTable', 'groupElements': 'groupsTable']"/>
-<input type="button" name="_action_addAssignees" value="${common['grailsflow.command.add']}" class="button"
-  onclick="return callAddAssignees(this);"/>
 
-<a href="${g.createLink(controller: controller, action: 'deleteAssignee')}" id="sample_assigee_delete_link" title="${common['grailsflow.command.delete']}" style="display: none">${common['grailsflow.command.delete']}</a>
+     <div class="form-submit text-right">
+       <input type="button" name="_action_addAssignees" value="${common['grailsflow.command.add']}" class="btn btn-primary"
+              onclick="return callAddAssignees(this);"/>
+     </div>
 
-<br/>
-<br/>
+     <a class="btn btn-sm btn-default" href="${g.createLink(controller: controller, action: 'deleteAssignee')}" id="sample_assigee_delete_link" title="${common['grailsflow.command.delete']}" style="display: none">
+       <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;${common['grailsflow.command.delete']}
+     </a>
 
-<table class="standard" id="usersTable" ${userSelection ? '' : 'style="display: none"'}>
+     <br/>
+     <br/>
+
+<table class="table" id="usersTable" ${userSelection ? '' : 'style="display: none"'}>
  <thead>
    <tr>
       <th>${nodeEditor['grailsflow.label.assignee']}</th>
-      <th>${common['grailsflow.label.operations']}</th>
+      <th>&nbsp;</th>
     </tr>
  </thead>
  <tbody>
@@ -186,19 +196,21 @@
         <tr id="usersTable_${user?.encodeAsHTML()}_row" class="${ (i % 2) == 0 ? 'odd' : 'even'}" valign="top">
            <td>${user?.encodeAsHTML()}</td>
            <td>
-             <g:link onclick="return callDeleteAssignee(getAncestorElementOfType(this, 'form'), '${user?.encodeAsJavaScript()?.encodeAsHTML()}');">
-               ${common['grailsflow.command.delete']}
-             </g:link>
+             <div class="form-submit text-right">
+               <g:link class="btn btn-sm btn-default" title="${common['grailsflow.command.delete']}" onclick="return callDeleteAssignee(getAncestorElementOfType(this, 'form'), '${user?.encodeAsJavaScript()?.encodeAsHTML()}');">
+                 <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;${common['grailsflow.command.delete']}
+               </g:link>
+             </div>
            </td>
         </tr>
    </g:each>
  </tbody>
 </table>
-<table class="standard" id="rolesTable" ${roleSelection ? '' : 'style="display: none"'}>
+<table class="table" id="rolesTable" ${roleSelection ? '' : 'style="display: none"'}>
  <thead>
    <tr>
       <th>${nodeEditor['grailsflow.label.assignee']}</th>
-      <th>${common['grailsflow.label.operations']}</th>
+      <th>&nbsp;</th>
     </tr>
  </thead>
  <tbody>
@@ -206,19 +218,21 @@
         <tr id="rolesTable_${role?.encodeAsHTML()}_row" class="${ (i % 2) == 0 ? 'odd' : 'even'}" valign="top">
            <td>${role?.encodeAsHTML()}</td>
            <td>
-             <g:link onclick="return callDeleteAssignee(getAncestorElementOfType(this, 'form'), '${role?.encodeAsJavaScript()?.encodeAsHTML()}');">
-               ${common['grailsflow.command.delete']}
-             </g:link>
+             <div class="form-submit text-right">
+               <g:link class="btn btn-sm btn-default" title="${common['grailsflow.command.delete']}" onclick="return callDeleteAssignee(getAncestorElementOfType(this, 'form'), '${role?.encodeAsJavaScript()?.encodeAsHTML()}');">
+                 <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;${common['grailsflow.command.delete']}
+               </g:link>
+             </div>
            </td>
         </tr>
    </g:each>
  </tbody>
 </table>
-<table class="standard" id="groupsTable" ${groupSelection ? '' : 'style="display: none"'}>
+<table class="table" id="groupsTable" ${groupSelection ? '' : 'style="display: none"'}>
 <thead>
  <tr>
     <th>${nodeEditor['grailsflow.label.assignee']}</th>
-    <th>${common['grailsflow.label.operations']}</th>
+    <th>&nbsp;</th>
   </tr>
 </thead>
 <tbody>
@@ -226,12 +240,16 @@
       <tr id="groupsTable_${group?.encodeAsHTML()}_row" class="${ (i % 2) == 0 ? 'odd' : 'even'}" valign="top">
          <td>${group?.encodeAsHTML()}</td>
          <td>
-           <g:link onclick="return callDeleteAssignee(getAncestorElementOfType(this, 'form'), '${group?.encodeAsJavaScript()?.encodeAsHTML()}');">
-             ${common['grailsflow.command.delete']}
-           </g:link>
+           <div class="form-submit text-right">
+             <g:link class="btn btn-sm btn-default" title="${common['grailsflow.command.delete']}" onclick="return callDeleteAssignee(getAncestorElementOfType(this, 'form'), '${group?.encodeAsJavaScript()?.encodeAsHTML()}');">
+               <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;${common['grailsflow.command.delete']}
+             </g:link>
+           </div>
          </td>
       </tr>
  </g:each>
 </tbody>
 </table>
 
+</div>
+</div>

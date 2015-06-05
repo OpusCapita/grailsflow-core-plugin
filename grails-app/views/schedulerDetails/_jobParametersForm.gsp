@@ -1,5 +1,5 @@
 <gf:messageBundle bundle="grailsflow.schedulerDetails" var="msgs"/>
-<r:require modules="grailsflowCalendar"/>
+<r:require modules="grailsflowDatepicker"/>
 
 <r:script>
    function checkSelection() {
@@ -77,7 +77,7 @@
 
   <div class="col-md-8">
     <g:set var="startDay" value="${bean?.startDay ? bean.startDay : new Date()}"/>
-    <gf:jQueryCalendar property="startDay" value="${startDay}" />
+    <gf:bootstrapCalendar property="startDay" value="${startDay}" />
   </div>
 </div>
 

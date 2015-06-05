@@ -152,7 +152,7 @@
     
     <gf:messageBundle bundle="grailsflow.userRoles" var="userRoles"/>
     
-        <input type="radio" name="authority_type" value="users"
+    <input type="radio" name="authority_type" value="users"
            onclick="if (this.checked) switchAuthoritiesType('users');" ${select_users ? 'checked' : ''}/>
     ${userRoles['grailsflow.label.users']} <span id="users_count">(${users_count})</span>
         &nbsp;&nbsp;&nbsp;
@@ -166,22 +166,22 @@
         <br/>
 
     <div id="div_users">
-      <input type="text" id="input_users" name="${usersParameterName}" size="40" value="">&nbsp;
-      <a href="#" onclick="openUserList();" class="image">
-        <img src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'add.gif')}" title="${userRoles['grailsflow.title.findUsers']}" style="margin: 3px;"/>
+      <input type="text" id="input_users" name="${usersParameterName}" size="40" value="" class="form-control" >&nbsp;
+      <a href="#" onclick="openUserList();" title="${userRoles['grailsflow.title.findUsers']}">
+        <span class="glyphicon glyphicon-plus text-success"></span>
       </a>&nbsp;
     </div>
 
     <div id="div_roles" style="display: none">
-      <input type="text" id="input_roles" name="${rolesParameterName}" size="40" value="">&nbsp;
-      <a href="#" onclick="openRoleList();" class="image">
-        <img title="${userRoles['grailsflow.title.findRoles']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'add.gif')}" style="margin: 3px;"/>
+      <input type="text" id="input_roles" name="${rolesParameterName}" size="40" value="" class="form-control" >&nbsp;
+      <a href="#" onclick="openRoleList();" title="${userRoles['grailsflow.title.findRoles']}">
+        <span class="glyphicon glyphicon-plus text-success"></span>
       </a>&nbsp;
     </div>
     <div id="div_groups" style="display: none">
-      <input type="text" id="input_groups" name="${groupsParameterName}" size="40" value="">&nbsp;
-      <a href="#" onclick="openGroupList();" class="image">
-        <img title="${userRoles['grailsflow.title.findGroups']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'add.gif')}" style="margin: 3px;"/>
-      </a>&nbsp;
+      <input type="text" id="input_groups" name="${groupsParameterName}" size="40" value="" class="form-control" >&nbsp;
+      <a href="#" title="${userRoles['grailsflow.title.findGroups']}" onclick="openGroupList();">
+        <span class="glyphicon glyphicon-plus text-success"></span>
+      </a>
     </div>
 

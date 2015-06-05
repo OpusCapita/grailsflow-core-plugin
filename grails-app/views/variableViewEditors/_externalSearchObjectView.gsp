@@ -28,10 +28,10 @@
 
 <h3>${msgs['grailsflow.label.externalSearchObjectView']}</h3>
 <label for="externalSearchObjectView_displayKey">${msgs['grailsflow.label.displayKey']}</label>
-<input type="text" id="externalSearchObjectView_displayKey" name="externalSearchObjectView_displayKey" value="${view?.displayKey?.encodeAsHTML()}"/>
+<input type="text" id="externalSearchObjectView_displayKey" class="form-control" name="externalSearchObjectView_displayKey" value="${view?.displayKey?.encodeAsHTML()}"/>
 <br/>
 <label for="externalSearchObjectView_searchUrl">${msgs['grailsflow.label.searchUrl']}</label>
-<input type="text" id="externalSearchObjectView_searchUrl" name="externalSearchObjectView_searchUrl" value="${view?.searchUrl?.encodeAsHTML()}"/>
+<input type="text" id="externalSearchObjectView_searchUrl" class="form-control" name="externalSearchObjectView_searchUrl" value="${view?.searchUrl?.encodeAsHTML()}"/>
 <br/>
 <label for="externalSearchObjectView_additionalFields">${msgs['grailsflow.label.additionalFields']}</label>
-<input type="text" id="externalSearchObjectView_additionalFields" name="externalSearchObjectView_additionalFields" value="${view?.additionalFields?.encodeAsHTML()}"/>
+<input type="text" id="externalSearchObjectView_additionalFields" class="form-control" name="externalSearchObjectView_additionalFields" value="${view?.additionalFields?.encodeAsHTML()}"/>

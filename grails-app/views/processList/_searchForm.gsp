@@ -23,9 +23,9 @@
 
 <gf:advancedSearchResources />
 
-<r:require modules="grailsflowCalendar"/>
+<r:require modules="grailsflowDatepicker"/>
 
-<table id="search_table" class="standard">
+<table id="search_table" class="table">
 <!-- Content is added dynamically -->
 </table>
 

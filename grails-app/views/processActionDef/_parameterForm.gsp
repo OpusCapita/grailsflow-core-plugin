@@ -63,7 +63,7 @@
 
 <td valign="top" align="right">${param.name}</td>
 <td valign="top" align="left">
-  <select name="paramType_${param.name}" id="paramType_${param.name}" onchange="${param.name}ParamTypeChange()">
+  <select name="paramType_${param.name}" id="paramType_${param.name}" onchange="${param.name}ParamTypeChange()" class="form-control">
     <option value="constant">Constant</option>
     <option value="expression">Expression</option>
     <option value="variable">Process Variable</option>
@@ -72,12 +72,12 @@
 <td valign="top" align="left">
     <input type="hidden" id="default_${param.name}" value="${param.value?.inspect()?.replaceAll("\"", "&quot;")}"/>
   <div id="constant_${param.name}">
-    <input id="param_${param.name}" value="${param.value?.inspect()?.replaceAll("\"", "&quot;")}" size="25"/>
+    <input id="param_${param.name}" value="${param.value?.inspect()?.replaceAll("\"", "&quot;")}" size="25" class="form-control"/>
   </div>
   <div id="variable_${param.name}"  style="display: none;">
-    <g:select name="var_${param.name}" id="var_${param.name}" from="${variables.sort({var1, var2 -> var1.compareToIgnoreCase(var2)})}"/>
+    <g:select name="var_${param.name}" id="var_${param.name}" class="form-control"  from="${variables.sort({var1, var2 -> var1.compareToIgnoreCase(var2)})}"/>
   </div>
   <div id="expression_${param.name}" style="display: none;">
-    <textarea id="expr_${param.name}" cols="30" rows="5">${param.value}</textarea>
+    <textarea id="expr_${param.name}" cols="30" rows="5" class="form-control" >${param.value}</textarea>
   </div>
 </td>

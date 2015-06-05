@@ -28,16 +28,13 @@
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <div class="row">
-        <div class="col-md-12"><br/>
           <g:form name="worklistForm" method="GET"
             controller="${gf.currentController()}" action="${gf.currentAction()}">
 
             <gf:customizingTemplate template="searchForm" defaultTemplate="/worklist/searchForm"/>
 
-            <div class="buttons">
-              <span class="button">
-                <g:actionSubmit action="${gf.currentAction()}" value="${common['grailsflow.command.search']}" class="button"/>
-              </span>
+            <div class="form-submit text-right">
+              <g:actionSubmit action="${gf.currentAction()}" value="${common['grailsflow.command.search']}" class="btn btn-primary"/>
             </div>
 
             <gf:customizingTemplate template="searchResults" defaultTemplate="/worklist/searchResults"/>
@@ -50,14 +47,11 @@
               </div>
             </g:if>
 
-            <div class="buttons">
-              <span class="button">
-                <gf:refreshButton value="${common['grailsflow.command.refresh']}" class="button"/>
-              </span>
+            <div class="form-submit text-right">
+              <gf:refreshButton value="${common['grailsflow.command.refresh']}" class="btn btn-link"/>
             </div>
 
           </g:form>
-        </div>
       </div>
     </body>
 </html>

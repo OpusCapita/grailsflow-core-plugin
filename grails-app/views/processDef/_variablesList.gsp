@@ -88,7 +88,7 @@
 <gf:messageBundle bundle="grailsflow.common" var="common"/>
 
  <gf:section title="${variableEditor['grailsflow.label.processVars']}" selected="true">
- <table class="table table-bordered">
+ <table class="table">
      <thead>
        <th>${variableEditor['grailsflow.label.name']}</th>
        <th>${variableEditor['grailsflow.label.type']}</th>
@@ -96,7 +96,7 @@
        <th width="10%">${variableEditor['grailsflow.label.processIdentifier']}</th>
        <th width="10%">${variableEditor['grailsflow.label.required']}</th>
        <g:if test="${showOperations}">
-         <th width="15%">${common['grailsflow.label.operations']}</th>
+         <th width="15%">&nbsp;</th>
        </g:if>
      </thead>
      <tbody>
@@ -132,26 +132,36 @@
            </g:else>
          </td>
          <g:if test="${showOperations}">
-                 <td style="white-space: nowrap;">
-                   <a href="javascript:void(0)" onclick="orderMoveVarUp(${variable.id}); return false;"
-                      title="${common['grailsflow.command.up']}">
-                       <img alt="${common['grailsflow.command.up']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'move_up.gif')}"/>
+           <td>
+             <div class="btn-group input-group-btn">
+               <nobr>
+                   <a href="javascript:void(0)" title="${common['grailsflow.command.up']}" onclick="orderMoveVarUp(${variable.id}); return false;"
+                      title="${common['grailsflow.command.up']}" class="btn btn-sm btn-link">
+                     <span class="glyphicon glyphicon-arrow-up"></span>
                    </a>
-                   &nbsp;&nbsp;
-                   <a href="javascript:void(0)"  onclick="orderMoveVarDown(${variable.id}); return false;"
-                      title="${common['grailsflow.command.down']}">
-                       <img alt="${common['grailsflow.command.down']}" src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'move_down.gif')}"/>
+                   &nbsp;
+                   <a href="javascript:void(0)" title="${common['grailsflow.command.down']}" onclick="orderMoveVarDown(${variable.id}); return false;"
+                      title="${common['grailsflow.command.down']}" class="btn btn-sm btn-link">
+                     <span class="glyphicon glyphicon-arrow-down"></span>
                    </a>
-                   &nbsp;&nbsp;
-                   <g:link controller="processVarDef" action="editVarDef" id="${variable.id}" title="${common['grailsflow.command.edit']}" class="btn btn-sm btn-default">${common['grailsflow.command.edit']}</g:link>
-                   &nbsp;&nbsp;
-                   <g:link onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" controller="processVarDef" action="deleteVarDef" id="${variable.id}" title="${common['grailsflow.command.delete']}" class="btn btn-sm btn-default">${common['grailsflow.command.delete']}</g:link>
-                 </td>
-               </g:if>
+                   &nbsp;
+                   <g:link controller="processVarDef" action="editVarDef" id="${variable.id}" title="${common['grailsflow.command.edit']}" class="btn btn-sm btn-default">
+                     <span class="glyphicon glyphicon-edit"></span>&nbsp;
+                     ${common['grailsflow.command.edit']}
+                   </g:link>
+                   <g:link onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" controller="processVarDef" action="deleteVarDef" id="${variable.id}" title="${common['grailsflow.command.delete']}" class="btn btn-sm btn-default">
+                     <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;
+                     ${common['grailsflow.command.delete']}
+                   </g:link>
+                 </nobr>
+               </div>
+           </td>
+         </g:if>
        </tr>
      </g:each>
    </tbody>
  </table>
- <g:actionSubmit action="addVarDef" value="${common['grailsflow.command.add']}" class="btn btn-primary"/>
+ <div class="form-submit text-right">
+   <g:actionSubmit action="addVarDef" value="${common['grailsflow.command.add']}" class="btn btn-primary"/>
+ </div>
  </gf:section>
- <br/><br/>

@@ -20,7 +20,7 @@
   <g:checkBox name="varValue" value="${variable?.value ? variable?.value == 'true' : params.varValue}"/>
 </g:if>
 <g:elseif test="${variable?.type == 'Date'}">
-  <gf:jQueryCalendar property="varValue" pattern="${gf.datePattern()}" value="${(variable?.value && variable.value.isNumber()) ? new Date(new Long(variable?.value)) : null}" />
+  <gf:bootstrapCalendar property="varValue" value="${(variable?.value && variable.value.isNumber()) ? new Date(new Long(variable?.value)) : null}" />
 </g:elseif>
 <g:elseif test="${variable?.type == 'Document'}">
 </g:elseif>
@@ -64,7 +64,7 @@
             content += ' <input value="'+value+'" type="text" size="30" name="listItemValue_'+varName+'_'+index+'"/>&nbsp;&nbsp;'
         }
 
-        content += '<a href="javascript: void(0)" onclick="deleteItem(\'listItem_'+varName+'_'+index+'\')"><img src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'delete.gif')}" alt="Delete"/>';
+        content += '<a href="javascript: void(0)" onclick="deleteItem(\'listItem_'+varName+'_'+index+'\')"><span class=\'glyphicon glyphicon-remove text-danger\'></span>';
         content += '</a>';
         content += '</div>';
         jQuery("#"+parentElement+varName).append(content)
@@ -86,7 +86,7 @@
     <div>
       <g:hiddenField name="previousType_${variable.name}" value="${variable.subType}"/>
       <g:select from="${com.jcatalog.grailsflow.model.definition.ProcessVariableDef.listTypes}" value="${variable.subType}" name="parent_varType_${variable.name ?: ''}" id="parent_varType_${variable.name ?: ''}" onchange="checkTypeSelection(this.value)"/>&nbsp;
-      <a href="javascript: void(0)" onclick="addItem('listItem_', '${variable.name}', '', document.getElementById('parent_varType_'+'${variable.name}').value)"><img src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'add.gif')}" alt="Add"/></a>
+      <a href="javascript: void(0)" onclick="addItem('listItem_', '${variable.name}', '', document.getElementById('parent_varType_'+'${variable.name}').value)"><span class="glyphicon glyphicon-plus text-success"></span></a>
     </div><br/>
     <div id="listItem_${variable.name ?: ''}">
       <g:each in="${variable?.items}" var="listItem" status="i">
@@ -98,7 +98,7 @@
     </div>
 </g:elseif>
 <g:else>
-  <input name="varValue" value="${(variable?.value ? variable?.value : params.varValue)?.encodeAsHTML()}" size="50"/>
+  <input name="varValue" value="${(variable?.value ? variable?.value : params.varValue)?.encodeAsHTML()}" size="50" class="form-control"/>
 </g:else>
 
 <script type="text/javascript">

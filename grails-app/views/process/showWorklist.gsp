@@ -143,7 +143,7 @@
       <g:if test="${processNodeList}">
       <div class="row margin-top-10">
         <div class="col-md-12">
-          <table width="100%" class="table table-striped table-bordered">
+          <table width="100%" class="table">
             <thead>
               <tr>
                   <gf:sortableColumn property="nodeLabel"
@@ -205,11 +205,12 @@
               </g:each>
             </tbody>
           </table>
-
+          <g:if test="${processNodeList.size() > (grailsApplication.mainContext.maxResultSize)}">
             <div class="paginateButtons">
               <g:paginate total="${itemsTotal}" id="${params.id}" params="${params}"
                 controller="${params['controller']}" action="showWorklist"/>
             </div>
+          </g:if>
             <br/>
             <r:script>
               function reloadPage() {
@@ -219,7 +220,7 @@
 
             <div class="buttons">
               <span class="button">
-                <input type="button" onclick="reloadPage();" value="${common['grailsflow.command.refresh']}" class="btn btn-default"/>
+                <input type="button" onclick="reloadPage();" value="${common['grailsflow.command.refresh']}" class="btn btn-link"/>
               </span>
             </div>
           </div>

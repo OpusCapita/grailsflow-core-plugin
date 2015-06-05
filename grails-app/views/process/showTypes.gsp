@@ -27,13 +27,12 @@
 
       <g:form controller="${params['controller']}" method="GET">
         <div class="row">
-          <div class="col-md-12">
-            <table class="table table-bordered">
+            <table class="table">
               <thead>
                 <tr>
                   <g:sortableColumn property="type" title="${msgs['grailsflow.label.processID']}"/>
                   <th width="70%">${msgs['grailsflow.label.description']}</th>
-                  <th>${msgs['grailsflow.label.operation']}</th>
+                  <th>&nbsp;</th>
                 </tr>
               </thead>
               <tbody>
@@ -42,13 +41,14 @@
                     <td><g:set var="label" value="${gf.translatedValue(['translations': item.label, 'default': item.processType])}" scope="page" />${label?.encodeAsHTML()}</td>
                     <td><g:set var="description" value="${gf.translatedValue(['translations': item.description, 'default': ''])}" scope="page" />${description?.encodeAsHTML()}</td>
                     <td>
-                      <g:link action="startProcess" controller="${params['controller']}" id="${item.processType}" title="${common['grailsflow.command.start']}" class="btn btn-sm btn-default">${common['grailsflow.command.start']}</g:link>
+                      <div class="form-submit text-right">
+                        <g:link action="startProcess" controller="${params['controller']}" id="${item.processType}" title="${common['grailsflow.command.start']}" class="btn btn-sm btn-default">${common['grailsflow.command.start']}</g:link>
+                      </div>
                     </td>
                   </tr>
                 </g:each>
               </tbody>
             </table>
-          </div>
         </div>
       </g:form>
 

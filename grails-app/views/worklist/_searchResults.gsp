@@ -25,14 +25,14 @@
 <gf:messageBundle bundle="grailsflow.worklist" var="worklist"/>
 
 <br/>
-<h2 class="headline">${worklist['grailsflow.label.worklist']}</h2>
-<table class="grid" width="100%">
+<h1>${worklist['grailsflow.label.worklist']}</h1>
+<table class="table">
 <thead>
   <tr>
     <g:if test="${displayParameters}">
       <gf:displayHeaders bundle="${worklist}" labelPrefix="label." displayParameters="${displayParameters}"/>
     </g:if>
-    <th>${common['grailsflow.label.operations']}</th>
+    <th>&nbsp;</th>
   </tr>
 </thead>
 <tbody>

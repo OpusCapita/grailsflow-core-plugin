@@ -51,24 +51,24 @@
     <body>
       <div class="container">
         <div class="row" style="margin-top: 10px;">
-          <div class="col-md-12">
             <div class="panel panel-default">
               <div class="panel-heading"><h1>Action ${actionName}</h1></div>
               <div class="panel-body">
                 <h1>Action Call Parameters</h1>
-                <table id="propsTable" class="table table-bordered">
+                <table id="propsTable" class="table">
                   <g:each in="${actionParameters}">
                     <tr>
                       <gf:customizingTemplate template="parameterForm" model="[param: it, variables: variables]"/>
                     </tr>
                   </g:each>
                 </table>
-                <input type="button" class="btn btn-primary"  value="${common['grailsflow.command.apply']}" onclick="addAction();"/>&nbsp;
-                <input type="button" class="btn btn-default" value="${common['grailsflow.command.cancel']}" onclick="window.close();"/>
+                <div class="form-submit text-right">
+                  <input type="button" class="btn btn-default" value="${common['grailsflow.command.cancel']}" onclick="window.close();"/>
+                  <input type="button" class="btn btn-primary"  value="${common['grailsflow.command.apply']}" onclick="addAction();"/>
+                </div>
                 <r:layoutResources/>
               </div>
             </div>
-          </div>
         </div>
       </div>
     </body>

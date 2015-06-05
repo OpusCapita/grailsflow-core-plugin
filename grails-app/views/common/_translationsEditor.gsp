@@ -116,38 +116,48 @@
   
   <!-- samples for dynamic rows creation -->
   <g:if test="${textarea}">
-    <textarea id="sample_${parameterName}_value" rows="${rows != null ? rows : 5}" cols="${cols != null ? cols : 20}" style="display: none"></textarea>
+    <textarea id="sample_${parameterName}_value" rows="${rows != null ? rows : 5}" cols="${cols != null ? cols : 40}" style="display: none" class="form-control" ></textarea>
   </g:if>
   <g:else>
-    <input id="sample_${parameterName}_value" type="text" size="${size ? size : 20}" style="display: none"/>
+    <input id="sample_${parameterName}_value" type="text" size="${size ? size : 40}" style="display: none" class="form-control" />
   </g:else>
-  <a id="sample_${parameterName}_link" href="#" style="display: none">${common['grailsflow.command.delete']}</a>
+  <a id="sample_${parameterName}_link" href="#" style="display: none" title="${common['grailsflow.command.delete']}">
+    <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;
+  </a>
   
-  <table id="${parameterName}_translations">
+  <table id="${parameterName}_translations" class="table">
     <tr>
-	    <td valign="top"><g:select id="add_${parameterName}_lang" name="add_${parameterName}_lang" from="${visible_langs}"/></td>
-	    <td valign="top">
-			  <g:if test="${textarea}">
-					<textarea id="add_${parameterName}_value" name="add_${parameterName}_value" rows="${rows != null ? rows : 5}" cols="${cols != null ? cols : 20}"></textarea>
-			  </g:if>
-			  <g:else>
-			    <input id="add_${parameterName}_value" name="add_${parameterName}_value" type="text" size="${size ? size : 20}"/>
-			  </g:else>
-	    </td>
-	    <td valign="top"><a href="#" onclick="addTranslation('${parameterName}')">${common['grailsflow.command.add']}</a></td>
+	  <td valign="top"><g:select id="add_${parameterName}_lang" name="add_${parameterName}_lang" from="${visible_langs}"/></td>
+	  <td valign="top">
+		<g:if test="${textarea}">
+		  <textarea id="add_${parameterName}_value" name="add_${parameterName}_value" rows="${rows != null ? rows : 5}" cols="${cols != null ? cols : 40}" class="form-control" ></textarea>
+		</g:if>
+		<g:else>
+		  <input id="add_${parameterName}_value" name="add_${parameterName}_value" type="text" size="${size ? size : 40}" class="form-control" />
+		</g:else>
+	  </td>
+	  <td valign="top">
+        <a href="#" onclick="addTranslation('${parameterName}')" title="${common['grailsflow.command.add']}">
+          <span class="glyphicon glyphicon-plus text-success"></span>&nbsp;
+        </a>
+      </td>
     </tr>
     <g:each in="${translations?.keySet()}" var="lang">
-	    <tr id="${parameterName}_${lang}_row">
-	      <td valign="top">${lang}</td>
-	      <td valign="top">
-				  <g:if test="${textarea}">
-    				<textarea name="${parameterName}_${lang}" rows="${rows != null ? rows : 5}" cols="${cols != null ? cols : 20}">${translations[lang]?.encodeAsHTML()}</textarea>
-				  </g:if>
-				  <g:else>
-				    <input name="${parameterName}_${lang}" type="text" size="${size ? size : 20}" value="${translations[lang]?.encodeAsHTML()}"/>
-				  </g:else>
-	      </td>
-	      <td valign="top"><a href="#" onclick="removeTranslation('${parameterName}', '${lang}')">${common['grailsflow.command.delete']}</a></td>
-	    </tr>
-	  </g:each>
+	  <tr id="${parameterName}_${lang}_row">
+	    <td valign="top">${lang}</td>
+	    <td valign="top">
+		  <g:if test="${textarea}">
+    		<textarea name="${parameterName}_${lang}" rows="${rows != null ? rows : 5}" cols="${cols != null ? cols : 40}" class="form-control" >${translations[lang]?.encodeAsHTML()}</textarea>
+		  </g:if>
+		  <g:else>
+		    <input name="${parameterName}_${lang}" type="text" size="${size ? size : 40}" value="${translations[lang]?.encodeAsHTML()}" class="form-control" />
+		  </g:else>
+	    </td>
+	    <td valign="top">
+          <a href="#" onclick="removeTranslation('${parameterName}', '${lang}')" title="${common['grailsflow.command.delete']}">
+            <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;
+          </a>
+        </td>
+	  </tr>
+	</g:each>
   </table>

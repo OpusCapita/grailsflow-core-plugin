@@ -74,7 +74,7 @@
                   ${msgs['grailsflow.label.fromNode']}
                 </label>
                 <div class="col-md-10">
-                  <input id="fromNode" readOnly="true" class="readonly" value="${transition?.fromNode?.nodeID?.encodeAsHTML()}" size="30"/>
+                  <input id="fromNode" class="form-control" readOnly="true" class="readonly" value="${transition?.fromNode?.nodeID?.encodeAsHTML()}" size="30"/>
                 </div>
               </div>
 
@@ -83,7 +83,7 @@
                   ${msgs['grailsflow.label.event']}
                 </label>
                 <div class="col-md-10">
-                  <input name="eventID" id="eventID"  value="${transition?.event?.encodeAsHTML()}"/>
+                  <input name="eventID" id="eventID"  value="${transition?.event?.encodeAsHTML()}" class="form-control"/>
                   <g:if test="${transition?.id != null}">
                     &nbsp;&nbsp;&nbsp;
                     <g:link controller="${params['controller']}" action="editTranslations" id="${transition?.id}">
@@ -98,7 +98,7 @@
 
         <div class="row">
           <div class="col-md-6">
-            <table class="table table-bordered">
+            <table class="table">
               <thead>
                 <tr>
                   <th width="10%">${msgs['grailsflow.label.toNodes']}</th>
@@ -124,16 +124,12 @@
               </tbody>
             </table>
 
-            <div class="buttons">
-              <span class="button">
-                <g:actionSubmit action="saveTransitionDef" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
-                &nbsp;&nbsp;
-                <g:if test="${transition?.id != null}">
-                  <g:actionSubmit onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" action="deleteTransitonDef" value="${common['grailsflow.command.delete']}" class="btn btn-default"/>
-                  &nbsp;&nbsp;
-                </g:if>
-                <g:actionSubmit action="toProcessEditor" id="${transition?.fromNode?.processDef?.id}" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
-              </span>
+            <div class="form-submit text-right">
+              <g:actionSubmit action="toProcessEditor" id="${transition?.fromNode?.processDef?.id}" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
+              <g:if test="${transition?.id != null}">
+                <g:actionSubmit onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" action="deleteTransitonDef" value="${common['grailsflow.command.delete']}" class="btn btn-default"/>
+              </g:if>
+              <g:actionSubmit action="saveTransitionDef" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
             </div>
           </div>
         </div>

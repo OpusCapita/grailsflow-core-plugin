@@ -36,7 +36,7 @@
     <g:set var="name" value="${viewType + '_' +propertyName}"/>
     <g:set var="labelKey" value="label.${propertyName}"/>
 	  <label for="${name}">${msgs['grailsflow.'+labelKey]}</label>
-	  <input type="text" id="${name}" name="${name}" value="${(view ? view[name] : '')?.encodeAsHTML()}"/>
+	  <input type="text" id="${name}" name="${name}" class="form-control" value="${(view ? view[name] : '')?.encodeAsHTML()}"/>
 	  <br/>
   </g:each>
 </g:if>

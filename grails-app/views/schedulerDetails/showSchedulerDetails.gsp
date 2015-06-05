@@ -72,7 +72,7 @@
         <h4>${msgs['grailsflow.label.runningJobs']}</h4>
         <g:if test="${schedulerDetails?.runningJobs}">
             <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table">
               <thead>
               <th>${msgs['grailsflow.label.groupName']}</th>
               <th>${msgs['grailsflow.label.jobName']}</th>
@@ -123,7 +123,7 @@
 
         <g:if test="${schedulerDetails?.scheduledJobs}">
             <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table">
               <thead>
               <th>${msgs['grailsflow.label.groupName']}</th>
               <th>${msgs['grailsflow.label.jobName']}</th>
@@ -163,7 +163,7 @@
                       ${msgs['grailsflow.label.running']}
                     </g:if>
                     <g:else>
-                      <div class="btn-group input-group-btn">
+                      <div class="btn-group input-group-btn form-submit text-right">
                         <nobr>
                           <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="pause"
                                   params="${[name: jobInfo?.job?.name, group: jobInfo?.job?.group, isPaused: jobInfo?.paused ? jobInfo?.paused : 'false', isRunning: jobInfo?.running ? jobInfo.running : 'false']}"
@@ -180,7 +180,7 @@
                                   params="${[name: jobInfo?.job?.name, group: jobInfo?.job?.group]}"
                                   onclick="return window.confirm('${msgs['grailsflow.message.job.delete']}');"
                                   title="${msgs['grailsflow.label.delete']}">
-                            <span class="glyphicon glyphicon-trash"></span>&nbsp;
+                            <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;
                             ${msgs['grailsflow.label.delete']}
                           </g:link>
                           <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="edit"
@@ -205,7 +205,7 @@
           </div>
         </g:else>
 
-        <div>
+        <div class="form-submit text-right">
           <g:actionSubmit class="btn btn-primary" action="scheduleProcess"
                             value="${msgs['grailsflow.command.scheduleProcess']}"/>
         </div>

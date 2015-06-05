@@ -25,20 +25,16 @@
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <div class="row">
-        <div class="col-md-12">
-          <fieldset>
-            <legend>${msgs['grailsflow.label.previewForm']}</legend>
-            <br/>
-            <gf:customizingTemplate template="/manualForms/automaticForm"
+        <fieldset>
+          <legend>${msgs['grailsflow.label.previewForm']}</legend>
+          <br/>
+          <gf:customizingTemplate template="/manualForms/automaticForm"
                       model="[nodeDetails: nodeDetails]"/>
-          </fieldset>
+        </fieldset>
             
-          <br/><br/>
-          <div class="buttons">
-            <span class="button">
-              <input type="button" onclick="history.back();" value="${common['grailsflow.command.back']}" class="button"/>
-            </span>
-          </div>
+        <br/><br/>
+        <div class="form-submit text-right">
+          <input type="button" onclick="history.back();" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
         </div>
       </div>
     </body>

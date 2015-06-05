@@ -26,7 +26,7 @@
 
 <br/>
 <h1>${processList['grailsflow.label.processList']}</h1>
-<table class="table table-bordered">
+<table class="table">
 <thead>
   <tr>
     <gf:displayHeaders bundle="${processList}" displayParameters="${displayParameters}" labelPrefix="grailsflow."/>

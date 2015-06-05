@@ -13,7 +13,7 @@
 -->
 <%@ page import="com.jcatalog.grailsflow.utils.ConstantUtils;" %>
 
-<html>
+<html xmlns="http://www.w3.org/1999/html">
     <head>
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
          <meta name="layout" content="grailsflow" />
@@ -103,40 +103,33 @@
                   ${msgs['grailsflow.label.variables']}
                 </div>
                 <div class="col-md-3" style="white-space: nowrap;">
-                  <g:select name="variable" id="variable" noSelection="${['':'']}" from='${variables}'></g:select>
-                  <img alt="${msgs['grailsflow.command.pasteVariable']}"
-                               src="${g.resource(plugin: 'grailsflow', dir: 'images/grailsflow/editor',file:'add.gif')}"
-                               onClick="pasteVariable()"/>
+                  <g:select name="variable" id="variable" noSelection="${['':'']}" from='${variables}' class="form-control" ></g:select>
+                  <a href="#" title="${msgs['grailsflow.command.pasteVariable']}" onClick="pasteVariable()">
+                    <span class="glyphicon glyphicon-plus text-success"></span>
+                  </a
                 </div>
                 <div class="col-md-2">
                   ${msgs['grailsflow.label.actions']}
                 </div>
                 <div class="col-md-4" style="white-space: nowrap;">
                   <gf:select name="action" id="action" noSelection="${['':'']}" from='${actions}'
-                                     optionValue="label" optionKey="value" optionGroup="group">
+                                     optionValue="label" optionKey="value" optionGroup="group" class="form-control" >
                   </gf:select>
-                  <img alt="${msgs['grailsflow.command.pasteAction']}"
-                               src="${g.resource(plugin: 'grailsflow', dir: 'images/grailsflow/editor',file:'add.gif')}"
-                               onClick="openActionParametersEditor()"/>
+                  <a href="#" title="${msgs['grailsflow.command.pasteAction']}" onClick="openActionParametersEditor()">
+                    <span class="glyphicon glyphicon-plus text-success"></span>
+                  </a>
                 </div>
               </div>
             </div>
             <div class="form-group">
               <div class="row">
-                <div class="col-md-12">
-                  <g:textArea id="actionsCode" name="actionsCode" value="${actionsCode}" rows="20" cols="80"/>
-                </div>
+                  <g:textArea id="actionsCode" name="actionsCode" value="${actionsCode}" rows="20" cols="80" class="form-control" />
+                  <div class="form-submit text-right">
+                      <g:actionSubmit action="showProcessNodeEditor" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
+                      <g:actionSubmit action="saveActions" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
+                  </div>
               </div>
             </div>
-            <div class="form-group">
-              <div class="row">
-                <div class="col-md-12">
-                  <g:actionSubmit action="saveActions" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>&nbsp;
-                  <g:actionSubmit action="showProcessNodeEditor" value="${common['grailsflow.command.back']}" class="btn btn-default"/>
-                </div>
-              </div>
-            </div>
-
           </div>
         </div>
       </g:form>

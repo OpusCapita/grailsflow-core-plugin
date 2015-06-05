@@ -24,7 +24,7 @@
 
          <title>${msgs['grailsflow.title.processEditor']}</title>
 
-         <r:require modules="grailsflowCalendar"/>
+         <r:require modules="grailsflowDatepicker"/>
          <r:script>
            function openGraphic(id) {
              window.open("${g.createLink(action:'showGraphic')}?processID="+id, "GraphicProcess", 'width=700, height=500, resizable=yes, scrollbars=yes, status=no')
@@ -47,32 +47,26 @@
                 <label class="col-md-2 control-label" for="type">
                     ${msgs['grailsflow.label.process.type']}
                 </label>
-                <div class="col-md-10">
-                    <input id="type" name="processID" value= "${processDetails.processID}" size="50"/>
+                <div class="col-md-6">
+                    <input id="type" name="processID" class="form-control"  value= "${processDetails.processID}" size="50"/>
                 </div>
             </div>
             <div class="form-group">
-                    <label  class="col-md-2 control-label" for="validFrom">
-                        ${msgs['grailsflow.label.process.validFrom']}
-                    </label>
-                    <div class="col-md-10">
-                        <gf:jQueryCalendar property="validFrom" value="${processDetails.validFrom}" />
-                    </div>
-            </div>
-            <div class="form-group">
-                    <label class="col-md-2 control-label" for="validTo">
-                        ${msgs['grailsflow.label.process.validTo']}
-                    </label>
-                    <div class="col-md-10">
-                        <gf:jQueryCalendar property="validTo" value="${processDetails.validTo}" />
-                    </div>
+                <label class="col-md-2 control-label" for="type">
+                    ${msgs['grailsflow.label.process.validFrom']} / ${msgs['grailsflow.label.process.validTo']}
+                </label>
+                <div class="col-md-6">
+                  <gf:dateRangePicker fromId = "validFrom" toId="validTo"
+                  fromValue="${processDetails.validFrom}" toValue="${processDetails.validTo}"
+                  fromLabel="${details['grailsflow.label.from']}" toLabel="${details['grailsflow.label.to']}"/>
+                </div>
             </div>
             <div class="form-group">
                     <label class="col-md-2 control-label" for="description">
                         ${msgs['grailsflow.label.process.description']}
                     </label>
                     <div class="col-md-6">
-                        <textarea id="description" name="description" cols="47" rows="2">${processDetails.description[request.locale.language]?.encodeAsHTML()}</textarea>
+                        <textarea id="description" name="description" cols="47" rows="2" class="form-control" >${processDetails.description[request.locale.language]?.encodeAsHTML()}</textarea>
                     </div>
                     <div class="col-md-4">
                         <g:link controller="${params['controller']}" action="editProcessTranslations" id="${processDetails.id}">
@@ -98,28 +92,19 @@
            <gf:customizingTemplate template="nodesList"
              model="[nodes: processDetails.nodes, showOperations: true]"/>
 
-           <div class="buttons">
-             <span class="button">
-               <g:actionSubmit action="saveProcess" value="${common['grailsflow.command.apply']}" class="btn btn-default"/>
-               &nbsp;&nbsp;
-               <input type="button" value="${details['grailsflow.command.showGraphicEditor']}" class="btn btn-default" onclick="return openGraphic('${processDetails.id}')"/>
-               &nbsp;&nbsp;
-               <g:actionSubmit action="exportAsHTML" value="${details['grailsflow.command.exportAsHTML']}" class="btn btn-default"/>
-               &nbsp;&nbsp;
-               <g:actionSubmit action="editTypes" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
-             </span>
-           </div>
-           <br/><br/>
-           <div class="buttons">
-             <span class="button">
-               <g:actionSubmit action="generateProcess" value="${msgs['grailsflow.command.generateProcess']}" class="btn btn-default"/>
-               &nbsp;&nbsp;
-               <g:set var="sourceCodeWarning" value="${details['grailsflow.message.sourceCodeWarning']}"/>
-               <g:actionSubmit action="showProcessScript" onclick="alert('${sourceCodeWarning}')" value="${details['grailsflow.command.showCode']}" class="btn btn-default"/>
-               &nbsp;&nbsp;
-               <g:actionSubmit action="reloadProcessDef" value="${details['grailsflow.command.reload']}" class="btn btn-default"/>
-             </span>
-           </div>
+          <div class="form-submit text-right">
+            <g:actionSubmit action="editTypes" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
+            <input type="button" value="${details['grailsflow.command.showGraphicEditor']}" class="btn btn-default" onclick="return openGraphic('${processDetails.id}')"/>
+            <g:actionSubmit action="exportAsHTML" value="${details['grailsflow.command.exportAsHTML']}" class="btn btn-default"/>
+            <g:actionSubmit action="saveProcess" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
+          </div>
+          <br/>
+          <div class="form-submit text-right">
+            <g:actionSubmit action="generateProcess" value="${msgs['grailsflow.command.generateProcess']}" class="btn btn-default"/>
+            <g:set var="sourceCodeWarning" value="${details['grailsflow.message.sourceCodeWarning']}"/>
+            <g:actionSubmit action="showProcessScript" onclick="alert('${sourceCodeWarning}')" value="${details['grailsflow.command.showCode']}" class="btn btn-default"/>
+            <g:actionSubmit action="reloadProcessDef" value="${details['grailsflow.command.reload']}" class="btn btn-default"/>
+          </div>
 
            </g:form>
         </div>

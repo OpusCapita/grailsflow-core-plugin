@@ -27,8 +27,7 @@
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <div class="row">
-        <div class="col-md-12">
-
+        <div class="col-md-6">
           <h4>${msgs['grailsflow.label.event']}: ${transition.event?.encodeAsHTML()}</h4>
 
           <g:form controller="${params['controller']}">
@@ -37,13 +36,11 @@
             <g:render plugin="grailsflow" template="/common/translationsEditor"
 	            model="[ 'translations': transition.label, 'parameterName': 'label']"/>
             <br/>
-            <div class="buttons">
-              <span class="button">
-                <g:actionSubmit action="saveTranslations" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
-              </span>
+            <div class="form-submit text-right">
+              <g:actionSubmit action="saveTranslations" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
             </div>
           </g:form>
-       </div>
+        </div>
       </div>
     </body>
 </html>

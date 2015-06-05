@@ -40,7 +40,7 @@
       <div class="row">
         <div class="col-md-6">
 	       <g:form controller="userRoles" method="POST">
-	        <table id="usersTable" class="table table-bordered">
+	        <table id="usersTable" class="table">
 	          <tr>
 	            <th>${msgs['grailsflow.label.user']}</th>
 	          </tr>

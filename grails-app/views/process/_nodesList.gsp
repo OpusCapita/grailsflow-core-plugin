@@ -26,7 +26,7 @@
 
 <h3>${msgs['grailsflow.label.processNodes']}</h3>
 <div class="table-responsive">
- <table class="table table-bordered">
+ <table class="table">
    <thead>
      <tr>
         <th>${msgs['grailsflow.label.nodeID']}</th>

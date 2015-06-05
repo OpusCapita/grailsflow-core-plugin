@@ -27,24 +27,22 @@
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <div class="row">
-        <div class="col-md-12">
-            <h4>${msgs['grailsflow.label.nodeID']}: ${processNodeDef.nodeID?.encodeAsHTML()}</h4>
-            <g:form controller="${params['controller']}">
-              <input type="hidden" name="id" value="${processNodeDef.id?.encodeAsHTML()}"/>
-              <h4>${msgs['grailsflow.label.label']}</h4>
-              <g:render plugin="grailsflow" template="/common/translationsEditor"
+        <div class="col-md-6">
+          <h4>${msgs['grailsflow.label.nodeID']}: ${processNodeDef.nodeID?.encodeAsHTML()}</h4>
+          <g:form controller="${params['controller']}">
+            <input type="hidden" name="id" value="${processNodeDef.id?.encodeAsHTML()}"/>
+            <h4>${msgs['grailsflow.label.label']}</h4>
+            <g:render plugin="grailsflow" template="/common/translationsEditor"
                     model="[ 'translations': processNodeDef.label, 'parameterName': 'label']"/>
 
-              <h4>${msgs['grailsflow.label.description']}</h4>
-              <g:render plugin="grailsflow" template="/common/translationsEditor"
+            <h4>${msgs['grailsflow.label.description']}</h4>
+            <g:render plugin="grailsflow" template="/common/translationsEditor"
                     model="[ 'translations': processNodeDef.description, 'parameterName': 'description', 'textarea': true]"/>
 
-              <div class="buttons">
-                <span class="button">
-                  <g:actionSubmit action="saveNodeTranslations" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
-                </span>
-              </div>
-            </g:form>
+            <div class="form-submit text-right">
+              <g:actionSubmit action="saveNodeTranslations" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
+            </div>
+          </g:form>
         </div>
       </div>
     </body>

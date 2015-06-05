@@ -27,7 +27,7 @@
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
           <h4>${msgs['grailsflow.label.name']}: ${variable?.name?.encodeAsHTML()}</h4>
 
           <g:form controller="${params['controller']}">
@@ -40,13 +40,11 @@
             <g:render plugin="grailsflow" template="/common/translationsEditor"
 	            model="[ 'translations': variable?.description, 'parameterName': 'description', 'textarea': true]"/>
 
-            <div class="buttons">
-              <span class="button">
-                <g:actionSubmit action="saveVariableTranslations" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
-              </span>
+            <div class="form-submit text-right">
+              <g:actionSubmit action="saveVariableTranslations" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
             </div>
-         </g:form>
-       </div>
+          </g:form>
+        </div>
       </div>
     </body>
 </html>

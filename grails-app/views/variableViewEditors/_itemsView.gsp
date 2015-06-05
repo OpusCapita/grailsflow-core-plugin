@@ -28,5 +28,5 @@
 
 <h3>${msgs['grailsflow.label.itemsView']}</h3>
 <label for="itemsView_styleClass">${msgs['grailsflow.label.styleClass']}</label>
-<input type="text" id="itemsView_styleClass" name="itemsView_styleClass" value="${view?.styleClass?.encodeAsHTML()}"/>
+<input type="text" id="itemsView_styleClass" name="itemsView_styleClass" class="form-control" value="${view?.styleClass?.encodeAsHTML()}"/>
 <br/>

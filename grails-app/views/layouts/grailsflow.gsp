@@ -21,6 +21,7 @@
 
     <r:require modules="grailsflow"/>
     <r:require modules="bootstrap"/>
+    <r:require modules="font-awesome"/>
     <r:layoutResources/>
 
     <gf:messageBundle bundle="menu" var="menu_bundle"/>

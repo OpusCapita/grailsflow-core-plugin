@@ -47,14 +47,14 @@
                                   defaultTemplate="/process/processList/searchResults"
                                   model="${['returnPage': 'list']}"/>
 
-        <g:if test="${itemsTotal}">
+        <g:if test="${itemsTotal && itemsTotal > (grailsApplication.mainContext.maxResultSize)}">
           <div class="paginateButtons">
             <g:paginate total="${itemsTotal}" id="${params.id}" params="${params}" controller="${params['controller']}" action="search"/>
           </div>
         </g:if>
-        <g:else>
+        <g:elseif test="${!itemsTotal}">
           <div class="bs-callout bs-callout-info">${common['grailsflow.message.noItems']}</div>
-        </g:else>
+        </g:elseif>
       </div>
     </div>
 

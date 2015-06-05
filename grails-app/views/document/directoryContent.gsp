@@ -26,7 +26,7 @@
 
     <div class="row">
       <div class="col-md-6">
-        <table class="table table-bordered">
+        <table class="table">
           <thead>
             <tr>
               <th width="80%">${document_bundle['grailsflow.label.name']}</th>

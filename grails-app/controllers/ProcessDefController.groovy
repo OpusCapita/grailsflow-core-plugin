@@ -331,7 +331,7 @@ class ProcessDefController extends GrailsFlowSecureController {
     }
 
     def editTypes = {
-        if (!flash.message) flash.message = ""
+        flash.message = ""
         flash.errors = []
 
         if (!params.sort) params.sort = "type"

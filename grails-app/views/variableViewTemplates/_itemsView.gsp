@@ -11,8 +11,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-
-
 <!--
         Template for displaying processVariable input. 
 
@@ -66,13 +64,13 @@
         } else if (newType == 'Link') {
             content += "${linkType['grailsflow.label.linkUrl']}"
             if (value == '') value = '  '
-            content += '&nbsp;<input value="'+ value[0]+'" type="text" size="50" '
+            content += '&nbsp;<input value="'+ value[0]+'" type="text" size="50" class="form-control" '
             if (isReadonly == false) {
                 content+= ' name="listItemValue_'+varName+'_path_'+index+'"'
             }
             content += visibility+' />&nbsp;&nbsp;'
             content += "${linkType['grailsflow.label.linkDescription']}"
-            content += '&nbsp;<input value="'+value[1]+'" type="text" size="25" '
+            content += '&nbsp;<input value="'+value[1]+'" type="text" class="form-control" size="25" '
             if (isReadonly == false) {
                 content+= ' name="listItemValue_'+varName+'_desc_'+index+'"'
             }
@@ -81,10 +79,19 @@
             if(isReadonly == true) {
                 content += ' <input name="" id="listItemValue_'+varName+"_"+index+'" value = "'+value+'" maxlength="20" readonly="true" class="readonly"/>'
             } else {
-                content += " <script type='text/javascript'>jQuery.noConflict();"
+                var id = 'listItemValue_'+varName+"_"+index
+
+                content += " <script type='text/javascript'>jQuery.noConflict();\n"
                 content += "jQuery(document).ready(function(\$){"
-                content += " \$('#listItemValue_"+varName+"_"+index+"').datepicker({dateFormat: convertDatePatternFromJavaToJqueryDatePicker('"+"${gf.datePattern()}"+"'), showOn: 'button'}); }) <\/script>"
-                content += ' <input name="listItemValue_'+varName+"_"+index+'" id="listItemValue_'+varName+"_"+index+'" value = "'+value+'" maxlength="20" class="'+style+'" readonly="true" />'
+                content += " var datePickerDomElement = $(document.getElementById('"+id+"'));\n"
+                content += " var format = convertDatePatternFromJavaToJqueryDatePicker('"+"${gf.datePattern()}"+"') \n"
+                content +=  "var options = { autoclose : true, todayHighlight: true, todayBtn: 'linked', format: format,"
+                content +=  "language:'"+"${org.springframework.web.servlet.support.RequestContextUtils.getLocale(request)}"+"', clearBtn: true }; \n"
+                content +=  " var dataPickerOptions = jQuery.extend(options, {});  datePickerDomElement.parent().datepicker(dataPickerOptions); });\n"
+                content +=  "</\script>"
+                content +="<div class='input-group date' >"
+                content += ' <input type="text" name="'+id+'" id="'+id+'" value = "'+value+'" maxlength="20" class="form-control '+style+'" />'
+                content += "<span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span></div>"
             }
         } else if (newType == 'String') {
             content += ' <textarea '
@@ -94,7 +101,7 @@
             content += visibility +' >'
             content += value+'</textarea>&nbsp;&nbsp;'
         } else {
-            content += ' <input value="'+value+'" type="text" size="30" '
+            content += ' <input value="'+value+'" type="text" class="form-control" size="30" '
             if (isReadonly == false) {
                 content += ' name="listItemValue_'+varName+'_'+index+'" '
             }
@@ -102,8 +109,7 @@
         }
 
         if(isReadonly == false) {
-            content += '<a href="javascript: void(0)" onclick="deleteItem(\'listItem_'+varName+'_'+index+'\')"><img src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'delete.gif')}" alt="Delete"/>'
-            content += '</a>'
+            content += '<a href="javascript: void(0)" onclick="deleteItem(\'listItem_'+varName+'_'+index+'\')"><span class=\'glyphicon glyphicon-remove text-danger\'></span></a>'
         }
         content += '</div>'
         jQuery("#"+parentElement+varName).append(content)
@@ -133,7 +139,7 @@
       <g:select from="${com.jcatalog.grailsflow.model.definition.ProcessVariableDef.listTypes}" value="${variable.subType}" name="parent_varType_${variable.name}" id="parent_varType_${variable.name}" onchange="checkTypeSelection(this.value, '${variable.name ?: ''}')"/>&nbsp;
     </g:else>
     <a href="javascript: void(0)" onclick="addItem('listItem_', '${variable.name}', '', document.getElementById('parent_varType_'+'${variable.name}').value, false, '${view?.styleClass}')">
-      <img src="${g.resource(plugin: 'grailsflow', dir:'images/grailsflow/editor',file:'add.gif')}" alt="Add"/>
+      <span class="glyphicon glyphicon-plus text-success"></span>
     </a>
   </div><br/>
 </g:if>

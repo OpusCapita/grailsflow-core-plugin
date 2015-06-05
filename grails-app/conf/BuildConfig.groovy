@@ -55,7 +55,7 @@ grails.project.dependency.resolution = {
         runtime(":resources:1.2.8",
                 ":jquery:1.11.1",
                 ":jquery-ui:1.10.4")
-
+        runtime ':font-awesome-resources:4.3.0.1'
         compile ":twitter-bootstrap:3.3.1"
         compile ":export:1.6"
         compile ":quartz:1.0.1"

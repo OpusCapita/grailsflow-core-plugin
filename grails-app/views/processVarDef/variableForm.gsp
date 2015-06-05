@@ -32,7 +32,7 @@
                 update: 'variableView', params:"'varID='+varID+'&varType='+varType" )}
         }
       </r:script>
-      <r:require modules="grailsflowCalendar"/>
+      <r:require modules="grailsflowDatepicker"/>
     </head>
     <body>
       <h1>${msgs['grailsflow.label.processVars']}</h1>
@@ -51,7 +51,7 @@
                   ${msgs['grailsflow.label.name']}
                 </label>
                 <div class="col-md-10">
-                  <input id="varName" name="varName" value="${(variable?.name ? variable?.name : params.varName)?.encodeAsHTML()}"/>
+                  <input id="varName" name="varName" value="${(variable?.name ? variable?.name : params.varName)?.encodeAsHTML()}" class="form-control"/>
                   <g:if test="${variable.id}">
                     &nbsp;&nbsp;
                     <g:link controller="${params['controller']}" action="editVariableTranslations" id="${variable.id}"
@@ -96,7 +96,7 @@
                 </label>
                 <div class="col-md-10">
                   <g:select value="${(variable?.type && com.jcatalog.grailsflow.model.definition.ProcessVariableDef.types.contains(variable.type)) ? variable.type : (params.varType ? params.varType : 'Object')}"
-                                  from="${com.jcatalog.grailsflow.model.definition.ProcessVariableDef.types}" name='varType'
+                                  from="${com.jcatalog.grailsflow.model.definition.ProcessVariableDef.types}" name='varType'  class="form-control"
                                   id="varType" onchange="updateVarView();" ></g:select>
                   <br/><br/>
                   <div id="objectType" style="display: none;">
@@ -136,10 +136,9 @@
               </div>
 
               <div class="form-group">
-                <div class="col-md-12">
-                  <g:actionSubmit action="saveVarDef" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
-                  &nbsp;&nbsp;
+                <div class="form-submit text-right">
                   <g:actionSubmit action="showProcessEditor" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
+                  <g:actionSubmit action="saveVarDef" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
                 </div>
               </div>
 
