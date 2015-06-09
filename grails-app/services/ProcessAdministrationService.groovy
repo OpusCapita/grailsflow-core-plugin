@@ -38,6 +38,7 @@ class ProcessAdministrationService {
     def grailsApplication
     def sessionFactory
     def processWorklistService
+    def processManagerService
 
     @Transactional(propagation = Propagation.REQUIRED)
     public def deleteAllProcesses() {
@@ -82,7 +83,20 @@ class ProcessAdministrationService {
                     log.info("Starting removing processes [ ${processes.size()} items]")
                     long removingTime = new Date().time
                     processes.each() { BasicProcess process ->
+                        // remove positions for graphics
                         ProcessNodePosition.findAllByProcess(process)*.delete()
+
+                        // remove log files about process executions
+                        try {
+                            File logFile = processManagerService.getProcessLogFile(process)
+                            if (logFile && logFile.exists()) {
+                                logFile.delete()
+                            } else {
+                                log.info("There is no existed log file for process ${process.type}[id: ${process.id}]")
+                            }
+                        } catch(Exception ex) {
+                            log.error("Cannot delete log file for process ${process.type}[id: ${process.id}]", ex)
+                        }
                     }
                     processes*.delete()
                     long executionTime = new Date().time - removingTime
