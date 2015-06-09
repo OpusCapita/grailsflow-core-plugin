@@ -54,6 +54,22 @@ class GrailsflowCalendarTagLib {
        """
 
     }
+
+
+    /**
+     * Renders range datepicker
+     *
+     * parameters:
+     * - fromId  property name, used as id/name for 'from' datepicker
+     * - toId  property name, used as id/name for 'to' datepicker
+     * - fromLabel  optional, by default 'from' is used
+     * - toLabel  optional, by default 'to' is used
+     * - fromValue  optional, by default 'from' is used
+     * - toValue  optional, by default 'to' is used
+     * - fromName  optional, by default the fromId value is used
+     * - toName  optional, by default the toId value is used
+     *
+     */
     def dateRangePicker = { attrs ->
       out << """
       <script type="text/javascript">

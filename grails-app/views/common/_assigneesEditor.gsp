@@ -184,7 +184,7 @@
      <br/>
      <br/>
 
-<table class="table" id="usersTable" ${userSelection ? '' : 'style="display: none"'}>
+<table class="table" id="usersTable" style="${userSelection ? '' : 'display: none'}">
  <thead>
    <tr>
       <th>${nodeEditor['grailsflow.label.assignee']}</th>

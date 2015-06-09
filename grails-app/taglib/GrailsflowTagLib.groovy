@@ -451,25 +451,23 @@ class GrailsflowTagLib {
         }
         def sectionID = Math.abs(title.hashCode())
         def selected = attrs.selected != null ? Boolean.valueOf(attrs.selected) : true
-        out << """<div class=\"sectionHeader\"> """
-        out << """<h4><a href=\"#\""""
-        out << """onclick=\"this.firstChild.className=(this.firstChild.className.indexOf('selected') > -1 ? 'fa fa-angle-up' : 'selected fa fa-angle-down');"""
-        out << """if (this.firstChild.className.indexOf('selected') > -1 ) { """
-        out << """document.getElementById('${sectionID}').style.display=''; """
-        out << """} else { document.getElementById('${sectionID}').style.display = 'none'; }"""
-        out << """return false;\">"""
-        out << "<span "
+
+        out << """<h4><a href="#${sectionID}" data-toggle="collapse" data-target="#${sectionID}"
+           onclick="document.getElementById('span_${sectionID}').className=(document.getElementById('span_${sectionID}').className.indexOf('selected') > -1 ? 'fa fa-angle-up' : 'selected fa fa-angle-down');
+           return false;">
+           <span id="span_${sectionID}"  """
         if (selected) {
-            out << """class=\"selected fa fa-angle-down\" """
+            out << """class="selected fa fa-angle-down" """
         } else {
-            out << """class=\"fa fa-angle-up\" """
+            out << """class="fa fa-angle-up" """
         }
         out << "> </span> "
         out << title
-        out << """</a></h4></div>"""
-        out << """<div id='${sectionID}' ${selected ? "" : "style='display: none'"}>"""
+        out << " </a></h4>"
+        out << """<div id="${sectionID}" class="${selected ? 'collapse in' : 'collapse'}">
+        """
         out << body()
-        out << """</div>"""
+        out << "</div>"
     }
 
 }

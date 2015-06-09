@@ -77,21 +77,36 @@
 
             </div>
            <br/><br/>
+          </div>
+        </div>
 
-           <!-- Assignees list -->
-           <gf:section title="${msgs['grailsflow.label.process.assignees']}" selected="false">
-             <gf:customizingTemplate template="/common/assigneesEditor"
+        <div class="row">
+          <div class="col-md-12">
+            <!-- Assignees list -->
+            <gf:section title="${msgs['grailsflow.label.process.assignees']}" selected="false">
+              <gf:customizingTemplate template="/common/assigneesEditor"
                  model="[assignees: processDetails.processAssignees, controller: 'processDef']"/>
-           </gf:section>
+            </gf:section>
+          </div>
+        </div>
 
-           <!-- Variables list -->
-           <gf:customizingTemplate template="variablesList"
-             model="[variables: processDetails.variables, showOperations: true]"/>
+        <div class="row">
+          <div class="col-md-12">
+            <!-- Variables list -->
+            <gf:customizingTemplate template="variablesList"
+              model="[variables: processDetails.variables, showOperations: true]"/>
+          </div>
+        </div>
 
-           <!-- Nodes list -->
-           <gf:customizingTemplate template="nodesList"
-             model="[nodes: processDetails.nodes, showOperations: true]"/>
+        <div class="row">
+          <div class="col-md-12">
+            <!-- Nodes list -->
+            <gf:customizingTemplate template="nodesList"
+              model="[nodes: processDetails.nodes, showOperations: true]"/>
+          </div>
+        </div>
 
+        <div class="row">
           <div class="form-submit text-right">
             <g:actionSubmit action="editTypes" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
             <input type="button" value="${details['grailsflow.command.showGraphicEditor']}" class="btn btn-default" onclick="return openGraphic('${processDetails.id}')"/>
@@ -105,9 +120,8 @@
             <g:actionSubmit action="showProcessScript" onclick="alert('${sourceCodeWarning}')" value="${details['grailsflow.command.showCode']}" class="btn btn-default"/>
             <g:actionSubmit action="reloadProcessDef" value="${details['grailsflow.command.reload']}" class="btn btn-default"/>
           </div>
-
-           </g:form>
         </div>
-      </div>
+      </g:form>
+
     </body>
 </html>
