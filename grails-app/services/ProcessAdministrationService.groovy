@@ -10,6 +10,9 @@ import com.jcatalog.grailsflow.model.graphics.ProcessNodePosition
 import com.jcatalog.grailsflow.model.process.FlowStatus
 import com.jcatalog.grailsflow.status.ProcessStatusEnum
 import com.jcatalog.grailsflow.process.ProcessSearchParameters
+import org.codehaus.groovy.grails.plugins.DomainClassGrailsPlugin
+import java.util.concurrent.Executors
+import java.util.concurrent.Callable
 
 /*
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,48 +43,26 @@ class ProcessAdministrationService {
     def processWorklistService
     def processManagerService
 
-    @Transactional(propagation = Propagation.REQUIRED)
-    public def deleteAllProcesses() {
-        Closure processClosure = {
-            BasicProcess.withCriteria {
-                or {
-                  eq("status", FlowStatus.findByStatusID(ProcessStatusEnum.COMPLETED.value()))
-                  eq("status", FlowStatus.findByStatusID(ProcessStatusEnum.KILLED.value()))
-                }
-            }
-        }
-        return startDeleteProcesses(processClosure)
-    }
+    def maxLoadedProcesses
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public def deleteFilteredProcesses(ProcessSearchParameters searchParameters) {
-        Closure processClosure = {
-            processWorklistService.getProcessList(searchParameters)
-        }
+    public Long deleteFilteredProcesses(ProcessSearchParameters searchParameters) {
+        return Executors.newSingleThreadExecutor().submit( {
+            Long processesQuantity = 0
+            searchParameters.maxResult = maxLoadedProcesses
+            long removingTime = new Date().time
+            log.info("Starting removing processes")
 
-        return startDeleteProcesses(processClosure)
-    }
+            while (true) {
+                def session = SessionFactoryUtils.getNewSession(sessionFactory);
+                session.setFlushMode(FlushMode.AUTO);
+                TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
 
-    @Transactional(propagation = Propagation.REQUIRED)
-    public def deleteProcess(Long processKey) {
-        Closure processClosure = {
-            return [ BasicProcess.get(processKey) ]
-        }
+                try {
+                    List<BasicProcess> processes = processWorklistService.getProcessList(searchParameters)
+                    if (!processes) break;
 
-        return startDeleteProcesses(processClosure)
-    }
-
-    private Long startDeleteProcesses(Closure processesClosure) {
-        Thread deleteThread = Thread.start {
-            def session = SessionFactoryUtils.getNewSession(sessionFactory);
-            session.setFlushMode(FlushMode.AUTO);
-            TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
-            List<BasicProcess> processes = processesClosure.call()
-
-            try {
-                if (processes) {
-                    log.info("Starting removing processes [ ${processes.size()} items]")
-                    long removingTime = new Date().time
+                    processesQuantity += processes.size()
                     processes.each() { BasicProcess process ->
                         // remove positions for graphics
                         ProcessNodePosition.findAllByProcess(process)*.delete()
@@ -98,26 +79,24 @@ class ProcessAdministrationService {
                             log.error("Cannot delete log file for process ${process.type}[id: ${process.id}]", ex)
                         }
                     }
-                    processes*.delete()
-                    long executionTime = new Date().time - removingTime
-                    log.info("Removing processes finished: execution time [${executionTime}] ms")
-                }  else {
-                    log.info("List with processes for deletion is empty")
-                }
-                processes
-            } catch (Throwable ex) {
-                log.error("Unexpected exception occurred in synchronized block during process removing! ", ex)
-            } finally {
-                session.flush()
-                TransactionSynchronizationManager.unbindResource(sessionFactory);
-                SessionFactoryUtils.closeSession(session);
-            }
-        }
 
-        return processesClosure.call()?.size()
+                    processes*.delete()
+                } catch (Throwable ex) {
+                    log.error("Unexpected exception occurred in synchronized block during process removing! ", ex)
+                } finally {
+                    session.flush()
+                    session.clear()
+                    TransactionSynchronizationManager.unbindResource(sessionFactory);
+                    SessionFactoryUtils.closeSession(session);
+                }
+            }
+
+            long executionTime = new Date().time - removingTime
+            log.info("Removing processes finished: execution time [${executionTime}] ms")
+            return processesQuantity
+        } as Callable).get()
 
     }
-
 }
 
 

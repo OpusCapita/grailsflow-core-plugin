@@ -588,23 +588,8 @@ class ProcessController extends GrailsFlowSecureController {
         redirect(action: params.backPage)
     }
 
-    def deleteAllProcesses = {
-        try {
-            Long quantity = processAdministrationService.deleteAllProcesses()
-            flash.message = grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.deleteProcess.all", [quantity?.toString()])
-        } catch (Exception e) {
-            log.error(e)
-            flash.error = e.message
-        }
-        withFormat {
-            html { render(view: 'deleteProcesses', model: [ processDetailsList: [],  // show empty list by default
-                    processClasses: processManagerService.supportedProcessClasses], params: params)}
-            json { render([errors: flash.errors, processClasses: processManagerService.supportedProcessClasses] as JSON) }
-        }
-    }
-
     def deleteSearchedProcesses = {
+        Long quantity = 0
         try {
             ProcessSearchParameters searchParameters = getSearchParameters(params)
             searchParameters.offset = null
@@ -612,18 +597,16 @@ class ProcessController extends GrailsFlowSecureController {
             if (!searchParameters.statusID) {
                 searchParameters.statusID = [ProcessStatusEnum.COMPLETED.value(), ProcessStatusEnum.KILLED.value()].join(",")
             }
-            Long filteredQuantity = processAdministrationService.deleteFilteredProcesses(searchParameters)
+            quantity = processAdministrationService.deleteFilteredProcesses(searchParameters)
             flash.message = grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.deleteProcess.filtered", [filteredQuantity?.toString()])
+                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.deleteProcess.filtered", [quantity?.toString()])
         } catch (Exception e) {
             log.error(e)
             flash.error = e.message
         }
-        withFormat {
-            html { render(view: 'deleteProcesses', model: [ processDetailsList: [],  // show empty list by default
-                    processClasses: processManagerService.supportedProcessClasses], params: params)}
-            json { render([errors: flash.errors, processClasses: processManagerService.supportedProcessClasses] as JSON) }
-        }
+
+        def result = [message: flash.message, quantity: quantity]
+        render result as JSON
     }
 
     def deleteProcesses = {
@@ -641,7 +624,9 @@ class ProcessController extends GrailsFlowSecureController {
                 .getMessage(RESOURCE_BUNDLE, "grailsflow.message.deleteProcess.noIdentifier")
         } else {
             try {
-                processAdministrationService.deleteProcess(params.processId as Long)
+                ProcessSearchParameters searchParameters = new ProcessSearchParameters()
+                searchParameters.processID = params.processId as Long
+                processAdministrationService.deleteFilteredProcesses(searchParameters)
                 flash.message = grailsflowMessageBundleService
                     .getMessage(RESOURCE_BUNDLE, "grailsflow.message.deleteProcess.selected",[params.processId as String])
             } catch (Exception e) {

@@ -108,6 +108,9 @@ class GrailsflowGrailsPlugin {
       // 'in' clause
       maxRestrictedProcesses(java.lang.Integer, "2000")
 
+      // default configuration for quantity of loaded processes in removing service
+      maxLoadedProcesses(java.lang.Integer, "200")
+
       // default security configuration
       securityHelper(com.jcatalog.grailsflow.security.GrailsflowSecurityHelper)
       usersProvider(com.jcatalog.grailsflow.security.GrailsflowUsersProvider)

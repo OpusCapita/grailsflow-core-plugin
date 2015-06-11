@@ -20,12 +20,41 @@
   <gf:messageBundle bundle="grailsflow.common" var="common"/>
   <gf:messageBundle bundle="grailsflow.processDetails" var="processDetails"/>
   <title>${processDetails['grailsflow.title.deleteProcesses']}</title>
+
+  <r:script>
+    jQuery('#deleteButton').click(function(){
+      if (askConfirmation('${common['grailsflow.question.confirm']}')) {
+        jQuery('#deleteButton').attr("disabled", true);
+        jQuery('#removeMessage').html('<h4>${processDetails['grailsflow.label.processes.removing']} <img class="text-centered" src="${g.resource(plugin: 'grailsflow', dir:'images',file:'spinner.gif')}"/></h4>')
+        jQuery('#removeMessage').show()
+        var oData = new FormData(document.forms.namedItem("processListForm"));
+        var url="${createLink(controller:'process', action:'deleteSearchedProcesses')}";
+          jQuery.ajax({
+            url:url,
+            type:'POST',
+            data:oData,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false ,
+            success:function (req) {
+               jQuery('#removeMessage').html("<h4 class='alert alert-success'>"+req.message+"</h4>")
+               jQuery('#removeMessage').show()
+            }
+          }).done(function() {
+               jQuery('#deleteButton').attr("disabled", false);
+          });
+      } else {
+        return false;
+      }
+    });
+
+  </r:script>
+
 </head>
 
 <body>
   <gf:customizingTemplate template="/${params['controller']}/processList/header"
                         defaultTemplate="/process/processList/header" model="${['header': 'deleteProcesses']}"/>
-
+  <div id="removeMessage" style="display: none;"></div>
   <g:form name="processListForm" controller="${params['controller']}" method="POST">
     <input type="hidden" name="returnPage" value="deleteProcesses">
     <div class="row">
@@ -36,8 +65,7 @@
 
         <div class="form-submit text-right">
           <g:actionSubmit action="searchFinishedProcesses" value="${common['grailsflow.command.search']}" class="btn btn-default"/>
-          <g:actionSubmit action="deleteSearchedProcesses" onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" value="${common['grailsflow.command.delete']}" class="btn btn-default"/>
-          <g:actionSubmit action="deleteAllProcesses" onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" value="${common['grailsflow.command.deleteAll']}" class="btn btn-primary"/>
+          <input id="deleteButton" type="button" value="${common['grailsflow.command.delete']}" class="btn btn-primary deleteButton"/>
         </div>
       </div>
     </div>
