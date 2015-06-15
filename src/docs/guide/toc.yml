@@ -26,6 +26,8 @@ usersGuide:
           title: List Processes
       killProcess:
           title: Kill Process
+      removeProcess:
+          title: Remove Process
   processDefinition:
       title: Process Definition
       actionsOfNode:
