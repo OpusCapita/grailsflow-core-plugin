@@ -5,5 +5,5 @@ Template parameters:
 
 -->
 
-<gf:jQueryCalendar property="${name}_${new java.util.Date().time}" value="${value}" />
+<gf:bootstrapCalendar property="${name}_${new java.util.Date().time}" value="${value}" />
 

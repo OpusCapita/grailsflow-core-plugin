@@ -32,7 +32,7 @@
 
         <g:if test="${transition?.id}">
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
               <table>
                 <tr>
                   <td>
@@ -67,7 +67,7 @@
         </g:if>
 
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-8">
             <div class="form-horizontal">
               <div class="form-group">
                 <label class="col-md-2 control-label" for="fromNode">

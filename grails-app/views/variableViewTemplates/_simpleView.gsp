@@ -43,4 +43,4 @@
     <g:else>
       <g:set var="displayValue" value="${variable.value}"/>
     </g:else>
-   	<input name="${parameterName}" id="var_${variable.name}" value="${displayValue?.encodeAsHTML()}" size="${size}" class="form-control" ${readOnly ? 'readonly="true"' : ''}/>
+   	<input name="${parameterName}" id="var_${variable.name}" value="${displayValue?.encodeAsHTML()}" size="${size}" maxlength="2000" class="form-control" ${readOnly ? 'readonly="true"' : ''}/>

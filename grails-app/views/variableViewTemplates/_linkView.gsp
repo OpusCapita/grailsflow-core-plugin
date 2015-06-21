@@ -36,9 +36,9 @@
     
     <g:if test="${!readOnly}">
       ${linkMsgs['grailsflow.label.linkUrl']} &nbsp;
- 	    <input name="${parameterName}.path" value="${(variable.value?.path ? variable.value?.path : '')?.encodeAsHTML()}" class="${styleClass}"/>&nbsp;
+ 	    <input name="${parameterName}.path" value="${(variable.value?.path ? variable.value?.path : '')?.encodeAsHTML()}" class="${styleClass}" maxlength="1500"/>&nbsp;
 	    ${linkMsgs['grailsflow.label.linkDescription']} &nbsp;
-	    <input name="${parameterName}.description" value="${(variable.value?.description ? variable.value?.description : '')?.encodeAsHTML()}" class="${styleClass}"/>
+	    <input name="${parameterName}.description" value="${(variable.value?.description ? variable.value?.description : '')?.encodeAsHTML()}" class="${styleClass}" maxlength="255"/>
     </g:if>
     <g:if test="${variable.value}">
       <gf:renderLink link="${variable.value}" label="${gf.translatedValue(translations: variable.description) }"/>

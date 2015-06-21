@@ -65,7 +65,7 @@
         <input type="hidden" name="processType" value="${process?.processID?.encodeAsHTML()}"/>
         <input type="hidden" id="ndID" name="ndID" value="${node?.id?.encodeAsHTML()}"/>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-8">
             <div class="form-horizontal">
 
               <div class="form-group">

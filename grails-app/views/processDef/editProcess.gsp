@@ -48,7 +48,7 @@
                     ${msgs['grailsflow.label.process.type']}
                 </label>
                 <div class="col-md-6">
-                    <input id="type" name="processID" class="form-control"  value= "${processDetails.processID}" size="50"/>
+                    <input id="type" name="processID" class="form-control"  value= "${processDetails.processID}" size="50" maxlength="255"/>
                 </div>
             </div>
             <div class="form-group">

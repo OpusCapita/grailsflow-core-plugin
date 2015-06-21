@@ -32,4 +32,4 @@
     <g:set var="parameterName" value="${readOnly ? '' : parameterName}"/>
     <g:set var="styleClass" value="${readOnly ? 'readonly' : ''}"/>
 
-   	<input name="${parameterName}" value="${variable.value?.encodeAsHTML()}" size="${size}" class="${styleClass}" ${readOnly ? 'readonly="true"' : ''}/>
+   	<input name="${parameterName}" value="${variable.value?.encodeAsHTML()}" size="${size}" maxlength="2000" class="${styleClass}" ${readOnly ? 'readonly="true"' : ''}/>

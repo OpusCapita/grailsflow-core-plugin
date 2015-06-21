@@ -43,7 +43,7 @@
         <input type="hidden" name="id" value="${process?.id}"/>
         <input type="hidden" name="varID" id="varID" value="${variable?.id}"/>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-8">
             <div class="form-horizontal">
 
               <div class="form-group">
