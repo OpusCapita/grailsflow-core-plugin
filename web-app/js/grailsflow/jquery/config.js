@@ -16,8 +16,6 @@ function convertDatePatternFromJavaToJqueryDatePicker(javaDatePattern) {
              { regExp : /M{3,}/g, replacement : fakeBigM},
              { regExp : /M{2,}/g, replacement : 'mm'},
              { regExp : /M/g, replacement : 'm'},
-             { regExp : /y{4,}/g, replacement : fakeLowY + fakeLowY},
-             { regExp : /y{1,3}/g, replacement : fakeLowY},
              { regExp : /F{4,}/g, replacement : 'DD'},
              { regExp : /F{1,3}/g, replacement : 'D'},
              { regExp : /d{3,}/g, replacement : 'dd' }

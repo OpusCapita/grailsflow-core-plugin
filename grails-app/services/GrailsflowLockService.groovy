@@ -40,7 +40,6 @@ class GrailsflowLockService {
 
     def processManagerService
     def grailsApplication
-    def quartzScheduler
 
     @SuppressWarnings('UnusedPrivateField')
     private final Object lock = new Object()
@@ -48,24 +47,33 @@ class GrailsflowLockService {
     @Synchronized("lock")
     @Transactional(propagation = Propagation.REQUIRED)
     public boolean lockProcessExecution(ProcessNode node) {
-        // check if the process is runnable by this NodeActivator
-        // try to save Grailsflow instance
-        // if everything is okay - then send event
-        GrailsflowLock processLock = GrailsflowLock.findByProcess(node.process)
-        if (processLock){
+        try {
+            if (!node) {
+                log.error("Cannot lock node: node cannot be nullable")
+                return Boolean.FALSE
+            }
+            // check if the process is runnable by this NodeActivator
+            // try to save Grailsflow instance
+            // if everything is okay - then send event
+            GrailsflowLock processLock = GrailsflowLock.findByProcess(node.process)
+            if (processLock){
+                return Boolean.FALSE
+            }
+
+            String currentThreadName = (grailsApplication.config.grailsflow.clusterName instanceof Closure) ?
+                grailsApplication.config.grailsflow.clusterName()?.toString() :
+                grailsApplication.config.grailsflow.clusterName?.toString()
+
+            GrailsflowLock savedLock = new GrailsflowLock(process: node.process, nodeID:  node.nodeID, clusterName: currentThreadName, lockedOn: new Date()).save(flush:true)
+            if (!savedLock) {
+                return Boolean.FALSE
+            }
+
+            return Boolean.TRUE
+        } catch(Exception ex) {
+            log.error("Cannot lock process execution for node [${node?.id}]: ${ex.message}")
             return Boolean.FALSE
         }
-
-        String currentThreadName = (grailsApplication.config.grailsflow.clusterName instanceof Closure) ?
-            grailsApplication.config.grailsflow.clusterName()?.toString() :
-            grailsApplication.config.grailsflow.clusterName?.toString()
-
-        GrailsflowLock savedLock = new GrailsflowLock(process: node.process, nodeID:  node.nodeID, clusterName: currentThreadName, lockedOn: new Date()).save(flush:true)
-        if (!savedLock) {
-            return Boolean.FALSE
-        }
-
-        return Boolean.TRUE
     }
 
     @Synchronized("lock")
