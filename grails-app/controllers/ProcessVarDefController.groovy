@@ -211,9 +211,20 @@ class ProcessVarDefController extends GrailsFlowSecureController {
                 }
                 var.view = view
             }
-            if (!var.save(flush: true)) {
-                var.errors.allErrors.each { flash.errors << it.defaultMessage }
-                return render(view: 'variableForm', model: [variable: var, process: process], params: params)
+
+            if (var.id) {
+                // update existing var
+                if (!var.save(flush: true)) {
+                    var.errors.allErrors.each { flash.errors << it.defaultMessage }
+                    return render(view: 'variableForm', model: [variable: var, process: process], params: params)
+                }
+            } else {
+                // add new variable to variables list
+                process.addToVariables(var)
+                if (!process.save(flush: true)) {
+                    process.errors.allErrors.each { flash.errors << it.defaultMessage }
+                    return render(view: 'variableForm', model: [variable: var, process: process], params: params)
+                }
             }
 
             redirect(controller: "processDef", action: "editProcess", params: [id: process.id])
