@@ -532,19 +532,48 @@ class ProcessManagerService implements InitializingBean {
      *
      */
     public int sendEvent(SendEventParameters params) {
-      return sendEvent(params.processID, params.nodeID, params.event, params.requester, params.variables)
+        return sendEvent(params.processID, params.nodeID, params.event, params.requester, params.variables)
     }
 
     /**
      * Sending event to process for node
      *
      */
-    public int sendEvent(def processID, def nodeID, def eventID, def user) {
-      return sendEvent(processID, nodeID, eventID, user, null)
+    public int sendEvent(Long processID, String nodeID, String eventID, String user) {
+        return sendEvent(processID, nodeID, eventID, user, null)
     }
 
     /**
      * Sending event to process for node
+     *
+     */
+    public int sendEvent(BasicProcess basicProcess, ProcessNode node, String eventID, String user) {
+        return sendEvent(basicProcess, node, eventID, user, null)
+    }
+
+    /**
+     * Sending event to process for node
+     *
+     * @param process
+     * @param node
+     * @param event
+     * @param user
+     * @param variables
+     *
+     */
+    public int sendEvent(BasicProcess basicProcess, ProcessNode node, String eventID, String user, Map variables) {
+        if (!node) {
+            return ExecutionResultEnum.NO_NODE_OR_NODE_COMPLETED.value()
+        }
+        if (!basicProcess) {
+            return ExecutionResultEnum.NO_PROCESS_FOR_PROCESSID.value()
+        }
+
+        return sendEventForExecution(basicProcess, node, eventID, user, variables)
+    }
+
+    /**
+     * Sending event to process for node with nodeID
      *
      * @param process
      * @param nodeID
@@ -553,7 +582,7 @@ class ProcessManagerService implements InitializingBean {
      * @param variables
      *
      */
-    public int sendEvent(def processID, def nodeID, def eventID, def user, def variables) {
+    public int sendEvent(Long processID, String nodeID, String eventID, String user, Map variables) {
         if (!processID || !nodeID) {
             return ExecutionResultEnum.NO_PROCESS_FOR_PROCESSID.value()
         }
@@ -563,29 +592,33 @@ class ProcessManagerService implements InitializingBean {
             return ExecutionResultEnum.NO_PROCESS_FOR_PROCESSID.value()
         }
 
-        def node = ProcessNode.findByProcessAndNodeID(basicProcess, nodeID)
+        def node = basicProcess.nodes.find() { it.nodeID == nodeID }
         if (!node) {
             return ExecutionResultEnum.NO_NODE_OR_NODE_COMPLETED.value()
         }
 
+        return sendEventForExecution(basicProcess, node, eventID, user, variables)
+    }
+
+
+    public int sendEventForExecution (BasicProcess basicProcess, ProcessNode node, String eventID, String user, Map variables) {
         // 'wait nodes' are executed synchronously, other types of nodes - asynchronously
         // !!! for tests we running all nodes in one thread
         if (node.type == ConstantUtils.NODE_TYPE_WAIT || Environment.current == Environment.TEST) {
-            log.debug("Invoking synchronous node(${ConstantUtils.NODE_TYPE_WAIT}) '${nodeID}' of process #${basicProcess.id}(${basicProcess.type})")
-            return invokeNodeExecution(processID, nodeID, eventID, user, variables)
+            log.debug("Invoking synchronous node(${ConstantUtils.NODE_TYPE_WAIT}) '${node.nodeID}' of process #${basicProcess.id}(${basicProcess.type})")
+            return invokeNodeExecution(basicProcess.id, node.nodeID, eventID, user, variables)
         } else {
             // check the quantity of scheduled 'PROCESS' triggers
             def runningThreads = quartzScheduler
-                                     .getCurrentlyExecutingJobs()
-                                     .findAll() {it.trigger.key.group == "PROCESS"}
+                    .getCurrentlyExecutingJobs()
+                    .findAll() {it.trigger.key.group == "PROCESS"}
 
             if (!runningThreads || canNewThreadBeStarted(runningThreads.size())) {
-                return invokeAsynchronousNode(basicProcess, nodeID, eventID, user, variables)
+                return invokeAsynchronousNode(basicProcess, node.nodeID, eventID, user, variables)
             } else {
                 return ExecutionResultEnum.NO_THREAD_FOR_EXECUTION.value()
             }
         }
-
     }
 
     /**
