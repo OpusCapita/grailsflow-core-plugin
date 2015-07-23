@@ -19,7 +19,7 @@ import com.jcatalog.grailsflow.scheduling.triggers.ConfigurableSimpleTrigger
 import org.springframework.orm.hibernate3.HibernateTemplate
 
 class GrailsflowGrailsPlugin {
-    def version = '1.6'
+    def version = '1.6-SNAPSHOT'
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.3 > *"
     def dependsOn = [quartz: "1.0.1 > *"]
