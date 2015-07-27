@@ -11,10 +11,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.jcatalog.grailsflow.model.process.BasicProcess
-import com.jcatalog.grailsflow.model.process.FlowStatus
-import com.jcatalog.grailsflow.model.process.ProcessNode
-import com.jcatalog.grailsflow.engine.*
 import org.springframework.core.io.Resource
 import com.jcatalog.grailsflow.model.process.BasicProcess
 import com.jcatalog.grailsflow.model.process.FlowStatus
@@ -68,11 +64,13 @@ class NodeActivatorJob {
             SQLQuery activeNodesQuery = sessionFactory.currentSession.createSQLQuery("""
                     SELECT n.id FROM process_node n
                     INNER JOIN basic_process p ON n.process_id = p.id
-                    WHERE p.app_groupid = '$appExternalID'
-                      AND n.status_id IN ('$activeStatus.id', '$runningStatus.id')
-                      AND n.type      IN ('$ConstantUtils.NODE_TYPE_ACTIVITY ', '$ConstantUtils.NODE_TYPE_FORK',
-                                          '$ConstantUtils.NODE_TYPE_ORJOIN', '$ConstantUtils.NODE_TYPE_ANDJOIN')
+                    WHERE p.app_groupid = :appExternalID
+                      AND n.status_id IN ($activeStatus.id, $runningStatus.id)
+                      AND n.type      IN (:types)
                     ORDER BY n.id ASC""")
+            activeNodesQuery.setParameter('appExternalID', appExternalID)
+            activeNodesQuery.setParameterList('types', [ConstantUtils.NODE_TYPE_ACTIVITY, ConstantUtils.NODE_TYPE_FORK,
+                                                        ConstantUtils.NODE_TYPE_ORJOIN, ConstantUtils.NODE_TYPE_ANDJOIN])
             List activeNodesKeys = activeNodesQuery.list()
 
             log.info "*** Amount of Nodes to execute ${activeNodesKeys.size()} ***"
@@ -86,10 +84,12 @@ class NodeActivatorJob {
             SQLQuery waitNodesQuery = sessionFactory.currentSession.createSQLQuery("""
                     SELECT n.id FROM process_node n
                     INNER JOIN basic_process p ON n.process_id = p.id
-                    WHERE p.app_groupid = '$appExternalID'
-                      AND n.status_id   = '$runningStatus.id'
-                      AND n.type        = '$ConstantUtils.NODE_TYPE_WAIT'
+                    WHERE p.app_groupid = :appExternalID
+                      AND n.status_id   = $runningStatus.id
+                      AND n.type        = :type
                     ORDER BY n.id ASC""")
+            waitNodesQuery.setParameter('appExternalID', appExternalID)
+            waitNodesQuery.setParameter('type', ConstantUtils.NODE_TYPE_WAIT)
             List waitNodesKeys = waitNodesQuery.list()
 
 
