@@ -38,8 +38,6 @@ grails.project.dependency.resolution = {
 
         runtime ("javax.mail:mail:1.4",
                  "javax.activation:activation:1.1",
-                 "org.apache.ant:ant:1.7.1",
-                 "org.apache.ant:ant-launcher:1.7.1",
                  "org.hibernate:hibernate-validator:5.0.3.Final"){
             exported=false
         }
