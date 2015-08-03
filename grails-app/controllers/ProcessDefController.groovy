@@ -132,9 +132,9 @@ class ProcessDefController extends GrailsFlowSecureController {
               }
               flash.errors << grailsflowMessageBundleService
                                   .getMessage(RESOURCE_BUNDLE, "grailsflow.message.generation.error")
-              redirect(action: editTypes, params: [sort: params.sort, order: params.order])
+              redirect(action: "editTypes", params: [sort: params.sort, order: params.order])
             } else {
-                redirect(action: editProcess, params: [id: process.id])
+                redirect(action: "editProcess", params: [id: process.id])
             }
 
         }
@@ -188,7 +188,7 @@ class ProcessDefController extends GrailsFlowSecureController {
 
       if(!process.save()) {
           flash.errors = process.errors
-          return redirect(action: editTypes, params: [sort: params.sort, order: params.order])
+          return redirect(action: "editTypes", params: [sort: params.sort, order: params.order])
       }
 
       def validationResult
@@ -221,7 +221,7 @@ class ProcessDefController extends GrailsFlowSecureController {
         if (processScript == null){
 		      flash.errors << grailsflowMessageBundleService
 		                          .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processFile.notFound")
-		      return redirect(action: editProcess, params: [id: params.id])
+		      return redirect(action: "editProcess", params: [id: params.id])
         }
 
         try {
@@ -230,7 +230,7 @@ class ProcessDefController extends GrailsFlowSecureController {
         } catch (Exception e) {
             flash.errors << grailsflowMessageBundleService
                                 .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processType.invalid", [processID])
-            redirect(action: editTypes, params: [sort: params.sort, order: params.order])
+            redirect(action: "editTypes", params: [sort: params.sort, order: params.order])
         }
       } else {
 	      flash.errors << grailsflowMessageBundleService
@@ -281,7 +281,7 @@ class ProcessDefController extends GrailsFlowSecureController {
 
         if(!process.save()) {
             flash.errors = process.errors
-            return redirect(action: editTypes, params: [sort: params.sort, order: params.order])
+            return redirect(action: "editTypes", params: [sort: params.sort, order: params.order])
         }
 
         def validationResult
@@ -327,7 +327,7 @@ class ProcessDefController extends GrailsFlowSecureController {
 
         }
 
-        redirect(action: editTypes, params: [sort: params.sort, order: params.order])
+        redirect(action: "editTypes", params: [sort: params.sort, order: params.order])
     }
 
     def editTypes = {
@@ -356,7 +356,7 @@ class ProcessDefController extends GrailsFlowSecureController {
 
         if (!processDef) {
             flash.errors = ["Impossible to edit process with key ${params.id}"]
-            return redirect(action: editTypes)
+            return redirect(action: "editTypes")
         }
 
         render(view: "editProcess", model: [processDetails: processDef])
@@ -368,7 +368,7 @@ class ProcessDefController extends GrailsFlowSecureController {
 
         if (!processDef) {
             flash.errors = ["Impossible to edit process with key ${params.id}"]
-            return redirect(action: editTypes)
+            return redirect(action: "editTypes")
         }
 
         render(view: "editProcessTranslations", model: [processDef: processDef])
@@ -379,7 +379,7 @@ class ProcessDefController extends GrailsFlowSecureController {
         def processDef = params.id ? ProcessDef.get(Long.valueOf(params.id)) : null
         if (!processDef) {
             flash.errors = ["Impossible to edit process with key ${params.id}"]
-            return redirect(action: editTypes)
+            return redirect(action: "editTypes")
         }
         def labels = GrailsflowRequestUtils.getTranslationsMapFromParams(params, 'label_')
         def descriptions = GrailsflowRequestUtils.getTranslationsMapFromParams(params, 'description_')
@@ -388,7 +388,7 @@ class ProcessDefController extends GrailsFlowSecureController {
 
         processDef.save()
 
-        redirect(action: editProcess, params: [id: params.id])
+        redirect(action: "editProcess", params: [id: params.id])
     }
 
 
@@ -398,12 +398,12 @@ class ProcessDefController extends GrailsFlowSecureController {
         // and store them in the DB for editing purpose
         try {
             def processDef = reloadProcess(params.id)
-            redirect(action: editProcess, params: [id: processDef?.id])
+            redirect(action: "editProcess", params: [id: processDef?.id])
         } catch (Exception e) {
             flash.message = grailsflowMessageBundleService
                                 .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processType.invalid", [params.id])
             log.error("Cannot build process definition for ${params.id}", e)
-            redirect(action: editTypes, params: [sort: params.sort, order: params.order])
+            redirect(action: "editTypes", params: [sort: params.sort, order: params.order])
         }
     }
 
@@ -413,7 +413,7 @@ class ProcessDefController extends GrailsFlowSecureController {
         if (!params.id) {
             flash.errors << grailsflowMessageBundleService
                               .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processType.empty")
-            return redirect(action: editTypes)
+            return redirect(action: "editTypes")
         }
 
         def processScript = params.code ?
@@ -436,7 +436,7 @@ class ProcessDefController extends GrailsFlowSecureController {
         if (!params.id) {
             flash.errors << grailsflowMessageBundleService
                               .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processType.empty")
-            return redirect(action: editTypes)
+            return redirect(action: "editTypes")
         }
 
         // delete process definition if exist
@@ -466,13 +466,13 @@ class ProcessDefController extends GrailsFlowSecureController {
         } else flash.errors << grailsflowMessageBundleService
                                  .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processScript.saveError")
 
-        redirect(action: editTypes)
+        redirect(action: "editTypes")
     }
 
     def deleteProcessScript = {
         if (!flash.errors) flash.errors = []
 
-        redirect(action: deleteProcessDef, params: params)
+        redirect(action: "deleteProcessDef", params: params)
     }
 
     def addNodeDef = {
@@ -578,7 +578,7 @@ class ProcessDefController extends GrailsFlowSecureController {
         if (!params.id) {
             flash.errors << grailsflowMessageBundleService
                               .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processType.empty")
-            return redirect(action: editTypes)
+            return redirect(action: "editTypes")
         }
         if (!deleteProcessInfo(params?.id)) {
             flash.errors = [grailsflowMessageBundleService
@@ -587,16 +587,16 @@ class ProcessDefController extends GrailsFlowSecureController {
             flash.message = grailsflowMessageBundleService
                               .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processType.deleted", [params.id])
         }
-        redirect(action: editTypes)
+        redirect(action: "editTypes")
     }
 
     def exportAsHTML = {
-        if (!params.id) return redirect(action: editTypes, params: [sort: params.sort, order: params.order])
+        if (!params.id) return redirect(action: "editTypes", params: [sort: params.sort, order: params.order])
 
         def processDef = ProcessDef.get(Long.valueOf(params.id))
         if (!processDef) {
             flash.message = "There is no process definition with key '${params.id}'"
-            return redirect(action: editTypes, params: [sort: params.sort, order: params.order])
+            return redirect(action: "editTypes", params: [sort: params.sort, order: params.order])
         }
 
         try {
@@ -608,7 +608,7 @@ class ProcessDefController extends GrailsFlowSecureController {
             response.outputStream << file?.readBytes()
         } catch (Exception e) {
             flash.message = e.message
-            redirect(action: editProcess, params: [id: params.id])
+            redirect(action: "editProcess", params: [id: params.id])
         }
     }
 

@@ -26,7 +26,7 @@ class DocumentController extends GrailsFlowSecureController {
     private static previousFileName = ""
     
     def index = {
-        redirect(action: showDirectoryContent)
+        redirect(action: "showDirectoryContent")
     }
 
     def showDirectoryContent = {

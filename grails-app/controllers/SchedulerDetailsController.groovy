@@ -41,7 +41,7 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
     def schedulerOperationsService
     
     def index = {
-        redirect(action: showSchedulerDetails)
+        redirect(action: "showSchedulerDetails")
     }
 
     def showSchedulerDetails = {
@@ -59,19 +59,19 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
             flash.error = grailsflowMessageBundleService
                 .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.error.pauseResume")
         }
-        redirect(action: showSchedulerDetails)
+        redirect(action: "showSchedulerDetails")
     }
 
     def pause = {
         if (!params.name || !params.group) {
             flash.error = grailsflowMessageBundleService
                 .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.error.pauseResume")
-            return forward(action: showSchedulerDetails, params: params)
+            return forward(action: "showSchedulerDetails", params: params)
         }
         if (params.isRunning == "true") {
             flash.message = grailsflowMessageBundleService
                 .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.job.running", [params.name, params.group])
-            return redirect(action: showSchedulerDetails)
+            return redirect(action: "showSchedulerDetails")
         }
 
         def shouldBePaused = params.isPaused == "false"
@@ -79,14 +79,14 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
             flash.error = grailsflowMessageBundleService
                 .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.error.pauseResume")
         }
-        redirect(action: showSchedulerDetails)
+        redirect(action: "showSchedulerDetails")
     }
 
     def edit = {
         if (!params.name || !params.group) {
             flash.error = grailsflowMessageBundleService
                 .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.error.pauseResume")
-            return forward(action: showSchedulerDetails, params: params)
+            return forward(action: "showSchedulerDetails", params: params)
         }
 
         def jobDetails = schedulerOperationsService.getJobDetails(params.name, params.group)
@@ -100,7 +100,7 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
         if (!params.name || !params.group) {
             flash.error = grailsflowMessageBundleService
                 .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.error.pauseResume")
-            return forward(action: showSchedulerDetails, params: params)
+            return forward(action: "showSchedulerDetails", params: params)
         }
 
         def startTime_hours = 0
@@ -164,7 +164,7 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
                 .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.error.convertInt", [params.customRepeating])
             log.error("Error in converting repeting interval: ${nfe.message}")
         }
-        redirect(action: showSchedulerDetails)
+        redirect(action: "showSchedulerDetails")
     }
 
     def delete = {
@@ -180,7 +180,7 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
             flash.error = grailsflowMessageBundleService
                 .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.error.delete")
         }
-        redirect(action: showSchedulerDetails)
+        redirect(action: "showSchedulerDetails")
     }
 
     def scheduleProcess = {

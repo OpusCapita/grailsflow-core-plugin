@@ -38,7 +38,7 @@ class AnalyseController extends GrailsFlowSecureController {
     def processProtocolingService
 
     def index = {
-        redirect(action: analyseResponse)
+        redirect(action: "analyseResponse")
     }
 
     def analyseResponse = {

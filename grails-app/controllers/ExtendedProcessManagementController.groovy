@@ -199,7 +199,7 @@ class ExtendedProcessManagementController extends GrailsFlowSecureController {
     }
 
     private void writeResponse(def response, def statusCode, def message){
-      log.debug(message);
+        log.debug(message);
         response.status = statusCode
         def printWriter = new PrintWriter(response.writer)
         printWriter.write(message)
@@ -207,13 +207,13 @@ class ExtendedProcessManagementController extends GrailsFlowSecureController {
     }
 
     private void writeErrorResponse(def response, def message){
-      log.error(message);
-      writeResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message)
+        log.error(message);
+        writeResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message)
     }
 
     private void writeErrorResponse(def response, def message, def error){
-      log.error(message, error);
-      writeResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message)
+        log.error(message, error);
+        writeResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message)
     }
 
 }

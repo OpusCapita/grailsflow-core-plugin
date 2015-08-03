@@ -23,7 +23,7 @@ class EmailEventReceiverJobController extends GrailsFlowSecureController {
     private static final String RESOURCE_BUNDLE = "grailsflow.emailReceiver"
 
     def index = {
-        redirect(action: emailConfiguration)
+        redirect(action: "emailConfiguration")
     }
 
     def emailConfiguration = {
