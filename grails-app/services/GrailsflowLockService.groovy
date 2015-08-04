@@ -64,7 +64,8 @@ class GrailsflowLockService {
                 grailsApplication.config.grailsflow.clusterName()?.toString() :
                 grailsApplication.config.grailsflow.clusterName?.toString()
 
-            GrailsflowLock savedLock = new GrailsflowLock(process: node.process, nodeID:  node.nodeID, clusterName: currentThreadName, lockedOn: new Date()).save(flush:true)
+            GrailsflowLock savedLock = new GrailsflowLock(process: node.process, nodeID:  node.nodeID,
+                    clusterName: currentThreadName, lockedOn: new Date()).save(flush:true)
             if (!savedLock) {
                 return Boolean.FALSE
             }
@@ -99,21 +100,8 @@ class GrailsflowLockService {
             List<ClusterInfo> stoppedList = new ArrayList()
             clusters?.each() { clusterInfo ->
                 // check when the cluster is last fired
-                def clusterRepeatIntervalValue = (grailsApplication.config.grailsflow.scheduler.clusterChecker.repeatInterval instanceof Closure) ?
-                    grailsApplication.config.grailsflow.scheduler.clusterChecker.repeatInterval() :
-                    grailsApplication.config.grailsflow.scheduler.clusterChecker.repeatInterval
-                long clusterRepeatInterval = ConfigurableSimpleTrigger.DEFAULT_REPEAT_INTERVAL
-
-                if (clusterRepeatIntervalValue) {
-                    try {
-                        clusterRepeatInterval = Long.valueOf(clusterRepeatIntervalValue.toString())
-                    } catch (NumberFormatException nfe) {
-                        log.error("Exception during converting ReleatInterval to Long value", nfe)
-                        clusterRepeatInterval = ConfigurableSimpleTrigger.DEFAULT_REPEAT_INTERVAL
-                    }
-                }
-
-                Date clusterExpiredTime = new Date(now.time-clusterRepeatInterval*2)
+                log.debug("Checking cluster [${clusterInfo.clusterName}] with repeat interval value [${clusterInfo.repeatInterval}]")
+                Date clusterExpiredTime = new Date(now.time-clusterInfo.repeatInterval*2)
                 if (clusterInfo.lastCheckedOn < clusterExpiredTime) {
                     GrailsflowLock.findAllByClusterName(clusterInfo.clusterName)*.delete()
                     stoppedList << clusterInfo
@@ -170,11 +158,27 @@ class GrailsflowLockService {
         log.debug("Updating cluster information for cluster [${currentClusterName}] ")
         ClusterInfo clusterInfo = ClusterInfo.findByClusterName(currentClusterName)
         if (!clusterInfo) {
-            clusterInfo = new ClusterInfo(clusterName:  currentClusterName, lastCheckedOn: now)
+            def clusterRepeatIntervalValue = (grailsApplication.config.grailsflow.scheduler.clusterChecker.repeatInterval instanceof Closure) ?
+                grailsApplication.config.grailsflow.scheduler.clusterChecker.repeatInterval() :
+                grailsApplication.config.grailsflow.scheduler.clusterChecker.repeatInterval
+
+            Long clusterRepeatInterval = ConfigurableSimpleTrigger.DEFAULT_REPEAT_INTERVAL
+
+            if (clusterRepeatIntervalValue) {
+                try {
+                    clusterRepeatInterval = Long.valueOf(clusterRepeatIntervalValue.toString())
+                } catch (NumberFormatException nfe) {
+                    log.error("Exception during converting ReleatInterval to Long value", nfe)
+                    clusterRepeatInterval = ConfigurableSimpleTrigger.DEFAULT_REPEAT_INTERVAL
+                }
+            }
+
+            clusterInfo = new ClusterInfo(clusterName:  currentClusterName, lastCheckedOn: now, repeatInterval: clusterRepeatInterval)
         } else {
             clusterInfo.lastCheckedOn = now
         }
         if (!clusterInfo.save(flush: true)) {
+            log.debug("Cluster Information was not updated: ${clusterInfo.errors}")
             return Boolean.FALSE
         }
         return Boolean.TRUE

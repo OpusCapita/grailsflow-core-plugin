@@ -25,6 +25,7 @@ class ClusterInfo {
     String clusterName
     String description
     Date lastCheckedOn
+    Long repeatInterval
 
     static constraints = {
         clusterName(unique: true)
