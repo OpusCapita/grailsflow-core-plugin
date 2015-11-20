@@ -23,11 +23,8 @@
     - parameter names for properties should have "<viewType>_<viewPropertyName>" format 
 
  -->
-
-<gf:messageBundle bundle="grailsflow.variableView" var="msgs"/>
-
 <g:set var="labelKey" value="label.${viewType}"/>
-<h3>${msgs['grailsflow.'+labelKey]}</h3>
+<h3>${g.message(code: 'plugin.grailsflow.'+labelKey)}</h3>
 
 <g:set var="viewClass" value="${com.jcatalog.grailsflow.model.view.VariableView.getViewClassFromViewType(viewType)}"/>
 
@@ -35,7 +32,7 @@
   <g:each var="propertyName" in="${com.jcatalog.grailsflow.utils.ClassUtils.getDomainClassProperties(viewClass)}">
     <g:set var="name" value="${viewType + '_' +propertyName}"/>
     <g:set var="labelKey" value="label.${propertyName}"/>
-	  <label for="${name}">${msgs['grailsflow.'+labelKey]}</label>
+	  <label for="${name}">${g.message(code: 'plugin.grailsflow.'+labelKey)}</label>
 	  <input type="text" id="${name}" name="${name}" class="form-control" value="${(view ? view[name] : '')?.encodeAsHTML()}"/>
 	  <br/>
   </g:each>

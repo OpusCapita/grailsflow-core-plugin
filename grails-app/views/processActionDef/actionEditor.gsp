@@ -18,9 +18,7 @@
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
          <meta name="layout" content="grailsflow" />
          <g:render plugin="grailsflow" template="/commons/global"/>
-         <gf:messageBundle bundle="grailsflow.common" var="common"/>
-         <gf:messageBundle bundle="grailsflow.processAction" var="msgs"/>
-         <title>${msgs['grailsflow.title.actionEditor']}</title>
+         <title><g:message code="plugin.grailsflow.title.actionEditor"/></title>
 
          <r:script>
            function pasteCode(textToPaste, movePosition) {
@@ -59,12 +57,12 @@
 
     </head>
     <body>
-      <h1>${msgs['grailsflow.label.actionEditor']}</h1>
+      <h1><g:message code="plugin.grailsflow.label.actionEditor"/></h1>
 
       <g:render plugin="grailsflowCore" template="/commons/messageInfo"/>
 
       <g:if test="${processNodeDef?.type == ConstantUtils.NODE_TYPE_WAIT}">
-        <div class="alert-warning">*${msgs["grailsflow.message.action.warning"]}</div>
+        <div class="alert-warning">*<g:message code="plugin.grailsflow.message.action.warning"/></div>
       </g:if>
 
       <g:form controller="${params['controller']}" method="POST">
@@ -75,7 +73,7 @@
             <div class="form-group">
               <div class="row">
                 <div class="col-md-4">
-                  ${msgs['grailsflow.label.processType']}
+                  <g:message code="plugin.grailsflow.label.processType"/>
                 </div>
                 <div class="col-md-8">
                   ${processNodeDef?.processDef?.processID}
@@ -85,7 +83,7 @@
             <div class="form-group">
               <div class="row">
                 <div class="col-md-4">
-                  ${msgs['grailsflow.label.nodeID']}
+                  <g:message code="plugin.grailsflow.label.nodeID"/>
                 </div>
                 <div class="col-md-8">
                   ${processNodeDef?.nodeID}
@@ -100,13 +98,13 @@
             <div class="form-group">
               <div class="row">
                 <div class="col-md-4">
-                  ${msgs['grailsflow.label.variables']}
+                  <g:message code="plugin.grailsflow.label.variables"/>
                 </div>
                 <div class="col-md-7">
                   <g:select name="variable" id="variable" noSelection="${['':'']}" from='${variables}' class="form-control" ></g:select>
                 </div>
                 <div class="col-md-1">
-                  <a href="#" title="${msgs['grailsflow.command.pasteVariable']}" onClick="pasteVariable()">
+                  <a href="#" title="${g.message(code: 'plugin.grailsflow.command.pasteVariable')}" onClick="pasteVariable()">
                     <span class="glyphicon glyphicon-plus text-success"></span>
                   </a>
                 </div>
@@ -115,7 +113,7 @@
             <div class="form-group">
               <div class="row">
                 <div class="col-md-4">
-                  ${msgs['grailsflow.label.actions']}
+                  <g:message code="plugin.grailsflow.label.actions"/>
                 </div>
                 <div class="col-md-7">
                   <gf:select name="action" id="action" noSelection="${['':'']}" from='${actions}'
@@ -123,7 +121,7 @@
                   </gf:select>
                 </div>
                 <div class="col-md-1">
-                  <a href="#" title="${msgs['grailsflow.command.pasteAction']}" onClick="openActionParametersEditor()">
+                  <a href="#" title="${g.message(code: 'plugin.grailsflow.command.pasteAction')}" onClick="openActionParametersEditor()">
                     <span class="glyphicon glyphicon-plus text-success"></span>
                   </a>
                 </div>
@@ -133,8 +131,8 @@
               <div class="row">
                   <g:textArea id="actionsCode" name="actionsCode" value="${actionsCode}" rows="20" cols="80" class="form-control" />
                   <div class="form-submit text-right">
-                      <g:actionSubmit action="showProcessNodeEditor" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
-                      <g:actionSubmit action="saveActions" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
+                      <g:actionSubmit action="showProcessNodeEditor" value="${g.message(code: 'plugin.grailsflow.command.back')}" class="btn btn-link"/>
+                      <g:actionSubmit action="saveActions" value="${g.message(code: 'plugin.grailsflow.command.apply')}" class="btn btn-primary"/>
                   </div>
               </div>
             </div>

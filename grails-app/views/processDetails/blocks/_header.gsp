@@ -21,6 +21,4 @@
 
 --%>
 
-<gf:messageBundle bundle="grailsflow.processDetails" var="msgs"/>
-
-<b class="header">${msgs['grailsflow.title.processDetails']}</b>
+<b class="header">${g.message(code: 'plugin.grailsflow.title.processDetails')}</b>

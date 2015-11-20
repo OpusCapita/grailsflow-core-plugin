@@ -17,16 +17,14 @@
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
          <meta name="layout" content="grailsflow" />
          <g:render plugin="grailsflow" template="/commons/global"/>
-         <gf:messageBundle bundle="grailsflow.common" var="common"/>
-         <gf:messageBundle bundle="grailsflow.worklist" var="msgs"/>
-         <title>${msgs['grailsflow.label.previewForm']}</title>
+         <title><g:message code="plugin.grailsflow.label.previewForm"/></title>
     </head>
     <body>
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <div class="row">
         <fieldset>
-          <legend>${msgs['grailsflow.label.previewForm']}</legend>
+          <legend><g:message code="plugin.grailsflow.label.previewForm"/></legend>
           <br/>
           <gf:customizingTemplate template="/manualForms/automaticForm"
                       model="[nodeDetails: nodeDetails]"/>
@@ -34,7 +32,7 @@
             
         <br/><br/>
         <div class="form-submit text-right">
-          <input type="button" onclick="history.back();" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
+          <input type="button" onclick="history.back();" value="${g.message(code: 'plugin.grailsflow.command.back')}" class="btn btn-link"/>
         </div>
       </div>
     </body>

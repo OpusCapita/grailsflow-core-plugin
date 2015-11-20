@@ -108,8 +108,6 @@
     
   </r:script>
 
-  <gf:messageBundle bundle="grailsflow.common" var="common"/>
-
   <g:set var="langs" value="${supportedLanguages != null ? supportedLanguages : ['en', 'de']}"/>
   <g:set var="visible_langs" value="${langs - translations?.keySet()}"/>
   <g:set var="textarea" value="${textarea != null ? textarea : false}"/>
@@ -121,7 +119,7 @@
   <g:else>
     <input id="sample_${parameterName}_value" type="text" size="${size ? size : 40}" style="display: none" class="form-control" />
   </g:else>
-  <a id="sample_${parameterName}_link" href="#" style="display: none" title="${common['grailsflow.command.delete']}">
+  <a id="sample_${parameterName}_link" href="#" style="display: none" title="${g.message(code: 'plugin.grailsflow.command.delete')}">
     <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;
   </a>
   
@@ -137,7 +135,7 @@
 		</g:else>
 	  </td>
 	  <td valign="top">
-        <a href="#" onclick="addTranslation('${parameterName}')" title="${common['grailsflow.command.add']}">
+        <a href="#" onclick="addTranslation('${parameterName}')" title="${g.message(code: 'plugin.grailsflow.command.add')}">
           <span class="glyphicon glyphicon-plus text-success"></span>&nbsp;
         </a>
       </td>
@@ -154,7 +152,7 @@
 		  </g:else>
 	    </td>
 	    <td valign="top">
-          <a href="#" onclick="removeTranslation('${parameterName}', '${lang}')" title="${common['grailsflow.command.delete']}">
+          <a href="#" onclick="removeTranslation('${parameterName}', '${lang}')" title="${g.message(code: 'plugin.grailsflow.command.delete')}">
             <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;
           </a>
         </td>

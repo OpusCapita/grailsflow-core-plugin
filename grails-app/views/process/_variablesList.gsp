@@ -21,8 +21,8 @@
     * variables               List of variables objects
 
  -->
-<gf:messageBundle bundle="grailsflow.processVariableEditor" var="msgs"/>
-<h3>${msgs['grailsflow.label.processVars']}</h3>
+
+<h3><g:message code="plugin.grailsflow.label.processVars"/></h3>
 
 <div class="row">
   <div class="col-md-6">

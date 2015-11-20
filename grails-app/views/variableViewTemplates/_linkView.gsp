@@ -32,12 +32,11 @@
     <g:set var="parameterName" value="${readOnly ? '' : parameterName}"/>
     <g:set var="styleClass" value="${readOnly ? 'readonly' : view?.styleClass}"/>
     
-    <gf:messageBundle bundle="grailsflow.link" var="linkMsgs"/>
-    
+
     <g:if test="${!readOnly}">
-      ${linkMsgs['grailsflow.label.linkUrl']} &nbsp;
+        <g:message code="plugin.grailsflow.label.linkUrl"/> &nbsp;
  	    <input name="${parameterName}.path" value="${(variable.value?.path ? variable.value?.path : '')?.encodeAsHTML()}" class="${styleClass}" maxlength="1500"/>&nbsp;
-	    ${linkMsgs['grailsflow.label.linkDescription']} &nbsp;
+        <g:message code="plugin.grailsflow.label.linkDescription"/> &nbsp;
 	    <input name="${parameterName}.description" value="${(variable.value?.description ? variable.value?.description : '')?.encodeAsHTML()}" class="${styleClass}" maxlength="255"/>
     </g:if>
     <g:if test="${variable.value}">

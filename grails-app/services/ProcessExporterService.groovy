@@ -12,9 +12,8 @@
  * limitations under the License.
  */
 
-import org.apache.commons.logging.Log
-import org.apache.commons.logging.LogFactory
 
+import org.codehaus.groovy.grails.plugins.web.taglib.ValidationTagLib
 import org.codehaus.groovy.grails.web.context.ServletContextHolder
 
 import com.jcatalog.grailsflow.utils.TranslationUtils
@@ -22,6 +21,7 @@ import com.jcatalog.grailsflow.utils.TranslationUtils
 import groovy.xml.MarkupBuilder
 
 import org.apache.commons.io.FileUtils
+import org.springframework.context.MessageSource
 
 /**
  * ProcessExporter service is class that that writes the process definition
@@ -45,23 +45,19 @@ import org.apache.commons.io.FileUtils
  * @author July Karpey
  */
 class ProcessExporterService {
-    private static final String TYPES_BUNDLE = "grailsflow.processTypes"
-    private static final String DETAILS_BUNDLE = "grailsflow.processDetails"
-    private static final String VARS_BUNDLE = "grailsflow.processVariableEditor"
     private static final String GRAPHIC_FILE = "graphic.png"
 
+    def messageSource
     public static final String CONTENT_TYPE_ARCHIVE = 'application/zip'
-
-    def grailsflowMessageBundleService
 
     public File exportAsHTML(def processDef, def user, def lang) {
         def writer = new StringWriter()
         def builder = new MarkupBuilder(writer)
+        Locale locale = new Locale(lang)
         int i = 0
         builder.html(){
           head(){
-            title(grailsflowMessageBundleService
-                  .getMessage(TYPES_BUNDLE, "grailsflow.label.processType") + ": ${TranslationUtils.getTranslatedValue(processDef.label, processDef.processID, lang)}")
+            title(messageSource.getMessage("plugin.grailsflow.label.processType", null, locale) + ": ${TranslationUtils.getTranslatedValue(processDef.label, processDef.processID, lang)}")
             meta("http-equiv":"Content-Type", "content":"text/html; charset=UTF-8")
             style("""
                    table.standard thead { color : #5B5B5B; font-weight : bold; }
@@ -101,8 +97,7 @@ class ProcessExporterService {
 
           body() {
             h2("class": "headline") {
-              font(grailsflowMessageBundleService
-                     .getMessage(DETAILS_BUNDLE, "grailsflow.label.processScript"))
+              font(messageSource.getMessage("plugin.grailsflow.label.processScript", null, locale))
             }
             p("align": "right") {
               font(new Date())
@@ -111,13 +106,11 @@ class ProcessExporterService {
             }
             table("class": "standard") {
               tr() {
-                td(grailsflowMessageBundleService
-                       .getMessage(TYPES_BUNDLE, "grailsflow.label.processID"))
+                td(messageSource.getMessage("plugin.grailsflow.label.processID", null, locale))
                 td(TranslationUtils.getTranslatedValue(processDef.label, processDef.processID, lang))
               }
               tr() {
-                td(grailsflowMessageBundleService
-                       .getMessage(TYPES_BUNDLE, "grailsflow.label.description"))
+                td(messageSource.getMessage("plugin.grailsflow.label.description", null, locale))
                 td(TranslationUtils.getTranslatedValue(processDef.description, '', lang))
               }
             } // </table>
@@ -125,19 +118,14 @@ class ProcessExporterService {
 
             // write process variables
             h2("class": "headline") {
-              font(grailsflowMessageBundleService
-                     .getMessage(VARS_BUNDLE, "grailsflow.label.processVars"))
+              font(messageSource.getMessage("plugin.grailsflow.label.processVars", null, locale))
             }
             table("class": "standard", "width": "100%") {
               thead() {
-                th(grailsflowMessageBundleService
-                       .getMessage(VARS_BUNDLE, "grailsflow.label.name"))
-                th(grailsflowMessageBundleService
-                       .getMessage(VARS_BUNDLE, "grailsflow.label.type"))
-                th(grailsflowMessageBundleService
-                       .getMessage(VARS_BUNDLE, "grailsflow.label.value"))
-                th(grailsflowMessageBundleService
-                       .getMessage(VARS_BUNDLE, "grailsflow.label.processIdentifier"))
+                th(messageSource.getMessage("plugin.grailsflow.label.name", null, locale))
+                th(messageSource.getMessage("plugin.grailsflow.label.type", null, locale))
+                th(messageSource.getMessage("plugin.grailsflow.label.value", null, locale))
+                th(messageSource.getMessage("plugin.grailsflow.label.processIdentifier", null, locale))
               }
               tbody() {
                 i = 0
@@ -156,19 +144,14 @@ class ProcessExporterService {
 
             // write process nodes
             h2("class": "headline") {
-              font(grailsflowMessageBundleService
-                     .getMessage(DETAILS_BUNDLE, "grailsflow.label.processNodes"))
+              font(messageSource.getMessage("plugin.grailsflow.label.processNodes", null, locale))
             }
             table("class": "standard", "width": "100%") {
               thead() {
-                th(grailsflowMessageBundleService
-                       .getMessage(DETAILS_BUNDLE, "grailsflow.label.nodeID"))
-                th(grailsflowMessageBundleService
-                       .getMessage(DETAILS_BUNDLE, "grailsflow.label.type"))
-                th(grailsflowMessageBundleService
-                       .getMessage(DETAILS_BUNDLE, "grailsflow.label.dueDate"))
-                th(grailsflowMessageBundleService
-                       .getMessage(DETAILS_BUNDLE, "grailsflow.label.transitions"))
+                th(messageSource.getMessage("plugin.grailsflow.label.nodeID", null, locale))
+                th(messageSource.getMessage("plugin.grailsflow.label.type", null, locale))
+                th(messageSource.getMessage("plugin.grailsflow.label.dueDate", null, locale))
+                th(messageSource.getMessage("plugin.grailsflow.label.transitions", null, locale))
               }
               tbody() {
                 i = 0
@@ -194,15 +177,12 @@ class ProcessExporterService {
 
             // write process nodes
             h2("class": "headline") {
-              font(grailsflowMessageBundleService
-                     .getMessage(DETAILS_BUNDLE, "grailsflow.label.actions"))
+              font(messageSource.getMessage("plugin.grailsflow.label.actions", null, locale))
             }
             table("class": "standard", "width": "100%") {
               thead() {
-                th(grailsflowMessageBundleService
-                       .getMessage(DETAILS_BUNDLE, "grailsflow.label.nodeID"))
-                th(grailsflowMessageBundleService
-                       .getMessage(DETAILS_BUNDLE, "grailsflow.label.actions"))
+                th(messageSource.getMessage("plugin.grailsflow.label.nodeID", null, locale))
+                th(messageSource.getMessage("plugin.grailsflow.label.actions", null, locale))
               }
               tbody() {
                 i = 0

@@ -17,8 +17,6 @@
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
          <meta name="layout" content="grailsflow" />
          <g:render plugin="grailsflow" template="/commons/global"/>
-         <gf:messageBundle bundle="grailsflow.common" var="common"/>
-         <gf:messageBundle bundle="grailsflow.processDetails" var="processDetails"/>
 
          <r:require modules="grailsflowJgplot"/>
 
@@ -50,7 +48,7 @@
                    line.push([protocolGroup, yCoordinates[protocolGroup]])
                  }
 
-                 series.push({color: get_random_color(), label: "${processDetails['grailsflow.label.processID']} = "+process})
+                 series.push({color: get_random_color(), label: "${g.message(code: 'plugin.grailsflow.label.processID')} = "+process})
                  lines.push(line)
                }
 
@@ -61,14 +59,14 @@
                  jQuery.jqplot("graphic", lines,
                            { title: '',
                              axes: {
-                                 yaxis: { label: "${processDetails['grailsflow.label.executionTime']}",
+                                 yaxis: { label: "${g.message(code:'plugin.grailsflow.label.executionTime')}",
                                           labelOptions: {
                                                enableFontSupport: true,
                                                fontFamily: 'Tahoma',
                                                fontSize: '13px',
                                                textColor: '#002276'
                                            },  autoscale:true, min: 0 },
-                                 xaxis: { label: "${processDetails['grailsflow.label.protocolGroups']}",
+                                 xaxis: { label: "${g.message(code:'plugin.grailsflow.label.protocolGroups')}",
                                           labelOptions: {
                                                enableFontSupport: true,
                                                fontFamily: 'Tahoma',
@@ -112,17 +110,17 @@
                 overflow-y: scroll;
             }
          </style>
-         <title>${processDetails['grailsflow.title.analyseResponseTime']}</title>
+         <title><g:message code="plugin.grailsflow.title.analyseResponseTime"/></title>
     </head>
     <body>
-      <h1>${processDetails['grailsflow.label.analyseResponseTime']}</h1>
+      <h1><g:message code="plugin.grailsflow.label.analyseResponseTime"/></h1>
 
       <g:form class="form-horizontal" controller="${params['controller']}" method="GET">
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label class="col-md-4 control-label" for="type">
-                ${processDetails['grailsflow.label.processType']}
+                <g:message code="plugin.grailsflow.label.processType"/>
               </label>
               <div class="col-md-8">
                   <g:select from="${processClasses}" name='type' id="type" class="form-control"
@@ -132,19 +130,19 @@
             </div>
             <div class="form-group">
               <label class="col-md-4 control-label">
-                ${processDetails['grailsflow.label.sortBy']}
+                <g:message code="plugin.grailsflow.label.sortBy"/>
               </label>
               <div class="col-md-8">
                 <g:select name='sortBy' value="${params.sortBy}" noSelection="['':'']" class="form-control"
                           from="${[ AnalyseController.SORT_BY_NODE, AnalyseController.SORT_BY_MIN_TIME,
                                     AnalyseController.SORT_BY_MAX_TIME, AnalyseController.SORT_BY_AVERAGE_TIME,
                                     AnalyseController.SORT_BY_INTERACTIVE_NODE, AnalyseController.SORT_BY_NONINTERACTIVE_NODE]}"
-                            optionValue="${{processDetails['grailsflow.label.'+it] ?: ''}}" />
+                            optionValue="${{ g.message(code: 'plugin.grailsflow.label.'+it) ?: ''}}" />
               </div>
             </div>
             <div class="form-group">
               <div class="form-submit text-right">
-                <g:actionSubmit action="searchNodesInfo" value="${common['grailsflow.command.search']}" class="btn btn-primary"/>
+                <g:actionSubmit action="searchNodesInfo" value="${g.message(code:'plugin.grailsflow.command.search')}" class="btn btn-primary"/>
               </div>
             </div>
           </div>
@@ -152,12 +150,12 @@
 
         <div class="row">
           <div class="col-md-12">
-            <h1>${processDetails['grailsflow.label.protocolingNodes']}</h1>
+            <h1><g:message code="plugin.grailsflow.label.protocolingNodes"/></h1>
             <g:if test="${processTypeProtocol}">
               <div class="jqplot-target" id="graphic" style="width:800px; height: 300px; position: relative;"></div>
             </g:if>
             <g:else>
-              <div class="bs-callout bs-callout-info">${processDetails['grailsflow.label.noProtocolGroups']}</div>
+              <div class="bs-callout bs-callout-info"><g:message code="plugin.grailsflow.label.noProtocolGroups"/></div>
             </g:else>
 
           </div>
@@ -165,16 +163,16 @@
 
         <div class="row">
           <div class="col-md-12">
-            <h1>${params.type?.encodeAsHTML()} &nbsp;${processDetails['grailsflow.label.processList']}</h1>
+            <h1>${params.type?.encodeAsHTML()} &nbsp;<g:message code="plugin.grailsflow.label.processList"/></h1>
             <g:if test="${processNodes}">
               <table class="table">
                 <thead>
-                  <tr><th>${processDetails['grailsflow.label.nodeID']}</th>
-                      <th>${processDetails['grailsflow.label.quantity']}</th>
-                      <th>${processDetails['grailsflow.label.minTime']}</th>
-                      <th>${processDetails['grailsflow.label.maxTime']}</th>
-                      <th>${processDetails['grailsflow.label.averageTime']}</th>
-                      <th>${processDetails['grailsflow.label.type']}</th>
+                  <tr><th><g:message code="plugin.grailsflow.label.nodeID"/></th>
+                      <th><g:message code="plugin.grailsflow.label.quantity"/></th>
+                      <th><g:message code="plugin.grailsflow.label.minTime"/></th>
+                      <th><g:message code="plugin.grailsflow.label.maxTime"/></th>
+                      <th><g:message code="plugin.grailsflow.label.averageTime"/></th>
+                      <th><g:message code="plugin.grailsflow.label.type"/></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -182,8 +180,8 @@
                     <tr>
                       <td><gf:translatedValue translations="${nodeInfo?.label}" default="${nodeInfo?.nodeID}"/></td>
                       <td>${nodeInfo?.quantity}</td>
-                      <td><gf:displayDouble value="${nodeInfo?.minTime/1000}"/>&nbsp;(${processDetails['grailsflow.label.processID']}=${nodeInfo?.processMinTime})</td>
-                      <td><gf:displayDouble value="${nodeInfo?.maxTime/1000}"/>&nbsp;(${processDetails['grailsflow.label.processID']}=${nodeInfo?.processMaxTime})</td>
+                      <td><gf:displayDouble value="${nodeInfo?.minTime/1000}"/>&nbsp;(<g:message code="plugin.grailsflow.label.processID"/>=${nodeInfo?.processMinTime})</td>
+                      <td><gf:displayDouble value="${nodeInfo?.maxTime/1000}"/>&nbsp;(<g:message code="plugin.grailsflow.label.processID"/>=${nodeInfo?.processMaxTime})</td>
                       <td><gf:displayDouble value="${nodeInfo?.averageTime/1000}"/></td>
                       <td>${nodeInfo?.type}</td>
                     </tr>
@@ -192,7 +190,7 @@
               </table>
             </g:if>
             <g:else>
-              <div class="bs-callout bs-callout-info">${common['grailsflow.message.noItems']}</div>
+              <div class="bs-callout bs-callout-info"><g:message code="plugin.grailsflow.message.noItems"/></div>
             </g:else>
           </div>
         </div>

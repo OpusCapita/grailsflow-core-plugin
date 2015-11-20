@@ -24,11 +24,9 @@
 
  -->
 
-<gf:messageBundle bundle="grailsflow.variableView" var="msgs"/>
-
-<h3>${msgs['grailsflow.label.simpleView']}</h3>
-<label for="simpleView_styleClass">${msgs['grailsflow.label.styleClass']}</label>
+<h3><g:message code="plugin.grailsflow.label.simpleView"/></h3>
+<label for="simpleView_styleClass"><g:message code="plugin.grailsflow.label.styleClass"/></label>
 <input type="text" id="simpleView_styleClass" name="simpleView_styleClass" class="form-control" value="${view?.styleClass?.encodeAsHTML()}"/>
 <br/>
-<label for="simpleView_size">${msgs['grailsflow.label.size']}</label>
+<label for="simpleView_size"><g:message code="plugin.grailsflow.label.size"/></label>
 <input type="text" id="simpleView_size" name="simpleView_size" class="form-control" value="${view?.size?.encodeAsHTML()}"/>

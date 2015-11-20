@@ -24,9 +24,7 @@ import com.jcatalog.grailsflow.utils.NameUtils
  * @author July Karpey
  */
 class ProcessTransitionDefController extends GrailsFlowSecureController {
-    private static final String RESOURCE_BUNDLE = "grailsflow.processTypes"
-    def grailsflowMessageBundleService
-    
+
     def index = {
         redirect(controller: "processDef")
     }
@@ -62,22 +60,19 @@ class ProcessTransitionDefController extends GrailsFlowSecureController {
             }
         }
         if (!event || fromNode == null || finishNodes.isEmpty()) {
-            flash.errors = [grailsflowMessageBundleService
-                                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.transition.required")]
+            flash.errors = [g.message(code: "plugin.grailsflow.message.transition.required")]
             render(view: 'transitionForm', model: [transition: new ProcessTransitionDef(fromNode: fromNode, event: event)] )
         } else {
 
             // Validate parameters
             if (!NameUtils.isValidIdentifier(event)) {
-                flash.errors = [grailsflowMessageBundleService
-                                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.event.invalid")]
+                flash.errors = [g.message(code: "plugin.grailsflow.message.event.invalid")]
                 return render(view: 'transitionForm', model: [transition: new ProcessTransitionDef(fromNode: fromNode, event: event)] )
             }
 
             def duplication = ProcessTransitionDef.findWhere(fromNode: fromNode, event: event)
             if (duplication != null && duplication.id.toString() != params.id) {
-                flash.errors = [grailsflowMessageBundleService
-                                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.transition.invalid")]
+                flash.errors = [g.message(code: "plugin.grailsflow.message.transition.invalid")]
                 render(view: 'transitionForm', model: [transition: new ProcessTransitionDef(fromNode: fromNode, event: event)])
             } else {
               def transition

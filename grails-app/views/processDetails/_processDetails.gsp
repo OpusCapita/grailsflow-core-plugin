@@ -17,8 +17,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="grailsflow" />
     <g:render plugin="grailsflow" template="/commons/global"/>
-    <gf:messageBundle bundle="grailsflow.processDetails" var="msgs"/>
-    <title>${msgs['grailsflow.title.processDetails']}</title>
+    <title><g:message code="plugin.grailsflow.title.processDetails"/></title>
   </head>
   <body>
       <g:form controller="${params['controller']}" method="post">

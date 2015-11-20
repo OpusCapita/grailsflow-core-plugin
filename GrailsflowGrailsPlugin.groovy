@@ -1,8 +1,4 @@
 
-import grails.util.BuildSettingsHolder
-import com.jcatalog.grailsflow.messagebundle.i18n.SpringI18nMessageBundleProvider
-import com.jcatalog.grailsflow.messagebundle.DefaultMessageBundleProvider
-
 import com.jcatalog.grailsflow.model.process.FlowStatus
 
 import com.jcatalog.grailsflow.grails.ListFactoryBean
@@ -10,15 +6,13 @@ import com.jcatalog.grailsflow.grails.ListFactoryBean
 import com.jcatalog.grailsflow.search.DefaultSearchParameter
 import com.jcatalog.grailsflow.search.DateSearchParameter
 import com.jcatalog.grailsflow.search.DefaultDisplayParameter
-import org.codehaus.groovy.grails.plugins.GrailsPluginUtils
-import grails.util.Holders
 
 import com.jcatalog.grailsflow.status.NodeStatusEnum
 import com.jcatalog.grailsflow.status.ProcessStatusEnum
 import com.jcatalog.grailsflow.scheduling.triggers.ConfigurableSimpleTrigger
 
 class GrailsflowGrailsPlugin {
-    def version = '1.7.3'
+    def version = '1.7.4-SNAPSHOT'
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.3 > *"
     def dependsOn = [quartz: "1.0.1 > *"]
@@ -42,37 +36,12 @@ class GrailsflowGrailsPlugin {
     def scm = [ url: "https://github.com/jCatalog/grailsflow-core-plugin" ]
 
     def doWithSpring = {
-      def grailsFlowCoreConfig = application.config.grailsFlowCoreConfig
-
       ConfigurableSimpleTrigger.metaClass.'static'.getGrailsApplication = { -> application }
-
-      def buildSettings = BuildSettingsHolder.settings
-      String fileSystemName = Holders.pluginManager.getGrailsPlugin("grailsflow").getFileSystemName()
-      String i18nDir = "WEB-INF/plugins/${fileSystemName}/grails-app/i18n/"
-
-      def bundles = []
-      def extraBundles = application.config.grailsflow.i18n.locations
-      if (extraBundles) bundles.addAll(extraBundles)
-
-      if (!application.warDeployed){
-        def pluginDir = GrailsPluginUtils.getPluginDirForName("grailsflow")
-        if (pluginDir != null) {
-          i18nDir = "${pluginDir.URL.toExternalForm()}/grails-app/i18n/"
-        }
-      }
-      bundles << i18nDir
 
       def clusterName = (application.config.grailsflow.clusterName instanceof Closure) ?
           application.config.grailsflow.clusterName() : application.config.grailsflow.clusterName
       if (!clusterName) {
           application.config.grailsflow.clusterName = "gfw_${new Date().time}_${new Random().nextInt(1000000)}"
-      }
-
-      grailsflowMessageBundleProvider(DefaultMessageBundleProvider) {
-        i18nMessageBundleProvider = {SpringI18nMessageBundleProvider provider ->
-            bundlesLocations = bundles*.toString()
-            cacheSeconds = application.warDeployed ? '-1' : '0'
-        }
       }
 
       // format patterns

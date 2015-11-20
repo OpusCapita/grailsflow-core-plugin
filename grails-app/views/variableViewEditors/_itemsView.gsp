@@ -24,9 +24,7 @@
 
  -->
 
-<gf:messageBundle bundle="grailsflow.variableView" var="msgs"/>
-
-<h3>${msgs['grailsflow.label.itemsView']}</h3>
-<label for="itemsView_styleClass">${msgs['grailsflow.label.styleClass']}</label>
+<h3><g:message code="plugin.grailsflow.label.itemsView"/></h3>
+<label for="itemsView_styleClass"><g:message code="plugin.grailsflow.label.styleClass"/></label>
 <input type="text" id="itemsView_styleClass" name="itemsView_styleClass" class="form-control" value="${view?.styleClass?.encodeAsHTML()}"/>
 <br/>

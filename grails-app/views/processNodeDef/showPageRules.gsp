@@ -17,8 +17,7 @@
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
          <g:render plugin="grailsflow" template="/commons/global"/>
-         <gf:messageBundle bundle="grailsflow.processDetails" var="msgs"/>
-         <title>${msgs['grailsflow.title.showRules']}</title>
+         <title><g:message code="plugin.grailsflow.title.showRules"/></title>
          <r:layoutResources/>
     </head>
     <body>
@@ -26,7 +25,7 @@
         <div class="row" style="margin-top: 10px;">
           <div class="col-md-12">
             <div class="panel panel-default">
-              <div class="panel-heading"><h1>${msgs['grailsflow.title.showRules']}</h1></div>
+              <div class="panel-heading"><h1><g:message code="plugin.grailsflow.title.showRules"/></h1></div>
               <div class="panel-body">
 
                 <h1>Available Model Beans</h1>

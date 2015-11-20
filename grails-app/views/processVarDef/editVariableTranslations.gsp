@@ -17,31 +17,29 @@
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
          <meta name="layout" content="grailsflow" />
          <g:render plugin="grailsflow" template="/commons/global"/>
-         <gf:messageBundle bundle="grailsflow.common" var="common"/>
-         <gf:messageBundle bundle="grailsflow.processVariableEditor" var="msgs"/>
-         <title>${msgs['grailsflow.title.variableTranslations']}</title>
+         <title><g:message code="plugin.grailsflow.title.variableTranslations"/></title>
     </head>
     <body>
-      <h1>${msgs['grailsflow.title.variableTranslations']}</h1>
+      <h1><g:message code="plugin.grailsflow.title.variableTranslations"/></h1>
 
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <div class="row">
         <div class="col-md-6">
-          <h4>${msgs['grailsflow.label.name']}: ${variable?.name?.encodeAsHTML()}</h4>
+          <h4><g:message code="plugin.grailsflow.label.name"/>: ${variable?.name?.encodeAsHTML()}</h4>
 
           <g:form controller="${params['controller']}">
             <input type="hidden" name="id" value="${variable?.id?.encodeAsHTML()}"/>
 
-            <h4>${msgs['grailsflow.label.label']}</h4>
+            <h4><g:message code="plugin.grailsflow.label.label"/></h4>
             <g:render plugin="grailsflow" template="/common/translationsEditor"
 	            model="[ 'translations': variable?.label, 'parameterName': 'label']"/>
-            <h4>${msgs['grailsflow.label.description']}</h4>
+            <h4><g:message code="plugin.grailsflow.label.description"/></h4>
             <g:render plugin="grailsflow" template="/common/translationsEditor"
 	            model="[ 'translations': variable?.description, 'parameterName': 'description', 'textarea': true]"/>
 
             <div class="form-submit text-right">
-              <g:actionSubmit action="saveVariableTranslations" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
+              <g:actionSubmit action="saveVariableTranslations" value="${g.message(code: 'plugin.grailsflow.command.apply')}" class="btn btn-primary"/>
             </div>
           </g:form>
         </div>

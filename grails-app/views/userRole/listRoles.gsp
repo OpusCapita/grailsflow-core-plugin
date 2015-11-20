@@ -16,9 +16,7 @@
     <head>
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
          <g:render plugin="grailsflow" template="/commons/global"/>
-         <gf:messageBundle bundle="grailsflow.common" var="common"/>
-         <gf:messageBundle bundle="grailsflow.userRoles" var="msgs"/>
-         <title>${msgs['grailsflow.title.roles']}</title>
+         <title><g:message code="plugin.grailsflow.title.roles"/></title>
          <r:require modules="jquery" />
          <r:script>
            function addRole(role) {
@@ -36,14 +34,14 @@
     <body>
     <div class="container">
 
-	  <h1>${msgs['grailsflow.label.roles']}</h1>
+	  <h1><g:message code="plugin.grailsflow.label.roles"/></h1>
 
       <div class="row">
         <div class="col-md-6">
 	      <g:form controller="userRoles" method="POST">
 	        <table id="rolesTable" class="standard" width="100%">
 	          <tr>
-	            <th>${msgs['grailsflow.label.role']}</th>
+	            <th><g:message code="plugin.grailsflow.label.role"/></th>
 	          </tr>
 	          <g:each var="role" in="${roles}">
 	            <tr>
@@ -52,7 +50,7 @@
 	          </g:each>
 	        </table>
 	      </g:form>
-	      <input type="button" class="btn btn-primary" value="${common['grailsflow.command.close']}" onclick="window.close();"/>
+	      <input type="button" class="btn btn-primary" value="${g.message(code: 'plugin.grailsflow.command.close')}" onclick="window.close();"/>
 	    </div>
       </div>
     </div>

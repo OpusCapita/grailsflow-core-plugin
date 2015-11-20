@@ -17,10 +17,8 @@
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
          <meta name="layout" content="grailsflow" />
          <g:render plugin="grailsflow" template="/commons/global"/>
-         <gf:messageBundle bundle="grailsflow.common" var="common"/>
-         <gf:messageBundle bundle="grailsflow.processDetails" var="msgs"/>
-         <gf:messageBundle bundle="grailsflow.processVariableEditor" var="varMsgs"/>
-         <title>${msgs['grailsflow.title.processDetails']}</title>
+
+         <title><g:message code="plugin.grailsflow.title.processDetails"/></title>
 
          <r:script>
            function openGraphic(id) {
@@ -29,7 +27,7 @@
          </r:script>
     </head>
     <body>
-      <h1>${msgs['grailsflow.title.processDetails']}</h1>
+      <h1><g:message code="plugin.grailsflow.title.processDetails"/></h1>
 
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
@@ -40,7 +38,7 @@
             <div class="form-group">
               <div class="row">
                 <div class="col-md-5">
-                  ${msgs['grailsflow.label.id']}
+                  <g:message code="plugin.grailsflow.label.id"/>
                 </div>
                 <div class="col-md-7">
                    ${processDetails?.id}
@@ -50,7 +48,7 @@
             <div class="form-group">
               <div class="row">
                 <div class="col-md-5">
-                  ${msgs['grailsflow.label.type']}
+                  <g:message code="plugin.grailsflow.label.type"/>
                 </div>
                 <div class="col-md-7">
                   <gf:translatedValue translations="${processDetails?.label}" default="${processDetails?.type}"/>
@@ -60,17 +58,17 @@
             <div class="form-group">
               <div class="row">
                 <div class="col-md-5">
-                  ${msgs['grailsflow.label.status']}
+                  <g:message code="plugin.grailsflow.label.status"/>
                 </div>
                 <div class="col-md-7">
-                  ${processDetails?.status?.statusID ? common['grailsflow.label.status.'+processDetails?.status?.statusID] : '-'}
+                  ${processDetails?.status?.statusID ? g.message(code: 'plugin.grailsflow.label.status.'+processDetails?.status?.statusID) : '-'}
                 </div>
               </div>
             </div>
             <div class="form-group">
               <div class="row">
                 <div class="col-md-5">
-                  ${msgs['grailsflow.label.createdBy']}
+                  <g:message code="plugin.grailsflow.label.createdBy"/>
                 </div>
                 <div class="col-md-7">
                   ${processDetails?.createdBy}
@@ -80,7 +78,7 @@
             <div class="form-group">
               <div class="row">
                 <div class="col-md-5">
-                  ${msgs['grailsflow.label.createdOn']}
+                  <g:message code="plugin.grailsflow.label.createdOn"/>
                 </div>
                 <div class="col-md-7">
                   <gf:displayDateTime value="${processDetails?.createdOn}"/>
@@ -105,15 +103,15 @@
 
       <div class="row">
         <div class="form-submit text-right">
-          <g:actionSubmit action="list" value="${common['grailsflow.command.back']}" class="btn btn-link" />
+          <g:actionSubmit action="list" value="${g.message(code: 'plugin.grailsflow.command.back')}" class="btn btn-link" />
           <r:script>
                    function reloadPage() {
                        window.location = "${g.createLink(controller: params['controller'], action: params['action'], params: params)}";
                    }
           </r:script>
           <input type="button" onclick="reloadPage();"
-            value="${common['grailsflow.command.refresh']}" class="btn btn-default" />
-          <input type="button" class="btn btn-primary" value="${msgs['grailsflow.command.showGraphicEditor']}" onclick="openGraphic('${processDetails.id}'); return false;"/>
+            value="${g.message(code: 'plugin.grailsflow.command.refresh')}" class="btn btn-default" />
+          <input type="button" class="btn btn-primary" value="${g.message(code: 'plugin.grailsflow.command.showGraphicEditor')}" onclick="openGraphic('${processDetails.id}'); return false;"/>
         </div>
       </div>
       </g:form>

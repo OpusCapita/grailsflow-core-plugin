@@ -24,11 +24,9 @@
 
  -->
 
-<gf:messageBundle bundle="grailsflow.variableView" var="msgs"/>
-
-<h3>${msgs['grailsflow.label.listObjectsView']}</h3>
-<label for="listObjectsView_displayKey">${msgs['grailsflow.label.displayKey']}</label>
+<h3><g:message code="plugin.grailsflow.label.listObjectsView"/></h3>
+<label for="listObjectsView_displayKey"><g:message code="plugin.grailsflow.label.displayKey"/></label>
 <input type="text" id="listObjectsView_displayKey" name="listObjectsView_displayKey" value="${view?.displayKey?.encodeAsHTML()}"/>
 <br/>
-<label for="listObjectsView_restriction">${msgs['grailsflow.label.restriction']}</label>
+<label for="listObjectsView_restriction"><g:message code="plugin.grailsflow.label.restriction"/></label>
 <input type="text" id="listObjectsView_restriction" name="listObjectsView_restriction" value="${view?.restriction?.encodeAsHTML()}"/>

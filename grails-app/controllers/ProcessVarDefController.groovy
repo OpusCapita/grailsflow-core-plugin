@@ -37,10 +37,6 @@ import com.jcatalog.grailsflow.model.view.VariableView
 * @author July Karpey
 */
 class ProcessVarDefController extends GrailsFlowSecureController {
-    private static final String RESOURCE_BUNDLE = "grailsflow.processTypes"
-
-    def grailsflowMessageBundleService
-    
     def index = {
         redirect(controller: "processDef")
     }
@@ -91,24 +87,21 @@ class ProcessVarDefController extends GrailsFlowSecureController {
         }
 
         if (!params.varName) {
-            flash.errors << grailsflowMessageBundleService
-                                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.variableName.required")
+            flash.errors << g.message(code: "plugin.grailsflow.message.variableName.required")
             return render(view: 'variableForm', model: [variable: var, process: process])
         } else {
             var.name = StringUtils.trimAllWhitespace(params.varName)
 
             // Validate Variable Name
             if (!NameUtils.isValidIdentifier(var.name)) {
-                flash.errors << grailsflowMessageBundleService
-                                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.variableName.invalid")
+                flash.errors << g.message(code: "plugin.grailsflow.message.variableName.invalid")
                 return render(view: 'variableForm', model: [variable: var, process: process], params: params)
             }
 
             def duplicateVar = ProcessVariableDef.findWhere(processDef: process, name: var.name)
             if (duplicateVar && (var.id == null || var.id != duplicateVar.id) ) {
                 if (var.id) var.discard()
-                flash.errors << grailsflowMessageBundleService
-                                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.variableName.duplicated")
+                flash.errors << g.message(code: "plugin.grailsflow.message.variableName.duplicated")
                 return render(view: 'variableForm', model: [variable: var, process: process], params: params)
             }
 
@@ -118,15 +111,13 @@ class ProcessVarDefController extends GrailsFlowSecureController {
                 try{
                     loadedClass = getClass().getClassLoader().loadClass(params.varObjectType, false)
                 } catch (ClassNotFoundException ex) {
-                    flash.errors << grailsflowMessageBundleService
-                                        .getMessage(RESOURCE_BUNDLE, "grailsflow.message.specifiedClass.invalid")
+                    flash.errors << g.message(code: "plugin.grailsflow.message.specifiedClass.invalid")
                     return render(view: 'variableForm', model: [variable: var, process: process])
                 }
 
                 def artefact = grailsApplication.getArtefact("Domain", loadedClass.getName())
                 if (!artefact || !(artefact instanceof GrailsDomainClass)) {
-                    flash.errors << grailsflowMessageBundleService
-                                        .getMessage(RESOURCE_BUNDLE, "grailsflow.message.specifiedClass.notDomain")
+                    flash.errors << g.message(code: "plugin.grailsflow.message.specifiedClass.notDomain")
                     return render(view: 'variableForm', model: [variable: var, process: process])
                 }
 
@@ -140,8 +131,7 @@ class ProcessVarDefController extends GrailsFlowSecureController {
                 if(date){
                     var.defaultValue = date.time
                 } else if (params.varValue) {
-                    flash.errors << grailsflowMessageBundleService
-                        .getMessage(RESOURCE_BUNDLE, "grailsflow.message.specifiedValue.notSuitable")
+                    flash.errors << g.message(code: "plugin.grailsflow.message.specifiedValue.notSuitable")
                     return render(view: 'variableForm', model: [variable: var, process: process])
                 } else { var.defaultValue = null }
             } else if (params.varType.equals("Boolean")) {
@@ -179,8 +169,7 @@ class ProcessVarDefController extends GrailsFlowSecureController {
                     items*.delete()
                     var.items = preparedItems
                 } catch (Exception e) {
-                    flash.errors << grailsflowMessageBundleService
-                        .getMessage(RESOURCE_BUNDLE, "grailsflow.message.specifiedValue.items.notSuitable")
+                    flash.errors << g.message(code: "plugin.grailsflow.message.specifiedValue.items.notSuitable")
                     return render(view: 'variableForm', model: [variable: var, process: process], params: params)
                 }
             } else {
@@ -189,8 +178,7 @@ class ProcessVarDefController extends GrailsFlowSecureController {
 
             // we should check if the value is suitable
             if (!var.isSuitableValue()) {
-                flash.errors << grailsflowMessageBundleService
-                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.specifiedValue.notSuitable")
+                flash.errors << g.message(code: "plugin.grailsflow.message.specifiedValue.notSuitable")
                 return render(view: 'variableForm', model: [variable: var, process: process])
             }
 
@@ -202,8 +190,7 @@ class ProcessVarDefController extends GrailsFlowSecureController {
                 view.variable = var
 
                 if (!view.validate()) {
-                    flash.error  = grailsflowMessageBundleService
-                        .getMessage(RESOURCE_BUNDLE, "grailsflow.message.view.error")
+                    flash.error  = g.message(code: "plugin.grailsflow.message.view.error")
                     view.errors.allErrors.each {
                         flash.errors << it.defaultMessage
                     }
@@ -238,8 +225,7 @@ class ProcessVarDefController extends GrailsFlowSecureController {
             def varName = var.name
             var.removeFromAssociations()
             var.delete(flush: true)
-            flash.message = grailsflowMessageBundleService.getMessage(RESOURCE_BUNDLE,
-                    "grailsflow.message.variable.deleted", [varName])
+            flash.message = g.message(code: "plugin.grailsflow.message.variable.deleted", args: [varName])
         }
 
         redirect(controller: "processDef", action: "editProcess", params: [id: processDefID] )

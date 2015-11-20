@@ -17,20 +17,19 @@
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
    <meta name="layout" content="grailsflow"/>
    <g:render plugin="grailsflow" template="/commons/global"/>
-   <gf:messageBundle bundle="grailsflow.document" var="document_bundle"/>
-   <title>${document_bundle['grailsflow.title.directoryContent']}</title>
+   <title><g:message code="plugin.grailsflow.title.directoryContent"/></title>
   </head>
 
   <body>
-    <h1>${document_bundle['grailsflow.title.directoryContent']}</h1>
+    <h1><g:message code="plugin.grailsflow.title.directoryContent"/></h1>
 
     <div class="row">
       <div class="col-md-6">
         <table class="table">
           <thead>
             <tr>
-              <th width="80%">${document_bundle['grailsflow.label.name']}</th>
-              <th width="20%">${document_bundle['grailsflow.label.size']}</th>
+              <th width="80%"><g:message code="plugin.grailsflow.label.name"/></th>
+              <th width="20%"><g:message code="plugin.grailsflow.label.size"/></th>
             </tr>
           </thead>
           <tbody>
@@ -59,7 +58,7 @@
                 </td>
                 <td>
                   <g:if test="${file.isFile()}">
-                    ${file.length()} ${document_bundle['grailsflow.label.bytes']}
+                    ${file.length()} <g:message code="plugin.grailsflow.label.bytes"/>
                   </g:if>
                 </td>
               </tr>

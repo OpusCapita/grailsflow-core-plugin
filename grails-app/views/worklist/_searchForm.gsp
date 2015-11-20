@@ -18,9 +18,6 @@
 
 -->
 
-<gf:messageBundle bundle="grailsflow.common" var="common"/>
-<gf:messageBundle bundle="grailsflow.worklist" var="worklist"/>
-
 <gf:advancedSearchResources />
 <r:require modules="grailsflowDatepicker"/>
 

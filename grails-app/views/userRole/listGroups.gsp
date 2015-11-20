@@ -16,9 +16,7 @@
     <head>
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
          <g:render plugin="grailsflow" template="/commons/global"/>
-         <gf:messageBundle bundle="grailsflow.common" var="common"/>
-         <gf:messageBundle bundle="grailsflow.userRoles" var="msgs"/>
-         <title>${msgs['grailsflow.title.groups']}</title>
+         <title><g:message code="plugin.grailsflow.title.groups"/></title>
          <r:require modules="jquery" />
          <r:script>
            function addGroup(group) {
@@ -36,14 +34,14 @@
     <body>
     <div class="container">
 
-	  <h1>${msgs['grailsflow.label.groups']}</h1>
+	  <h1><g:message code="plugin.grailsflow.label.groups"/></h1>
 
       <div class="row">
         <div class="col-md-6">
 	      <g:form controller="userGroups" method="POST">
 	        <table id="groupsTable" class="standard" width="100%">
 	          <tr>
-	            <th>${msgs['grailsflow.label.group']}</th>
+	            <th><g:message code="plugin.grailsflow.label.group"/></th>
 	          </tr>
 	          <g:each var="group" in="${groups}">
 	            <tr>
@@ -52,7 +50,7 @@
 	          </g:each>
 	        </table>
 	      </g:form>
-	      <input type="button" class="btn btn-primary" value="${common['grailsflow.command.close']}" onclick="window.close();"/>
+	      <input type="button" class="btn btn-primary" value="${g.message(code: 'plugin.grailsflow.command.close')}" onclick="window.close();"/>
         </div>
 	  </div>
     </div>

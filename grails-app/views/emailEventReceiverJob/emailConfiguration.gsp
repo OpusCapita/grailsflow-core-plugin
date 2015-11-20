@@ -17,20 +17,18 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="layout" content="grailsflow"/>
   <g:render plugin="grailsflowCore" template="/commons/global"/>
-  <gf:messageBundle bundle="grailsflow.common" var="common"/>
-  <gf:messageBundle bundle="grailsflow.emailReceiver" var="emailReceiver"/>
-  <title>${emailReceiver['grailsflow.title.emailReciever']}</title>
+  <title><g:message code="plugin.grailsflow.title.emailReciever"/></title>
 </head>
 
 <body>
-<h1>${emailReceiver['grailsflow.title.emailReciever']}</h1>
+<h1><g:message code="plugin.grailsflow.title.emailReciever"/></h1>
 <g:render plugin="grailsflowCore" template="/commons/messageInfo"/>
 
 <g:form class="form-horizontal" controller="${params['controller']}" method="GET">
   <div class="row">
     <div class="col-md-6">
       <div class="form-group">
-        <label class="col-sm-5 control-label" for="enabled">${emailReceiver['grailsflow.label.enabled']}</label>
+        <label class="col-sm-5 control-label" for="enabled"><g:message code="plugin.grailsflow.label.enabled"/></label>
 
         <div class="col-sm-7">
           <div class="checkbox">
@@ -40,7 +38,7 @@
       </div>
 
       <div class="form-group">
-        <label class="col-sm-5 control-label" for="mailAddress">${emailReceiver['grailsflow.label.mailAddress']}</label>
+        <label class="col-sm-5 control-label" for="mailAddress"><g:message code="plugin.grailsflow.label.mailAddress"/></label>
 
         <div class="col-sm-7">
           <input class="form-control" id="mailAddress" name='mailAddress' value="${mailAddress}"/>
@@ -48,7 +46,7 @@
       </div>
 
       <div class="form-group">
-        <label class="col-sm-5 control-label" for="mailHost">${emailReceiver['grailsflow.label.mailHost']}</label>
+        <label class="col-sm-5 control-label" for="mailHost"><g:message code="plugin.grailsflow.label.mailHost"/></label>
 
         <div class="col-sm-7">
           <input class="form-control" id="mailHost" name='mailHost' value="${mailHost}"/>
@@ -56,7 +54,7 @@
       </div>
 
       <div class="form-group">
-        <label class="col-sm-5 control-label" for="mailAccount">${emailReceiver['grailsflow.label.mailAccount']}</label>
+        <label class="col-sm-5 control-label" for="mailAccount"><g:message code="plugin.grailsflow.label.mailAccount"/></label>
 
         <div class="col-sm-7">
           <input class="form-control" id="mailAccount" name='mailAccount' value="${mailAccount}"/>
@@ -64,7 +62,7 @@
       </div>
 
       <div class="form-group">
-        <label class="col-sm-5 control-label" for="password">${emailReceiver['grailsflow.label.mailPassword']}</label>
+        <label class="col-sm-5 control-label" for="password"><g:message code="plugin.grailsflow.label.mailPassword"/></label>
 
         <div class="col-sm-7">
           <input class="form-control" id="password" type="password" name='mailPassword' value="${mailPassword}"/>
@@ -74,7 +72,7 @@
   </div>
 
   <div class="form-submit text-right">
-    <g:actionSubmit action="save" value="${common['grailsflow.command.save']}" class="btn btn-primary"/>
+    <g:actionSubmit action="save" value="${g.message(code: 'plugin.grailsflow.command.save')}" class="btn btn-primary"/>
   </div>
 </g:form>
 </body>

@@ -30,9 +30,6 @@ import java.text.ParseException
  * @author July Karpey
  */
 class SchedulerDetailsController extends GrailsFlowSecureController {
-    private static final String RESOURCE_BUNDLE = "grailsflow.schedulerDetails"
-
-    def grailsflowMessageBundleService
     def processManagerService
     def workareaPathProvider
     def documentsPath
@@ -47,8 +44,7 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
     def showSchedulerDetails = {
         def schedulerDetails = getSchedulerDetails()
         if (!schedulerDetails) {
-            flash.error = grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.error.schedulerDetails")
+            flash.error = g.message(code: "plugin.grailsflow.messages.error.schedulerDetails")
         }
 
         [schedulerDetails: schedulerDetails]
@@ -56,36 +52,31 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
 
     def pauseScheduler = {
         if (!schedulerOperationsService.pauseResumeScheduler()) {
-            flash.error = grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.error.pauseResume")
+            flash.error = g.message(code: "plugin.grailsflow.messages.error.pauseResume")
         }
         redirect(action: "showSchedulerDetails")
     }
 
     def pause = {
         if (!params.name || !params.group) {
-            flash.error = grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.error.pauseResume")
+            flash.error = g.message(code: "plugin.grailsflow.messages.error.pauseResume")
             return forward(action: "showSchedulerDetails", params: params)
         }
         if (params.isRunning == "true") {
-            flash.message = grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.job.running", [params.name, params.group])
+            flash.message = g.message(code: "plugin.grailsflow.messages.job.running", args: [params.name, params.group])
             return redirect(action: "showSchedulerDetails")
         }
 
         def shouldBePaused = params.isPaused == "false"
         if (!schedulerOperationsService.pauseResumeJob(params.name, params.group, shouldBePaused)) {
-            flash.error = grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.error.pauseResume")
+            flash.error = g.message(code: "plugin.grailsflow.messages.error.pauseResume")
         }
         redirect(action: "showSchedulerDetails")
     }
 
     def edit = {
         if (!params.name || !params.group) {
-            flash.error = grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.error.pauseResume")
+            flash.error = g.message(code: "plugin.grailsflow.messages.error.pauseResume")
             return forward(action: "showSchedulerDetails", params: params)
         }
 
@@ -98,8 +89,7 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
         if (!flash.errors) flash.errors = []
 
         if (!params.name || !params.group) {
-            flash.error = grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.error.pauseResume")
+            flash.error = g.message(code: "plugin.grailsflow.messages.error.pauseResume")
             return forward(action: "showSchedulerDetails", params: params)
         }
 
@@ -110,8 +100,7 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
             try {
                 startTime_hours = Integer.valueOf(params.startTime_hours)
             } catch (Exception e) {
-                flash.errors << grailsflowMessageBundleService
-                                    .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.intValue.invalid", ["Start Time hours"])
+                flash.errors << g.message(code: "plugin.grailsflow.messages.intValue.invalid", args: ["Start Time hours"])
             }
         }
 
@@ -119,16 +108,14 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
             try {
                 startTime_minutes = Integer.valueOf(params.startTime_minutes)
             } catch (Exception e) {
-                flash.errors << grailsflowMessageBundleService
-                    .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.intValue.invalid", ["Start Time minutes"])
+                flash.errors << g.message(code: "plugin.grailsflow.messages.intValue.invalid",args:  ["Start Time minutes"])
             }
         }
 
         def startTime = (startTime_hours*60 + startTime_minutes)*60000
         def startDay = GrailsflowUtils.getParsedDate(params.startDay, gf.datePattern()?.toString())
         if (!startDay) {
-            flash.warnings = [grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.startDay.invalid", [params.startDay])]
+            flash.warnings = [g.message(code: "plugin.grailsflow.messages.startDay.invalid", args: [params.startDay])]
             startDay = new Date()
         }
 
@@ -146,22 +133,19 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
             def repeating = (params.repeating && params.repeating != '') ? Integer.valueOf(params.repeating) :
                 (params.customRepeating && params.customRepeating != '') ? Integer.valueOf(params.customRepeating) : null
             if (repeating == null || repeating < 0) {
-                flash.errors << grailsflowMessageBundleService.getMessage(RESOURCE_BUNDLE, "grailsflow.messages.error.repeating")
+                flash.errors << g.message(code: "plugin.grailsflow.messages.error.repeating")
             } else {
                 params.customRepeating = repeating
                 def isJobUpdated = schedulerOperationsService
                     .updateScheduledJob(params.name, params.group, startDate, repeating)
                 if (isJobUpdated) {
-                    flash.message = grailsflowMessageBundleService
-                        .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.job.updated", [params.name])
+                    flash.message = g.message(code: "plugin.grailsflow.messages.job.updated", args: [params.name])
                 } else {
-                    flash.errors << grailsflowMessageBundleService
-                        .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.job.notUpdated", [params.name])
+                    flash.errors << g.message(code: "plugin.grailsflow.messages.job.notUpdated", args: [params.name])
                 }
             }
         } catch (NumberFormatException nfe) {
-            flash.errors << grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.error.convertInt", [params.customRepeating])
+            flash.errors << g.message(code: "plugin.grailsflow.messages.error.convertInt", args: [params.customRepeating])
             log.error("Error in converting repeting interval: ${nfe.message}")
         }
         redirect(action: "showSchedulerDetails")
@@ -170,15 +154,12 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
     def delete = {
         if (params.name && params.group) {
             if (schedulerOperationsService.deleteScheduledJob(params.name, params.group)) {
-                flash.message = grailsflowMessageBundleService
-                    .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.job.deleted")
+                flash.message = g.message(code: "plugin.grailsflow.messages.job.deleted")
             } else {
-                flash.error = grailsflowMessageBundleService
-                    .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.error.delete")
+                flash.error = g.message(code: "plugin.grailsflow.messages.error.delete")
             }
         } else {
-            flash.error = grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.error.delete")
+            flash.error = g.message(code: "plugin.grailsflow.messages.error.delete")
         }
         redirect(action: "showSchedulerDetails")
     }
@@ -219,8 +200,7 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
         def classes = processManagerService.getSupportedProcessClasses()
         def processClass = getProcessScriptInfo(params.processID)
         if (!processClass) {
-            flash.error = grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.job.scheduled.error", [params.processID])
+            flash.error = g.message(code: "plugin.grailsflow.messages.job.scheduled.error", args: [params.processID])
             return render(view: "scheduleProcess", model: [processClasses: classes,
                repeatingInfo: getRepeatingPeriods(), params: params, bean: params])
         }
@@ -233,8 +213,7 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
                 if (type == ProcessVariable.DATE) {
                     value = GrailsflowUtils.getParsedDate(params["var_" + variable.name], gf.datePattern()?.toString())
                     if (!value) {
-                        flash.warnings << grailsflowMessageBundleService
-                            .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.dateValue.invalid", [variable.name])
+                        flash.warnings << g.message(code: "plugin.grailsflow.messages.dateValue.invalid", args: [variable.name])
                     } else {
                         value = value.time.toString()
                     }
@@ -270,8 +249,7 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
             }
 
             if (!value && (variable.required == true)) {
-                flash.errors << grailsflowMessageBundleService
-                    .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.required", [variable.name])
+                flash.errors << g.message(code: "plugin.grailsflow.messages.required", args: [variable.name])
             }
 
             variables[variable.name] = value
@@ -279,8 +257,7 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
 
         def startDay = GrailsflowUtils.getParsedDate(params.startDay, gf.datePattern()?.toString())
         if (!startDay) {
-            flash.warnings << grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.startDay.invalid", [params.startDay])
+            flash.warnings << g.message(code: "plugin.grailsflow.messages.startDay.invalid", args: [params.startDay])
             startDay = new Date()
         }
         params.startDay = startDay
@@ -291,8 +268,7 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
             try {
                 startTime_hours = Integer.valueOf(params.startTime_hours)
             } catch (Exception e) {
-                flash.errors << grailsflowMessageBundleService
-                    .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.intValue.invalid", ["Start Time minutes"])
+                flash.errors << g.message(code: "plugin.grailsflow.messages.intValue.invalid", args: ["Start Time minutes"])
                 log.error("Exception in parsing Integer value from ${params.startTime_hours}: ${e.message}")
             }
         }
@@ -301,8 +277,7 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
             try {
                 startTime_minutes = Integer.valueOf(params.startTime_minutes)
             } catch (Exception e) {
-                flash.errors << grailsflowMessageBundleService
-                    .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.intValue.invalid", ["Start Time minutes"])
+                flash.errors << g.message(code: "plugin.grailsflow.messages.intValue.invalid", args: ["Start Time minutes"])
                 log.error("Exception in parsing Integer value from ${params.startTime_minutes}: ${e.message}")
             }
         }
@@ -321,23 +296,19 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
             def repeating = (params.repeating && params.repeating != '') ? Integer.valueOf(params.repeating) :
                 (params.customRepeating && params.customRepeating != '') ? Integer.valueOf(params.customRepeating) : null
             if (repeating == null || repeating < 0) {
-                flash.errors << grailsflowMessageBundleService
-                    .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.error.repeating")
+                flash.errors << g.message(code: "plugin.grailsflow.messages.error.repeating")
             } else if (flash.errors.isEmpty()) {
                 params.customRepeating = repeating
                 def requester = securityHelper.getUser(session)
                 if (schedulerOperationsService
                     .scheduleProcessJob(params.processID, variables, requester, startDate, repeating)) {
-                    flash.message = grailsflowMessageBundleService
-                        .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.job.scheduled", [params.processID])
+                    flash.message = g.message(code: "plugin.grailsflow.messages.job.scheduled", args: [params.processID])
                 } else {
-                    flash.errors << grailsflowMessageBundleService
-                        .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.job.scheduled.error", [params.processID])
+                    flash.errors << g.message(code: "plugin.grailsflow.messages.job.scheduled.error", args: [params.processID])
                 }
             }
         } catch (NumberFormatException nfe) {
-            flash.errors << grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.messages.error.convertInt", [params.customRepeating])
+            flash.errors << g.message(code: "plugin.grailsflow.messages.error.convertInt", args: [params.customRepeating])
             log.error("Error in converting repeating interval: ${nfe.message}")
         }
 
@@ -350,9 +321,9 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
         schedulerDetails.schedulerInfo = getGeneralInformationText()
         schedulerDetails.schedulerStatus = schedulerOperationsService.getSchedulerStatus()
 
-        def timePatterns = [ year: grailsflowMessageBundleService.getMessage(RESOURCE_BUNDLE, "grailsflow.running.year"),
-            month: grailsflowMessageBundleService.getMessage(RESOURCE_BUNDLE, "grailsflow.running.month"),
-            day: grailsflowMessageBundleService.getMessage(RESOURCE_BUNDLE, "grailsflow.running.day")
+        def timePatterns = [ year: g.message(code: "plugin.grailsflow.running.year"),
+            month: g.message(code: "plugin.grailsflow.running.month"),
+            day: g.message(code: "plugin.grailsflow.running.day")
         ]
         schedulerDetails.runningJobs = schedulerOperationsService.getRunningJobsInfo(timePatterns)
         schedulerDetails.scheduledJobs = schedulerOperationsService.getScheduledJobsInfo()
@@ -362,9 +333,9 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
     private String getGeneralInformationText() {
         def schedulerDataMap = schedulerOperationsService.getSchedulerDataMap()
         String persistance = schedulerDataMap.isPersistanceSupported ? "" :
-            grailsflowMessageBundleService.getMessage(RESOURCE_BUNDLE, "grailsflow.text.not")
+                g.message(code: "plugin.grailsflow.text.not")
 
-        return grailsflowMessageBundleService.getMessage(RESOURCE_BUNDLE, "grailsflow.text.info",
+        return g.message(code: "plugin.grailsflow.text.info", args:
             [schedulerDataMap.schedulerName, schedulerDataMap.instanceId,
              gf.displayDateTime(value: schedulerDataMap.runningSince)?.toString() ?: '', String.valueOf(schedulerDataMap.numberOfJobs),
              schedulerDataMap.storeClassName, persistance, schedulerDataMap.poolClassName,
@@ -378,10 +349,10 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
 
     private def getRepeatingPeriods() {
         return [
-            0: grailsflowMessageBundleService.getMessage(RESOURCE_BUNDLE, "grailsflow.label.repeating.once"),
-            60000: grailsflowMessageBundleService.getMessage(RESOURCE_BUNDLE, "grailsflow.label.repeating.minute"),
-            (60000*24): grailsflowMessageBundleService.getMessage(RESOURCE_BUNDLE, "grailsflow.label.repeating.day"),
-            (60000*24*7): grailsflowMessageBundleService.getMessage(RESOURCE_BUNDLE, "grailsflow.label.repeating.week")
+            0: g.message(code: "plugin.grailsflow.label.repeating.once"),
+            60000: g.message(code: "plugin.grailsflow.label.repeating.minute"),
+            (60000*24): g.message(code: "plugin.grailsflow.label.repeating.day"),
+            (60000*24*7): g.message(code: "plugin.grailsflow.label.repeating.week")
         ]
     }
 

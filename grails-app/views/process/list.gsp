@@ -17,9 +17,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="layout" content="grailsflow" />
   <g:render plugin="grailsflow" template="/commons/global"/>
-  <gf:messageBundle bundle="grailsflow.common" var="common"/>
-  <gf:messageBundle bundle="grailsflow.processDetails" var="processDetails"/>
-  <title>${processDetails['grailsflow.title.processList']}</title>
+  <title><g:message code="plugin.grailsflow.title.processList"/></title>
 </head>
 
 <body>
@@ -34,8 +32,8 @@
                           defaultTemplate="/process/processList/searchForm"/>
 
         <div class="form-submit text-right">
-          <g:actionSubmit action="search" value="${common['grailsflow.command.refresh']}" class="btn btn-link"/>
-          <g:actionSubmit action="search" value="${common['grailsflow.command.search']}" class="btn btn-primary"/>
+          <g:actionSubmit action="search" value="${g.message(code: 'plugin.grailsflow.command.refresh')}" class="btn btn-link"/>
+          <g:actionSubmit action="search" value="${g.message(code: 'plugin.grailsflow.command.search')}" class="btn btn-primary"/>
         </div>
       </div>
     </div>
@@ -53,7 +51,7 @@
           </div>
         </g:if>
         <g:elseif test="${!itemsTotal}">
-          <div class="bs-callout bs-callout-info">${common['grailsflow.message.noItems']}</div>
+          <div class="bs-callout bs-callout-info"><g:message code="plugin.grailsflow.message.noItems"/></div>
         </g:elseif>
       </div>
     </div>

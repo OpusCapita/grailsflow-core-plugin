@@ -17,15 +17,13 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="layout" content="grailsflow" />
   <g:render plugin="grailsflow" template="/commons/global"/>
-  <gf:messageBundle bundle="grailsflow.common" var="common"/>
-  <gf:messageBundle bundle="grailsflow.processDetails" var="processDetails"/>
-  <title>${processDetails['grailsflow.title.deleteProcesses']}</title>
+  <title><g:message code="plugin.grailsflow.title.deleteProcesses"/></title>
 
   <r:script>
     jQuery('#deleteButton').click(function(){
-      if (askConfirmation('${common['grailsflow.question.confirm']}')) {
+      if (askConfirmation('${g.message(code: 'plugin.grailsflow.question.confirm')}')) {
         jQuery('#deleteButton').attr("disabled", true);
-        jQuery('#removeMessage').html('<h4>${processDetails['grailsflow.label.processes.removing']} <img class="text-centered" src="${g.resource(plugin: 'grailsflow', dir:'images',file:'spinner.gif')}"/></h4>')
+        jQuery('#removeMessage').html('<h4>${g.message(code: 'plugin.grailsflow.label.processes.removing')} <img class="text-centered" src="${g.resource(plugin: 'grailsflow', dir:'images',file:'spinner.gif')}"/></h4>')
         jQuery('#removeMessage').show()
         var oData = new FormData(document.forms.namedItem("processListForm"));
         var url="${createLink(controller:'process', action:'deleteSearchedProcesses')}";
@@ -64,8 +62,8 @@
             model="${['statuses': com.jcatalog.grailsflow.status.ProcessStatusEnum.values().findAll {it.isFinal()}, 'returnPage': 'deleteProcesses']}"/>
 
         <div class="form-submit text-right">
-          <g:actionSubmit action="searchFinishedProcesses" value="${common['grailsflow.command.search']}" class="btn btn-default"/>
-          <input id="deleteButton" type="button" value="${common['grailsflow.command.delete']}" class="btn btn-primary deleteButton"/>
+          <g:actionSubmit action="searchFinishedProcesses" value="${g.message(code: 'plugin.grailsflow.command.search')}" class="btn btn-default"/>
+          <input id="deleteButton" type="button" value="${g.message(code: 'plugin.grailsflow.command.delete')}" class="btn btn-primary deleteButton"/>
         </div>
       </div>
     </div>
@@ -82,7 +80,7 @@
           </div>
         </g:if>
         <g:elseif test="${!itemsTotal}">
-          <div class="bs-callout bs-callout-info">${common['grailsflow.message.noItems']}</div>
+          <div class="bs-callout bs-callout-info"><g:message code="plugin.grailsflow.message.noItems"/></div>
         </g:elseif>
       </div>
     </div>

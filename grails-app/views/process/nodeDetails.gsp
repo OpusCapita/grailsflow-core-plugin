@@ -19,9 +19,7 @@
                content="${params.isEmbedded == 'true' ? '' : 'grailsflow'}" />
          <g:render plugin="grailsflow" template="/commons/global"/>
          <r:require modules="grailsflowDatepicker"/>
-         <gf:messageBundle bundle="grailsflow.common" var="common"/>
-         <gf:messageBundle bundle="grailsflow.worklist" var="msgs"/>
-         <title>${msgs['grailsflow.title.nodeDetails']}</title>
+         <title><g:message code="plugin.grailsflow.title.nodeDetails"/></title>
     </head>
     <body>
         <g:render plugin="grailsflow" template="/commons/messageInfo"/>

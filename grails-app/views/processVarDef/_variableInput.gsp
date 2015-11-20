@@ -11,9 +11,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-
-<gf:messageBundle bundle="grailsflow.link" var="linkType"/>
-
 <g:hiddenField name="datePattern" value="${gf.datePattern()}"/>
 
 <g:if test="${variable?.type == 'Boolean'}">
@@ -25,8 +22,8 @@
 <g:elseif test="${variable?.type == 'Document'}">
 </g:elseif>
 <g:elseif test="${variable?.type == 'Link'}">
-   ${linkType['grailsflow.label.linkUrl']}&nbsp;<input name="varValue_path" value="${(variable?.linkValue?.path ? variable?.linkValue?.path : params.varValue_path)?.encodeAsHTML()}" size="50"/>&nbsp;
-   ${linkType['grailsflow.label.linkDescription']}&nbsp;<input name="varValue_description" value="${(variable?.linkValue?.description ? variable?.linkValue?.description : params.varValue_description)?.encodeAsHTML()}" size="25"/>
+   <g:message code="plugin.grailsflow.label.linkUrl"/>&nbsp;<input name="varValue_path" value="${(variable?.linkValue?.path ? variable?.linkValue?.path : params.varValue_path)?.encodeAsHTML()}" size="50"/>&nbsp;
+   <g:message code="plugin.grailsflow.label.linkDescription"/>&nbsp;<input name="varValue_description" value="${(variable?.linkValue?.description ? variable?.linkValue?.description : params.varValue_description)?.encodeAsHTML()}" size="25"/>
 </g:elseif>
 <g:elseif test="${variable?.type == 'List'}">
 
@@ -48,10 +45,10 @@
             }
             content += '/>&nbsp;&nbsp;'
         } else if (newType == 'Link') {
-            content += "${linkType['grailsflow.label.linkUrl']}";
+            content += "${g.message(code: 'plugin.grailsflow.label.linkUrl')}";
             if (value == '') value = '  ';
             content += '&nbsp;<input value="'+ value[0]+'" type="text" size="50" name="listItemValue_'+varName+'_path_'+index+'"/>&nbsp;&nbsp;';
-            content += "${linkType['grailsflow.label.linkDescription']}";
+            content += "${g.message(code: 'plugin.grailsflow.label.linkDescription')}";
             content += '&nbsp;<input value="'+value[1]+'" type="text" size="25" name="listItemValue_'+varName+'_desc_'+index+'"/>&nbsp;&nbsp;'
         } else if (newType == 'Date'){
             content += " <script type='text/javascript'>jQuery.noConflict();";

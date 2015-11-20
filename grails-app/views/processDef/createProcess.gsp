@@ -17,12 +17,10 @@
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
          <meta name="layout" content="grailsflow" />
          <g:render plugin="grailsflow" template="/commons/global"/>
-         <gf:messageBundle bundle="grailsflow.common" var="common"/>         
-         <gf:messageBundle bundle="grailsflow.processTypes" var="msgs"/>
-         <title>${msgs['grailsflow.title.editProcess']}</title>
+         <title><g:message code="plugin.grailsflow.title.editProcess"/></title>
     </head>
     <body>
-      <h1>${msgs['grailsflow.label.editProcess']}</h1>
+      <h1><g:message code="plugin.grailsflow.label.editProcess"/></h1>
 
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
@@ -30,20 +28,20 @@
         <div class="row">
           <div class="col-md-8">
             <div class="form-group">
-              <label class="col-md-4 control-label" for="processID">${msgs['grailsflow.label.processID']}</label>
+              <label class="col-md-4 control-label" for="processID"><g:message code="plugin.grailsflow.label.processID"/></label>
               <div class="col-md-8">
                 <input id="processID" name="processID" size="50" class="form-control"  value="${params.processID?.encodeAsHTML()}" maxlength="255"/>
               </div>
             </div>
             <div class="form-group">
-              <label class="col-md-4 control-label" for="description">${msgs['grailsflow.label.description']}</label>
+              <label class="col-md-4 control-label" for="description"><g:message code="plugin.grailsflow.label.description"/></label>
               <div class="col-md-8">
                 <textarea id="description" name="description" cols="47" rows="2" class="form-control" >${params.description?.encodeAsHTML()}</textarea>
               </div>
             </div>
             <div class="form-group">
               <div class="form-submit text-right">
-                <g:actionSubmit action="processDefinition" value="${common['grailsflow.command.create']}" class="btn btn-primary"/>
+                <g:actionSubmit action="processDefinition" value="${g.message(code: 'plugin.grailsflow.command.create')}" class="btn btn-primary"/>
               </div>
             </div>
           </div>

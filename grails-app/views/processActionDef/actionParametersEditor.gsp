@@ -17,7 +17,6 @@
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
          <meta http-equiv="X-UA-Compatible" content="IE=10">
          <g:render plugin="grailsflow" template="/commons/global"/>
-         <gf:messageBundle bundle="grailsflow.common" var="common"/>
 
          <title>Action Parameters</title>
 
@@ -63,8 +62,8 @@
                   </g:each>
                 </table>
                 <div class="form-submit text-right">
-                  <input type="button" class="btn btn-default" value="${common['grailsflow.command.cancel']}" onclick="window.close();"/>
-                  <input type="button" class="btn btn-primary"  value="${common['grailsflow.command.apply']}" onclick="addAction();"/>
+                  <input type="button" class="btn btn-default" value="${g.message(code: 'plugin.grailsflow.command.cancel')}" onclick="window.close();"/>
+                  <input type="button" class="btn btn-primary"  value="${g.message(code: 'plugin.grailsflow.command.apply')}" onclick="addAction();"/>
                 </div>
                 <r:layoutResources/>
               </div>

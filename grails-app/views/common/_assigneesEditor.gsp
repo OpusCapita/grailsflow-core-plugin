@@ -22,10 +22,6 @@
     * controller            name of controller to process assignees management
 
  -->
-
-<gf:messageBundle bundle="grailsflow.common" var="common"/>
-<gf:messageBundle bundle="grailsflow.processNodeEditor" var="nodeEditor"/>
-
 <r:script>
 
   //Asynchronous call for addAssignees
@@ -103,7 +99,7 @@
 
   //Asynchronous call for deleteAssignee
   function callDeleteAssignee(form, assigneeID) {
-    if (askConfirmation('${common['grailsflow.question.confirm']}')) {
+    if (askConfirmation('${g.message(code:'plugin.grailsflow.question.confirm')}')) {
       var elements = getFilteredInputs(form)
       var assigneeElement = document.createElement("input")
       assigneeElement.name = "assigneeID"
@@ -173,12 +169,12 @@
        'userElements': 'usersTable', 'roleElements': 'rolesTable', 'groupElements': 'groupsTable']"/>
 
      <div class="form-submit text-right">
-       <input type="button" name="_action_addAssignees" value="${common['grailsflow.command.add']}" class="btn btn-primary"
+       <input type="button" name="_action_addAssignees" value="${g.message(code:'plugin.grailsflow.command.add')}" class="btn btn-primary"
               onclick="return callAddAssignees(this);"/>
      </div>
 
-     <a class="btn btn-sm btn-default" href="${g.createLink(controller: controller, action: 'deleteAssignee')}" id="sample_assigee_delete_link" title="${common['grailsflow.command.delete']}" style="display: none">
-       <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;${common['grailsflow.command.delete']}
+     <a class="btn btn-sm btn-default" href="${g.createLink(controller: controller, action: 'deleteAssignee')}" id="sample_assigee_delete_link" title="${g.message(code:'plugin.grailsflow.command.delete')}" style="display: none">
+       <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;<g:message code="plugin.grailsflow.command.delete"/>
      </a>
 
      <br/>
@@ -187,7 +183,7 @@
 <table class="table" id="usersTable" style="${userSelection ? '' : 'display: none'}">
  <thead>
    <tr>
-      <th>${nodeEditor['grailsflow.label.assignee']}</th>
+      <th><g:message code="plugin.grailsflow.label.assignee"/></th>
       <th>&nbsp;</th>
     </tr>
  </thead>
@@ -197,8 +193,8 @@
            <td>${user?.encodeAsHTML()}</td>
            <td>
              <div class="form-submit text-right">
-               <g:link class="btn btn-sm btn-default" title="${common['grailsflow.command.delete']}" onclick="return callDeleteAssignee(getAncestorElementOfType(this, 'form'), '${user?.encodeAsJavaScript()?.encodeAsHTML()}');">
-                 <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;${common['grailsflow.command.delete']}
+               <g:link class="btn btn-sm btn-default" title="${g.message(code:'plugin.grailsflow.command.delete')}" onclick="return callDeleteAssignee(getAncestorElementOfType(this, 'form'), '${user?.encodeAsJavaScript()?.encodeAsHTML()}');">
+                 <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;${g.message(code: 'plugin.grailsflow.command.delete')}
                </g:link>
              </div>
            </td>
@@ -209,7 +205,7 @@
 <table class="table" id="rolesTable" ${roleSelection ? '' : 'style="display: none"'}>
  <thead>
    <tr>
-      <th>${nodeEditor['grailsflow.label.assignee']}</th>
+      <th><g:message code="plugin.grailsflow.label.assignee"/></th>
       <th>&nbsp;</th>
     </tr>
  </thead>
@@ -219,8 +215,8 @@
            <td>${role?.encodeAsHTML()}</td>
            <td>
              <div class="form-submit text-right">
-               <g:link class="btn btn-sm btn-default" title="${common['grailsflow.command.delete']}" onclick="return callDeleteAssignee(getAncestorElementOfType(this, 'form'), '${role?.encodeAsJavaScript()?.encodeAsHTML()}');">
-                 <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;${common['grailsflow.command.delete']}
+               <g:link class="btn btn-sm btn-default" title="${g.message(code: 'plugin.grailsflow.command.delete')}" onclick="return callDeleteAssignee(getAncestorElementOfType(this, 'form'), '${role?.encodeAsJavaScript()?.encodeAsHTML()}');">
+                 <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;<g:message code="plugin.grailsflow.command.delete"/>
                </g:link>
              </div>
            </td>
@@ -231,7 +227,7 @@
 <table class="table" id="groupsTable" ${groupSelection ? '' : 'style="display: none"'}>
 <thead>
  <tr>
-    <th>${nodeEditor['grailsflow.label.assignee']}</th>
+    <th><g:message code="plugin.grailsflow.label.assignee"/></th>
     <th>&nbsp;</th>
   </tr>
 </thead>
@@ -241,8 +237,8 @@
          <td>${group?.encodeAsHTML()}</td>
          <td>
            <div class="form-submit text-right">
-             <g:link class="btn btn-sm btn-default" title="${common['grailsflow.command.delete']}" onclick="return callDeleteAssignee(getAncestorElementOfType(this, 'form'), '${group?.encodeAsJavaScript()?.encodeAsHTML()}');">
-               <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;${common['grailsflow.command.delete']}
+             <g:link class="btn btn-sm btn-default" title="${g.message(code: 'plugin.grailsflow.command.delete')}" onclick="return callDeleteAssignee(getAncestorElementOfType(this, 'form'), '${group?.encodeAsJavaScript()?.encodeAsHTML()}');">
+               <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;<g:message code="plugin.grailsflow.command.delete"/>
              </g:link>
            </div>
          </td>

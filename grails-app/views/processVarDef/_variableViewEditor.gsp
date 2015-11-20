@@ -38,13 +38,10 @@
 </r:script>
 
 <g:set var="supportedViewTypes" value="${com.jcatalog.grailsflow.model.view.VariableView.supportedViewTypes}"/>
-
-<gf:messageBundle bundle="grailsflow.variableView" var="msgs"/>
-
 <g:set var="view" value="${variable?.view}"/>
 <g:set var="viewType" value="${view?.type ? view?.type : params.variableViewType}"/>
 
-<label for="variableViewType">${msgs['grailsflow.label.type']}</label>
+<label for="variableViewType"><g:message code="plugin.grailsflow.label.type"/></label>
 <g:select id="variableViewType" name="variableViewType" value="${viewType}" from="${supportedViewTypes}" noSelection="${['' : '']}" class="form-control" onchange="return changeViewType();"></g:select>
 
 <g:each var="type" in="${supportedViewTypes}">

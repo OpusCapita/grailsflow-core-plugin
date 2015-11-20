@@ -24,8 +24,6 @@
 
  -->
 
-<gf:messageBundle bundle="grailsflow.variableView" var="msgs"/>
-
-<h3>${msgs['grailsflow.label.checkBoxView']}</h3>
-<label for="checkBoxView_styleClass">${msgs['grailsflow.label.styleClass']}</label>
+<h3><g:message code="plugin.grailsflow.label.checkBoxView"/></h3>
+<label for="checkBoxView_styleClass"><g:message code="plugin.grailsflow.label.styleClass"/></label>
 <input type="text" id="checkBoxView_styleClass" name="checkBoxView_styleClass" value="${view?.styleClass?.encodeAsHTML()}"/>

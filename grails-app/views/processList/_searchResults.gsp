@@ -20,17 +20,13 @@
 
 
 --%>
-
-<gf:messageBundle bundle="grailsflow.common" var="common"/>
-<gf:messageBundle bundle="grailsflow.processList" var="processList"/>
-
 <br/>
-<h1>${processList['grailsflow.label.processList']}</h1>
+<h1><g:message code="plugin.grailsflow.label.processList"/></h1>
 <table class="table">
 <thead>
   <tr>
     <gf:displayHeaders bundle="${processList}" displayParameters="${displayParameters}" labelPrefix="grailsflow."/>
-    <th>${common['grailsflow.label.operations']}</th>
+    <th><g:message code="plugin.grailsflow.label.operations"/></th>
   </tr>
 </thead>
 <tbody>
@@ -38,8 +34,8 @@
     <tr>
       <gf:displayCells resultItem="${process}" displayParameters="${displayParameters}"/>
       <td>
-        <g:link title="${processList['grailsflow.command.details']}" controller="processDetails" id="${process.id}" >
-           ${processList['grailsflow.command.details']}
+        <g:link title="${g.message(code: 'plugin.grailsflow.command.details')}" controller="processDetails" id="${process.id}" >
+          <g:message code="plugin.grailsflow.command.details"/>
         </g:link>
       </td>
     </tr>

@@ -41,11 +41,7 @@ import grails.converters.JSON
  * @author Maria Voitovich
  */
 class ProcessManagementController extends GrailsFlowSecureController {
-    private static final String RESOURCE_BUNDLE = "grailsflow.processDetails"
-    private static final String WORKLIST_BUNDLE = "grailsflow.worklist"
-
     def processManagerService
-    def grailsflowMessageBundleService
     def additionalWorklistColumns
     def maxResultSize
 
@@ -97,8 +93,7 @@ class ProcessManagementController extends GrailsFlowSecureController {
 
         def processClass = processManagerService.getProcessClass(params.id)
         if (!processClass) {
-            flash.errors << grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processScript.invalid", [params.id])
+            flash.errors << g.message(code: "plugin.grailsflow.message.processScript.invalid", args: [params.id])
             withFormat {
                 html { gotoError() }
                 json { render(errors: flash.errors, params: params) as JSON}
@@ -132,8 +127,7 @@ class ProcessManagementController extends GrailsFlowSecureController {
 
         def processAssignees = processClass.processAssignees.collect() { it.assigneeID.trim() }
         if (!processAssignees.isEmpty() && processAssignees.intersect(authorities).isEmpty()) {
-            flash.errors << grailsflowMessageBundleService
-                                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processAuthorities.invalid")
+            flash.errors << g.message(code: "plugin.grailsflow.message.processAuthorities.invalid")
             withFormat {
                 html { gotoError() }
                 json { render(errors: flash.errors, params: params) as JSON}
@@ -146,8 +140,7 @@ class ProcessManagementController extends GrailsFlowSecureController {
             forward(controller: "process", action: "showStartDetails", params: params)
         } else {
             if (!processManagerService.checkProcessIdentifier(params.id, null)) {
-                flash.errors << grailsflowMessageBundleService
-                                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.process.parallel", [params.processType])
+                flash.errors << g.message(code: "plugin.grailsflow.message.process.parallel", args: [params.processType])
                 withFormat {
                     html { gotoError() }
                     json { render(errors: flash.errors, params: params) as JSON}
@@ -210,9 +203,7 @@ class ProcessManagementController extends GrailsFlowSecureController {
 
         def processClass = processInstance?.class
         if (!processClass) {
-            flash.errors << grailsflowMessageBundleService
-                                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processScript.invalid",
-                                            [params.processType])
+            flash.errors << g.message(code: "plugin.grailsflow.message.processScript.invalid", args: [params.processType])
             withFormat {
                 html { gotoError() }
                 json { render(errors: flash.errors, params: params) as JSON }
@@ -221,8 +212,7 @@ class ProcessManagementController extends GrailsFlowSecureController {
         }
 
         if (!node) {
-            flash.errors << grailsflowMessageBundleService
-                                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.parameters.invalid")
+            flash.errors << g.message(code: "plugin.grailsflow.message.parameters.invalid")
             withFormat {
                 html { gotoError() }
                 json { render(errors: flash.errors, params: params) as JSON }
@@ -237,8 +227,7 @@ class ProcessManagementController extends GrailsFlowSecureController {
 
         def nodeAssignees = processClass.nodes[nodeID]?.assignees?.collect() { it.assigneeID.trim() }
         if (nodeAssignees && !nodeAssignees.isEmpty() && nodeAssignees.intersect(authorities).isEmpty()) {
-            flash.errors << grailsflowMessageBundleService
-                                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.nodeAuthorities.invalid")
+            flash.errors << g.message(code: "plugin.grailsflow.message.nodeAuthorities.invalid")
             withFormat {
                 html { gotoError() }
                 json { render(errors: flash.errors, params: params) as JSON }
@@ -266,8 +255,7 @@ class ProcessManagementController extends GrailsFlowSecureController {
           if ((variable.required || processClass.isRequired(name, nodeID)) &&
               (newValue && (!variables[name] || String.valueOf(variables[name]).trim() == '') //  no new value
               || !newValue && processInstance[name] == null)) { // there's no new value and current value is 'null'
-                flash.errors << grailsflowMessageBundleService
-                                  .getMessage(RESOURCE_BUNDLE, "grailsflow.message.property.required", [TranslationUtils.getTranslatedValue(variable.label, variable.name, lang)])
+                flash.errors << g.message(code: "plugin.grailsflow.message.property.required", args: [TranslationUtils.getTranslatedValue(variable.label, variable.name, lang)])
             }
         }
 
@@ -296,9 +284,7 @@ class ProcessManagementController extends GrailsFlowSecureController {
         if (node.id == null) {
             // checking process identifier
             if (!processManagerService.checkProcessIdentifier(params.processType, variables)) {
-                flash.errors << grailsflowMessageBundleService
-                                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.process.parallel",
-                                                [params.processType])
+                flash.errors << g.message(code: "plugin.grailsflow.message.process.parallel", args: [params.processType])
                 withFormat {
                     html { gotoError() }
                     json { render(errors: flash.errors, params: params) as JSON }
@@ -337,8 +323,8 @@ class ProcessManagementController extends GrailsFlowSecureController {
         if (params.isEmbedded == "true") return render("<script>window.close();</script>")
 
         if (res != ExecutionResultEnum.EXECUTED_SUCCESSFULLY.value()) {
-            flash.errors << grailsflowMessageBundleService.getMessage(RESOURCE_BUNDLE, "grailsflow.message.sendEvent.error.${res}",
-                [params.processType, node.process.id.toString(), node.nodeID, node.id.toString(), event])
+            flash.errors << g.message(code: "plugin.grailsflow.message.sendEvent.error.${res}",
+                args: [params.processType, node.process.id.toString(), node.nodeID, node.id.toString(), event])
             withFormat {
                 html { gotoError() }
                 json { render(errors: flash.errors, params: params) as JSON }
@@ -347,8 +333,7 @@ class ProcessManagementController extends GrailsFlowSecureController {
         } else {
             if (node.type == ConstantUtils.NODE_TYPE_WAIT
                 && processClass.nodeActions[node.nodeID]) {
-                flash.message = grailsflowMessageBundleService
-                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.sendEvent.warning", [node.nodeID])
+                flash.message = g.message(code: "plugin.grailsflow.message.sendEvent.warning", args: [node.nodeID])
             }
             params.putAll([id: null, "processID": node.process.id, nodeID: node.nodeID])
             withFormat {
@@ -373,11 +358,9 @@ class ProcessManagementController extends GrailsFlowSecureController {
 
         if (processManagerService
               .forwardProcessNode(node, assignees, securityHelper.getUser(session))) {
-            flash.message = grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.forwarding.success")
+            flash.message = g.message(code: "plugin.grailsflow.message.forwarding.success")
         } else {
-            flash.message = grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.forwarding.error")
+            flash.message = g.message(code: "plugin.grailsflow.message.forwarding.error")
         }
 
         if (params.isEmbedded == "true") return render("<script>window.open('','_self');window.close();</script>")
@@ -400,17 +383,13 @@ class ProcessManagementController extends GrailsFlowSecureController {
         def result = processManagerService.killProcess(new Long(params.id), securityHelper.getUser(session))
         log.debug("Killing of process #${params.id} finished with code ${result}")
         if (!result) {
-            flash.message = grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.process.killed.error",
-                [String.valueOf(params.id)])
+            flash.message = g.message(code: "plugin.grailsflow.message.process.killed.error", args: [String.valueOf(params.id)])
         } else {
             BasicProcess process = BasicProcess.get(new Long(params.id))
             if (process?.status.statusID == ProcessStatusEnum.KILLING.value()) {
-                flash.message = grailsflowMessageBundleService
-                        .getMessage(RESOURCE_BUNDLE, "grailsflow.message.process.killing", [String.valueOf(params.id)])
+                flash.message = g.message(code: "plugin.grailsflow.message.process.killing", args: [String.valueOf(params.id)])
             } else if (process?.status.statusID == ProcessStatusEnum.KILLED.value()) {
-                flash.message = grailsflowMessageBundleService
-                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.process.killed", [String.valueOf(params.id)])
+                flash.message = g.message(code: "plugin.grailsflow.message.process.killed", args: [String.valueOf(params.id)])
             }
         }
         return forward(controller: "process", action: "search", params: params)

@@ -149,38 +149,36 @@
       }      
       
     </r:script>
-    
-    <gf:messageBundle bundle="grailsflow.userRoles" var="userRoles"/>
-    
+
     <input type="radio" name="authority_type" value="users"
            onclick="if (this.checked) switchAuthoritiesType('users');" ${select_users ? 'checked' : ''}/>
-    ${userRoles['grailsflow.label.users']} <span id="users_count">(${users_count})</span>
-        &nbsp;&nbsp;&nbsp;
-        <input type="radio" name="authority_type" value="roles"
+    <g:message code="plugin.grailsflow.label.users"/> <span id="users_count">(${users_count})</span>
+    &nbsp;&nbsp;&nbsp;
+    <input type="radio" name="authority_type" value="roles"
            onclick="if (this.checked) switchAuthoritiesType('roles');" ${select_roles ? 'checked' : ''}/>
-    ${userRoles['grailsflow.label.roles']}  <span id="roles_count">(${roles_count})</span>
+    <g:message code="plugin.grailsflow.label.roles"/>  <span id="roles_count">(${roles_count})</span>
     &nbsp;&nbsp;&nbsp;
     <input type="radio" name="authority_type" value="groups"
            onclick="if (this.checked) switchAuthoritiesType('groups');" ${select_groups ? 'checked' : ''}/>
-    ${userRoles['grailsflow.label.groups']}  <span id="groups_count">(${groups_count})</span>
+    <g:message code="plugin.grailsflow.label.groups"/>  <span id="groups_count">(${groups_count})</span>
         <br/>
 
     <div id="div_users">
       <input type="text" id="input_users" name="${usersParameterName}" size="40" value="" class="form-control" >&nbsp;
-      <a href="#" onclick="openUserList();" title="${userRoles['grailsflow.title.findUsers']}">
+      <a href="#" onclick="openUserList();" title="${g.message(code: 'plugin.grailsflow.title.findUsers')}">
         <span class="glyphicon glyphicon-plus text-success"></span>
       </a>&nbsp;
     </div>
 
     <div id="div_roles" style="display: none">
       <input type="text" id="input_roles" name="${rolesParameterName}" size="40" value="" class="form-control" >&nbsp;
-      <a href="#" onclick="openRoleList();" title="${userRoles['grailsflow.title.findRoles']}">
+      <a href="#" onclick="openRoleList();" title="${g.message(code:'plugin.grailsflow.title.findRoles')}">
         <span class="glyphicon glyphicon-plus text-success"></span>
       </a>&nbsp;
     </div>
     <div id="div_groups" style="display: none">
       <input type="text" id="input_groups" name="${groupsParameterName}" size="40" value="" class="form-control" >&nbsp;
-      <a href="#" title="${userRoles['grailsflow.title.findGroups']}" onclick="openGroupList();">
+      <a href="#" title="${g.message(code:'plugin.grailsflow.title.findGroups')}" onclick="openGroupList();">
         <span class="glyphicon glyphicon-plus text-success"></span>
       </a>
     </div>

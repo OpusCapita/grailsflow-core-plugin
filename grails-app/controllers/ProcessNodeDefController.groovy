@@ -41,8 +41,6 @@ import grails.converters.JSON
 * @author July Karpey
 */
 class ProcessNodeDefController extends GrailsFlowSecureController {
-    private static final String RESOURCE_BUNDLE = "grailsflow.processTypes"
-    def grailsflowMessageBundleService
     def processManagerService
 
     def index = {
@@ -515,13 +513,11 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
 
         // Validate parameters
         if (!params.nodeID) {
-            flash.errors << grailsflowMessageBundleService
-                                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.nodeID.required")
+            flash.errors << g.message(code: "plugin.grailsflow.message.nodeID.required")
             return render(view: 'nodeForm', model: [node: node, process: process])
         } else {
             if (!NameUtils.isValidIdentifier(params.nodeID)) {
-                flash.errors << grailsflowMessageBundleService
-                                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.nodeID.invalid")
+                flash.errors << g.message(code: "plugin.grailsflow.message.nodeID.invalid")
                 return render(view: 'nodeForm', model: [node: node, process: process])
             }
         }
@@ -529,8 +525,7 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
         def ndID = params.ndID ? Long.valueOf(params.ndID) : null
         def duplicateNode = ProcessNodeDef.findWhere(processDef: process, nodeID: params.nodeID)
         if ( duplicateNode && (ndID == null || ndID != duplicateNode.id) ) {
-            flash.errors << grailsflowMessageBundleService
-                                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.nodeID.duplicated")
+            flash.errors << g.message(code: "plugin.grailsflow.message.nodeID.duplicated")
             return render(view: 'nodeForm', model: [node: new ProcessNodeDef(nodeID: params.nodeID), process: process])
         }
 

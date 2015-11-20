@@ -23,9 +23,6 @@
     - parameter names for properties should have "<viewType>_<viewPropertyName>" format 
 
  -->
-
-<gf:messageBundle bundle="grailsflow.variableView" var="msgs"/>
-
-<h3>${msgs['grailsflow.label.linkView']}</h3>
-<label for="linkView_styleClass">${msgs['grailsflow.label.styleClass']}</label>
+<h3><g:message code="plugin.grailsflow.label.linkView"/></h3>
+<label for="linkView_styleClass"><g:message code="plugin.grailsflow.label.styleClass"/></label>
 <input type="text" id="linkView_styleClass" name="linkView_styleClass" value="${view?.styleClass?.encodeAsHTML()}" class="form-control" />

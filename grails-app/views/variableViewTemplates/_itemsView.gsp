@@ -23,7 +23,6 @@
         optional:
                 * parameterName         'name' attribute for variable input. Default is empty.
  -->
-<gf:messageBundle bundle="grailsflow.link" var="linkType"/>
 <g:hiddenField name="datePattern" value="${gf.datePattern()}"/>
 
 <g:set var="readOnly" value="${variable.visibility == com.jcatalog.grailsflow.utils.ConstantUtils.READ_ONLY}"/>
@@ -62,14 +61,14 @@
             content += visibility+' />&nbsp;&nbsp;'
 
         } else if (newType == 'Link') {
-            content += "${linkType['grailsflow.label.linkUrl']}"
+            content += "${g.message(code: 'plugin.grailsflow.label.linkUrl')}"
             if (value == '') value = '  '
             content += '&nbsp;<input value="'+ value[0]+'" type="text" size="50" class="form-control" '
             if (isReadonly == false) {
                 content+= ' name="listItemValue_'+varName+'_path_'+index+'"'
             }
             content += visibility+' />&nbsp;&nbsp;'
-            content += "${linkType['grailsflow.label.linkDescription']}"
+            content += "${g.message(code: 'plugin.grailsflow.label.linkDescription')}"
             content += '&nbsp;<input value="'+value[1]+'" type="text" class="form-control" size="25" '
             if (isReadonly == false) {
                 content+= ' name="listItemValue_'+varName+'_desc_'+index+'"'

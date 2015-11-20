@@ -21,13 +21,11 @@
     * variables               Map of name -> variable
 
 --%>
-<gf:messageBundle bundle="grailsflow.processVariableEditor" var="msgs"/>
-
-<gf:section title="${msgs['grailsflow.label.processVars']}" selected="false">
- <table class="standard" width="100%">
+<gf:section title="${g.message(code: 'plugin.grailsflow.label.processVars')}" selected="false">
+ <table class="table">
      <thead>
-       <th>${msgs['grailsflow.label.name']}</th>
-       <th>${msgs['grailsflow.label.value']}</th>
+       <th><g:message code="plugin.grailsflow.label.name"/></th>
+       <th><g:message code="plugin.grailsflow.label.value"/></th>
      </thead>
      <tbody>
      <g:each in="${variables.values()}">

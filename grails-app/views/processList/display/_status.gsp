@@ -3,7 +3,4 @@ Template parameters:
   value  - object
 
 -->
-
-<gf:messageBundle bundle="grailsflow.common" var="common"/>
-
-${common['grailsflow.label.status.'+value.statusID]}
+${g.message(code: 'plugin.grailsflow.label.status.'+value.statusID)}

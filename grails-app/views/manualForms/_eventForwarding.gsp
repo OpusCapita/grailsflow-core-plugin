@@ -20,12 +20,11 @@
 	  * currentAssignees		collection of current node assigneeIDs
 
 -->
-    <gf:messageBundle bundle="grailsflow.worklist" var="msgs"/>
 
-    <gf:section sectionId="section_forwarding" title="${msgs['grailsflow.label.forwarding']}" selected="false">
+    <gf:section sectionId="section_forwarding" title="${g.message(code: 'plugin.grailsflow.label.forwarding')}" selected="false">
         <div class="form-group">
             <label class="col-md-12 control-label">
-                ${msgs['grailsflow.message.forwarding']}
+                <g:message code="plugin.grailsflow.message.forwarding"/>
             </label>
         </div>
         <div class="form-group">
@@ -40,7 +39,7 @@
         </div>
         <div class="form-group">
             <div class="col-md-12">
-                <g:submitButton id="processNode_eventForwarding" name="processNode_eventForwarding" value="${msgs['grailsflow.command.assign']}" class="btn btn-primary" />
+                <g:submitButton id="processNode_eventForwarding" name="processNode_eventForwarding" value="${g.message(code: 'plugin.grailsflow.command.assign')}" class="btn btn-primary" />
             </div>
         </div>
 

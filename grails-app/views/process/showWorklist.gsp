@@ -24,9 +24,7 @@
     <g:else>
       <meta name="layout" content="grailsflow" />
     </g:else>
-    <gf:messageBundle bundle="grailsflow.common" var="common"/>
-    <gf:messageBundle bundle="grailsflow.worklist" var="worklist"/>
-    <title>${worklist['grailsflow.title.worklist']}</title>
+    <title><g:message code="plugin.grailsflow.title.worklist"/></title>
 
     <r:script>
       var variableValuesMap = {};
@@ -50,7 +48,7 @@
         valueSelect.value = "";
         clearOptions(valueSelect);
         if (name == "") {
-          var option = new Option("${worklist['grailsflow.label.emptyFilterVariable']}", "");
+          var option = new Option("${g.message(code: 'plugin.grailsflow.label.emptyFilterVariable')}", "");
           addOption(valueSelect, option);
           valueSelect.disabled = true;
           return;
@@ -65,7 +63,7 @@
 	        }
             return;
           } else {
-            addOption(valueSelect, new Option("${worklist['grailsflow.label.emptyFilterVariableValue']}", ""));
+            addOption(valueSelect, new Option("${g.message(code: 'plugin.grailsflow.label.emptyFilterVariableValue')}", ""));
             valueSelect.disabled = true;
             return;
           }
@@ -76,7 +74,7 @@
   </head>
 
   <body>
-    <h1>${worklist['grailsflow.title.worklist']}</h1>
+    <h1><g:message code="plugin.grailsflow.title.worklist"/></h1>
     <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
     <g:form controller="${params['controller']}" method="POST">
@@ -105,18 +103,18 @@
 
           <div class="row">
             <div class="col-md-4">
-              ${worklist['grailsflow.label.filterVariable']}&nbsp;
+              <g:message code="plugin.grailsflow.label.filterVariable"/>&nbsp;
               <g:select id="filterVariable" name="filterVariable" value="${filterVariable}" noSelection="['':'']"
                           from="${additionalColumns.keySet()}" onchange = "changeFilterVariable();"
                           optionValue="${{gf.translatedValue(translations: additionalColumns[it], default: it)}}">
               </g:select>
             </div>
             <div class="col-md-3">
-              ${worklist['grailsflow.label.filterVariableValue']}&nbsp;
+              <g:message code="plugin.grailsflow.label.filterVariableValue"/>&nbsp;
               <select id="filterVariableValue" name="filterVariableValue" value="${filterVariableValue}"
                     ${filterVariable && variableValues?.get(filterVariable)?.size() ? '' : 'disabled="true"'}>
                     <g:if test="${! filterVariable}">
-                        <option value="" selected="true">${worklist['grailsflow.label.emptyFilterVariable']}</option>
+                        <option value="" selected="true"><g:message code="plugin.grailsflow.label.emptyFilterVariable"/></option>
                     </g:if>
                     <g:else>
                         <g:if test="${variableValues?.get(filterVariable)?.size()}">
@@ -128,13 +126,13 @@
                             </g:each>
                         </g:if>
                         <g:else>
-                            <option value="" selected="true">${worklist['grailsflow.label.emptyFilterVariableValue']}</option>
+                            <option value="" selected="true"><g:message code="plugin.grailsflow.label.emptyFilterVariableValue"/></option>
                         </g:else>
                     </g:else>
               </select>
             </div>
             <div class="col-md-5">
-              <g:actionSubmit value="${common['grailsflow.command.filter']}" action="showWorklist" class="btn btn-primary"/>
+              <g:actionSubmit value="${g.message(code: 'plugin.grailsflow.command.filter')}" action="showWorklist" class="btn btn-primary"/>
             </div>
           </div>
         </g:if>
@@ -148,13 +146,13 @@
               <tr>
                   <gf:sortableColumn property="nodeLabel"
                       defaultOrder="desc" controller="${params['controller']}"
-                      title="${worklist['grailsflow.label.nodeID']}"
+                      title="${g.message(code: 'plugin.grailsflow.label.nodeID')}"
                       action="showWorklist" params="${varsFilterString}"/>
-                  <th>${worklist['grailsflow.label.externalUrl']}</th>
+                  <th><g:message code="plugin.grailsflow.label.externalUrl"/></th>
                   <gf:sortableColumn property="processTypeLabel" defaultOrder="desc" controller="${params['controller']}"
-                      title="${worklist['grailsflow.label.processType']}"
+                      title="${g.message(code: 'plugin.grailsflow.label.processType')}"
                       action="showWorklist" params="${varsFilterString}"/>
-                  <th>${worklist['grailsflow.label.description']}</th>
+                  <th><g:message code="plugin.grailsflow.label.description"/></th>
 
                   <g:if test="${additionalColumns}">
                     <g:each var="column" in="${additionalColumns.keySet()}">
@@ -163,10 +161,10 @@
                           action="showWorklist" params="${varsFilterString}"/>
                     </g:each>
                   </g:if>
-                  <th>${worklist['grailsflow.label.caller']}</th>
-                  <gf:sortableColumn property="startedOn" title="${worklist['grailsflow.label.startedOn']}" defaultOrder="desc"
+                  <th><g:message code="plugin.grailsflow.label.caller"/></th>
+                  <gf:sortableColumn property="startedOn" title="${g.message(code: 'plugin.grailsflow.label.startedOn')}" defaultOrder="desc"
                       controller="${params['controller']}" action="showWorklist"/>
-                  <gf:sortableColumn property="dueOn" title="${worklist['grailsflow.label.dueOn']}" defaultOrder="desc"
+                  <gf:sortableColumn property="dueOn" title="${g.message(code: 'plugin.grailsflow.label.dueOn')}" defaultOrder="desc"
                       controller="${params['controller']}" action="showWorklist"/>
               </tr>
             </thead>
@@ -187,7 +185,7 @@
                   </td>
                   <td>
                     <gf:generateExternalUrl processNodeId="${node.id}" action="openExternalUrl"
-                        controller="process" label="${worklist['grailsflow.message.externalUrl']}"/>
+                        controller="process" label="${g.message(code: 'plugin.grailsflow.message.externalUrl')}"/>
                   </td>
                   <td>
                     <gf:translatedValue translations="${node.process.label}" default="${node.process.type}"/>
@@ -220,14 +218,14 @@
 
             <div class="buttons">
               <span class="button">
-                <input type="button" onclick="reloadPage();" value="${common['grailsflow.command.refresh']}" class="btn btn-link"/>
+                <input type="button" onclick="reloadPage();" value="${g.message(code: 'plugin.grailsflow.command.refresh')}" class="btn btn-link"/>
               </span>
             </div>
           </div>
       </div>
       </g:if>
       <g:else>
-        <div class="bs-callout bs-callout-info">${common['grailsflow.message.noItems']}</div>
+        <div class="bs-callout bs-callout-info"><g:message code="plugin.grailsflow.message.noItems"/></div>
       </g:else>
       </g:form>
 

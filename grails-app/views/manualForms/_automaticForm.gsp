@@ -99,7 +99,7 @@
       <div class="form-submit text-right">
         <g:if test="${params.isEmbedded != 'true'}">
           <g:hiddenField name="backPage" value="${nodeDetails.process.id ? 'showWorklist' : 'showTypes'}" />
-          <g:actionSubmit action="returnBack" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
+          <g:actionSubmit action="returnBack" value="${g.message(code: 'plugin.grailsflow.command.back')}" class="btn btn-link"/>
         </g:if>
         <g:set var="app_language" value="${params.lang ? params.lang : RequestContextUtils.getLocale(request)?.language.toString()}" />
           <g:each in="${nodeDetails.events.sort(){ a, b ->

@@ -21,21 +21,17 @@
     * nodes              List of nodes objects
 
 --%>
-
-<gf:messageBundle bundle="grailsflow.common" var="common"/>
-<gf:messageBundle bundle="grailsflow.processDetails" var="msgs"/>
-
-<gf:section title="${msgs['grailsflow.label.processNodes']}" selected="true">
- <table class="standard" width="100%">
+<gf:section title="${g.message(code: 'plugin.grailsflow.label.processNodes')}" selected="true">
+ <table class="table">
    <thead>
      <tr>
-        <th>${msgs['grailsflow.label.nodeID']}</th>
-        <th>${msgs['grailsflow.label.description']}</th>
-        <th>${msgs['grailsflow.label.status']}</th>
-        <th>${msgs['grailsflow.label.caller']}</th>
-        <th>${msgs['grailsflow.label.startedOn']}</th>
-        <th>${msgs['grailsflow.label.finishedOn']}</th>
-        <th>${msgs['grailsflow.label.dueOn']}</th>
+        <th><g:message code="plugin.grailsflow.label.nodeID"/></th>
+        <th><g:message code="plugin.grailsflow.label.description"/></th>
+        <th><g:message code="plugin.grailsflow.label.status"/></th>
+        <th><g:message code="plugin.grailsflow.label.caller"/></th>
+        <th><g:message code="plugin.grailsflow.label.startedOn"/></th>
+        <th><g:message code="plugin.grailsflow.label.finishedOn"/></th>
+        <th><g:message code="plugin.grailsflow.label.dueOn"/></th>
       </tr>
    </thead>
    <tbody>
@@ -43,7 +39,7 @@
           <tr>
              <td><gf:translatedValue translations="${it.label}" default="${it.nodeID}"/></td>
              <td><gf:translatedValue translations="${it.description}" default=""/></td>
-             <td>${it.status?.statusID ? common['grailsflow.label.status.'+it.status?.statusID] : '-'}</td>
+             <td>${it.status?.statusID ? g.message(code: 'plugin.grailsflow.label.status.'+it.status?.statusID) : '-'}</td>
              <td>${it.caller}</td>
              <td><gf:displayDateTime value="${it.startedOn}"/></td>
              <td><gf:displayDateTime value="${it.finishedOn}"/></td>

@@ -16,25 +16,23 @@
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
          <meta name="layout" content="grailsflow" />
          <g:render plugin="grailsflow" template="/commons/global"/>
-         <gf:messageBundle bundle="grailsflow.common" var="common"/>
-         <gf:messageBundle bundle="grailsflow.processTypes" var="msgs"/>
-         <title>${msgs['grailsflow.title.editTypes']}</title>
+         <title><g:message code="plugin.grailsflow.title.editTypes"/></title>
     </head>
     <body>
-      <h1>${msgs['grailsflow.label.editTypes']}</h1>
+      <h1><g:message code="plugin.grailsflow.label.editTypes"/></h1>
 
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
         <g:form controller="${params['controller']}" method="GET">
           <div class="row">
             <div class="form-submit text-right">
-              <g:actionSubmit action="createProcess" value="${common['grailsflow.command.add']}" class="btn btn-primary" style="margin-bottom:8px;"/>
+              <g:actionSubmit action="createProcess" value="${g.message(code: 'plugin.grailsflow.command.add')}" class="btn btn-primary" style="margin-bottom:8px;"/>
             </div>
             <table class="table">
              <thead>
                <tr>
-                  <g:sortableColumn property="type" title="${msgs['grailsflow.label.processID']}" />
-                  <th>${msgs['grailsflow.label.description']}</th>
+                  <g:sortableColumn property="type" title="${g.message(code: 'plugin.grailsflow.label.processID')}" />
+                  <th><g:message code="plugin.grailsflow.label.description"/></th>
                   <th>&nbsp;</th>
                </tr>
              </thead>
@@ -47,14 +45,14 @@
                      <td>
                        <div class="btn-group input-group-btn form-submit text-right">
                          <nobr>
-                           <g:link action="editProcessDef" controller="${params['controller']}" id="${scripts[item].processType}" title="${common['grailsflow.command.edit']}"  class="btn btn-sm btn-default">
+                           <g:link action="editProcessDef" controller="${params['controller']}" id="${scripts[item].processType}" title="${g.message(code: 'plugin.grailsflow.command.edit')}"  class="btn btn-sm btn-default">
                              <span class="glyphicon glyphicon-edit"></span>&nbsp;
-                             ${common['grailsflow.command.edit']}
+                             <g:message code="plugin.grailsflow.command.edit"/>
                            </g:link>
                            <g:link action="deleteProcessDef" controller="${params['controller']}" id="${scripts[item].processType}"
-                               onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" title="${common['grailsflow.command.delete']}" class="btn btn-sm btn-default">
+                               onclick="return askConfirmation('${g.message(code: 'plugin.grailsflow.question.confirm')}');" title="${g.message(code: 'plugin.grailsflow.command.delete')}" class="btn btn-sm btn-default">
                              <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;
-                             ${common['grailsflow.command.delete']}
+                             <g:message code="plugin.grailsflow.command.delete"/>
                            </g:link>
                          </nobr>
                        </div>
@@ -64,18 +62,18 @@
                  <g:else>
                    <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                      <td>${item?.encodeAsHTML()}</td>
-                     <td><div class="alert-danger">${msgs['grailsflow.message.script.invalid']}</div></td>
+                     <td><div class="alert-danger"><g:message code="plugin.grailsflow.message.script.invalid"/></div></td>
                      <td>
                        <div class="btn-group input-group-btn">
                          <nobr>
-                           <g:link action="editProcessScript" controller="${params['controller']}" id="${item}" title="${common['grailsflow.command.edit']}"  class="btn btn-sm btn-default">
+                           <g:link action="editProcessScript" controller="${params['controller']}" id="${item}" title="${g.message(code: 'plugin.grailsflow.command.edit')}"  class="btn btn-sm btn-default">
                              <span class="glyphicon glyphicon-edit"></span>&nbsp;
-                             ${common['grailsflow.command.edit']}
+                             <g:message code="plugin.grailsflow.command.edit"/>
                            </g:link>
                            <g:link action="deleteProcessScript" controller="${params['controller']}" id="${item}"
-                             onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" title="${common['grailsflow.command.delete']}"  class="btn btn-sm btn-default">
+                             onclick="return askConfirmation('${g.message(code: 'plugin.grailsflow.question.confirm')}');" title="${g.message(code: 'plugin.grailsflow.command.delete')}"  class="btn btn-sm btn-default">
                              <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;
-                             ${common['grailsflow.command.delete']}
+                             <g:message code="plugin.grailsflow.command.delete"/>
                            </g:link>
                          </nobr>
                        </div>

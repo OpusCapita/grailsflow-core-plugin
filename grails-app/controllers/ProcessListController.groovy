@@ -9,7 +9,6 @@ import com.jcatalog.grailsflow.search.DisplayParameter
  */
 class ProcessListController extends GrailsFlowSecureController {
   static String DEFAULT_VIEW = "processList";
-
   List<SearchParameter> processListSearchParameters
   List<DisplayParameter> processListDisplayParameters
 

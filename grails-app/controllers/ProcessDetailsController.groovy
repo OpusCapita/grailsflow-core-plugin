@@ -5,8 +5,6 @@ import com.jcatalog.grailsflow.model.process.BasicProcess
  * @author Maria Voitovich
  */
 class ProcessDetailsController {
-  static String DEFAULT_VIEW = "processDetails";
-
   def processManagerService
 
   def index = {

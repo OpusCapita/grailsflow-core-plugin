@@ -17,12 +17,10 @@
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
          <meta name="layout" content="grailsflow" />
          <g:render plugin="grailsflow" template="/commons/global"/>
-         <gf:messageBundle bundle="grailsflow.common" var="common"/> 
-         <gf:messageBundle bundle="grailsflow.processTransitionEditor" var="msgs"/>
-         <title>${msgs['grailsflow.title.processTransitions']}</title>
+         <title><g:message code="plugin.grailsflow.title.processTransitions"/></title>
     </head>
     <body>
-      <h1>${msgs['grailsflow.label.processTransitions']}</h1>
+      <h1><g:message code="plugin.grailsflow.label.processTransitions"/></h1>
 
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
@@ -71,7 +69,7 @@
             <div class="form-horizontal">
               <div class="form-group">
                 <label class="col-md-2 control-label" for="fromNode">
-                  ${msgs['grailsflow.label.fromNode']}
+                  <g:message code="plugin.grailsflow.label.fromNode"/>
                 </label>
                 <div class="col-md-10">
                   <input id="fromNode" class="form-control" readOnly="true" class="readonly" value="${transition?.fromNode?.nodeID?.encodeAsHTML()}" size="30"/>
@@ -80,14 +78,14 @@
 
               <div class="form-group">
                 <label class="col-md-2 control-label" for="eventID">
-                  ${msgs['grailsflow.label.event']}
+                  <g:message code="plugin.grailsflow.label.event"/>
                 </label>
                 <div class="col-md-10">
                   <input name="eventID" id="eventID"  value="${transition?.event?.encodeAsHTML()}" class="form-control"/>
                   <g:if test="${transition?.id != null}">
                     &nbsp;&nbsp;&nbsp;
                     <g:link controller="${params['controller']}" action="editTranslations" id="${transition?.id}">
-                      ${msgs['grailsflow.command.manageTranslations']}
+                      <g:message code="plugin.grailsflow.command.manageTranslations"/>
                     </g:link>
                   </g:if>
                 </div>
@@ -101,9 +99,9 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th width="10%">${msgs['grailsflow.label.toNodes']}</th>
-                  <th>${msgs['grailsflow.label.nodeID']}</th>
-                  <th>${msgs['grailsflow.label.type']}</th>
+                  <th width="10%"><g:message code="plugin.grailsflow.label.toNodes"/></th>
+                  <th><g:message code="plugin.grailsflow.label.nodeID"/></th>
+                  <th><g:message code="plugin.grailsflow.label.type"/></th>
                 </tr>
               </thead>
               <tbody>
@@ -125,11 +123,11 @@
             </table>
 
             <div class="form-submit text-right">
-              <g:actionSubmit action="toProcessEditor" id="${transition?.fromNode?.processDef?.id}" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
+              <g:actionSubmit action="toProcessEditor" id="${transition?.fromNode?.processDef?.id}" value="${g.message(code: 'plugin.grailsflow.command.back')}" class="btn btn-link"/>
               <g:if test="${transition?.id != null}">
-                <g:actionSubmit onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" action="deleteTransitonDef" value="${common['grailsflow.command.delete']}" class="btn btn-default"/>
+                <g:actionSubmit onclick="return askConfirmation('${g.message(code: 'plugin.grailsflow.question.confirm')}');" action="deleteTransitonDef" value="${g.message(code: 'plugin.grailsflow.command.delete')}" class="btn btn-default"/>
               </g:if>
-              <g:actionSubmit action="saveTransitionDef" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
+              <g:actionSubmit action="saveTransitionDef" value="${g.message(code: 'plugin.grailsflow.command.apply')}" class="btn btn-primary"/>
             </div>
           </div>
         </div>

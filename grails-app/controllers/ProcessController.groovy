@@ -48,9 +48,6 @@ import com.jcatalog.grailsflow.status.ProcessStatusEnum
  * @author July Karpey
  */
 class ProcessController extends GrailsFlowSecureController {
-    private static final String RESOURCE_BUNDLE = "grailsflow.processDetails"
-    private static final String WORKLIST_BUNDLE = "grailsflow.worklist"
-
     static final String GRAPHIC_NODE_VISITED = "visited"
     static final String GRAPHIC_NODE_ACTIVE = "active"
     static final String GRAPHIC_NODE_UNTOUGHED = "untouched"
@@ -61,7 +58,6 @@ class ProcessController extends GrailsFlowSecureController {
     def processManagerService
     def processWorklistService
     def processAdministrationService
-    def grailsflowMessageBundleService
     def datePatterns
     // Export service provided by Export plugin
     def exportService
@@ -206,8 +202,7 @@ class ProcessController extends GrailsFlowSecureController {
                 } else {
                     log.info("""There are too many processes '${processes.size()}' for process variables search.
                         Please configure 'maxRestrictedProcesses' value (current value is ${maxRestrictedProcesses}).""")
-                    flash.message = grailsflowMessageBundleService.getMessage(WORKLIST_BUNDLE,
-                        'grailsflow.message.processes.size.large', [processes.size().toString(), maxRestrictedProcesses?.toString()])
+                    flash.message = g.message(code: 'plugin.grailsflow.message.processes.size.large', args: [processes.size().toString(), maxRestrictedProcesses?.toString()])
                 }
             }
             worklist = applyPagingParameters(availableNodes, pagingParameters)
@@ -356,8 +351,7 @@ class ProcessController extends GrailsFlowSecureController {
                 def processClass = processClasses?.find() { it.processType == basicProcess.type }
                 processDetailsList << new ProcessDetails(basicProcess, processClass)
             }
-            flash.message = grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.searchResult", [itemsTotal?.toString()])
+            flash.message = g.message(code: "plugin.grailsflow.message.searchResult", args: [itemsTotal?.toString()])
             withFormat {
                 html { render(view: params.returnPage ? params.returnPage : 'list', params: params,
                    model: [processDetailsList: processDetailsList,
@@ -384,43 +378,34 @@ class ProcessController extends GrailsFlowSecureController {
 
     def exportProcess = {
         if (!params.format) {
-            flash.errors = [grailsflowMessageBundleService
-                              .getMessage(RESOURCE_BUNDLE, "grailsflow.message.emptyFormat")]
+            flash.errors = [g.message(code: "plugin.grailsflow.message.emptyFormat")]
             return forward(controller: "process", action: "search", params: params)
         } else if (params.format != "html") {
 
             if (!params.processID) {
-                flash.errors = [grailsflowMessageBundleService
-                                  .getMessage(RESOURCE_BUNDLE, "grailsflow.message.emptyProcessId")]
+                flash.errors = [g.message(code: "plugin.grailsflow.message.emptyProcessId")]
                 return forward(controller: "process", action: "search", params: params)
             }
 
             def process = BasicProcess.get(Long.valueOf(params.processID))
             if (!process) {
-                flash.errors = [grailsflowMessageBundleService
-                                  .getMessage(RESOURCE_BUNDLE, "grailsflow.message.errorProcessId", [params.processID])]
+                flash.errors = [g.message(code: "plugin.grailsflow.message.errorProcessId",args: [params.processID])]
                 return forward(controller: "process", action: "search", params: params)
             }
 
-            def filename = grailsflowMessageBundleService.getMessage(RESOURCE_BUNDLE, "grailsflow.label.processExport")+":${process.id}"
+            def filename = g.message(code: "plugin.grailsflow.label.processExport")+":${process.id}"
             def extension = params.extension ? params.extension : 'txt'
             response.contentType = process.domainClass.grailsApplication
                 .config.grails.mime.types[params.format]
             response.setHeader("Content-disposition", "attachment; filename=${filename}.${extension}")
 
             def fields = ["id", "type", "status", "createdOn", "finishedOn", "variables"]
-            def labels = ["id": grailsflowMessageBundleService
-                                 .getMessage(RESOURCE_BUNDLE, "grailsflow.label.processID"),
-                          "type": grailsflowMessageBundleService
-                                   .getMessage(RESOURCE_BUNDLE, "grailsflow.label.type"),
-                          "status": grailsflowMessageBundleService
-                                     .getMessage(RESOURCE_BUNDLE, "grailsflow.label.status"),
-                          "createdOn": grailsflowMessageBundleService
-                                        .getMessage(RESOURCE_BUNDLE, "grailsflow.label.createdOnBy"),
-                          "finishedOn": grailsflowMessageBundleService
-                                         .getMessage(RESOURCE_BUNDLE, "grailsflow.label.finishedOnBy"),
-                          "variables": grailsflowMessageBundleService
-                                        .getMessage(WORKLIST_BUNDLE, "grailsflow.label.processVars")]
+            def labels = ["id": g.message(code: "plugin.grailsflow.label.processID"),
+                          "type": g.message(code: "plugin.grailsflow.label.type"),
+                          "status": g.message(code: "plugin.grailsflow.label.status"),
+                          "createdOn": g.message(code: "plugin.grailsflow.label.createdOnBy"),
+                          "finishedOn": g.message(code: "plugin.grailsflow.label.finishedOnBy"),
+                          "variables": g.message(code: "plugin.grailsflow.label.processVars")]
             def variablesFormatter = { domain, variables  ->
                 def varsFormatted = []
                 variables?.each() {
@@ -461,8 +446,7 @@ class ProcessController extends GrailsFlowSecureController {
 
       def processClass = processManagerService.getProcessClass(params.id)
       if (!processClass) {
-          flash.errors << grailsflowMessageBundleService
-                              .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processScript.invalid", [params.id])
+          flash.errors << g.message(code: "plugin.grailsflow.message.processScript.invalid", args:[params.id])
           forward(action: "showTypes", params: params)
       }
       if (processClass.startNode.type == ConstantUtils.NODE_TYPE_WAIT) {
@@ -493,8 +477,7 @@ class ProcessController extends GrailsFlowSecureController {
             def process = BasicProcess.get(Long.valueOf(params.id))
             def processClass = processManagerService.getProcessClass(process?.type)
             if (!processClass) {
-                flash.message = grailsflowMessageBundleService
-                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processScript.notExisted", [process?.type])
+                flash.message = g.message(code: "plugin.grailsflow.message.processScript.notExisted", args: [process?.type])
                 withFormat {
                     html { return forward(action: 'showTypes', params: params )  }
                     json { render([errors : flash.message, params: params] as JSON)}
@@ -509,8 +492,7 @@ class ProcessController extends GrailsFlowSecureController {
             }
 
         } else {
-            flash.message = grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.process.notStarted", [params?.toString()])
+            flash.message = g.message(code: "plugin.grailsflow.message.process.notStarted", args: [params?.toString()])
             withFormat {
                 html { forward(action: 'showTypes', params: params )  }
                 json { render([errors : flash.message, params: params] as JSON)}
@@ -526,8 +508,7 @@ class ProcessController extends GrailsFlowSecureController {
     def openExternalUrl = {
        def node = ProcessNode.get(params.id)
        if (!node) {
-           flash.message = grailsflowMessageBundleService
-               .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processNode.notExisted", [params.id])
+           flash.message = g.message(code: "plugin.grailsflow.message.processNode.notExisted", args: [params.id])
            return redirect(action: 'showTypes', params: [sort: params.sort, order: params.order] )
        }
 
@@ -542,8 +523,7 @@ class ProcessController extends GrailsFlowSecureController {
           def variables = ProcessVariable.findAllWhere(process: basic)
           render getPreparedPOSTForm(externalUrl, variables)
        } else {
-           def errorMessage = grailsflowMessageBundleService
-              .getMessage(RESOURCE_BUNDLE, "grailsflow.message.externalUrl.invalid", nodeDef?.externalUrl)
+           def errorMessage = g.message(code: "plugin.grailsflow.message.externalUrl.invalid", args: [nodeDef?.externalUrl])
            log.error(errorMessage)
            render errorMessage
        }
@@ -561,15 +541,13 @@ class ProcessController extends GrailsFlowSecureController {
     def showNodeDetails = {
         def node = ProcessNode.get(params.id)
         if (!node) {
-            flash.message = grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processNode.notExisted", [params.id])
+            flash.message = g.message(code: "plugin.grailsflow.message.processNode.notExisted", args: [params.id])
             return forward(action: 'showTypes', params: params )
         }
         def basic = node.process
         def processInstance = processManagerService.getRunningProcessInstance(basic.id)
         if (!processInstance) {
-            flash.message = grailsflowMessageBundleService
-                                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processScript.notExisted", [basic.type])
+            flash.message = g.message(code: "plugin.grailsflow.message.processScript.notExisted", args: [basic.type])
             return forward(action: 'showTypes', params: params )
         }
         renderNodeDetails(node, processInstance)
@@ -580,8 +558,7 @@ class ProcessController extends GrailsFlowSecureController {
      */
     def returnBack = {
         if (!params.backPage) {
-            flash.errors = [ grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.backpage.error") ]
+            flash.errors = [ g.message(code: "plugin.grailsflow.message.backpage.error") ]
             return forward(action: 'showTypes', params: params)
         }
 
@@ -598,8 +575,7 @@ class ProcessController extends GrailsFlowSecureController {
                 searchParameters.statusID = [ProcessStatusEnum.COMPLETED.value(), ProcessStatusEnum.KILLED.value()].join(",")
             }
             quantity = processAdministrationService.deleteFilteredProcesses(searchParameters)
-            flash.message = grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.deleteProcess.filtered", [quantity?.toString()])
+            flash.message = g.message(code: "plugin.grailsflow.message.deleteProcess.filtered", args: [quantity?.toString()])
         } catch (Exception e) {
             log.error(e)
             flash.error = e.message
@@ -620,15 +596,13 @@ class ProcessController extends GrailsFlowSecureController {
 
     def deleteProcess = {
         if (!params.processId) {
-            flash.error = grailsflowMessageBundleService
-                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.deleteProcess.noIdentifier")
+            flash.error = g.message(code: "plugin.grailsflow.message.deleteProcess.noIdentifier")
         } else {
             try {
                 ProcessSearchParameters searchParameters = new ProcessSearchParameters()
                 searchParameters.processID = params.processId as Long
                 processAdministrationService.deleteFilteredProcesses(searchParameters)
-                flash.message = grailsflowMessageBundleService
-                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.deleteProcess.selected",[params.processId as String])
+                flash.message = g.message(code: "plugin.grailsflow.message.deleteProcess.selected", args: [params.processId as String])
             } catch (Exception e) {
                 log.error("Exception during process [${params.processId}] deletion", e)
                 flash.error = e.message
@@ -653,8 +627,7 @@ class ProcessController extends GrailsFlowSecureController {
       def templateNotFoundMessage
       if (ConstantUtils.EDITOR_MANUAL == nodeDef?.editorType) {
           templatePath = "/manualForms/" + processClass.processType + "/" + node.nodeID
-          templateNotFoundMessage = grailsflowMessageBundleService
-              .getMessage(RESOURCE_BUNDLE, "grailsflow.message.manualForm.invalid", [node.nodeID])
+          templateNotFoundMessage = g.message(code: "plugin.grailsflow.message.manualForm.invalid", args: [node.nodeID])
       } else {
         templatePath = "/manualForms/automaticForm"
       }
@@ -727,10 +700,8 @@ class ProcessController extends GrailsFlowSecureController {
                 nPos.statusType = GRAPHIC_NODE_UNTOUGHED
             }
             Map position = nPos.properties["nodeID", "actionType", "knotType", "statusType", "startX", "startY", "width", "height"]
-            position.knotTypeLabel = position.knotType ? grailsflowMessageBundleService
-                    .getMessage(RESOURCE_BUNDLE, "grailsflow.label.graphic.node.${position.knotType}") : ''
-            position.statusTypeLabel = grailsflowMessageBundleService
-                    .getMessage(RESOURCE_BUNDLE, "grailsflow.label.graphic.node.${position.statusType}")
+            position.knotTypeLabel = position.knotType ? g.message(code: "plugin.grailsflow.label.graphic.node.${position.knotType}") : ''
+            position.statusTypeLabel = g.message(code: "plugin.grailsflow.label.graphic.node.${position.statusType}")
             position.nodeLabel = gf.translatedValue(translations: nodeDef.label, default: nodeDef.nodeID)?.toString()
             nodeInfos << position
 
@@ -804,10 +775,8 @@ class ProcessController extends GrailsFlowSecureController {
                     || (finishedToDate && finishedFromDate?.after(finishedToDate))
                     || (finishedToDate && startedFromDate?.after(finishedToDate))
                     || (finishedToDate && modifiedFromDate?.after(finishedToDate))) {
-                log.error(grailsflowMessageBundleService
-                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.dateRanges.invalid"))
-                throw new Exception(grailsflowMessageBundleService
-                        .getMessage(RESOURCE_BUNDLE, "grailsflow.message.dateRanges.invalid"))
+                log.error(g.message(code: "plugin.grailsflow.message.dateRanges.invalid"))
+                throw new Exception(g.message(code: "plugin.grailsflow.message.dateRanges.invalid"))
             }
 
             searchParameters.startedBy = parameters.createdBy

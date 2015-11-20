@@ -16,9 +16,7 @@
     <head>
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
          <g:render plugin="grailsflow" template="/commons/global"/>
-         <gf:messageBundle bundle="grailsflow.common" var="common"/>
-         <gf:messageBundle bundle="grailsflow.userRoles" var="msgs"/>
-         <title>${msgs['grailsflow.title.users']}</title>
+         <title><g:message code="plugin.grailsflow.title.users"/></title>
          <r:require modules="jquery" />
          <r:script>
            function addUser(user) {
@@ -35,14 +33,14 @@
 
     <body>
     <div class="container">
-      <h1>${msgs['grailsflow.label.users']}</h1>
+      <h1><g:message code="plugin.grailsflow.label.users"/></h1>
 
       <div class="row">
         <div class="col-md-6">
 	       <g:form controller="userRoles" method="POST">
 	        <table id="usersTable" class="table">
 	          <tr>
-	            <th>${msgs['grailsflow.label.user']}</th>
+	            <th><g:message code="plugin.grailsflow.label.user"/></th>
 	          </tr>
 	          <g:each var="user" in="${users}">
 	            <tr>
@@ -51,7 +49,7 @@
 	          </g:each>
 	        </table>
 	      </g:form>
-	      <input type="button" class="btn btn-primary" value="${common['grailsflow.command.close']}" onclick="window.close();"/>
+	      <input type="button" class="btn btn-primary" value="${g.message(code: 'plugin.grailsflow.command.close')}" onclick="window.close();"/>
 	    </div>
       </div>
     </div>

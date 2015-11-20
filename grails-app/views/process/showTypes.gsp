@@ -17,12 +17,10 @@
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
          <meta name="layout" content="grailsflow" />
          <g:render plugin="grailsflow" template="/commons/global"/>
-         <gf:messageBundle bundle="grailsflow.common" var="common"/>
-         <gf:messageBundle bundle="grailsflow.processTypes" var="msgs"/>
-         <title>${msgs['grailsflow.title.startProcess']}</title>
+         <title><g:message code="plugin.grailsflow.title.startProcess"/></title>
     </head>
     <body>
-      <h1>${msgs['grailsflow.label.startProcess']}</h1>
+      <h1><g:message code="plugin.grailsflow.label.startProcess"/></h1>
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <g:form controller="${params['controller']}" method="GET">
@@ -30,8 +28,8 @@
             <table class="table">
               <thead>
                 <tr>
-                  <g:sortableColumn property="type" title="${msgs['grailsflow.label.processID']}"/>
-                  <th width="70%">${msgs['grailsflow.label.description']}</th>
+                  <g:sortableColumn property="type" title="${g.message(code: 'plugin.grailsflow.label.processID')}"/>
+                  <th width="70%"><g:message code="plugin.grailsflow.label.description"/></th>
                   <th>&nbsp;</th>
                 </tr>
               </thead>
@@ -42,7 +40,7 @@
                     <td><g:set var="description" value="${gf.translatedValue(['translations': item.description, 'default': ''])}" scope="page" />${description?.encodeAsHTML()}</td>
                     <td>
                       <div class="form-submit text-right">
-                        <g:link action="startProcess" controller="${params['controller']}" id="${item.processType}" title="${common['grailsflow.command.start']}" class="btn btn-sm btn-default">${common['grailsflow.command.start']}</g:link>
+                        <g:link action="startProcess" controller="${params['controller']}" id="${item.processType}" title="${g.message(code: 'plugin.grailsflow.command.start')}" class="btn btn-sm btn-default"><g:message code="plugin.grailsflow.command.start"/></g:link>
                       </div>
                     </td>
                   </tr>

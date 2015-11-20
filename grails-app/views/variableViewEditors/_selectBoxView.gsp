@@ -96,16 +96,14 @@
    }
  </style>
 
-<gf:messageBundle bundle="grailsflow.variableView" var="msgs"/>
+<h3><g:message code="plugin.grailsflow.label.selectBoxView"/></h3>
 
-<h3>${msgs['grailsflow.label.selectBoxView']}</h3>
-
-<label>${msgs['grailsflow.label.items']}:</label>
+<label><g:message code="plugin.grailsflow.label.items"/>:</label>
   &nbsp;&nbsp;&nbsp;
-<a href="#" title="${msgs['grailsflow.label.addItem']}" onclick="addRow('');">
-  ${msgs['grailsflow.label.addItem']}
+<a href="#" title="${g.message(code: 'plugin.grailsflow.label.addItem')}" onclick="addRow('');">
+  <g:message code="plugin.grailsflow.label.addItem"/>
 </a>&nbsp;
-<a href="#" title="${msgs['grailsflow.label.addItem']}" onclick="addRow('');">
+<a href="#" title="${g.message(code: 'plugin.grailsflow.label.addItem')}" onclick="addRow('');">
   <span class="glyphicon glyphicon-plus text-success"></span>
 </a>
 

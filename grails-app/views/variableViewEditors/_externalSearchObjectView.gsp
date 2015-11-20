@@ -24,14 +24,12 @@
 
  -->
 
-<gf:messageBundle bundle="grailsflow.variableView" var="msgs"/>
-
-<h3>${msgs['grailsflow.label.externalSearchObjectView']}</h3>
-<label for="externalSearchObjectView_displayKey">${msgs['grailsflow.label.displayKey']}</label>
+<h3><g:message code="plugin.grailsflow.label.externalSearchObjectView"/></h3>
+<label for="externalSearchObjectView_displayKey"><g:message code="plugin.grailsflow.label.displayKey"/></label>
 <input type="text" id="externalSearchObjectView_displayKey" class="form-control" name="externalSearchObjectView_displayKey" value="${view?.displayKey?.encodeAsHTML()}"/>
 <br/>
-<label for="externalSearchObjectView_searchUrl">${msgs['grailsflow.label.searchUrl']}</label>
+<label for="externalSearchObjectView_searchUrl"><g:message code="plugin.grailsflow.label.searchUrl"/></label>
 <input type="text" id="externalSearchObjectView_searchUrl" class="form-control" name="externalSearchObjectView_searchUrl" value="${view?.searchUrl?.encodeAsHTML()}"/>
 <br/>
-<label for="externalSearchObjectView_additionalFields">${msgs['grailsflow.label.additionalFields']}</label>
+<label for="externalSearchObjectView_additionalFields"><g:message code="plugin.grailsflow.label.additionalFields"/></label>
 <input type="text" id="externalSearchObjectView_additionalFields" class="form-control" name="externalSearchObjectView_additionalFields" value="${view?.additionalFields?.encodeAsHTML()}"/>

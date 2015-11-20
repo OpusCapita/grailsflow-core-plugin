@@ -33,8 +33,7 @@
      - visibility					int variable visibility for current node
  -->
 
-<gf:messageBundle bundle="grailsflow.worklist" var="msgs"/>
-<h1>${msgs['grailsflow.label.processVars']}</h1>
+<h1><g:message code="plugin.grailsflow.label.processVars"/></h1>
 
 <g:setProvider library="jquery"/>
 <r:require modules="grailsflowDatepicker" />

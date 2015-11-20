@@ -15,11 +15,9 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <gf:messageBundle bundle="grailsflow.common" var="common"/>
-  <gf:messageBundle bundle="grailsflow.schedulerDetails" var="msgs"/>
   <meta name="layout" content="grailsflow"/>
   <g:render plugin="grailsflow" template="/commons/global"/>
-  <title>${msgs['grailsflow.title.scheduleProcess']}</title>
+  <title><g:message code="plugin.grailsflow.title.scheduleProcess"/></title>
   <r:script type="text/javascript">
       function changeProcessType(value) {
         // Generate Ajax request to get necessary fields
@@ -32,17 +30,17 @@
 </head>
 
 <body>
-  <h1>${msgs['grailsflow.label.scheduleProcess']}</h1>
+  <h1><g:message code="plugin.grailsflow.label.scheduleProcess"/></h1>
 
   <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
   <g:form class="form-horizontal" controller="${params['controller']}" method="POST" enctype="multipart/form-data">
       <div class="row">
         <div class="col-md-8">
-          <h4>${msgs['grailsflow.label.processDetails']}</h4>
+          <h4><g:message code="plugin.grailsflow.label.processDetails"/></h4>
 
           <div class="form-group">
-            <label class="col-md-4 control-label" for="processClass">${msgs['grailsflow.label.processType']}</label>
+            <label class="col-md-4 control-label" for="processClass"><g:message code="plugin.grailsflow.label.processType"/></label>
 
             <div class="col-md-8">
               <g:select id="processClass" from="${processClasses}" name='processID' class="form-control"
@@ -52,23 +50,23 @@
             </div>
           </div>
 
-          <h4>${msgs['grailsflow.label.processVariables']}</h4>
+          <h4><g:message code="plugin.grailsflow.label.processVariables"/></h4>
 
           <div id='variablesForm'>
             <g:render plugin="grailsflow" template="variablesForm"
                       model="[variables: processClass?.variables]"/>
           </div>
 
-          <h4>${msgs['grailsflow.label.jobParams']}</h4>
+          <h4><g:message code="plugin.grailsflow.label.jobParams"/></h4>
           <g:render plugin="grailsflow" template="jobParametersForm"
                     model="[bean: bean, repeatingInfo: repeatingInfo]"/>
         </div>
       </div>
 
       <div class="form-submit text-right">
-        <g:actionSubmit action="showSchedulerDetails" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
+        <g:actionSubmit action="showSchedulerDetails" value="${g.message(code: 'plugin.grailsflow.command.back')}" class="btn btn-link"/>
         <g:actionSubmit action="addJob" onclick="if (!checkRepeatInterval()) return false;"
-                        value="${msgs['grailsflow.command.addJob']}" class="btn btn-primary"/>
+                        value="${g.message(code: 'plugin.grailsflow.command.addJob')}" class="btn btn-primary"/>
       </div>
   </g:form>
 

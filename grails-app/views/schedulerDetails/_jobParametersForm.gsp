@@ -1,4 +1,3 @@
-<gf:messageBundle bundle="grailsflow.schedulerDetails" var="msgs"/>
 <r:require modules="grailsflowDatepicker"/>
 
 <r:script>
@@ -15,7 +14,7 @@
      if (interval == '') interval = document.getElementById('customRepeatingInput').value;
      var result = parseInt(interval);
      if (isNaN(interval) || result < 0) {
-         alert("${msgs['grailsflow.messages.error.repeating']}");
+         alert("${g.message(code: 'plugin.grailsflow.messages.error.repeating')}");
          return false
      }
 
@@ -24,16 +23,16 @@
      var intHours = parseInt(startHours);
      var intMinutes = parseInt(startMinutes);
      if (startHours == '' || isNaN(startHours) || intHours < 0 ) {
-         alert("${msgs['grailsflow.messages.error.startTime']}");
+         alert("${g.message(code: 'plugin.grailsflow.messages.error.startTime')}");
          return false
      }
      if (startMinutes == '' || isNaN(startMinutes) || intMinutes < 0 ){
-         alert("${msgs['grailsflow.messages.error.startTime']}");
+         alert("${g.message(code: 'plugin.grailsflow.messages.error.startTime')}");
          return false
      }
 
      if (result == 0) {
-       if (window.confirm("${msgs['grailsflow.message.repeatInterval.zero']}") == true) {
+       if (window.confirm("${g.message(code: 'plugin.grailsflow.message.repeatInterval.zero')}") == true) {
          return true
        } else return false
      }
@@ -42,7 +41,7 @@
 </r:script>
 
 <div class="form-group">
-  <label class="col-md-4 control-label" for="repeating">${msgs['grailsflow.label.repeating']}</label>
+  <label class="col-md-4 control-label" for="repeating"><g:message code="plugin.grailsflow.label.repeating"/></label>
 
   <div class="col-md-8">
     <g:select class="form-control" id="repeating" from="${repeatingInfo}" optionKey="key" optionValue="value"
@@ -61,7 +60,7 @@
       </div>
 
       <div class="col-md-5">
-        <div class="control-label">${msgs['grailsflow.label.milliseconds']}</div>
+        <div class="control-label"><g:message code="plugin.grailsflow.label.milliseconds"/></div>
       </div>
     </div>
   </div>
@@ -70,10 +69,10 @@
 <r:script>
   checkSelection()
 </r:script>
-<h4>${msgs['grailsflow.label.startTime']}</h4>
+<h4><g:message code="plugin.grailsflow.label.startTime"/></h4>
 
 <div class="form-group">
-  <label class="col-md-4 control-label" for="startDay">${msgs['grailsflow.label.day']}</label>
+  <label class="col-md-4 control-label" for="startDay"><g:message code="plugin.grailsflow.label.day"/></label>
 
   <div class="col-md-8">
     <g:set var="startDay" value="${bean?.startDay ? bean.startDay : new Date()}"/>
@@ -82,7 +81,7 @@
 </div>
 
 <div class="form-group">
-  <label class="col-md-4 control-label" for="repeating">${msgs['grailsflow.label.time']}</label>
+  <label class="col-md-4 control-label" for="repeating"><g:message code="plugin.grailsflow.label.time"/></label>
 
   <div class="col-md-2">
     <input type="number" step="1" id="startTime_hours" class="form-control" name="startTime_hours" size="3"
@@ -106,7 +105,7 @@
 
   <div class="col-md-3">
     <div class="control-label">
-      ${msgs['grailsflow.label.clockTime']}
+      <g:message code="plugin.grailsflow.label.clockTime"/>
     </div>
   </div>
 </div>

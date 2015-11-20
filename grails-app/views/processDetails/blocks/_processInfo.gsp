@@ -18,29 +18,25 @@
 
     - processDetails    processDetails
 --%>
-
-<gf:messageBundle bundle="grailsflow.common" var="common"/>
-<gf:messageBundle bundle="grailsflow.processDetails" var="msgs"/>
-
-<table class="standard">
+<table class="table">
    <tr>
-     <td>${msgs['grailsflow.label.id']}</td>
+     <td>${g.message(code: 'plugin.grailsflow.label.id')}</td>
      <td>${processDetails?.id}</td>
    </tr>
    <tr>
-     <td>${msgs['grailsflow.label.type']}</td>
+     <td>${g.message(code: 'plugin.grailsflow.label.type')}</td>
      <td><gf:translatedValue translations="${processDetails?.label}" default="${processDetails?.type}"/></td>
    </tr>
    <tr>
-     <td>${msgs['grailsflow.label.status']}</td>
-     <td>${processDetails?.status?.statusID ? common['grailsflow.label.status.'+processDetails?.status?.statusID] : '-'}</td>
+     <td>${g.message(code: 'plugin.grailsflow.label.status')}</td>
+     <td>${processDetails?.status?.statusID ? g.message(code: 'plugin.grailsflow.label.status.'+processDetails?.status?.statusID) : '-'}</td>
    </tr>
    <tr>
-     <td>${msgs['grailsflow.label.createdBy']}</td>
+     <td>${g.message(code:'plugin.grailsflow.label.createdBy')}</td>
      <td>${processDetails?.createdBy}</td>
    </tr>
    <tr>
-     <td>${msgs['grailsflow.label.createdOn']}</td>
+     <td>${g.message(code: 'plugin.grailsflow.label.createdOn')}</td>
      <td><gf:displayDateTime value="${processDetails?.createdOn}"/></td>
    </tr>
 </table>

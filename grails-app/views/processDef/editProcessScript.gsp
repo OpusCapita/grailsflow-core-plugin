@@ -20,13 +20,11 @@
 
          <r:require modules="grailsflowCodeMirror"/>
 
-         <gf:messageBundle bundle="grailsflow.common" var="common"/>
-         <gf:messageBundle bundle="grailsflow.processDetails" var="msgs"/>
-         <title>${msgs['grailsflow.title.processScript']}</title>
+         <title><g:message code="plugin.grailsflow.title.processScript"/></title>
 
     </head>
     <body>
-      <h1>${msgs['grailsflow.label.processScript']}</h1>
+      <h1><g:message code="plugin.grailsflow.label.processScript"/></h1>
 
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
@@ -37,7 +35,7 @@
                 <table>
                     <tbody>
                       <tr class='prop'>
-                        <td valign='top'> ${processType}&nbsp;${msgs['grailsflow.label.processCode']}: </td>
+                        <td valign='top'> ${processType}&nbsp;<g:message code="plugin.grailsflow.label.processCode"/>: </td>
                       </tr>
                       <tr>
                         <td valign='top' colspan="2">
@@ -59,9 +57,9 @@
                     </tbody>
                </table>
                <div class="form-submit text-right">
-                 <g:actionSubmit action="editTypes" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
-                 <g:actionSubmit action="saveProcessScript" value="${common['grailsflow.command.save']}" class="btn btn-default"/>
-                 <g:actionSubmit action="editProcessScript" value="${common['grailsflow.command.check']}" class="btn btn-default"/>
+                 <g:actionSubmit action="editTypes" value="${g.message(code: 'plugin.grailsflow.command.back')}" class="btn btn-link"/>
+                 <g:actionSubmit action="saveProcessScript" value="${g.message(code: 'plugin.grailsflow.command.save')}" class="btn btn-default"/>
+                 <g:actionSubmit action="editProcessScript" value="${g.message(code: 'plugin.grailsflow.command.check')}" class="btn btn-default"/>
                </div>
             </g:form>
       </div>

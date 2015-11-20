@@ -24,14 +24,12 @@
 
  -->
 
-<gf:messageBundle bundle="grailsflow.variableView" var="msgs"/>
-
-<h3>${msgs['grailsflow.label.dateView']}</h3>
-<label for="dateView_dateFormat">${msgs['grailsflow.label.dateFormat']}</label>
+<h3><g:message code="plugin.grailsflow.label.dateView"/></h3>
+<label for="dateView_dateFormat"><g:message code="plugin.grailsflow.label.dateFormat"/></label>
 <input type="text" id="dateView_dateFormat" class="form-control" name="dateView_dateFormat" value="${view?.dateFormat?.encodeAsHTML()}"/>
 <br/>
-<label for="dateView_styleClass">${msgs['grailsflow.label.styleClass']}</label>
+<label for="dateView_styleClass"><g:message code="plugin.grailsflow.label.styleClass"/></label>
 <input type="text" id="dateView_styleClass" class="form-control" name="dateView_styleClass" value="${view?.styleClass?.encodeAsHTML()}"/>
 <br/>
-<label for="dateView_size">${msgs['grailsflow.label.size']}</label>
+<label for="dateView_size"><g:message code="plugin.grailsflow.label.size"/></label>
 <input type="text" id="dateView_size" class="form-control" name="dateView_size" value="${view?.size?.encodeAsHTML()}"/>

@@ -21,9 +21,6 @@
 
 --%>
 
-<gf:messageBundle bundle="grailsflow.common" var="common"/>
-<gf:messageBundle bundle="grailsflow.processDetails" var="msgs"/>
-
 <r:script>
   function openGraphic() {
     window.open("${g.createLink(controller: "process", action:'showGraphic')}?processID="+${processDetails.id}, "GraphicProcess", 'width=700, height=500, resizable=yes, scrollbars=yes, status=no');
@@ -33,10 +30,10 @@
 
 <div class="buttons">
 
-  <gf:backButton value="${common['grailsflow.command.back']}" class="button"/>
+  <gf:backButton value="${g.message(code: 'plugin.grailsflow.command.back')}" class="btn btn-link"/>
   &nbsp;&nbsp;
-  <gf:refreshButton value="${common['grailsflow.command.refresh']}" class="button"/>
+  <input type="button" class="btn btn-default" value="${g.message(code: 'plugin.grailsflow.command.showGraphicEditor')}"
+         onclick="openGraphic();"/>
   &nbsp;&nbsp;
-  <input type="button" class="button" value="${msgs['grailsflow.command.showGraphicEditor']}"
-      onclick="openGraphic();"/>
+  <gf:refreshButton value="${g.message(code: 'plugin.grailsflow.command.refresh')}" class="btn btn-primary"/>
 </div>

@@ -21,9 +21,6 @@
 
 -->
 
-<gf:messageBundle bundle="grailsflow.common" var="common"/>
-<gf:messageBundle bundle="grailsflow.processDetails" var="processDetails"/>
-
 <r:script>
     function openGraphic(id) {
        window.open("${g.createLink(controller: "process", action:'showGraphic')}?processID="+id, "GraphicProcess", 'width=800, height=500, resizable=yes, scrollbars=yes, status=no')
@@ -37,12 +34,12 @@
   <table class="table" width="100%">
   <thead>
     <tr>
-         <th>${processDetails['grailsflow.label.id']}</th>
-         <th>${processDetails['grailsflow.label.type']}</th>
-         <th>${processDetails['grailsflow.label.status']}</th>
-         <th>${processDetails['grailsflow.label.createdOnBy']}</th>
-         <th>${processDetails['grailsflow.label.modifiedOnBy']}</th>
-         <th>${processDetails['grailsflow.label.finishedOnBy']}</th>
+         <th><g:message code="plugin.grailsflow.label.id"/></th>
+         <th><g:message code="plugin.grailsflow.label.type"/></th>
+         <th><g:message code="plugin.grailsflow.label.status"/></th>
+         <th><g:message code="plugin.grailsflow.label.createdOnBy"/></th>
+         <th><g:message code="plugin.grailsflow.label.modifiedOnBy"/></th>
+         <th><g:message code="plugin.grailsflow.label.finishedOnBy"/></th>
          <th>&nbsp;</th>
     </tr>
   </thead>
@@ -51,7 +48,7 @@
       <tr>
           <td><g:link controller="${params['controller']}" action="showProcessDetails" id="${process.id}" title="Show Process Details">${process.id}</g:link></td>
           <td><gf:translatedValue translations="${process.label}" default="${process.type}"/></td>
-          <td>${process.status?.statusID ? common['grailsflow.label.status.'+process.status?.statusID] : '-'}</td>
+          <td>${process.status?.statusID ? g.message(code: 'plugin.grailsflow.label.status.'+process.status?.statusID) : '-'}</td>
           <td><gf:displayDateTime value="${process.createdOn}"/>&nbsp;${process.createdBy}
           </td>
           <td><gf:displayDateTime value="${process.lastModifiedOn}"/>&nbsp;${process.lastModifiedBy}
@@ -62,25 +59,25 @@
             <div class="btn-group input-group-btn form-submit text-right">
               <nobr>
               <g:if test="${!process.status.isFinal && (process.status.statusID != com.jcatalog.grailsflow.status.ProcessStatusEnum.KILLING.value())}">
-                <g:link class="btn btn-sm btn-default" onclick="return askConfirmation('${common['grailsflow.question.confirm']}');" controller="${params['controller']}" action="killProcess" id="${process.id}" title="${processDetails['grailsflow.command.kill']}"
+                <g:link class="btn btn-sm btn-default" onclick="return askConfirmation('${g.message(code: 'plugin.grailsflow.question.confirm')}');" controller="${params['controller']}" action="killProcess" id="${process.id}" title="${g.message(code: 'plugin.grailsflow.command.kill')}"
                    params="['type': params.type, 'statusID': params.statusID,
                     'startedFrom': startedFrom, 'finishedFrom': finishedFrom]">
-                     ${processDetails['grailsflow.command.kill']}
+                  <g:message code="plugin.grailsflow.command.kill"/>
                 </g:link>
               </g:if>
               <g:elseif test="${process.status.statusID == com.jcatalog.grailsflow.status.ProcessStatusEnum.KILLING.value()}">
                 <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="search" params="${params}">
-                  ${common['grailsflow.command.refresh']}
+                  <g:message code="plugin.grailsflow.command.refresh"/>
                 </g:link>
               </g:elseif>
               <g:elseif test="${process.status.isFinal && returnPage == 'deleteProcesses'}">
                   <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="deleteProcess" params="${['processId': process.id, 'returnPage': returnPage]}">
-                    <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;${common['grailsflow.command.delete']}
+                    <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;<g:message code="plugin.grailsflow.command.delete"/>
                   </g:link>
               </g:elseif>
-              <g:link class="btn btn-sm btn-default" onclick="openGraphic('${process.id}'); return false;">${processDetails['grailsflow.command.showGraphic']}</g:link>
-              <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="exportProcess" params="${['processID': process.id, 'format': 'csv', 'extension': 'csv']}">${processDetails['grailsflow.command.exportCSV']}</g:link>
-              <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="exportProcess" params="${['processID': process.id, 'format': 'excel', 'extension': 'xls']}">${processDetails['grailsflow.command.exportExcel']}</g:link>
+              <g:link class="btn btn-sm btn-default" onclick="openGraphic('${process.id}'); return false;"><g:message code="plugin.grailsflow.command.showGraphic"/></g:link>
+              <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="exportProcess" params="${['processID': process.id, 'format': 'csv', 'extension': 'csv']}"><g:message code="plugin.grailsflow.command.exportCSV"/></g:link>
+              <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="exportProcess" params="${['processID': process.id, 'format': 'excel', 'extension': 'xls']}"><g:message code="plugin.grailsflow.command.exportExcel"/></g:link>
              </nobr>
             </div>
           </td>

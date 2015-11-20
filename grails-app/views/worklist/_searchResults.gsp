@@ -20,12 +20,8 @@
 
 
 --%>
-
-<gf:messageBundle bundle="grailsflow.common" var="common"/>
-<gf:messageBundle bundle="grailsflow.worklist" var="worklist"/>
-
 <br/>
-<h1>${worklist['grailsflow.label.worklist']}</h1>
+<h1><g:message code="plugin.grailsflow.label.worklist"/></h1>
 <table class="table">
 <thead>
   <tr>
@@ -42,8 +38,8 @@
         <gf:displayCells resultItem="${node}" displayParameters="${displayParameters}"/>
       </g:if>
       <td>
-        <g:link title="${worklist['grailsflow.command.details']}" controller="process" action="showNodeDetails" id="${node.id}" >
-           ${worklist['grailsflow.command.details']}
+        <g:link title="${g.message(code: 'plugin.grailsflow.command.details')}" controller="process" action="showNodeDetails" id="${node.id}" >
+          <g:message code="plugin.grailsflow.command.details"/>
         </g:link>
       </td>
     </tr>

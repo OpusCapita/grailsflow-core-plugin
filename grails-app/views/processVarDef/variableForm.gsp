@@ -18,10 +18,7 @@
       <meta name="layout" content="grailsflow" />
 
       <g:render plugin="grailsflow" template="/commons/global"/>
-      <gf:messageBundle bundle="grailsflow.common" var="common"/>
-      <gf:messageBundle bundle="grailsflow.processVariableEditor" var="msgs"/>
-      <gf:messageBundle bundle="grailsflow.list" var="listType"/>
-      <title>${msgs['grailsflow.title.processVars']}</title>
+      <title><g:message code="plugin.grailsflow.title.processVars"/></title>
 
       <r:script>
         function updateVarView(){
@@ -35,7 +32,7 @@
       <r:require modules="grailsflowDatepicker"/>
     </head>
     <body>
-      <h1>${msgs['grailsflow.label.processVars']}</h1>
+      <h1><g:message code="plugin.grailsflow.label.processVars"/></h1>
 
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
@@ -48,15 +45,15 @@
 
               <div class="form-group">
                 <label class="col-md-2  control-label" for="varName">
-                  ${msgs['grailsflow.label.name']}
+                  <g:message code="plugin.grailsflow.label.name"/>
                 </label>
                 <div class="col-md-10">
                   <input id="varName" name="varName" value="${(variable?.name ? variable?.name : params.varName)?.encodeAsHTML()}" class="form-control"/>
                   <g:if test="${variable.id}">
                     &nbsp;&nbsp;
                     <g:link controller="${params['controller']}" action="editVariableTranslations" id="${variable.id}"
-                                title="${msgs['grailsflow.command.manageTranslations']}">
-                            ${msgs['grailsflow.command.manageTranslations']}
+                                title="${g.message(code: 'grailsflow.command.manageTranslations')}">
+                      <g:message code="plugin.grailsflow.command.manageTranslations"/>
                     </g:link>
                   </g:if>
                 </div>
@@ -64,7 +61,7 @@
 
               <div class="form-group">
                 <label class="col-md-2 control-label" for="isProcessIdentifier">
-                  ${msgs['grailsflow.label.processIdentifier']}
+                  <g:message code="plugin.grailsflow.label.processIdentifier"/>
                 </label>
                 <div class="col-md-10">
                   <g:checkBox id="isProcessIdentifier" name="isProcessIdentifier" value="${variable?.isProcessIdentifier ? variable?.isProcessIdentifier : params?.isProcessIdentifier}"/>
@@ -73,7 +70,7 @@
 
               <div class="form-group">
                 <label class="col-md-2 control-label" for="required">
-                  ${msgs['grailsflow.label.required']}
+                  <g:message code="plugin.grailsflow.label.required"/>
                 </label>
                 <div class="col-md-10">
                    <g:checkBox id="required" name="required" value="${variable?.required ? variable?.required : params.required}"/>
@@ -85,14 +82,14 @@
                   &nbsp;
                 </label>
                 <div class="col-md-10">
-                  <p class="hint" id="hint">${msgs['grailsflow.message.varHint']}<br/>
-                         ${msgs['grailsflow.message.spaceHint']} </p>
+                  <p class="hint" id="hint"><g:message code="plugin.grailsflow.message.varHint"/><br/>
+                  <g:message code="plugin.grailsflow.message.spaceHint"/> </p>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-md-2  control-label" for="objectType">
-                  &nbsp;  ${msgs['grailsflow.label.type']}
+                  &nbsp;  <g:message code="plugin.grailsflow.label.type"/>
                 </label>
                 <div class="col-md-10">
                   <g:select value="${(variable?.type && com.jcatalog.grailsflow.model.definition.ProcessVariableDef.types.contains(variable.type)) ? variable.type : (params.varType ? params.varType : 'Object')}"
@@ -107,7 +104,7 @@
 
               <div class="form-group">
                 <label class="col-md-2 control-label" for="variableView">
-                  ${msgs['grailsflow.label.value']}
+                  <g:message code="plugin.grailsflow.label.value"/>
                 </label>
                 <div class="col-md-10">
                   <div id='variableView'>
@@ -121,14 +118,14 @@
                   &nbsp;
                 </label>
                 <div class="col-md-10">
-                  <p class="hint" id="valueHint">${msgs['grailsflow.message.valueHint']}<br/>
-                            ${msgs['grailsflow.message.notSuitableValue']}</p>
+                  <p class="hint" id="valueHint"><g:message code="plugin.grailsflow.message.valueHint"/><br/>
+                  <g:message code="plugin.grailsflow.message.notSuitableValue"/></p>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-md-2 control-label" for="viewEditor">
-                  ${msgs['grailsflow.label.view']}
+                  <g:message code="plugin.grailsflow.label.view"/>
                 </label>
                 <div class="col-md-10">
                   <gf:customizingTemplate id="viewEditor" template="variableViewEditor" model="[variable: variable, params: params]"/>
@@ -137,8 +134,8 @@
 
               <div class="form-group">
                 <div class="form-submit text-right">
-                  <g:actionSubmit action="showProcessEditor" value="${common['grailsflow.command.back']}" class="btn btn-link"/>
-                  <g:actionSubmit action="saveVarDef" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
+                  <g:actionSubmit action="showProcessEditor" value="${g.message(code: 'plugin.grailsflow.command.back')}" class="btn btn-link"/>
+                  <g:actionSubmit action="saveVarDef" value="${g.message(code: 'plugin.grailsflow.command.apply')}" class="btn btn-primary"/>
                 </div>
               </div>
 

@@ -23,15 +23,13 @@
 		
 
  -->
-    <gf:messageBundle bundle="grailsflow.common" var="common"/>
-    <gf:messageBundle bundle="grailsflow.worklist" var="msgs"/>
 
-    <h1>${msgs['grailsflow.title.nodeDetails']}</h1>
+    <h1><g:message code="plugin.grailsflow.title.nodeDetails"/></h1>
 
     <div class="form-group">
       <div class="row">
         <div class="col-md-2">
-          ${msgs['grailsflow.label.processType']}
+          <g:message code="plugin.grailsflow.label.processType"/>
         </div>
         <div class="col-md-10">
           <gf:translatedValue translations="${nodeDetails.process.label}" default="${nodeDetails.process.type}"/>
@@ -41,7 +39,7 @@
     <div class="form-group">
       <div class="row">
         <div class="col-md-2">
-            ${msgs['grailsflow.label.nodeID']}
+          <g:message code="plugin.grailsflow.label.nodeID"/>
         </div>
         <div class="col-md-10">
             <gf:translatedValue translations="${nodeDetails.label}" default="${nodeDetails.nodeID}"/>
@@ -52,7 +50,7 @@
       <div class="form-group">
         <div class="row">
           <div class="col-md-2">
-            ${msgs['grailsflow.label.description']}
+            <g:message code="plugin.grailsflow.label.description"/>
           </div>
           <div class="col-md-10">
             <gf:translatedValue translations="${nodeDetails.description}" default=""/>
@@ -64,7 +62,7 @@
       <div class="form-group">
         <div class="row">
           <div class="col-md-2">
-            ${msgs['grailsflow.label.caller']}
+            <g:message code="plugin.grailsflow.label.caller"/>
           </div>
           <div class="col-md-10">
             ${nodeDetails.caller}
@@ -74,17 +72,17 @@
       <div class="form-group">
         <div class="row">
           <div class="col-md-2">
-            ${msgs['grailsflow.label.status']}
+            <g:message code="plugin.grailsflow.label.status"/>
           </div>
           <div class="col-md-10">
-            ${nodeDetails.status?.statusID ? common['grailsflow.label.status.'+nodeDetails.status?.statusID] : '-'}
+            ${nodeDetails.status?.statusID ? g.message(code: 'plugin.grailsflow.label.status.'+nodeDetails.status?.statusID) : '-'}
           </div>
         </div>
       </div>
       <div class="form-group">
         <div class="row">
           <div class="col-md-2">
-            ${msgs['grailsflow.label.startedOn']}
+            <g:message code="plugin.grailsflow.label.startedOn"/>
           </div>
           <div class="col-md-10">
             <gf:displayDateTime value="${nodeDetails.startedOn}"/>
@@ -94,7 +92,7 @@
       <div class="form-group">
         <div class="row">
           <div class="col-md-2">
-            ${msgs['grailsflow.label.dueOn']}
+            <g:message code="plugin.grailsflow.label.dueOn"/>
           </div>
           <div class="col-md-10">
             <gf:displayDateTime value="${nodeDetails.dueOn}"/>

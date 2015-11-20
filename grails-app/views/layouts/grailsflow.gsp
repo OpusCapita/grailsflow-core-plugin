@@ -24,8 +24,6 @@
     <r:require modules="font-awesome"/>
     <r:layoutResources/>
 
-    <gf:messageBundle bundle="grailsflow.menu" var="menu_bundle"/>
-
     <g:layoutHead/>
   </head>
   <body>
@@ -33,46 +31,46 @@
     <div class="row">
       <div class="col-md-2">
           <dl id="menuList">
-              <dt>${menu_bundle['grailsflow.menu.header.useProcesses']}</dt>
+              <dt><g:message code="plugin.grailsflow.menu.header.useProcesses"/></dt>
               <dd>
                   <ul>
-                      <li><g:link controller="processDef" action="editTypes">${menu_bundle['grailsflow.menu.editProcesTypes']}</g:link></li>
+                      <li><g:link controller="processDef" action="editTypes"><g:message code="plugin.grailsflow.menu.editProcesTypes"/></g:link></li>
                   </ul>
               </dd>
               <dd>
                   <ul>
-                      <li><g:link controller="process" action="showTypes">${menu_bundle['grailsflow.menu.startProcesType']}</g:link></li>
+                      <li><g:link controller="process" action="showTypes"><g:message code="plugin.grailsflow.menu.startProcesType"/></g:link></li>
                   </ul>
               </dd>
               <dd>
                   <ul>
-                      <li><g:link controller="process" action="showWorklist">${menu_bundle['grailsflow.menu.showWorklist']}</g:link></li>
+                      <li><g:link controller="process" action="showWorklist"><g:message code="plugin.grailsflow.menu.showWorklist"/></g:link></li>
                   </ul>
               </dd>
               <dd>
                   <ul>
-                      <li><g:link controller="process">${menu_bundle['grailsflow.menu.listProcesses']}</g:link></li>
+                      <li><g:link controller="process"><g:message code="plugin.grailsflow.menu.listProcesses"/></g:link></li>
                   </ul>
               </dd>
-              <dt>${menu_bundle['grailsflow.menu.header.administration']}</dt>
+              <dt><g:message code="plugin.grailsflow.menu.header.administration"/></dt>
               <dd>
                   <ul>
-                      <li><g:link controller="process" action="deleteProcesses">${menu_bundle['grailsflow.menu.deleteProcesses']}</g:link></li>
-                  </ul>
-              </dd>
-              <dd>
-                  <ul>
-                      <li><g:link controller="document">${menu_bundle['grailsflow.menu.showDocuments']}</g:link></li>
+                      <li><g:link controller="process" action="deleteProcesses"><g:message code="plugin.grailsflow.menu.deleteProcesses"/></g:link></li>
                   </ul>
               </dd>
               <dd>
                   <ul>
-                      <li><g:link controller="analyse">${menu_bundle['grailsflow.menu.analyseResponse']}</g:link></li>
+                      <li><g:link controller="document"><g:message code="plugin.grailsflow.menu.showDocuments"/></g:link></li>
                   </ul>
               </dd>
               <dd>
                   <ul>
-                      <li><g:link controller="schedulerDetails">${menu_bundle['grailsflow.menu.viewSchedulerDetails']}</g:link></li>
+                      <li><g:link controller="analyse"><g:message code="plugin.grailsflow.menu.analyseResponse"/></g:link></li>
+                  </ul>
+              </dd>
+              <dd>
+                  <ul>
+                      <li><g:link controller="schedulerDetails"><g:message code="plugin.grailsflow.menu.viewSchedulerDetails"/></g:link></li>
                   </ul>
               </dd>
           </dl>

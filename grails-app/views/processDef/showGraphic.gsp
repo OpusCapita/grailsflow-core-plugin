@@ -15,8 +15,6 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <gf:messageBundle bundle="grailsflow.common" var="common"/>
-  <gf:messageBundle bundle="grailsflow.processDetails" var="processDetails"/>
   <title>Process Graphical View</title>
 
   <r:require modules="grailsflowGraphics"/>
@@ -57,13 +55,13 @@
      var simpleToolbar = new Ext.Toolbar('toolbar')
      simpleToolbar.addButton({
          id: 'closeButton',
-         text: "${common['grailsflow.command.close']}",
+         text: "${g.message(code: 'plugin.grailsflow.command.close')}",
          cls: 'x-btn-text-icon scroll-bottom',
          handler: onButtonCloseClick})
 
      simpleToolbar.addButton({
          id: 'saveButton',
-         text: "${common['grailsflow.command.save']}",
+         text: "${g.message(code: 'plugin.grailsflow.command.save')}",
          cls: 'x-btn-text-icon scroll-bottom',
      handler: onButtonSaveClick})
 
@@ -105,7 +103,7 @@
         if (!${isPositionsHandled}) {
           obj.setDimension(110,70)
           var onClickFunction = 'openNodeEditor("'+positions[i]["nodeID"]+'")'
-          obj.setContent("<a href='#' onclick='"+onClickFunction+"'><b>"+positions[i]["nodeLabel"]+"</b></a><br/>${processDetails['grailsflow.label.type']}: "+positions[i]["actionType"]+"<br/><i>"+positions[i]["knotTypeLabel"]+"</i>");
+          obj.setContent("<a href='#' onclick='"+onClickFunction+"'><b>"+positions[i]["nodeLabel"]+"</b></a><br/>${g.message(code: 'plugin.grailsflow.label.type')}: "+positions[i]["actionType"]+"<br/><i>"+positions[i]["knotTypeLabel"]+"</i>");
           obj.setCanDrag(true);
           x = (i-Math.floor(i/3)*3)*200+40+i*10
           y = Math.floor(i/3)*80+65+i*30
@@ -114,7 +112,7 @@
                            positions[i]["height"])
           var type = positions[i]["knotType"]
 
-          obj.setContent("<a href='#' onclick='"+onClickFunction+"'><b>"+positions[i]["nodeLabel"]+"</b></a><br/>${processDetails['grailsflow.label.type']}: "+positions[i]["actionType"]+"<br/><i>"+positions[i]["knotTypeLabel"]+"</i>");
+          obj.setContent("<a href='#' onclick='"+onClickFunction+"'><b>"+positions[i]["nodeLabel"]+"</b></a><br/>${g.message(code: 'plugin.grailsflow.label.type')}: "+positions[i]["actionType"]+"<br/><i>"+positions[i]["knotTypeLabel"]+"</i>");
           obj.setCanDrag(true);
           x = positions[i]["startX"]
           y = positions[i]["startY"]

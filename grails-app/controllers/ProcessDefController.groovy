@@ -69,15 +69,11 @@ import java.text.SimpleDateFormat
  * @author Maria Voitovich
  */
 class ProcessDefController extends GrailsFlowSecureController {
-    private static final String RESOURCE_BUNDLE = "grailsflow.processTypes"
-    private static final String DETAILS_BUNDLE = "grailsflow.processDetails"
-
     def processExporterService
     def processManagerService
     def generateProcessService
     def processScriptProvider
 
-    def grailsflowMessageBundleService
     def processFactory
 
     def processDefValidator
@@ -103,15 +99,13 @@ class ProcessDefController extends GrailsFlowSecureController {
         flash.message = ""
         flash.errors = []
         if (!params.processID) {
-            flash.errors << grailsflowMessageBundleService
-                                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processID.required")
+            flash.errors << g.message(code: "plugin.grailsflow.message.processID.required")
             forward(action: "createProcess", params: params)
         } else {
             params.processID = params.processID.trim()
             // validate process name
             if (!NameUtils.isValidProcessName(params.processID)) {
-                flash.errors << grailsflowMessageBundleService
-                                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processID.invalid")
+                flash.errors << g.message(code: "plugin.grailsflow.message.processID.invalid")
                 return forward(action: "createProcess", params: params)
             }
 
@@ -130,8 +124,7 @@ class ProcessDefController extends GrailsFlowSecureController {
               process.errors.each() {
                 log.error(it)
               }
-              flash.errors << grailsflowMessageBundleService
-                                  .getMessage(RESOURCE_BUNDLE, "grailsflow.message.generation.error")
+              flash.errors << g.message(code: "plugin.grailsflow.message.generation.error")
               redirect(action: "editTypes", params: [sort: params.sort, order: params.order])
             } else {
                 redirect(action: "editProcess", params: [id: process.id])
@@ -160,16 +153,14 @@ class ProcessDefController extends GrailsFlowSecureController {
       if (params.processID) {
           // Validate Process ID
           if (!NameUtils.isValidProcessName(params.processID)) {
-              flash.errors << grailsflowMessageBundleService
-                                  .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processID.invalid")
+              flash.errors << g.message(code: "plugin.grailsflow.message.processID.invalid")
               return forward(action: "editProcess", params: params)
           }
 
           def processID = NameUtils.upCase(params.processID)
           process.processID = processID
       } else {
-          flash.errors << grailsflowMessageBundleService
-                              .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processID.required")
+          flash.errors << g.message(code: "plugin.grailsflow.message.processID.required")
           return forward(action: "editProcess", params: params)
       }
 
@@ -219,8 +210,7 @@ class ProcessDefController extends GrailsFlowSecureController {
       if (processID) {
         def processScript = processScriptProvider.readProcessScript(processID)
         if (processScript == null){
-		      flash.errors << grailsflowMessageBundleService
-		                          .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processFile.notFound")
+		      flash.errors << g.message(code: "plugin.grailsflow.message.processFile.notFound")
 		      return redirect(action: "editProcess", params: [id: params.id])
         }
 
@@ -228,13 +218,11 @@ class ProcessDefController extends GrailsFlowSecureController {
             def processDef = reloadProcess(processID)
             redirect(action: editProcess, params: [id: processDef?.id])
         } catch (Exception e) {
-            flash.errors << grailsflowMessageBundleService
-                                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processType.invalid", [processID])
+            flash.errors << g.message(code: "plugin.grailsflow.message.processType.invalid", args: [processID])
             redirect(action: "editTypes", params: [sort: params.sort, order: params.order])
         }
       } else {
-	      flash.errors << grailsflowMessageBundleService
-	                          .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processID.required")
+	      flash.errors << g.message(code: "plugin.grailsflow.message.processID.required")
 	      return redirect(action: "editProcess", params: [id: params.id])
       }
     }
@@ -253,16 +241,14 @@ class ProcessDefController extends GrailsFlowSecureController {
         if (params.processID) {
             // Validate Process ID
             if (!NameUtils.isValidProcessName(params.processID)) {
-                flash.errors << grailsflowMessageBundleService
-                                    .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processID.invalid")
+                flash.errors << g.message(code: "plugin.grailsflow.message.processID.invalid")
                 return forward(action: "editProcess", params: params)
             }
 
             def processID = NameUtils.upCase(params.processID)
             process.processID = processID
         } else {
-            flash.errors << grailsflowMessageBundleService
-                                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processID.required")
+            flash.errors << g.message(code: "plugin.grailsflow.message.processID.required")
             return forward(action: "editProcess", params: params)
         }
 
@@ -312,11 +298,9 @@ class ProcessDefController extends GrailsFlowSecureController {
         // try to generate groovy script from process definition
         def result = generateProcessService.generateGroovyProcess(process)
         if (!result) {
-            flash.errors << grailsflowMessageBundleService
-                              .getMessage(RESOURCE_BUNDLE, "grailsflow.message.generation.error")
+            flash.errors << g.message(code: "plugin.grailsflow.message.generation.error")
         } else {
-            flash.message = grailsflowMessageBundleService
-                              .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processType.saved", [process.processID])
+            flash.message = g.message(code: "plugin.grailsflow.message.processType.saved", args: [process.processID])
             // remove ProcessDefinition from DB
             def processDef = ProcessDef.findWhere("processID": params.id)
             if (processDef) {
@@ -400,8 +384,7 @@ class ProcessDefController extends GrailsFlowSecureController {
             def processDef = reloadProcess(params.id)
             redirect(action: "editProcess", params: [id: processDef?.id])
         } catch (Exception e) {
-            flash.message = grailsflowMessageBundleService
-                                .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processType.invalid", [params.id])
+            flash.message = g.message(code: "plugin.grailsflow.message.processType.invalid", args: [params.id])
             log.error("Cannot build process definition for ${params.id}", e)
             redirect(action: "editTypes", params: [sort: params.sort, order: params.order])
         }
@@ -411,8 +394,7 @@ class ProcessDefController extends GrailsFlowSecureController {
         flash.errors = []
 
         if (!params.id) {
-            flash.errors << grailsflowMessageBundleService
-                              .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processType.empty")
+            flash.errors << g.message(code: "plugin.grailsflow.message.processType.empty")
             return redirect(action: "editTypes")
         }
 
@@ -421,8 +403,7 @@ class ProcessDefController extends GrailsFlowSecureController {
         def builder = new ProcessBuilder(processScript)
 
         if (builder.processClass != null && builder.errors.size() == 0) {
-            flash.message = grailsflowMessageBundleService
-                              .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processScript.valid")
+            flash.message = g.message(code: "plugin.grailsflow.message.processScript.valid")
         } else {
               flash.errors.addAll(builder.errors)
         }
@@ -434,18 +415,15 @@ class ProcessDefController extends GrailsFlowSecureController {
     def saveProcessScript = {
         if (!flash.errors) flash.errors = []
         if (!params.id) {
-            flash.errors << grailsflowMessageBundleService
-                              .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processType.empty")
+            flash.errors << g.message(code: "plugin.grailsflow.message.processType.empty")
             return redirect(action: "editTypes")
         }
 
         // delete process definition if exist
         if (!deleteProcessInfo(params?.id)) {
-            flash.errors = [grailsflowMessageBundleService
-                              .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processScript.deleteError")]
+            flash.errors = [g.message(code: "plugin.grailsflow.message.processScript.deleteError")]
         } else {
-            flash.message = grailsflowMessageBundleService
-                              .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processType.deleted", [params.id])
+            flash.message = g.message(code: "plugin.grailsflow.message.processType.deleted", args: [params.id])
         }
 
         def result
@@ -461,10 +439,8 @@ class ProcessDefController extends GrailsFlowSecureController {
         }
 
         if (result) {
-           flash.message = grailsflowMessageBundleService
-                             .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processScript.saved", [params.id])
-        } else flash.errors << grailsflowMessageBundleService
-                                 .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processScript.saveError")
+           flash.message = g.message(code: "plugin.grailsflow.message.processScript.saved", args: [params.id])
+        } else flash.errors << g.message(code: "plugin.grailsflow.message.processScript.saveError")
 
         redirect(action: "editTypes")
     }
@@ -576,16 +552,13 @@ class ProcessDefController extends GrailsFlowSecureController {
 
     def deleteProcessDef = {
         if (!params.id) {
-            flash.errors << grailsflowMessageBundleService
-                              .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processType.empty")
+            flash.errors << g.message(code: "plugin.grailsflow.message.processType.empty")
             return redirect(action: "editTypes")
         }
         if (!deleteProcessInfo(params?.id)) {
-            flash.errors = [grailsflowMessageBundleService
-                              .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processScript.deleteError")]
+            flash.errors = [g.message(code: "plugin.grailsflow.message.processScript.deleteError")]
         } else {
-            flash.message = grailsflowMessageBundleService
-                              .getMessage(RESOURCE_BUNDLE, "grailsflow.message.processType.deleted", [params.id])
+            flash.message = g.message(code: "plugin.grailsflow.message.processType.deleted", args: [params.id])
         }
         redirect(action: "editTypes")
     }
@@ -637,8 +610,7 @@ class ProcessDefController extends GrailsFlowSecureController {
             Map position = nPos
                 .properties["nodeID", "actionType", "knotType", "dueDate", "startX", "startY", "width", "height"]
             position.nodeLabel = gf.translatedValue(translations: node.label, default: node.nodeID)?.toString()
-            position.knotTypeLabel = position.knotType ? grailsflowMessageBundleService
-                .getMessage(DETAILS_BUNDLE, "grailsflow.label.graphic.node.${position.knotType}") : ''
+            position.knotTypeLabel = position.knotType ? g.message(code: "plugin.grailsflow.label.graphic.node.${position.knotType}") : ''
                   nodeInfos << position
 		    node.transitions?.each() { transition ->
 		        Map trans = [:]

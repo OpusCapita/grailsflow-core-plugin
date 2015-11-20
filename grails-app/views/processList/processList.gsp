@@ -17,13 +17,11 @@
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
          <meta name="layout" content="grailsflow" />
          <g:render plugin="grailsflow" template="/commons/global"/>
-         <gf:messageBundle bundle="grailsflow.common" var="common"/>
-         <gf:messageBundle bundle="grailsflow.processList" var="processList"/>
-         <title>${processList['grailsflow.title.processList']}</title>
+         <title><g:message code="plugin.grailsflow.title.processList"/></title>
     </head>
     <body>
       <gf:storeBackPoint />
-      <h1>${processList['grailsflow.label.processList']}</h1>
+      <h1><g:message code="plugin.grailsflow.label.processList"/></h1>
 
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
@@ -34,7 +32,7 @@
         <gf:customizingTemplate template="searchForm" defaultTemplate="/processList/searchForm"/>
         <br/>
         <div class="form-submit text-right">
-          <g:actionSubmit action="${gf.currentAction()}" value="${common['grailsflow.command.search']}" class="btn btn-primary"/>
+          <g:actionSubmit action="${gf.currentAction()}" value="${g.message(code: 'plugin.grailsflow.command.search')}" class="btn btn-primary"/>
         </div>
 
         <gf:customizingTemplate template="searchResults" defaultTemplate="/processList/searchResults"/>
@@ -48,7 +46,7 @@
         </g:if>
 
         <div class="form-submit text-right">
-          <gf:refreshButton value="${common['grailsflow.command.refresh']}" class="btn btn-link"/>
+          <gf:refreshButton value="${g.message(code: 'plugin.grailsflow.command.refresh')}" class="btn btn-link"/>
         </div>
 
         </g:form>

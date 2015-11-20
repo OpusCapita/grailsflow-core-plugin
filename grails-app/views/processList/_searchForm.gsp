@@ -17,10 +17,6 @@
 
 
 -->
-
-<gf:messageBundle bundle="grailsflow.common" var="common"/>
-<gf:messageBundle bundle="grailsflow.processList" var="processList"/>
-
 <gf:advancedSearchResources />
 
 <r:require modules="grailsflowDatepicker"/>

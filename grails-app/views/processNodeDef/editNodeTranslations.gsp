@@ -17,30 +17,28 @@
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
          <meta name="layout" content="grailsflow" />
          <g:render plugin="grailsflow" template="/commons/global"/>
-         <gf:messageBundle bundle="grailsflow.common" var="common"/>
-         <gf:messageBundle bundle="grailsflow.processNodeEditor" var="msgs"/>
-         <title>${msgs['grailsflow.title.nodeTranslations']}</title>
+         <title><g:message code="plugin.grailsflow.title.nodeTranslations"/></title>
     </head>
     <body>
-      <h1>${msgs['grailsflow.label.nodeTranslations']}</h1>
+      <h1><g:message code="plugin.grailsflow.label.nodeTranslations"/></h1>
 
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
 
       <div class="row">
         <div class="col-md-6">
-          <h4>${msgs['grailsflow.label.nodeID']}: ${processNodeDef.nodeID?.encodeAsHTML()}</h4>
+          <h4><g:message code="plugin.grailsflow.label.nodeID"/>: ${processNodeDef.nodeID?.encodeAsHTML()}</h4>
           <g:form controller="${params['controller']}">
             <input type="hidden" name="id" value="${processNodeDef.id?.encodeAsHTML()}"/>
-            <h4>${msgs['grailsflow.label.label']}</h4>
+            <h4><g:message code="plugin.grailsflow.label.label"/></h4>
             <g:render plugin="grailsflow" template="/common/translationsEditor"
                     model="[ 'translations': processNodeDef.label, 'parameterName': 'label']"/>
 
-            <h4>${msgs['grailsflow.label.description']}</h4>
+            <h4><g:message code="plugin.grailsflow.label.description"/></h4>
             <g:render plugin="grailsflow" template="/common/translationsEditor"
                     model="[ 'translations': processNodeDef.description, 'parameterName': 'description', 'textarea': true]"/>
 
             <div class="form-submit text-right">
-              <g:actionSubmit action="saveNodeTranslations" value="${common['grailsflow.command.apply']}" class="btn btn-primary"/>
+              <g:actionSubmit action="saveNodeTranslations" value="${g.message(code: 'plugin.grailsflow.command.apply')}" class="btn btn-primary"/>
             </div>
           </g:form>
         </div>

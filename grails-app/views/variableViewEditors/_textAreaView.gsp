@@ -24,11 +24,9 @@
 
  -->
 
-<gf:messageBundle bundle="grailsflow.variableView" var="msgs"/>
-
-<h3>${msgs['grailsflow.label.textAreaView']}</h3>
-<label for="textAreaView_rows">${msgs['grailsflow.label.rows']}</label>
+<h3><g:message code="plugin.grailsflow.label.textAreaView"/></h3>
+<label for="textAreaView_rows"><g:message code="plugin.grailsflow.label.rows"/></label>
 <input type="text" id="textAreaView_rows" name="textAreaView_rows" class="form-control" value="${view?.rows?.encodeAsHTML()}"/>
 <br/>
-<label for="textAreaView_cols">${msgs['grailsflow.label.cols']}</label>
+<label for="textAreaView_cols"><g:message code="plugin.grailsflow.label.cols"/></label>
 <input type="text" id="textAreaView_cols" name="textAreaView_cols" class="form-control" value="${view?.cols?.encodeAsHTML()}"/>
