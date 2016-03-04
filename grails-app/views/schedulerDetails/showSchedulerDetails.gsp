@@ -162,7 +162,7 @@
                       <g:message code="plugin.grailsflow.label.running"/>
                     </g:if>
                     <g:else>
-                      <div class="btn-group input-group-btn form-submit text-right">
+                      <div class="btn-group input-group-btn text-right">
                         <nobr>
                           <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="pause"
                                   params="${[name: jobInfo?.job?.name, group: jobInfo?.job?.group, isPaused: jobInfo?.paused ? jobInfo?.paused : 'false', isRunning: jobInfo?.running ? jobInfo.running : 'false']}"
