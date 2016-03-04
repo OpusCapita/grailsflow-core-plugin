@@ -43,7 +43,7 @@
                      <td><g:set var="label" value="${gf.translatedValue(['translations': scripts[item].label, 'default': scripts[item].processType])}" scope="page" />${label?.encodeAsHTML()}</td>
                      <td><g:set var="description" value="${gf.translatedValue(['translations': scripts[item].description, 'default': ''])}" scope="page" />${description?.encodeAsHTML()}</td>
                      <td>
-                       <div class="btn-group input-group-btn form-submit text-right">
+                       <div class="btn-group input-group-btn text-right">
                          <nobr>
                            <g:link action="editProcessDef" controller="${params['controller']}" id="${scripts[item].processType}" title="${g.message(code: 'plugin.grailsflow.command.edit')}"  class="btn btn-sm btn-default">
                              <span class="glyphicon glyphicon-edit"></span>&nbsp;

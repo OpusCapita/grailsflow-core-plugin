@@ -56,7 +56,7 @@
           <td><gf:displayDateTime value="${process.finishedOn}"/>&nbsp;${process.finishedBy}
           </td>
           <td class="text-right">
-            <div class="btn-group input-group-btn form-submit text-right">
+            <div class="btn-group input-group-btn text-right">
               <nobr>
               <g:if test="${!process.status.isFinal && (process.status.statusID != com.jcatalog.grailsflow.status.ProcessStatusEnum.KILLING.value())}">
                 <g:link class="btn btn-sm btn-default" onclick="return askConfirmation('${g.message(code: 'plugin.grailsflow.question.confirm')}');" controller="${params['controller']}" action="killProcess" id="${process.id}" title="${g.message(code: 'plugin.grailsflow.command.kill')}"
