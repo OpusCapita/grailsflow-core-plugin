@@ -837,7 +837,7 @@ class ProcessController extends GrailsFlowSecureController {
             searchParameters.processID = parameters.processID ? Long.valueOf(parameters.processID): null
         } catch(NumberFormatException ex) {
             log.error("Impossible to parse processID = ${params.processID} as Long value. ", ex)
-            throw ex
+            throw new Exception(g.message(code: "plugin.grailsflow.message.processID.invalid"))
         }
 
         return searchParameters
