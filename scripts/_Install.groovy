@@ -10,3 +10,13 @@
 //
 
 ant.mkdir(dir: "web-app/workarea/documents")
+def configFile = new File("${basedir}/grails-app/conf/Config.groovy")
+if (configFile.exists()) {
+    println 'Add settings for grails.converters.json to Config!'
+    ant.echo( file:"${basedir}/grails-app/conf/Config.groovy",
+            message:"\n//grailsFlowPlugin add this setting for grails.converters.JSON to escape circular reference\n",
+            append:true )
+    ant.echo( file:"${basedir}/grails-app/conf/Config.groovy",
+            message:"grails.converters.json.circular.reference.behaviour=\"INSERT_NULL\"",
+            append:true )
+}
