@@ -27,37 +27,35 @@
 <div class="row">
   <div class="col-md-6">
     <g:each in="${variables}">
-      <g:if test="${it.value}">
-        <div class="form-group">
-          <div class="row">
-              <div class="col-md-5">
-                <gf:translatedValue translations="${it.label}" default="${it.name}"/>
-              </div>
-              <div class="col-md-7">
-                <g:if test="${it.type && it.type == 'Document'}">
-                  <gf:renderDocument document="${it.value}"/>
+      <div class="form-group">
+        <div class="row">
+            <div class="col-md-5">
+              <gf:translatedValue translations="${it.label}" default="${it.name}"/>
+            </div>
+            <div class="col-md-7">
+              <g:if test="${it.type && it.type == 'Document'}">
+                <gf:renderDocument document="${it.value}"/>
+              </g:if>
+              <g:elseif test="${it.type && it.type == 'Link'}">
+                <gf:renderLink link="${it.value}"/>
+              </g:elseif>
+              <g:elseif test="${it.type && it.type == 'Date'}">
+                <gf:displayDate value="${it?.value}"/>
+              </g:elseif>
+              <g:elseif test="${it.type && it.type == 'Double'}">
+                <gf:displayDouble value="${it.value}"/>
+              </g:elseif>
+              <g:else><!-- Default displaying -->
+                <g:if test="${com.jcatalog.grailsflow.model.process.ProcessVariable.isValueIdentifier(it.type)}">
+                  ${it.variableValue}
                 </g:if>
-                <g:elseif test="${it.type && it.type == 'Link'}">
-                  <gf:renderLink link="${it.value}"/>
-                </g:elseif>
-                <g:elseif test="${it.type && it.type == 'Date'}">
-                  <gf:displayDate value="${it?.value}"/>
-                </g:elseif>
-                <g:elseif test="${it.type && it.type == 'Double'}">
-                  <gf:displayDouble value="${it.value}"/>
-                </g:elseif>
-                <g:else><!-- Default displaying -->
-                  <g:if test="${com.jcatalog.grailsflow.model.process.ProcessVariable.isValueIdentifier(it.type)}">
-                    ${it.variableValue}
-                  </g:if>
-                  <g:else>
-                    ${it.value ? org.apache.commons.lang.StringEscapeUtils.escapeHtml(it.value.toString()) : ''}
-                  </g:else>
+                <g:else>
+                  ${it.value ? org.apache.commons.lang.StringEscapeUtils.escapeHtml(it.value.toString()) : it.variableValue}
                 </g:else>
-              </div>
-          </div>
+              </g:else>
+            </div>
         </div>
-      </g:if>
+      </div>
     </g:each>
   </div>
   <div class="col-md-6">
