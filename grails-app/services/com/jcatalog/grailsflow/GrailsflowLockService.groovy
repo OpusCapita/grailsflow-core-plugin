@@ -1,3 +1,5 @@
+package com.jcatalog.grailsflow
+
 import com.jcatalog.grailsflow.model.process.ProcessNode
 import com.jcatalog.grailsflow.cluster.GrailsflowLock
 import com.jcatalog.grailsflow.utils.ConstantUtils

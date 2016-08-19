@@ -1,3 +1,5 @@
+package com.jcatalog.grailsflow
+
 import org.quartz.SchedulerException
 import org.quartz.Trigger
 import java.text.DateFormat
