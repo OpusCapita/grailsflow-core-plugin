@@ -1,3 +1,5 @@
+package com.jcatalog.grailsflow
+
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import groovy.transform.Synchronized

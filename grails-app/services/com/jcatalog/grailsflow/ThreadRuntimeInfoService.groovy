@@ -1,3 +1,5 @@
+package com.jcatalog.grailsflow
+
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import com.jcatalog.grailsflow.engine.concurrent.ProcessNotifier
