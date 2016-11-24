@@ -241,6 +241,12 @@ class GrailsflowGrailsPlugin {
         processManagerService = ref('processManagerService')
       }
 
+        if(!application.config.grails.converters.json.circular.reference.behaviour) {
+            def jsonConverterConfig = new ConfigObject()
+            jsonConverterConfig.grails.converters.json.circular.reference.behaviour = "INSERT_NULL"
+            application.config.merge(jsonConverterConfig)
+            application.configChanged()
+        }
     }
 
     def doWithApplicationContext = { applicationContext ->
