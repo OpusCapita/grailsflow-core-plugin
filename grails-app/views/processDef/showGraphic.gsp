@@ -87,8 +87,8 @@
 
      var obj
      var port, port2
-     var transitionsData = evalJson('${transitionsJson}')
-     var positions = evalJson('${positions}')
+     var transitionsData = evalJson('${raw(transitionsJson)}')
+     var positions = evalJson('${raw(positions)}')
      var nodes = new Array(positions.length)
 
      function openNodeEditor(nodeID) {
