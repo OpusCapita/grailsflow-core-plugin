@@ -64,7 +64,7 @@
                      <td>${item?.encodeAsHTML()}</td>
                      <td><div class="alert-danger"><g:message code="plugin.grailsflow.message.script.invalid"/></div></td>
                      <td>
-                       <div class="btn-group input-group-btn">
+                       <div class="btn-group input-group-btn text-right">
                          <nobr>
                            <g:link action="editProcessScript" controller="${params['controller']}" id="${item}" title="${g.message(code: 'plugin.grailsflow.command.edit')}"  class="btn btn-sm btn-default">
                              <span class="glyphicon glyphicon-edit"></span>&nbsp;
