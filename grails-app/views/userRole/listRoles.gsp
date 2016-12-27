@@ -18,6 +18,7 @@
          <g:render plugin="grailsflow" template="/commons/global"/>
          <title><g:message code="plugin.grailsflow.title.roles"/></title>
          <r:require modules="jquery" />
+         <r:require modules="bootstrap"/>
          <r:script>
            function addRole(role) {
              opener.addRoles(role)
