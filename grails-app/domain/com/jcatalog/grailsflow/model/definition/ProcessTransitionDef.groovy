@@ -40,7 +40,7 @@ class ProcessTransitionDef {
 
     static mapping = {
         transition2DestinationNodes cascade: "all,delete-orphan"
-        label indexColumn:[name:"language", type:String, length:2],joinTable:[key:'process_transition_def_id', column:'label'],length:20
+        label indexColumn:[name:"language", type:String, length:5],joinTable:[key:'process_transition_def_id', column:'label'],length:20
     }
     
     // Used to write and parse process class
