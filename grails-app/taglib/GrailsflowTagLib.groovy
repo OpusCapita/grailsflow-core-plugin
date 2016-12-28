@@ -375,7 +375,6 @@ class GrailsflowTagLib {
       def template = attrs.template
       def defaultTemplate = attrs.defaultTemplate
       def notFoundMessage = attrs.notFoundMessage
-      def uiPlugin = grailsApplication.config.plugin.grailsflow.uiPlugin ?: false
 
       // Paths to look for template. Sorted by priority of searching.
       List parameters = new ArrayList()
