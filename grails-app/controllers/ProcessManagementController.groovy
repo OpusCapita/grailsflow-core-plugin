@@ -225,7 +225,13 @@ class ProcessManagementController extends GrailsFlowSecureController {
         // checking process node assignees and user authorities
         def authorities = getUserAuthorities(session)
 
-        def nodeAssignees = processClass.nodes[nodeID]?.assignees?.collect() { it.assigneeID.trim() }
+        def nodeAssignees = []
+        node?.process?.assignees?.each {
+            if (it.nodeID == nodeID) nodeAssignees << it.assigneeID.trim()
+        }
+        if (nodeAssignees.isEmpty()) {
+            nodeAssignees = processClass.nodes[nodeID]?.assignees?.collect() { it.assigneeID.trim() }
+        }
         if (nodeAssignees && !nodeAssignees.isEmpty() && nodeAssignees.intersect(authorities).isEmpty()) {
             flash.errors << g.message(code: "plugin.grailsflow.message.nodeAuthorities.invalid")
             withFormat {
