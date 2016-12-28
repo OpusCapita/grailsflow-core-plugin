@@ -123,7 +123,7 @@ class GrailsflowFormatTagLib {
      */
     def dateTimePattern = { attrs ->
       def locale = attrs.locale ? attrs.locale : RCU.getLocale(request)
-      def pattern = dateTimePatterns?.get(locale.language)
+      def pattern = dateTimePatterns?.get(locale.language == 'zh' ? locale.toString() : locale.language)
 
       // if no pattern for specified locale, then use default
       if (pattern == null && defaultLocale) {
