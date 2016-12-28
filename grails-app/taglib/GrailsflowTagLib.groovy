@@ -439,7 +439,10 @@ class GrailsflowTagLib {
       def translations = attrs.translations
       def defaultValue = attrs.default
       def lang = attrs.lang ? attrs.lang : RCU.getLocale(request)?.language.toString()
-      
+
+      // this is an ugly hack, which change zh to zh_CN or zh_TW
+      if (lang == 'zh') lang = RCU.getLocale(request)?.toString()
+
       out << TranslationUtils.getTranslatedValue(translations, defaultValue, lang)
     }
 
