@@ -220,7 +220,7 @@
                 <div id="customPage" ${params.formType == '2' ? '' : 'style="display: none;"'}>
                   <table>
                     <tr>
-                      <td valign="top"><g:message code="grailsflow.label.manualForm"/></td>
+                      <td valign="top"><g:message code="plugin.grailsflow.label.manualForm"/></td>
                       <td><textarea cols="80" rows="25" name="formTextArea" class="form-control">${formTextArea?.encodeAsHTML()}</textarea></td>
                     </tr>
                     <tr>
