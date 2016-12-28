@@ -31,6 +31,7 @@ class GrailsflowTagLib {
   static namespace = "gf"
   def processManagerService
   def workareaPathProvider
+  def grailsflowUiPlugin
 
   /**
    * TODO: use g:sortableColumn instead as soos
@@ -374,16 +375,22 @@ class GrailsflowTagLib {
       def template = attrs.template
       def defaultTemplate = attrs.defaultTemplate
       def notFoundMessage = attrs.notFoundMessage
-
+      def uiPlugin = grailsApplication.config.plugin.grailsflow.uiPlugin ?: false
 
       // Paths to look for template. Sorted by priority of searching.
       List parameters = new ArrayList()
       if (template) {
         parameters.add([contextPath: "", template: template])
+        if (grailsflowUiPlugin) {
+          parameters.add([contextPath: "", template: template, plugin: grailsflowUiPlugin])
+        }
         parameters.add([contextPath: "", template: template, plugin: 'grailsflow'])
       }
       if (defaultTemplate) {
         parameters.add([contextPath: "", template: defaultTemplate])
+        if (grailsflowUiPlugin) {
+          parameters.add([contextPath: "", template: defaultTemplate, plugin: grailsflowUiPlugin])
+        }
         parameters.add([contextPath: "", template: defaultTemplate, plugin: 'grailsflow'])
       }
 

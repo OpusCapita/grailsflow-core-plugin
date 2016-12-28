@@ -241,6 +241,9 @@ class GrailsflowGrailsPlugin {
         processManagerService = ref('processManagerService')
       }
 
+      // A plugin that override grailsflow ui
+      grailsflowUiPlugin(java.lang.String, '')
+
         if(!application.config.grails.converters.json.circular.reference.behaviour) {
             def jsonConverterConfig = new ConfigObject()
             jsonConverterConfig.grails.converters.json.circular.reference.behaviour = "INSERT_NULL"
