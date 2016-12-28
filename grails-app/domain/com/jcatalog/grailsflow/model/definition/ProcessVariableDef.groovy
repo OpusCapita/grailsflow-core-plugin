@@ -102,10 +102,10 @@ class ProcessVariableDef {
             isProcessIdentifier type:YesNoType
             required type:YesNoType
         }
-        label indexColumn:[name:"language", type:String, length:2],joinTable:[key:'process_variable_def_id', column:'label'],length:255
+        label indexColumn:[name:"language", type:String, length:5],joinTable:[key:'process_variable_def_id', column:'label'],length:255
         // TODO: enable when table name generation will work
-        //description indexColumn:[name:"language", type:String, length:2],joinTable:[name:'process_variable_def_desc', key:'process_variable_def_id', column:'description'],length:255
-        desc indexColumn:[name:"language", type:String, length:2],joinTable:[key:'process_variable_def_id', column:'description'],length:255
+        //description indexColumn:[name:"language", type:String, length:5],joinTable:[name:'process_variable_def_desc', key:'process_variable_def_id', column:'description'],length:255
+        desc indexColumn:[name:"language", type:String, length:5],joinTable:[key:'process_variable_def_id', column:'description'],length:255
         variable2NodesVisibility cascade: "all,delete-orphan"
         items cascade: "all,delete-orphan"
     }
