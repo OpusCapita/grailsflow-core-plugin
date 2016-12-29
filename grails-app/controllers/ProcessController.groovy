@@ -70,6 +70,10 @@ class ProcessController extends GrailsFlowSecureController {
         forward(action: "list", params: params)
     }
 
+    static processNodeJsonProperties = [
+            'id', 'branchID', 'caller', 'description', 'dueOn', 'event', 'exception',
+            'finishedOn', 'nodeID', 'protocolGroup', 'startedExecutionOn', 'startedOn', 'status', 'type']
+
   /**
     * ProcessList UI
     */
@@ -224,6 +228,7 @@ class ProcessController extends GrailsFlowSecureController {
 
         // Build nodes Details
         def processNodes = []
+        def worklistNodeDetails = [:]
         worklist?.each { processNode ->
             def process = processNode.process
             def processInstance = processManagerService.getRunningProcessInstance(process.id)
@@ -237,6 +242,7 @@ class ProcessController extends GrailsFlowSecureController {
                         additionalColumns[name] += varDetails.label
                     }
                 }
+                worklistNodeDetails.put(processNode, nodeDetails)
             }
         }
         if (params.sort == "nodeLabel") {
@@ -270,7 +276,23 @@ class ProcessController extends GrailsFlowSecureController {
         withFormat {
             html { render(view: 'showWorklist',model: model, params: params) }
             json {
-                model.processNodeList = worklist
+                model.processNodeList = []
+                // Customize JSON data for process node
+                worklist.each { ProcessNode processNode ->
+                    def nodeDetails = worklistNodeDetails.get(processNode)
+
+                    def jsonNode = [:]
+                    processNodeJsonProperties.each { jsonNode.put(it, processNode."${it}") }
+                    jsonNode.label = gf.translatedValue(translations: nodeDetails.label, default: nodeDetails.nodeID)
+                    jsonNode.description = gf.translatedValue(translations: nodeDetails.description, default: '')
+                    jsonNode.status = processNode?.status?.statusID
+                    jsonNode.process = [
+                            id: processNode.process.id,
+                            label: gf.translatedValue(translations: nodeDetails.process.label, default: nodeDetails.process.type),
+                            description: gf.translatedValue(translations: nodeDetails.process.description, default: '')]
+
+                    model.processNodeList << jsonNode
+                }
                 render model as JSON
             }
         }
