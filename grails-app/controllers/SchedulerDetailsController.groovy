@@ -351,9 +351,8 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
         return [
             0: g.message(code: "plugin.grailsflow.label.repeating.once"),
             60000: g.message(code: "plugin.grailsflow.label.repeating.minute"),
-            (60000*24): g.message(code: "plugin.grailsflow.label.repeating.day"),
-            (60000*24*7): g.message(code: "plugin.grailsflow.label.repeating.week")
+            (60000 * 60 * 24): g.message(code: "plugin.grailsflow.label.repeating.day"),
+            (60000 * 60 * 24 * 7): g.message(code: "plugin.grailsflow.label.repeating.week")
         ]
     }
-
 }
