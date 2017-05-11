@@ -47,6 +47,7 @@ import org.hibernate.Session
 import org.hibernate.Hibernate
 
 import com.jcatalog.grailsflow.logging.LogUtils
+import com.jcatalog.grailsflow.utils.AuthoritiesUtils
 import com.jcatalog.grailsflow.process.PostKillProcessHandler
 import org.springframework.transaction.TransactionStatus
 import org.quartz.ObjectAlreadyExistsException
@@ -64,7 +65,7 @@ import org.quartz.TriggerBuilder
 import org.quartz.JobDataMap
 import com.jcatalog.grailsflow.cluster.GrailsflowLock
 
-/**                                                                                                         se
+/**
  * Process Manager service is an engine that deals with processes:
  * starts it, executes it, checks it state, kills it.
  *
@@ -102,6 +103,7 @@ class ProcessManagerService implements InitializingBean {
     def processLogDir
     def grailsApplication
     def grailsflowLockService
+    def messageSource
     PostKillProcessHandler postKillProcessHandler
     ThreadRuntimeInfoService threadRuntimeInfoService
 
@@ -1417,6 +1419,67 @@ class ProcessManagerService implements InitializingBean {
             return Boolean.TRUE
         }
         return Boolean.TRUE
+    }
+
+    /**
+     * Serves for searching and deletion of unnecessary node assignees.
+     * It means that if node has multiple assignees one of them will be responsible for this node. Such user will be the only assignee for it
+     * and other assignees won't have more access to it.
+     *
+     * @param processID Process key (Long type)
+     * @param nodeID Node ID (String type). Example: "TestApproval"
+     * @param user Assignee that will be the only responsible for provided node.
+     * @param locale Locale for messages and errors representation.
+     * @param excludedRoles Roles that will not be taken into account on assignee search(roles that mustn't be deleted from assignees). Optional.
+     * @param excludedGroups Groups that will not be taken into account on assignee search(groups that mustn't be deleted from assignees). Optional.
+     * @param excludedUsers Users that will not be taken into account on assignee search(users that mustn't be deleted from assignees). Optional.
+     * @return Map that contains <i>message</i> field and <i>errors</i> & <i>warnings</i> collection.
+     */
+    def reserveNode(String processID, String nodeID, String user, Locale locale, List excludedRoles = null, List excludedGroups = null, List excludedUsers = null) {
+
+        def result = [:]
+
+        BasicProcess process = BasicProcess.get(processID)
+
+        if (!process) {
+            result.error = messageSource.getMessage('plugin.grailsflow.message.errorProcessId', [processID] as Object[], locale)
+            return result
+        }
+
+        Collection<ProcessAssignee> assigneesToRemove = ProcessAssignee.createCriteria().list {
+            eq('process', process)
+            eq('nodeID', nodeID)
+
+            not {
+                or {
+                    eq('assigneeID', AuthoritiesUtils.getUserAuthority(user))
+                    eq('assigneeID', AuthoritiesUtils.getRoleAuthority("ADMIN"))
+
+                    if (excludedRoles) {
+                        'in'('assigneeID', AuthoritiesUtils.getRoleAuthorities(excludedRoles))
+                    }
+
+                    if (excludedGroups) {
+                        'in'('assigneeID', AuthoritiesUtils.getGroupAuthorities(excludedGroups))
+                    }
+
+                    if (excludedUsers) {
+                        'in'('assigneeID', AuthoritiesUtils.getUserAuthorities(excludedUsers))
+                    }
+                }
+            }
+        }
+
+        if (!assigneesToRemove) {
+            result.warning = messageSource.getMessage('plugin.grailsflow.message.reservation.noOneFound', [nodeID, processID] as Object[], locale)
+            return result
+        }
+
+        assigneesToRemove*.delete(flush: true)
+
+        result.message = messageSource.getMessage('plugin.grailsflow.message.reservation.nodeReserved', [processID, nodeID, user] as Object[], locale)
+
+        return result
     }
 
     def getRunningProcesses(Integer max, Closure restrictions = null) {

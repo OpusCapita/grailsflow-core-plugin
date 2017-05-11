@@ -12,6 +12,7 @@
  * limitations under the License.
  */
 import com.jcatalog.grailsflow.model.process.BasicProcess
+import org.springframework.web.servlet.support.RequestContextUtils
 
 import javax.servlet.http.HttpServletResponse
 import java.io.PrintWriter
@@ -196,6 +197,74 @@ class ExtendedProcessManagementController extends GrailsFlowSecureController {
       } else {
         writeErrorResponse(response, "Process startup failed")
       }
+    }
+
+    /**
+     * Validates input parameters and calls service method for node reservation for provided user.
+     * It means that if node has multiple assignees one of them can take care of this node. Such user will be the only assignee for it
+     * and other assignees won't have more access to it.
+     *
+     * @param processID Process key (Long type)
+     * @param nodeID Node ID (String type). Example: "TestApproval"
+     * @param user Assignee that will be the only responsible for provided node.
+     * @param excludedRoles Roles that will not be taken into account on assignee search(roles that mustn't be deleted from assignees). Separated with ',' sign. Optional.
+     * @param excludedGroups Groups that will not be taken into account on assignee search(groups that mustn't be deleted from assignees). Separated with ',' sign. Optional.
+     * @param excludedUsers Users that will not be taken into account on assignee search(users that mustn't be deleted from assignees). Separated with ',' sign. Optional.
+     * @param backUrl URL to redirect after reservation complete.  Optional.
+     * @return If <i>backUrl</i> is provided reservation results will be available in <b>flash.message</b>, <b>flash.errors</b> or <b>flash.warnings</b> collection.
+     * Otherwise it will render plaintext with reservation results.
+     */
+    def reserveNode() {
+
+        String processID = params.processID
+        String nodeID = params.nodeID
+        String user = params.user
+
+        List excludedRoles = params.excludedRoles?.split(',')*.trim()
+        List excludedGroups = params.excludedGroups?.split(',')*.trim()
+        List excludedUsers = params.excludedUsers?.split(',')*.trim()
+
+        flash.errors = []
+        flash.warnings = []
+
+        if (!processID) {
+            flash.errors << g.message(code: 'plugin.grailsflow.message.processID.required')
+        }
+
+        if (!nodeID) {
+            flash.errors << g.message(code: 'plugin.grailsflow.message.nodeID.required')
+        }
+
+        if (!user) {
+            flash.errors << g.message(code: 'plugin.grailsflow.message.user.required')
+        }
+
+        if (!flash.errors) {
+            def result = processManagerService.reserveNode(processID, nodeID, user, RequestContextUtils.getLocale(request),
+                    excludedRoles, excludedGroups, excludedUsers)
+
+            if (result.error) {
+                flash.errors << result.error
+            }
+
+            if (result.message) {
+                flash.message = result.message
+            }
+
+            if (result.warning) {
+                flash.warnings << result.warning
+            }
+        }
+
+        if (params.backUrl) {
+            redirect(url: params.backUrl)
+        } else {
+            if (flash.errors) {
+                writeErrorResponse(response, flash.errors.join('\n'))
+            }
+            def output = flash.message ?: flash.warnings.join('\n')
+            writeResponse(response, HttpServletResponse.SC_OK, output)
+        }
     }
 
     private void writeResponse(def response, def statusCode, def message){
