@@ -1466,7 +1466,7 @@ class ProcessManagerService implements InitializingBean {
         }
 
         ProcessAssignee.withTransaction {
-            assigneesToRemove*.delete(flush: true)
+            assigneesToRemove*.delete()
         }
 
         result.message = messageSource.getMessage('plugin.grailsflow.message.reservation.nodeReserved', [processID, nodeID, user] as Object[], locale)
