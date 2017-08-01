@@ -1426,18 +1426,16 @@ class ProcessManagerService implements InitializingBean {
      * It means that if node has multiple assignees one of them will be responsible for this node. Such user will be the only assignee for it
      * and other assignees won't have more access to it.
      *
-     * @param processID Process key (Long type)
-     * @param nodeID Node ID (String type). Example: "TestApproval"
-     * @param user Assignee that will be the only responsible for provided node.
-     * @param locale Locale for messages and errors representation.
-     * @param excludedRoles Roles that will not be taken into account on assignee search(roles that mustn't be deleted from assignees). Optional.
-     * @param excludedGroups Groups that will not be taken into account on assignee search(groups that mustn't be deleted from assignees). Optional.
-     * @param excludedUsers Users that will not be taken into account on assignee search(users that mustn't be deleted from assignees). Optional.
+     * @param processID Process key (Long type). Required.
+     * @param nodeID Node ID (String type). Example: "TestApproval". Required.
+     * @param user Assignee that will be the only responsible for provided node. Required.
+     * @param locale Locale for messages and errors representation. Required.
+     * @param excludedAssignees Assignees that will not be taken into account on assignee search(users/groups/roles that mustn't be deleted from assignees). Optional.
      * @return Map that contains <i>message</i> field and <i>errors</i> & <i>warnings</i> collection.
      */
-    def reserveNode(String processID, String nodeID, String user, Locale locale, List excludedRoles = null, List excludedGroups = null, List excludedUsers = null) {
+    Map reserveNodeForUser(Long processID, String nodeID, String user, Locale locale, Set<String> excludedAssignees = null) {
 
-        def result = [:]
+        Map result = [:]
 
         BasicProcess process = BasicProcess.get(processID)
 
@@ -1455,16 +1453,8 @@ class ProcessManagerService implements InitializingBean {
                     eq('assigneeID', AuthoritiesUtils.getUserAuthority(user))
                     eq('assigneeID', AuthoritiesUtils.getRoleAuthority("ADMIN"))
 
-                    if (excludedRoles) {
-                        'in'('assigneeID', AuthoritiesUtils.getRoleAuthorities(excludedRoles))
-                    }
-
-                    if (excludedGroups) {
-                        'in'('assigneeID', AuthoritiesUtils.getGroupAuthorities(excludedGroups))
-                    }
-
-                    if (excludedUsers) {
-                        'in'('assigneeID', AuthoritiesUtils.getUserAuthorities(excludedUsers))
+                    if (excludedAssignees) {
+                        'in'('assigneeID', excludedAssignees)
                     }
                 }
             }
@@ -1475,7 +1465,9 @@ class ProcessManagerService implements InitializingBean {
             return result
         }
 
-        assigneesToRemove*.delete(flush: true)
+        ProcessAssignee.withTransaction {
+            assigneesToRemove*.delete(flush: true)
+        }
 
         result.message = messageSource.getMessage('plugin.grailsflow.message.reservation.nodeReserved', [processID, nodeID, user] as Object[], locale)
 
