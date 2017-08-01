@@ -1,9 +1,3 @@
-import com.jcatalog.grailsflow.utils.AuthoritiesUtils
-import grails.converters.JSON
-import org.springframework.web.servlet.support.RequestContextUtils
-
-import javax.servlet.http.HttpServletResponse
-
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +11,12 @@ import javax.servlet.http.HttpServletResponse
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import com.jcatalog.grailsflow.utils.AuthoritiesUtils
+import grails.converters.JSON
+import org.springframework.web.servlet.support.RequestContextUtils
+
+import javax.servlet.http.HttpServletResponse
 
 /**
  * Controller for processing actions on process nodes.
