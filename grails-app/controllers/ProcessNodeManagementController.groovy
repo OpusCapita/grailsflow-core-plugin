@@ -86,26 +86,20 @@ class ProcessNodeManagementController {
             }
         }
 
-        if (params.backUrl) {
-            return redirect(url: params.backUrl)
-        }
-
         if (flash.errors) {
             log.error(flash.errors.join('\n'))
-            response.status = HttpServletResponse.SC_INTERNAL_SERVER_ERROR
-        } else {
-            response.status = HttpServletResponse.SC_OK
         }
-
-        Map responseData = [message: flash.message, warnings: flash.warnings, errors: flash.errors, status: response.status]
 
         withFormat {
             html {
-                render(text: responseData.toString())
+                redirect(url: params.backUrl ?: request.getHeader('Referer'))
             }
 
             json {
-                render(responseData as JSON)
+                if (flash.errors) {
+                    response.status = HttpServletResponse.SC_BAD_REQUEST
+                }
+                render([message: flash.message, warnings: flash.warnings, errors: flash.errors] as JSON)
             }
         }
     }
