@@ -23,13 +23,12 @@ class ProcessVariableService {
         Objects.requireNonNull(variableName, "ProcessVariable name can't be null")
         Objects.requireNonNull(variableValue, "ProcessVariable value can't be null")
 
-        String variableTypeName = variableValue.class.simpleName
-        def variableType = ProcessVariable.defineType(variableTypeName)
+        ProcessVariable processVariable = new ProcessVariable(
+                process: process,
+                name: variableName,
+                type: ProcessVariable.defineType(variableValue.class.simpleName)
+        )
 
-        ProcessVariable processVariable = new ProcessVariable("process": process)
-        processVariable.name = variableName
-        processVariable.type = variableType
-        processVariable.typeName = variableType == ProcessVariable.LIST ? List.class.simpleName : variableTypeName
         processVariable.value = variableValue
         processVariable.save(validate: false)
 
@@ -70,7 +69,7 @@ class ProcessVariableService {
         Objects.requireNonNull(variableName, "ProcessVariable name can't be null")
 
         List<ProcessVariable> processVariables = ProcessVariable.withCriteria {
-            eq('process', node?.process)
+            eq('process', node.process)
             eq('name', "${variableName}_${node.id}")
         }
         return processVariables

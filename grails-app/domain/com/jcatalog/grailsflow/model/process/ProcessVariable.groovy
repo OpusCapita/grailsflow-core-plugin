@@ -133,6 +133,7 @@ class ProcessVariable {
         } else if (obj instanceof List) {
             items?.clear()
             ProcessVariable tempVariable = new ProcessVariable()
+            subTypeName = obj[0]?.class?.simpleName
             obj.collect {
                 tempVariable.setValue(it)
                 this.addToItems(new ProcessVarListItem(content: tempVariable.variableValue))
