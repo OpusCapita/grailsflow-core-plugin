@@ -1429,19 +1429,16 @@ class ProcessManagerService implements InitializingBean {
      * @param processID Process key (Long type). Required.
      * @param nodeID Node ID (String type). Example: "TestApproval". Required.
      * @param user Assignee that will be the only responsible for provided node. Required.
-     * @param locale Locale for messages and errors representation. Required.
      * @param excludedAssignees Assignees that will not be taken into account on assignee search(users/groups/roles that mustn't be deleted from assignees). Optional.
-     * @return Map that contains <i>message</i> field and <i>errors</i> & <i>warnings</i> collection.
+     * @return Boolean 'true' in case of success. 'False' otherwise.
      */
-    Map reserveNodeForUser(Long processID, String nodeID, String user, Locale locale, Set<String> excludedAssignees = null) {
-
-        Map result = [:]
+    Boolean reserveNodeForUser(Long processID, String nodeID, String user, Set<String> excludedAssignees = null) {
 
         BasicProcess process = BasicProcess.get(processID)
 
         if (!process) {
-            result.error = messageSource.getMessage('plugin.grailsflow.message.errorProcessId', [processID] as Object[], locale)
-            return result
+            log.error("Process with key = '${processID}' wasn't found. Node reservation can't be done.")
+            return false
         }
 
         Collection<ProcessAssignee> assigneesToRemove = ProcessAssignee.createCriteria().list {
@@ -1461,17 +1458,17 @@ class ProcessManagerService implements InitializingBean {
         }
 
         if (!assigneesToRemove) {
-            result.warning = messageSource.getMessage('plugin.grailsflow.message.reservation.noOneFound', [nodeID, processID] as Object[], locale)
-            return result
+            log.warn("Assignees were not found for the ${nodeID} node of Process[${processID}]. No assignee was removed from the node.")
+            return false
         }
 
         ProcessAssignee.withTransaction {
             assigneesToRemove*.delete()
         }
 
-        result.message = messageSource.getMessage('plugin.grailsflow.message.reservation.nodeReserved', [processID, nodeID, user] as Object[], locale)
+        log.info("Node ${nodeID} of Process[${processID}] was reserved for ${user}.")
 
-        return result
+        return true
     }
 
     def getRunningProcesses(Integer max, Closure restrictions = null) {
