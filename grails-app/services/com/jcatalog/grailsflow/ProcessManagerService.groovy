@@ -1,4 +1,7 @@
 package com.jcatalog.grailsflow
+
+import com.jcatalog.grailsflow.bean.DynamicProcessVariableDetails
+
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -91,7 +94,8 @@ import com.jcatalog.grailsflow.cluster.GrailsflowLock
  * @author Ivan Baidakou
  */
 class ProcessManagerService implements InitializingBean {
-    boolean transactional = false // manage transactions manually
+
+    static transactional = false // manage transactions manually
 
     ProcessFactory processFactory
     NodeExecutor nodeExecutor
@@ -1510,5 +1514,88 @@ class ProcessManagerService implements InitializingBean {
         }
     }
 
-}
+    /**
+     * Store new process variable
+     *
+     * @param process - BasicProcess for which new variable should be stored to
+     * @param variableName - name of new variable
+     * @param variableValue - value of new variable
+     *
+     * @return new ProcessVariable
+     */
+    public ProcessVariable saveProcessVariable(BasicProcess process, String variableName, def variableValue) {
+        Objects.requireNonNull(process, "Parameter 'process' can't be null")
+        Objects.requireNonNull(variableName, "Parameter 'variableName' can't be null")
+        Objects.requireNonNull(variableValue, "Parameter 'variableValue' can't be null")
 
+        ProcessVariable processVariable = new ProcessVariable(
+                process: process,
+                name: variableName,
+                type: ProcessVariable.defineType(variableValue.class.simpleName)
+        )
+
+        processVariable.value = variableValue
+        processVariable.save(validate: false)
+
+        return processVariable
+    }
+
+    /**
+     * Store new dynamic process variable as <variableName_node.id> related to specific node
+     *
+     * @param variableName - name of new variable
+     * @param variableValue - value of new variable
+     * @param node - ProcessNode of the process
+     *
+     * @return new ProcessVariable
+     */
+    public ProcessVariable saveDynamicProcessVariable(String variableName, def variableValue, ProcessNode node) {
+        Objects.requireNonNull(variableName, "Parameter 'variableName' can't be null")
+        Objects.requireNonNull(variableValue, "Parameter 'variableValue' can't be null")
+        Objects.requireNonNull(node, "Parameter 'node' can't be null")
+
+        variableName = "${variableName}_${node.id}"
+
+        return saveProcessVariable(node.process, variableName, variableValue)
+    }
+
+    /**
+     * Looking for ProcessVariable with defined process with name <variableName_node.id>
+     *
+     * @param node - ProcessNode of the process
+     * @param variableName - name of new variable
+     * @param nodeId - nodeID on node for filtering
+     *
+     * @return List of all dynamic process variables
+     * with representing of detailed information with class com.jcatalog.grailsflow.bean.DynamicProcessVariableDetails
+     */
+    public List<DynamicProcessVariableDetails> findDynamicProcessVariablesDetails(String variableName, BasicProcess process, String nodeId = null) {
+        Objects.requireNonNull(variableName, "Parameter 'variableName' can't be null")
+        Objects.requireNonNull(process, "Parameter 'process' can't be null")
+
+        List<ProcessNode> processNodes = ProcessNode.withCriteria {
+            eq 'process', process
+
+            if (nodeId) {
+                eq 'nodeID', nodeId
+            }
+        }
+
+        List<DynamicProcessVariableDetails> dynamicProcessVariables = processNodes.inject([]) { List result, ProcessNode node ->
+            ProcessVariable variable = ProcessVariable.findByProcessAndName(process, "${variableName}_${node.id}")
+            if (variable) {
+                result <<
+                        new DynamicProcessVariableDetails(
+                                dynamicName: variable.name,
+                                value: variable.value,
+                                createdOnNodeID: node.nodeID,
+                                createdBy: node.caller,
+                                createdOn: node.finishedOn
+                        )
+            }
+            return result
+        }
+
+        return dynamicProcessVariables
+    }
+}
