@@ -14,10 +14,14 @@
 
 package com.jcatalog.grailsflow.bean
 
+import com.jcatalog.grailsflow.model.process.ProcessNode
+
 /**
  * Class for representing data of dynamic variable
  */
 class DynamicProcessVariableDetails {
+
+    static final String DYNAMIC_VARIABLE_NAME_SEPARATOR = '_'
 
     // variable name
     String dynamicName
@@ -33,4 +37,24 @@ class DynamicProcessVariableDetails {
 
     // node finished on
     Date createdOn
+
+    /**
+     * @return unique identifier of process node for which this dynamic variable is belongs
+     */
+    Long getNodeKey() {
+        Objects.requireNonNull(dynamicName, "Parameter 'dynamicName' can't be null")
+
+        String[] dynamicVariableNameParts = dynamicName.split(DYNAMIC_VARIABLE_NAME_SEPARATOR)
+        String rawNodeKey = dynamicVariableNameParts[1]
+
+        return rawNodeKey as Long
+    }
+
+    /**
+     * @param node instance of process node
+     * @return true if current dynamic variable is belongs to the process node, otherwise - returns false value
+     */
+    boolean isBelongsToProcessNode(ProcessNode node) {
+        nodeKey == node?.id
+    }
 }

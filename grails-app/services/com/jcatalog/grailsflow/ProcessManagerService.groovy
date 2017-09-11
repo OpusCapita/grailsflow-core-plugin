@@ -1554,7 +1554,7 @@ class ProcessManagerService implements InitializingBean {
         Objects.requireNonNull(variableValue, "Parameter 'variableValue' can't be null")
         Objects.requireNonNull(node, "Parameter 'node' can't be null")
 
-        variableName = "${variableName}_${node.id}"
+        variableName = "${variableName}${DynamicProcessVariableDetails.DYNAMIC_VARIABLE_NAME_SEPARATOR}${node.id}"
 
         return saveProcessVariable(node.process, variableName, variableValue)
     }
