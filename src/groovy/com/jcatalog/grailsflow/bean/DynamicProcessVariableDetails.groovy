@@ -23,6 +23,8 @@ class DynamicProcessVariableDetails {
 
     static final String DYNAMIC_VARIABLE_NAME_SEPARATOR = '_'
 
+    static final String DYNAMIC_VARIABLE_NAME_PATTERN = ~/^[^_]+_[0-9]+$/
+
     // variable name
     String dynamicName
 
@@ -40,9 +42,15 @@ class DynamicProcessVariableDetails {
 
     /**
      * @return unique identifier of process node for which this dynamic variable is belongs
+     * @throws IllegalArgumentException if format of 'dynamicName' property doesn't match to the pattern [string_integer]
      */
     Long getNodeKey() {
         Objects.requireNonNull(dynamicName, "Parameter 'dynamicName' can't be null")
+
+        boolean isMatchFormat = dynamicName ==~ DYNAMIC_VARIABLE_NAME_PATTERN
+        if (!isMatchFormat) {
+            throw new IllegalArgumentException("Value of 'dynamicName' [$dynamicName] should be in format [string_integer]")
+        }
 
         String[] dynamicVariableNameParts = dynamicName.split(DYNAMIC_VARIABLE_NAME_SEPARATOR)
         String rawNodeKey = dynamicVariableNameParts[1]
