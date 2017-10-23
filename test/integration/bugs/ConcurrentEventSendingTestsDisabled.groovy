@@ -1,25 +1,25 @@
 package bugs
 
-import com.jcatalog.grailsflow.status.NodeStatusEnum;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
-import org.springframework.orm.hibernate3.SessionHolder;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.springframework.orm.hibernate3.SessionFactoryUtils
+import org.springframework.orm.hibernate3.SessionHolder
+import org.springframework.transaction.support.TransactionSynchronizationManager
 import org.hibernate.FlushMode
 import com.jcatalog.grailsflow.model.process.BasicProcess
-import com.jcatalog.grailsflow.status.ProcessStatusEnum;
+import com.jcatalog.grailsflow.status.ProcessStatusEnum
 import com.jcatalog.grailsflow.model.process.*
-import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.Semaphore
 import com.jcatalog.grailsflow.engine.execution.ExecutionResultEnum
 import com.jcatalog.grailsflow.test.SharedTestArea
 
 import java.util.concurrent.TimeUnit
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CountDownLatch
 
 /**
  * Tests bug described in GFW-209
  */
-class ConcurrentEventSendingTests extends processes.AbstractProcessTestCase {
+
+// currently disabled
+class ConcurrentEventSendingTestsDisabled extends processes.AbstractProcessTestCase {
 
     void testConcurrentKill() {
         def id = processManagerService.startProcess("SleepTest", "admin", null)

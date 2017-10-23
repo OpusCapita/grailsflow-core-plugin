@@ -100,44 +100,48 @@ class ProcessProvider {
 
     // NOTE: can be null
     private String buildVariablesFilterCondition(Map variablesFilter, def params){
-        // TODO: add additional mechanism for getting string representation
-        // of ProcessVariable values
-        def varClass = new ProcessVariable()
-        StringBuffer where = new StringBuffer()
-        StringBuffer restrictions = new StringBuffer()
-        restrictions.append("""select pvar0.process from com.jcatalog.grailsflow.model.process.ProcessVariable as pvar0""")
-        def index = 1
-        variablesFilter.keySet().each() { parameter ->
-            restrictions.append(" ${index == 1 ? "where" : "and"} pvar${index - 1}.process in (")
-            restrictions.append("""select pvar${index}.process from com.jcatalog.grailsflow.model.process.ProcessVariable as pvar${index}
+        if (variablesFilter) {
+            // TODO: add additional mechanism for getting string representation
+            // of ProcessVariable values
+            def varClass = new ProcessVariable()
+            StringBuffer where = new StringBuffer()
+            StringBuffer restrictions = new StringBuffer()
+            restrictions.append("""select pvar0.process from com.jcatalog.grailsflow.model.process.ProcessVariable as pvar0""")
+            def index = 1
+            variablesFilter.keySet().each() { parameter ->
+                restrictions.append(" ${index == 1 ? "where" : "and"} pvar${index - 1}.process in (")
+                restrictions.append("""select pvar${
+                    index
+                }.process from com.jcatalog.grailsflow.model.process.ProcessVariable as pvar${index}
                                        where pvar${index}.name = (:${parameter}_name)
                                        and """)
-            params["${parameter}_name"] = parameter
+                params["${parameter}_name"] = parameter
 
-            def filter = variablesFilter[parameter] instanceof List ?
-                    variablesFilter[parameter] : [variablesFilter[parameter]]
-            filter.eachWithIndex() { obj, filterIndex ->
-                if (filterIndex > 0) {
-                    restrictions.append(" or ")
-                } else if (filterIndex == 0) {
-                    restrictions.append(" ( ")
+                def filter = variablesFilter[parameter] instanceof List ?
+                        variablesFilter[parameter] : [variablesFilter[parameter]]
+                filter.eachWithIndex() { obj, filterIndex ->
+                    if (filterIndex > 0) {
+                        restrictions.append(" or ")
+                    } else if (filterIndex == 0) {
+                        restrictions.append(" ( ")
+                    }
+                    restrictions.append(" pvar${index}.variableValue like (:${parameter}_${filterIndex}_value) ")
+                    varClass.value = obj
+                    params["${parameter}_${filterIndex}_value"] = varClass.variableValue
+                    if (filterIndex == filter.size() - 1) {
+                        restrictions.append(" ) ")
+                    }
                 }
-                restrictions.append(" pvar${index}.variableValue like (:${parameter}_${filterIndex}_value) ")
-                varClass.value = obj
-                params["${parameter}_${filterIndex}_value"] = varClass.variableValue
-                if (filterIndex == filter.size() - 1) {
-                    restrictions.append(" ) ")
-                }
+                index++
             }
-            index++
-        }
 
-        for (int i = 1; i <= index - 1; i++) {
-            restrictions.append(")")
+            for (int i = 1; i <= index - 1; i++) {
+                restrictions.append(")")
+            }
+            where.append(" (p in (${restrictions})) ")
+            return where.toString()
         }
-        where.append(" (p in (${restrictions})) ")
-        return where.toString()
-
+        return null
     }
 
     // NOTE: can be null
