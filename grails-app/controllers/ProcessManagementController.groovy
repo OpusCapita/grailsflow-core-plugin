@@ -68,8 +68,16 @@ class ProcessManagementController extends GrailsFlowSecureController {
       redirect(controller: controller, action: action, params: params)
     }
 
-
+    /**
+     * Perform redirect after success action in next order:
+     * 1. to URL from 'backUrl' request parameter
+     * 2. to controller from 'resultController' and action from 'resultAction' request parameters
+     * 3. to grailsflow url '/process/showProcessDetails'
+     */
     private def gotoResult = {
+        if (params.backUrl) {
+            return redirect(url: params.backUrl)
+        }
       def controller = params.resultController ?: processManagementResultController
       def action = params.resultAction ?: processManagementResultAction
       params.controller = controller
