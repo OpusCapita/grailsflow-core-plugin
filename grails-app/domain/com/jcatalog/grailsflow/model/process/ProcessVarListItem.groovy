@@ -47,4 +47,23 @@ class ProcessVarListItem {
         }
         return o
     }
+
+    boolean equals(o) {
+        if (this.is(o)) return true
+        if (getClass() != o.class) return false
+
+        ProcessVarListItem that = (ProcessVarListItem) o
+
+        if (id == null) return GroovyObjectSupport.equals(that)
+        if (id != that.id) return false
+
+        return true
+    }
+
+    int hashCode() {
+        if (id == null) {
+            return GroovyObjectSupport.hashCode()
+        }
+        return id.hashCode()
+    }
 }
