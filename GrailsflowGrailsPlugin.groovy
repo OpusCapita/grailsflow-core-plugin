@@ -20,20 +20,20 @@ class GrailsflowGrailsPlugin {
             "src/docs/**"
     ]
 
-    def author = "jCatalog AG"
-    def authorEmail = "july.antonicheva@jcatalog.com"
+    def author = "OpusCapita Software GmbH"
+    def authorEmail = "july.antonicheva@opuscapita.com"
     def title = "Grailsflow"
     def description = "GrailsFlow is an open source Workflow and Process Engine."
 
     // URL to the plugin's documentation
-    def documentation = "http://jcatalog.github.io/grailsflow-core-plugin/"
+    def documentation = "http://opuscapita.github.io/grailsflow-core-plugin/"
     def license = "APACHE"
-    def organization = [ name: "jCatalog AG", url: "http://grailsflow.org/" ]
+    def organization = [ name: "OpusCapita Software GmbH", url: "https://www.opuscapita.com/" ]
     def developers = [
             [ name: "July Antonicheva", email: "july.antonicheva@jcatalog.com" ]
     ]
     def issueManagement = [ system: "JIRA", url: "http://jira.jcatalog.com/browse/GFW" ]
-    def scm = [ url: "https://github.com/jCatalog/grailsflow-core-plugin" ]
+    def scm = [ url: "https://github.com/OpusCapita/grailsflow-core-plugin" ]
 
     def doWithSpring = {
       ConfigurableSimpleTrigger.metaClass.'static'.getGrailsApplication = { -> application }
