@@ -72,15 +72,6 @@ pipeline {
                 sh "grails maven-deploy -verbose -Dgrails.env=prod --offline"
             }
         }
-
-        stage('Build and deploy docs') {
-            steps {
-                echo "[STAGE] 'Build and deploy docs'"
-                sh "rm -rf plugin.xml"
-                sh "grails doc --offline"
-                sh "grails DocDeploy --offline"
-            }
-        }
     }
 
     post {
