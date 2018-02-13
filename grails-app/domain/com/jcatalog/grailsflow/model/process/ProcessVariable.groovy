@@ -220,7 +220,7 @@ class ProcessVariable {
 	                }
                 case LIST:
                     if (variable) {
-                        Set<ProcessVarListItem> items = variable?.items
+                        List<ProcessVarListItem> items = variable?.items?.sort(false)
                         List values = []
                         items?.each() {
                             values << getConvertedValue(it.content, variable?.subTypeName, variable)
