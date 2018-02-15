@@ -58,6 +58,8 @@ class ProcessVariable {
     String subTypeName
     int type
 
+    SortedSet items
+
     static hasMany = [items: ProcessVarListItem]
     static belongsTo = [ process: BasicProcess ]
     
@@ -220,7 +222,7 @@ class ProcessVariable {
 	                }
                 case LIST:
                     if (variable) {
-                        List<ProcessVarListItem> items = variable?.items?.sort(false)
+                        Set<ProcessVarListItem> items = variable?.items
                         List values = []
                         items?.each() {
                             values << getConvertedValue(it.content, variable?.subTypeName, variable)

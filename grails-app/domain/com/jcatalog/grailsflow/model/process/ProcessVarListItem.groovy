@@ -14,6 +14,7 @@
 package com.jcatalog.grailsflow.model.process
 
 import com.jcatalog.grailsflow.process.Link
+import org.apache.commons.lang.builder.CompareToBuilder
 
 /**
  * Process variable describes a variable for the process.
@@ -22,7 +23,7 @@ import com.jcatalog.grailsflow.process.Link
  * @author Stephan Albers
  * @author July Karpey
  */
-class ProcessVarListItem {
+class ProcessVarListItem implements Comparable {
     String content
 
     static belongsTo = [ processVariable: ProcessVariable ]
@@ -65,5 +66,11 @@ class ProcessVarListItem {
             return GroovyObjectSupport.hashCode()
         }
         return id.hashCode()
+    }
+
+    @Override
+    int compareTo(Object o) {
+        ProcessVarListItem listItem = (ProcessVarListItem) o
+        return new CompareToBuilder().append(this.id, listItem.id).append(this.hashCode(), listItem.hashCode()).toComparison()
     }
 }
