@@ -159,3 +159,17 @@ echo "[INFO] Committing changes."
 echo "[INFO] ================================================================================================="
 git commit -am "Advancing project version to the next development - $SNAPSHOT_VERSION"
 push
+
+echo -e "\n[INFO] ================================================================================================="
+echo "[INFO] Updating common dependencies."
+echo "[INFO] ================================================================================================="
+git clone git@github.com:OpusCapita/common-dependencies.git common-dependencies
+cd common-dependencies
+groovy /bin/commonDependenciesUpdate.groovy "${RELEASE_VERSION}"
+
+echo -e "\n[INFO] ================================================================================================="
+echo "[INFO] Updating common dependencies."
+echo "[INFO] ================================================================================================="
+git clone git@github.com:OpusCapita/common-dependencies.git common-dependencies
+cd common-dependencies
+groovy /bin/commonDependenciesUpdate.groovy "${RELEASE_VERSION}"
