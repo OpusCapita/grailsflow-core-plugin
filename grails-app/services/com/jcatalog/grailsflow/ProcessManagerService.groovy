@@ -1,6 +1,7 @@
 package com.jcatalog.grailsflow
 
 import com.jcatalog.grailsflow.bean.DynamicProcessVariableDetails
+import com.jcatalog.grailsflow.jobs.SendEventJob
 
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -294,7 +295,7 @@ class ProcessManagerService implements InitializingBean {
         ProcessNodeDef startNodeDef = processClass.startNode
         startNodeDef.processDef = new ProcessDef(processID:  processTypeID)
         // initialize start node
-        def startNode = initNewNode(startNodeDef, null, user, processClass.nodeInfos[startNodeDef.nodeID])
+        ProcessNode startNode = initNewNode(startNodeDef, null, user, processClass.nodeInfos[startNodeDef.nodeID])
 
         threadRuntimeInfoService.invokeInCurrentThread(basicProcess.id,{ ProcessNotifier notifier ->
             try {
@@ -335,8 +336,17 @@ class ProcessManagerService implements InitializingBean {
                         }
                     }
                 }
+
+                if (startNodeDef.forcedStart) {
+                    grailsflowLockService.lockProcessExecution(startNode)
+
+                    log.info "Forced start is enabled for '$startNode.nodeID' node of process #$basicProcess.id($processTypeID)"
+                    invokeNodeExecution(basicProcess.id, startNode.nodeID, null, user, variables)
+                }
             } catch (Throwable ex) {
                 log.error("Unexpected exception occurred during process starting! ", ex)
+            } finally {
+                grailsflowLockService.unlockProcessExecution(startNode)
             }
         })
 

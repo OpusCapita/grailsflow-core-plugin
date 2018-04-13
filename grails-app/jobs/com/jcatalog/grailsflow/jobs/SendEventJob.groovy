@@ -1,3 +1,5 @@
+package com.jcatalog.grailsflow.jobs
+
 import com.jcatalog.grailsflow.model.process.ProcessNode
 import com.jcatalog.grailsflow.model.process.BasicProcess
 /**

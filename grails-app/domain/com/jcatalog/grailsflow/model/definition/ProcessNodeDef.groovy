@@ -47,11 +47,13 @@ class ProcessNodeDef {
 
     String protocolGroup
 
+    boolean forcedStart
+
     static belongsTo = [ processDef: ProcessDef ]
     static hasMany = [ actionStatements: ActionStatement, assignees: ProcessDefAssignee, transitions: ProcessTransitionDef, transitions2DestinationNode: Transition2DestinationNode, variables2NodeVisibility: Variable2NodeVisibility ]
     static mappedBy = [ assignees: "processNodeDef", transitions: "fromNode", transitions2DestinationNode: "destinationNode", variables2NodeVisibility: "node" ]
 
-    static transients = [ "incomingTransitions", "variablesVisibility" ]
+    static transients = [ "incomingTransitions", "variablesVisibility", "forcedStart" ]
 
     static constraints = {
         nodeID(unique: 'processDef')

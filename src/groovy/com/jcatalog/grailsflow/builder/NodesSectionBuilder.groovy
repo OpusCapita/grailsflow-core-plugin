@@ -216,6 +216,14 @@ class NodesSectionBuilder extends AbstractSectionBuilder {
               }
           }
 
+          if (properties.forcedStart) {
+              if (properties.forcedStart instanceof Boolean) {
+                  processNode.forcedStart = properties.forcedStart
+              } else {
+                  log.error "Property 'forcedStart' should be a boolean value"
+              }
+          }
+
           if (properties.expectedDuration && properties.expectedDuration instanceof Number) {
               try {
                   processNode.expectedDuration = Long.valueOf(properties.expectedDuration as String)
