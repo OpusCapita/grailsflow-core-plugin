@@ -51,9 +51,9 @@
             content += "${g.message(code: 'plugin.grailsflow.label.linkDescription')}";
             content += '&nbsp;<input value="'+value[1]+'" type="text" size="25" name="listItemValue_'+varName+'_desc_'+index+'"/>&nbsp;&nbsp;'
         } else if (newType == 'Date'){
-            content += " <script type='text/javascript'>jQuery.noConflict();";
-            content += "jQuery(document).ready(function(\$){";
-            content += " \$('#listItemValue_"+varName+"_"+index+"').datepicker({dateFormat: convertDatePatternFromJavaToJqueryDatePicker('"+"${gf.datePattern()}"+"'), showOn: 'button'}); }) <\/script>";
+            content += " <script type='text/javascript'>";
+            content += "jQuery(document).ready(function(){";
+            content += " jQuery('#listItemValue_"+varName+"_"+index+"').datepicker({dateFormat: convertDatePatternFromJavaToJqueryDatePicker('"+"${gf.datePattern()}"+"'), showOn: 'button'}); }) <\/script>";
             content += ' <input name="listItemValue_'+varName+"_"+index+'" id="listItemValue_'+varName+"_"+index+'" value = "'+value+'" maxlength="20" readonly="true"/>'
         } else if (newType == 'String') {
             content += ' <textarea cols="60" rows="3" name="listItemValue_'+varName+'_'+index+'">' + value + '</textarea>&nbsp;&nbsp;'

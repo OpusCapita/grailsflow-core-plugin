@@ -52,9 +52,7 @@
                  lines.push(line)
                }
 
-               jQuery.noConflict();
-
-               jQuery(document).ready(function($){
+               jQuery(document).ready(function(){
                  jQuery.jqplot.config.enablePlugins = true;
                  jQuery.jqplot("graphic", lines,
                            { title: '',

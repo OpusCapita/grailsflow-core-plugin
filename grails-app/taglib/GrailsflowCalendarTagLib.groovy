@@ -27,9 +27,8 @@ class GrailsflowCalendarTagLib {
     def bootstrapCalendar = { attrs ->
      out << """
       <script type="text/javascript">
-        jQuery.noConflict();
-        jQuery(document).ready(function(\$){
-            var datePickerDomElement = \$(document.getElementById("${attrs.property}"));
+        jQuery(document).ready(function() {
+            var datePickerDomElement = jQuery(document.getElementById("${attrs.property}"));
             var format = convertDatePatternFromJavaToJqueryDatePicker("${gf.datePattern()}")
 
             var options = {
@@ -73,22 +72,21 @@ class GrailsflowCalendarTagLib {
     def dateRangePicker = { attrs ->
       out << """
       <script type="text/javascript">
-        jQuery.noConflict();
-        jQuery(document).ready(function(\$){
+        jQuery(document).ready(function() {
                 var elFrom = document.getElementById("${attrs.fromId}");
-                var elTo =document.getElementById("${attrs.toId}");
+                var elTo = document.getElementById("${attrs.toId}");
 
                 //After the 'from' date was selected we need to focus on 'to' field.
                 var onChangeDateHandler = function(e){
-                    if(e.target == elFrom && !\$(elFrom).is(':focus')){
-                        \$(elTo).focus();
+                    if(e.target == elFrom && !jQuery(elFrom).is(':focus')){
+                        jQuery(elTo).focus();
                     }
                 };
                 var format = convertDatePatternFromJavaToJqueryDatePicker("${gf.datePattern()}")
                 var datepickerProps = {"autoclose":true,"todayHighlight":true,"todayBtn":"linked","clearBtn":true,
                 "format": format,"language":"${RCU.getLocale(request)}"};
 
-                \$(elFrom).parent().datepicker(datepickerProps).on('changeDate', onChangeDateHandler);
+                jQuery(elFrom).parent().datepicker(datepickerProps).on('changeDate', onChangeDateHandler);
             });
         </script>
         <div class="input-daterange input-group">

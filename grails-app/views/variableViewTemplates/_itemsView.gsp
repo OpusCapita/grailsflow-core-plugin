@@ -80,9 +80,9 @@
             } else {
                 var id = 'listItemValue_'+varName+"_"+index
 
-                content += " <script type='text/javascript'>jQuery.noConflict();\n"
-                content += "jQuery(document).ready(function(\$){"
-                content += " var datePickerDomElement = $(document.getElementById('"+id+"'));\n"
+                content += " <script type='text/javascript'>\n"
+                content += "jQuery(document).ready(function(){"
+                content += " var datePickerDomElement = jQuery(document.getElementById('"+id+"'));\n"
                 content += " var format = convertDatePatternFromJavaToJqueryDatePicker('"+"${gf.datePattern()}"+"') \n"
                 content +=  "var options = { autoclose : true, todayHighlight: true, todayBtn: 'linked', format: format,"
                 content +=  "language:'"+"${org.springframework.web.servlet.support.RequestContextUtils.getLocale(request)}"+"', clearBtn: true }; \n"
