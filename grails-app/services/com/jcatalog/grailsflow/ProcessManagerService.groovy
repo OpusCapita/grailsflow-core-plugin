@@ -1608,4 +1608,33 @@ class ProcessManagerService implements InitializingBean {
 
         return dynamicProcessVariables
     }
+
+    /**
+     * Serves for retrieving latest dynamic process variable by provided name, process and node name.
+     * @param variableName Process' variable name.
+     * @param process Process from which need to retrieve variable.
+     * @param nodeId Node name.
+     * @return List of ProcessVariables sorted by identifier that corresponds to provided arguments.
+     */
+    public List<ProcessVariable> findRawDynamicProcessVariables(String variableName, BasicProcess process, String nodeId) {
+
+        ProcessNode.withCriteria {
+            eq 'process', process
+            eq 'nodeID', nodeId
+            order 'id', 'desc'
+        }.collect { ProcessNode node ->
+            findRawDynamicProcessVariable(variableName, node)
+        }.grep()
+
+    }
+
+    /**
+     * Serves for retrieving dynamic process by provided name and node.
+     * @param variableName Process' variable name.
+     * @param node ProcessNode from which need to retrieve variable.
+     * @return ProcessVariable that corresponds to provided arguments.
+     */
+    public ProcessVariable findRawDynamicProcessVariable(String variableName, ProcessNode node) {
+        ProcessVariable.findByProcessAndName(node.process, "${variableName}_${node.id}")
+    }
 }
