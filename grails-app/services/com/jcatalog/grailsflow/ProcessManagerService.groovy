@@ -1477,7 +1477,9 @@ class ProcessManagerService implements InitializingBean {
         }
 
         ProcessAssignee.withTransaction {
-            assigneesToRemove*.delete()
+            assigneesToRemove.each {
+                process.removeFromAssignees(it)
+            }
         }
 
         log.info("Node ${nodeID} of Process[${processID}] was reserved for ${user}.")
