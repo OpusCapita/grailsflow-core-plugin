@@ -1446,7 +1446,7 @@ class ProcessManagerService implements InitializingBean {
      * @param excludedAssignees Assignees that will not be taken into account on assignee search(users/groups/roles that mustn't be deleted from assignees). Optional.
      * @return Boolean 'true' in case of success. 'False' otherwise.
      */
-    Boolean reserveNodeForUser(Long processID, String nodeID, String user, Set<String> excludedAssignees = null) {
+    Boolean reserveNodeForUser(Long processID, String nodeID, String user, Collection<String> excludedAssignees = null) {
 
         BasicProcess process = BasicProcess.get(processID)
 
@@ -1462,7 +1462,6 @@ class ProcessManagerService implements InitializingBean {
             not {
                 or {
                     eq('assigneeID', AuthoritiesUtils.getUserAuthority(user))
-                    eq('assigneeID', AuthoritiesUtils.getRoleAuthority("ADMIN"))
 
                     if (excludedAssignees) {
                         'in'('assigneeID', excludedAssignees)
