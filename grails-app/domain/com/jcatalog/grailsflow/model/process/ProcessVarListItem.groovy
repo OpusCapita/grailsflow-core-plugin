@@ -70,8 +70,12 @@ class ProcessVarListItem implements Comparable {
 
     @Override
     int compareTo(Object o) {
+        // don't use an ordering for new created items
+        if (!this.id) {
+            return 1
+        }
         ProcessVarListItem listItem = (ProcessVarListItem) o
-        return new CompareToBuilder().append(this.id, listItem.id).append(this.content, listItem.content)
+        return new CompareToBuilder().append(this.id, listItem.id)
                 .append(this.hashCode(), listItem.hashCode()).toComparison()
     }
 }
