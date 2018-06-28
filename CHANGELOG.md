@@ -1,4 +1,10 @@
 
+[Release 1.7.15](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.7.15) Thu Jun 28 2018 16:41:52 GMT+0300 (MSK)
+=======================================================
+
+- Preparing 1.7.15 release (Ihar Vouchak vouchak@scand.com, 2018-06-28 15:39:33 +0300)
+- [#26](https://github.com/OpusCapita/grailsflow-core-plugin/issues/26) Fixed wrong ordering of process variable values with type 'List' (Ihar Vouchak vouchak@scand.com, 2018-06-28 15:33:31 +0300)
+
 [Release 1.7.14](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.7.14) Mon Jun 25 2018 14:29:40 GMT+0300 (MSK)
 =======================================================
 
