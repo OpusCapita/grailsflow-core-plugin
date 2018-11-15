@@ -24,23 +24,35 @@ class AuthoritiesUtils {
   static USER_PREFIX = "USER_"
   static ROLE_PREFIX = "ROLE_"
   static GROUP_PREFIX = "GROUP_"
+  static CUSTOM_PREFIX = "CUSTOM_"
 
   /**
-    * Returns user authorities using "USER_" prefix for username, "ROLE_" prefix for user roles, "GROUP_" prefix for user groups
+   * Returns user authorities using "USER_" prefix for username, "ROLE_" prefix for user roles, "GROUP_" prefix for user groups
+   *
+   */
+  public static Collection<String> getAuthorities(Collection<String> users, Collection<String> roles, Collection<String> groups) {
+    return getAuthorities(users, roles, groups, null)
+  }
+
+  /**
+    * Returns user authorities using "USER_" prefix for username, "ROLE_" prefix for user roles, "GROUP_" prefix for user groups, "CUSTOM_" prefix for custom authority names
     *
     */
-  public static Collection<String> getAuthorities(Collection<String> users, Collection<String> roles, Collection<String> groups) {
+  public static Collection<String> getAuthorities(Collection<String> users, Collection<String> roles, Collection<String> groups, Collection<String> customAuthorities) {
     def authorities = []
     if (users) {
       authorities += getUserAuthorities(users)
     }
     if (roles) {
-	    authorities += getRoleAuthorities(roles)
-	  }
+      authorities += getRoleAuthorities(roles)
+    }
     if (groups) {
       authorities += getGroupAuthorities(groups)
     }
-	  return authorities*.toString()
+    if (customAuthorities) {
+      authorities += getCustomAuthorities(customAuthorities)
+    }
+    return authorities*.toString()
   }
 
   /**
@@ -116,6 +128,13 @@ class AuthoritiesUtils {
     */
   public static Collection<String> getGroupAuthorities(Collection<String> groups) {
     return groups ? groups.findAll(){ it }.collect() { "${GROUP_PREFIX}${it}".toString() } : []
+  }
+
+  /**
+   * Create custom authorities from authority names by adding "CUSTOM_" prefix.
+   */
+  public static Collection<String> getCustomAuthorities(Collection<String> customAuthorities) {
+    return customAuthorities ? customAuthorities.collect() { "${CUSTOM_PREFIX}${it}".toString() } : []
   }
 
 }

@@ -69,4 +69,12 @@ interface SecurityHelper {
      */
     List<String> getUserGroups(def session)    
 
+    /**
+     * Returns the custom authorities list for logged user.
+     *
+     * @param session
+     *
+     * @return list of custom authorities
+     */
+    List<String> getCustomUserAuthorities(def session)
 }
