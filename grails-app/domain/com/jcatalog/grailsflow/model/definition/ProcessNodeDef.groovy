@@ -67,8 +67,8 @@ class ProcessNodeDef {
     static mapping = {
         processDef index: 'IDX_PROCESS_NODE_DEF_2'
         assignees cascade: "all,delete-orphan"
-        label indexColumn:[name:"language", type:String, length:2],joinTable:[key:'process_node_def_id' ,column:'label'],length:255
-        description indexColumn:[name:"language", type:String, length:2],joinTable:[key:'process_node_def_id' ,column:'description'],length:255
+        label indexColumn:[name:"language", type:String, length:5],joinTable:[key:'process_node_def_id' ,column:'label'],length:255
+        description indexColumn:[name:"language", type:String, length:5],joinTable:[key:'process_node_def_id' ,column:'description'],length:255
         actionStatements cascade: "all,delete-orphan"
         transitions cascade: "all,delete-orphan"
         transitions2DestinationNode: cascade: "all,delete-orphan"

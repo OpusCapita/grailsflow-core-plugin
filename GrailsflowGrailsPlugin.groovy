@@ -45,10 +45,10 @@ class GrailsflowGrailsPlugin {
       }
 
       // format patterns
-      datePatterns(java.util.HashMap, ['en':'MM/dd/yyyy', 'de':'dd.MM.yyyy'])
-      dateTimePatterns(java.util.HashMap, ['en':'MM/dd/yy HH:mm', 'de':'dd.MM.yy HH:mm'])
-      numberPatterns(java.util.HashMap, ['en':'0.00', 'de':'0.00'])
-      decimalSeparators(java.util.HashMap, ['en':'.', 'de':','])
+      datePatterns(java.util.HashMap, ['en':'MM/dd/yyyy', 'de':'dd.MM.yyyy', 'zh_CN': 'yyyy-MM-dd'])
+      dateTimePatterns(java.util.HashMap, ['en':'MM/dd/yy HH:mm', 'de':'dd.MM.yy HH:mm', 'zh_CN': 'yyyy-MM-dd HH:mm'])
+      numberPatterns(java.util.HashMap, ['en':'0.00', 'de':'0.00', 'zh_CN': '0.00'])
+      decimalSeparators(java.util.HashMap, ['en':'.', 'de':',', 'zh_CN': '.'])
       defaultLocale(java.lang.String, "en")
 
       // default workarea configuration
@@ -240,6 +240,9 @@ class GrailsflowGrailsPlugin {
       eventEmailProcessor(com.jcatalog.grailsflow.extension.email.GrailsflowEventEmailProcessor) {
         processManagerService = ref('processManagerService')
       }
+
+      // A plugin that override grailsflow ui
+      grailsflowUiPlugin(java.lang.String, '')
 
         if(!application.config.grails.converters.json.circular.reference.behaviour) {
             def jsonConverterConfig = new ConfigObject()

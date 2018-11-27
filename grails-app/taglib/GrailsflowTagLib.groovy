@@ -31,6 +31,7 @@ class GrailsflowTagLib {
   static namespace = "gf"
   def processManagerService
   def workareaPathProvider
+  def grailsflowUiPlugin
 
   /**
    * TODO: use g:sortableColumn instead as soos
@@ -375,15 +376,20 @@ class GrailsflowTagLib {
       def defaultTemplate = attrs.defaultTemplate
       def notFoundMessage = attrs.notFoundMessage
 
-
       // Paths to look for template. Sorted by priority of searching.
       List parameters = new ArrayList()
       if (template) {
         parameters.add([contextPath: "", template: template])
+        if (grailsflowUiPlugin) {
+          parameters.add([contextPath: "", template: template, plugin: grailsflowUiPlugin])
+        }
         parameters.add([contextPath: "", template: template, plugin: 'grailsflow'])
       }
       if (defaultTemplate) {
         parameters.add([contextPath: "", template: defaultTemplate])
+        if (grailsflowUiPlugin) {
+          parameters.add([contextPath: "", template: defaultTemplate, plugin: grailsflowUiPlugin])
+        }
         parameters.add([contextPath: "", template: defaultTemplate, plugin: 'grailsflow'])
       }
 
@@ -433,7 +439,10 @@ class GrailsflowTagLib {
       def translations = attrs.translations
       def defaultValue = attrs.default
       def lang = attrs.lang ? attrs.lang : RCU.getLocale(request)?.language.toString()
-      
+
+      // this is an ugly hack, which change zh to zh_CN or zh_TW
+      if (lang == 'zh') lang = RCU.getLocale(request)?.toString()
+
       out << TranslationUtils.getTranslatedValue(translations, defaultValue, lang)
     }
 

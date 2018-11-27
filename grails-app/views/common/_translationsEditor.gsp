@@ -108,7 +108,7 @@
     
   </r:script>
 
-  <g:set var="langs" value="${supportedLanguages != null ? supportedLanguages : ['en', 'de']}"/>
+  <g:set var="langs" value="${supportedLanguages != null ? supportedLanguages : ['en', 'de', 'zh_CN']}"/>
   <g:set var="visible_langs" value="${langs - translations?.keySet()}"/>
   <g:set var="textarea" value="${textarea != null ? textarea : false}"/>
   

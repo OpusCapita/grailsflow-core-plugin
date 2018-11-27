@@ -52,8 +52,8 @@ class ProcessDef {
       nodes cascade: "all,delete-orphan"
       variables cascade: "all,delete-orphan"
       assignees cascade: "all,delete-orphan"
-      label indexColumn:[name:"language", type:String, length:2],joinTable:[key:'process_def_id' ,column:'label'],length:255
-      description indexColumn:[name:"language", type:String, length:2],joinTable:[key:'process_def_id' ,column:'description'],length:255
+      label indexColumn:[name:"language", type:String, length:5],joinTable:[key:'process_def_id' ,column:'label'],length:255
+      description indexColumn:[name:"language", type:String, length:5],joinTable:[key:'process_def_id' ,column:'description'],length:255
     }
 
     static transients = [ "startNode", "processAssignees" ]

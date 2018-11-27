@@ -18,6 +18,7 @@
          <g:render plugin="grailsflow" template="/commons/global"/>
          <title><g:message code="plugin.grailsflow.title.groups"/></title>
          <r:require modules="jquery" />
+         <r:require modules="bootstrap"/>
          <r:script>
            function addGroup(group) {
              opener.addGroups(group)

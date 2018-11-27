@@ -18,6 +18,7 @@
          <g:render plugin="grailsflow" template="/commons/global"/>
          <title><g:message code="plugin.grailsflow.title.users"/></title>
          <r:require modules="jquery" />
+         <r:require modules="bootstrap"/>
          <r:script>
            function addUser(user) {
              opener.addUsers(user)
