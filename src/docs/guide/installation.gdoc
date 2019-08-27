@@ -62,10 +62,7 @@ default configuration, but can be easily defined in the Spring configuration of 
     appExternalID(java.lang.String, "grailsflow")    
 
     < !-- Default format patterns -->
-    datePatterns(java.util.HashMap, ['en':'MM/dd/yyyy', 'de':'dd.MM.yyyy']) 
-    dateTimePatterns(java.util.HashMap, ['en':'MM/dd/yy HH:mm', 'de':'dd.MM.yy HH:mm']) 
-    numberPatterns(java.util.HashMap, ['en':'0.00', 'de':'0.00']) 
-    decimalSeparators(java.util.HashMap, ['en':'.', 'de':','])  
+    grailsflowFormatPatternsProvider(com.jcatalog.grailsflow.format.DefaultGrailsflowFormatPatternsProvider)
 
     < !-- bean allows worklist filtering.
       NOTE: if set to TRUE - it can cause problems with performance

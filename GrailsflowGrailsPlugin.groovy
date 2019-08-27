@@ -1,4 +1,3 @@
-
 import com.jcatalog.grailsflow.model.process.FlowStatus
 
 import com.jcatalog.grailsflow.grails.ListFactoryBean
@@ -12,7 +11,7 @@ import com.jcatalog.grailsflow.status.ProcessStatusEnum
 import com.jcatalog.grailsflow.scheduling.triggers.ConfigurableSimpleTrigger
 
 class GrailsflowGrailsPlugin {
-    def version = "1.7.16"
+    def version = "1.8.0-SNAPSHOT"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.3 > *"
     def dependsOn = [quartz: "1.0.1 > *"]
@@ -45,10 +44,7 @@ class GrailsflowGrailsPlugin {
       }
 
       // format patterns
-      datePatterns(java.util.HashMap, ['en':'MM/dd/yyyy', 'de':'dd.MM.yyyy'])
-      dateTimePatterns(java.util.HashMap, ['en':'MM/dd/yy HH:mm', 'de':'dd.MM.yy HH:mm'])
-      numberPatterns(java.util.HashMap, ['en':'0.00', 'de':'0.00'])
-      decimalSeparators(java.util.HashMap, ['en':'.', 'de':','])
+      grailsflowFormatPatternsProvider(com.jcatalog.grailsflow.format.DefaultGrailsflowFormatPatternsProvider)
       defaultLocale(java.lang.String, "en")
 
       // default workarea configuration

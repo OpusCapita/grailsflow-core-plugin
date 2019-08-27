@@ -12,6 +12,8 @@
  * limitations under the License.
  */
 
+import com.jcatalog.grailsflow.format.GrailsflowFormatPatternsProvider
+
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
@@ -25,13 +27,10 @@ import org.springframework.web.servlet.support.RequestContextUtils as RCU
  * Format date and number instances. 
  */
 class GrailsflowFormatTagLib {
+
     static namespace = "gf"
 
-    def datePatterns
-    def dateTimePatterns
-
-    def numberPatterns
-    def decimalSeparators
+    GrailsflowFormatPatternsProvider grailsflowFormatPatternsProvider
 
     def defaultLocale
 
@@ -89,6 +88,7 @@ class GrailsflowFormatTagLib {
      */
     def datePattern = { attrs ->
       def locale = attrs.locale ? attrs.locale : RCU.getLocale(request)
+      Map<String, String> datePatterns = grailsflowFormatPatternsProvider.datePatterns
       def pattern = datePatterns?.get(locale?.language)
 
       // if no pattern for specified locale, then use default
@@ -123,6 +123,7 @@ class GrailsflowFormatTagLib {
      */
     def dateTimePattern = { attrs ->
       def locale = attrs.locale ? attrs.locale : RCU.getLocale(request)
+      Map<String, String> dateTimePatterns = grailsflowFormatPatternsProvider.dateTimePatterns
       def pattern = dateTimePatterns?.get(locale.language)
 
       // if no pattern for specified locale, then use default
@@ -157,6 +158,7 @@ class GrailsflowFormatTagLib {
      */
     def numberPattern = { attrs ->
       def locale = attrs.locale ? attrs.locale : RCU.getLocale(request)
+      Map<String, String> numberPatterns = grailsflowFormatPatternsProvider.numberPatterns
       def pattern = numberPatterns?.get(locale.language)
       // if no pattern for specified locale, then use default
       if (pattern == null && defaultLocale) {
@@ -191,6 +193,7 @@ class GrailsflowFormatTagLib {
      */
     def decimalSeparator = { attrs ->
       def locale = attrs.locale ? attrs.locale : RCU.getLocale(request)
+      Map<String, String> decimalSeparators = grailsflowFormatPatternsProvider.decimalSeparators
       def decimalSeparator = decimalSeparators?.get(locale.language)
 
       // if no pattern for specified locale, then use default

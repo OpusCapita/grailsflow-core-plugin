@@ -77,7 +77,6 @@ class ProcessDefController extends GrailsFlowSecureController {
     def processFactory
 
     def processDefValidator
-    def datePatterns
 
     def index = {
         flash.message = ""
