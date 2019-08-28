@@ -1,4 +1,10 @@
 
+[Release 1.8.0](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.8.0) Wed Aug 28 2019 08:14:18 GMT+0300 (MSK)
+=======================================================
+
+- [#32](https://github.com/OpusCapita/grailsflow-core-plugin/issues/32) Adding formatting configuration ([#33](https://github.com/OpusCapita/grailsflow-core-plugin/issues/33)) (GitHub asergeev-sc@users.noreply.github.com, 2019-08-28 08:13:14 +0300)
+- Set up new version after release (asergeev-sc alexey.sergeev@opuscapita.com, 2019-08-27 16:39:01 +0300)
+
 [Release 1.7.15](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.7.15) Thu Jun 28 2018 16:41:52 GMT+0300 (MSK)
 =======================================================
 
