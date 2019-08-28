@@ -55,6 +55,7 @@ class GrailsflowFormatPatternsService {
             def clone = closure.clone()
             // inject 'applicationContext' so it is available inside closure
             clone.delegate = ['applicationContext': grailsApplication.mainContext]
+            clone.resolveStrategy = Closure.DELEGATE_FIRST
             return clone()
         }
         return defaultResult

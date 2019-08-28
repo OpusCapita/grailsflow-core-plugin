@@ -171,4 +171,39 @@ class GrailsflowFormatPatternsServiceTests extends Specification {
         service.numberPatterns == numberPatterns
         service.decimalSeparators == decimalSeparators
     }
+
+    def "check applicationContext accessibility"() {
+        setup:
+        def service = new GrailsflowFormatPatternsService()
+
+        when:
+        def applicationContext = [
+            datePatterns: ['it': 'dd-mm-yyy'],
+            dateTimePatterns: ['es': 'dd-mm-yyy HH:mm:ss'],
+            numberPatterns: ['fr': '0.0'],
+            decimalSeparators: ['dk': '.']
+        ]
+
+        def config = new ConfigObject()
+        config.putAll([
+            grailsflow: [
+                format: [
+                    'datePatterns': { applicationContext.datePatterns },
+                    'dateTimePatterns': { applicationContext.dateTimePatterns },
+                    'numberPatterns': { applicationContext.numberPatterns },
+                    'decimalSeparators': { applicationContext.decimalSeparators }
+                ]
+            ]
+        ])
+        service.grailsApplication = [
+            'mainContext': applicationContext,
+            'config': config
+        ]
+
+        then:
+        service.datePatterns == applicationContext.datePatterns
+        service.dateTimePatterns == applicationContext.dateTimePatterns
+        service.numberPatterns == applicationContext.numberPatterns
+        service.decimalSeparators == applicationContext.decimalSeparators
+    }
 }
