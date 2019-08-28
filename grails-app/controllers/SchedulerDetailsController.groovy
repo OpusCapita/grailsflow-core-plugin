@@ -33,7 +33,6 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
     def processManagerService
     def workareaPathProvider
     def documentsPath
-    def datePatterns
 
     def schedulerOperationsService
     

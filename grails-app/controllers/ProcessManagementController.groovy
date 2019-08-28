@@ -49,7 +49,6 @@ class ProcessManagementController extends GrailsFlowSecureController {
 
     def workareaPathProvider
     def documentsPath
-    def datePatterns
 
     // default outcome for error
     def processManagementErrorController = "process"

@@ -58,7 +58,6 @@ class ProcessController extends GrailsFlowSecureController {
     def processManagerService
     def processWorklistService
     def processAdministrationService
-    def datePatterns
     // Export service provided by Export plugin
     def exportService
     def additionalWorklistColumns
