@@ -1,4 +1,9 @@
 
+[Release 1.8.1](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.8.1) Wed Aug 28 2019 15:21:55 GMT+0300 (MSK)
+=======================================================
+
+- Fixing 'applicationContext' accessibility in configured format closures (asergeev-sc alexey.sergeev@opuscapita.com, 2019-08-28 15:19:10 +0300)
+
 [Release 1.8.0](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.8.0) Wed Aug 28 2019 08:14:18 GMT+0300 (MSK)
 =======================================================
 
