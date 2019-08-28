@@ -17,10 +17,10 @@ package com.jcatalog.grailsflow.format
 /**
  * Provides different kinds of data formats that are configured
  * via grailsApplication.config.grailsflow.format.* closures:
- * - datePatterns - closure that returns Map where key is locale tag (String) and value is date pattern (String)
- * - dateTimePatterns - closure that returns Map where key is locale tag (String) and value is date & time pattern (String)
- * - numberPatterns - closure that returns Map where key is locale tag (String) and value is number pattern (String)
- * - decimalSeparators - closure that returns Map where key is locale tag (String) and value is decimal separator (String)
+ * - datePatterns - closure that returns Map where key is locale language (String) and value is date pattern (String)
+ * - dateTimePatterns - closure that returns Map where key is locale language (String) and value is date & time pattern (String)
+ * - numberPatterns - closure that returns Map where key is locale language (String) and value is number pattern (String)
+ * - decimalSeparators - closure that returns Map where key is locale language (String) and value is decimal separator (String)
  *  Each closure can access 'applicationContext' that is part of closure execution binding
  */
 class GrailsflowFormatPatternsService {
@@ -54,7 +54,7 @@ class GrailsflowFormatPatternsService {
             // we don't touch/modify original closure but clone it
             def clone = closure.clone()
             // inject 'applicationContext' so it is available inside closure
-            clone.delegate = ['applicationContext': grailsApplication.applicationContext]
+            clone.delegate = ['applicationContext': grailsApplication.mainContext]
             return clone()
         }
         return defaultResult

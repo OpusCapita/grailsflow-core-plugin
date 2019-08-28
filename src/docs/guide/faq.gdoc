@@ -125,7 +125,7 @@ grailsflow.i18n.locations = ["WEB-INF/grails-app/i18n/"]
 
 h4. 7. Data Formating
 
-You could configure how Date/Time and Numbers should be displayed on UI depending on locale. For this
+You could configure how Date/Time and Numbers should be displayed on UI depending on locale language. For this
 you could to define configuration closures. There are 4 configuration closure that configures formats:
 - datePatterns
 - dateTimePatterns
@@ -140,7 +140,7 @@ grailsflow {
         datePatterns = {
             [
                 'en_GB': 'dd-MM-yyyy',
-                'en': 'yyyy-MM-dd',,
+                'en': 'yyyy-MM-dd',
                 'de': 'MM-dd-yyyy'
             ]
         }
