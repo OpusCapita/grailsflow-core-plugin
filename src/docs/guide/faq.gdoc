@@ -1,8 +1,8 @@
-h4.  1. How to customize worklist page. 
+h4.  1. How to customize worklist page.
 
-There are several ways to customize the worklist page. To enhance the worklist table with more columns - such as any process variable values etc., then configure the additional columns using the Spring ('additionalWorklistColumns' bean) : 
+There are several ways to customize the worklist page. To enhance the worklist table with more columns - such as any process variable values etc., then configure the additional columns using the Spring ('additionalWorklistColumns' bean) :
 
-{code} 
+{code}
   <bean id="additionalWorklistColumns" class="java.util.ArrayList">
     <constructor-arg>
       <list>
@@ -14,13 +14,13 @@ There are several ways to customize the worklist page. To enhance the worklist t
   </bean>
 {code}
 
-Also, filtering is possible in the worklist. It helps in searching for process nodes with some known variable values.  
+Also, filtering is possible in the worklist. It helps in searching for process nodes with some known variable values.
 
 *Important*  - Filtering can slow down the loading of your worklist, if you have a lot of processes in the list.
 
 If there are more then 500 processes in the worklist, get variables by splitting the parameter list into smaller sections and then combining the results. However, this requires time for execution and can slow down performance. So, by default, the filtering works well if there are no more entries than the maxRestrictedProcesses size. The behaviour can be changed by re-configuring some available Spring beans or even disabling the filtering functionality.
 
-*isWorklistFilterAvailable* - if needed, this bean defines the filtering functionality and the default value is configured to TRUE 
+*isWorklistFilterAvailable* - if needed, this bean defines the filtering functionality and the default value is configured to TRUE
 
 {code}
 
@@ -34,19 +34,19 @@ If there are more then 500 processes in the worklist, get variables by splitting
   maxRestrictedProcesses(java.lang.Integer, "2000")
 {code}
 
-Another way to customize worklist is to use your custom page with the same 
+Another way to customize worklist is to use your custom page with the same
 name and path :  _views/process/showWorklist.gsp_
 
 h4.  2. How to redirect to any custom page after sending an event.
 
-Usually, after submitting the manual form, the user is redirected, by default, to the 'showProcessDetails' page. To customize this behaviour, specify the following values on your custom gsp page : 
+Usually, after submitting the manual form, the user is redirected, by default, to the 'showProcessDetails' page. To customize this behaviour, specify the following values on your custom gsp page :
 
 {code}
  <input type="hidden" name="resultController" value="someControllerHere"/ >
  <input type="hidden" name="resultAction" value="someActionHere"/ >
 {code}
 
-Specify any additional values that should be submitted here : 
+Specify any additional values that should be submitted here :
 
 {code}
 <input type="hidden" name="userName" value="${someBean.userName}"/ >
@@ -54,27 +54,27 @@ Specify any additional values that should be submitted here :
 
 h4.  3. How to create a custom page with elements of a standard generated form
 
-If you like to use automitic form generation and don't want to create any 
-special new form for variable values, use the grailsflow template for the custom page : 
+If you like to use automitic form generation and don't want to create any
+special new form for variable values, use the grailsflow template for the custom page :
 
 {code}
    <gf:customizingTemplate template="/manualForms/variablesForm"
       model="[variables: nodeDetails.variables]" />
-{code} 
+{code}
 
-For additional node Information on your custom page, use grailsflow template *nodeInfo*: 
- 
+For additional node Information on your custom page, use grailsflow template *nodeInfo*:
+
 {code}
     <gf:customizingTemplate template="/manualForms/nodeInfo"
        model="[nodeDetails: nodeDetails]"/>
-{code} 
-  
-To assign a node to another user/role/group, use :  
- 
+{code}
+
+To assign a node to another user/role/group, use :
+
 {code}
       <gf:customizingTemplate template="/manualForms/eventForwarding"
         model="[currentAssignees: nodeDetails.assignees]"/>
-{code} 
+{code}
 
 
 h4.  4. If you don't want to have automatic starting for NodeActivatorJob and DueDateJob during application running
@@ -122,3 +122,48 @@ It is possible to specify additional i18n bundles locations for Grailsflow trans
 {code}
 grailsflow.i18n.locations = ["WEB-INF/grails-app/i18n/"]
 {code}
+
+h4. 7. Data Formating
+
+You could configure how Date/Time and Numbers should be displayed on UI depending on locale. For this
+you could to define configuration closures. There are 4 configuration closure that configures formats:
+- datePatterns
+- dateTimePatterns
+- numberPatterns
+- decimalSeparators
+
+Each closure returns a Map\<String, String\> where key is locale tag and value is corresponding confguration value:
+
+{code}
+grailsflow {
+    format {
+        datePatterns = {
+            [
+                'en_GB': 'dd-MM-yyyy',
+                'en': 'yyyy-MM-dd',,
+                'de': 'MM-dd-yyyy'
+            ]
+        }
+        dateTimePatterns = {
+            [
+                'en': 'yyyy-MM-dd HH:mm:ss'
+            ]
+        }
+        numberFormats = {
+            [
+                'en': '#0.##'
+            ]
+        }
+        decimalSeparators = {
+            [
+                'it': ','
+            ]
+        }
+    }
+}
+{code}
+
+
+
+
+

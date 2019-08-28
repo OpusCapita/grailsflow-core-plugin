@@ -44,7 +44,6 @@ class GrailsflowGrailsPlugin {
       }
 
       // format patterns
-      grailsflowFormatPatternsProvider(com.jcatalog.grailsflow.format.DefaultGrailsflowFormatPatternsProvider)
       defaultLocale(java.lang.String, "en")
 
       // default workarea configuration

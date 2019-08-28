@@ -12,25 +12,23 @@
  * limitations under the License.
  */
 
-import com.jcatalog.grailsflow.format.GrailsflowFormatPatternsProvider
-
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
-import java.text.NumberFormat 
+import java.text.NumberFormat
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 /**
- * Format date and number instances. 
+ * Format date and number instances.
  */
 class GrailsflowFormatTagLib {
 
     static namespace = "gf"
 
-    GrailsflowFormatPatternsProvider grailsflowFormatPatternsProvider
+    def grailsflowFormatPatternsService
 
     def defaultLocale
 
@@ -88,7 +86,7 @@ class GrailsflowFormatTagLib {
      */
     def datePattern = { attrs ->
       def locale = attrs.locale ? attrs.locale : RCU.getLocale(request)
-      Map<String, String> datePatterns = grailsflowFormatPatternsProvider.datePatterns
+      Map<String, String> datePatterns = grailsflowFormatPatternsService.datePatterns
       def pattern = datePatterns?.get(locale?.language)
 
       // if no pattern for specified locale, then use default
@@ -123,7 +121,7 @@ class GrailsflowFormatTagLib {
      */
     def dateTimePattern = { attrs ->
       def locale = attrs.locale ? attrs.locale : RCU.getLocale(request)
-      Map<String, String> dateTimePatterns = grailsflowFormatPatternsProvider.dateTimePatterns
+      Map<String, String> dateTimePatterns = grailsflowFormatPatternsService.dateTimePatterns
       def pattern = dateTimePatterns?.get(locale.language)
 
       // if no pattern for specified locale, then use default
@@ -158,7 +156,7 @@ class GrailsflowFormatTagLib {
      */
     def numberPattern = { attrs ->
       def locale = attrs.locale ? attrs.locale : RCU.getLocale(request)
-      Map<String, String> numberPatterns = grailsflowFormatPatternsProvider.numberPatterns
+      Map<String, String> numberPatterns = grailsflowFormatPatternsService.numberPatterns
       def pattern = numberPatterns?.get(locale.language)
       // if no pattern for specified locale, then use default
       if (pattern == null && defaultLocale) {
@@ -193,7 +191,7 @@ class GrailsflowFormatTagLib {
      */
     def decimalSeparator = { attrs ->
       def locale = attrs.locale ? attrs.locale : RCU.getLocale(request)
-      Map<String, String> decimalSeparators = grailsflowFormatPatternsProvider.decimalSeparators
+      Map<String, String> decimalSeparators = grailsflowFormatPatternsService.decimalSeparators
       def decimalSeparator = decimalSeparators?.get(locale.language)
 
       // if no pattern for specified locale, then use default

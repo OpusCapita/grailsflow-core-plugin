@@ -25,7 +25,7 @@ default configuration, but can be easily defined in the Spring configuration of 
     <!-- Necessary for uploading files. -->
     bean (org.springframework.web.multipart.commons.CommonsMultipartResolver) {
         maxUploadSize(1000000)
-    }  
+    }
 
     <!-- Default workarea configuration. The class should implement com.jcatalog.grailsflow.workarea.WorkareaPathProvider -->
     workareaPathProvider(com.jcatalog.grailsflow.workarea.GrailsflowPathProvider) {
@@ -40,29 +40,26 @@ default configuration, but can be easily defined in the Spring configuration of 
     actionsPath(java.lang.String, "actions")
 
     < !-- Root path (folder) for stored documents. The path is relative to workarea resources path -->
-    documentsPath(java.lang.String, "documents") 
+    documentsPath(java.lang.String, "documents")
 
     < !-- Root path (folder) for callback scripts. The path is relative to workarea resources path -->
-    callbacksPath(java.lang.String, "callbacks")    
+    callbacksPath(java.lang.String, "callbacks")
 
     < !-- Default scripts configuration. The class should implement com.jcatalog.grailsflow.workarea.ScriptsProvider -->
     scriptsProvider(com.jcatalog.grailsflow.workarea.GrailsflowWorkareaScriptsProvider) {
         workareaPathProvider = ref('workareaPathProvider')
-    }  
+    }
     < !-- Default configuration for threads quantity (threads that can be running concurrently) -->
     maxThreadsQuantity(java.lang.Integer, "10")
 
     < !-- Default configuration for quantity of restricted processes that used in SQL 'in' clause -->
-    maxRestrictedProcesses(java.lang.Integer, "2000")      
+    maxRestrictedProcesses(java.lang.Integer, "2000")
 
-    < !-- Default value for external application ID. It's an Application ID or name of external application: 
-     especially important if there are several applications which share the DB 
-     but have Grailsflow plugin installed in both of them. In this case Grailsflow Engine  
+    < !-- Default value for external application ID. It's an Application ID or name of external application:
+     especially important if there are several applications which share the DB
+     but have Grailsflow plugin installed in both of them. In this case Grailsflow Engine
      needs to know with which application it currently works. Can have an empty value! -->
-    appExternalID(java.lang.String, "grailsflow")    
-
-    < !-- Default format patterns -->
-    grailsflowFormatPatternsProvider(com.jcatalog.grailsflow.format.DefaultGrailsflowFormatPatternsProvider)
+    appExternalID(java.lang.String, "grailsflow")
 
     < !-- bean allows worklist filtering.
       NOTE: if set to TRUE - it can cause problems with performance
@@ -72,10 +69,10 @@ default configuration, but can be easily defined in the Spring configuration of 
 
     Also, it is possible to define some extra beans, like 'additionalWorklistColumns'
     and 'processLogDir'. They haven't default configuration, but can be easily defined
-    in Spring configuration of application, like: 
+    in Spring configuration of application, like:
 {code}
     < !-- here you can specify additional columns in worklist, also these properties will
-       be available in worklist filtering -->  
+       be available in worklist filtering -->
      <bean id="additionalWorklistColumns" class="java.util.ArrayList">
         <constructor-arg>
           <list>
@@ -94,27 +91,27 @@ default configuration, but can be easily defined in the Spring configuration of 
     < !-- process post killer handler, should implement class
       com.jcatalog.grailsflow.process.PostKillProcessHandler -->
     <bean id="postKillProcessHandler" class="com.myapp.process.MyKillProcessHandler"/>
-{code}        
+{code}
 
 2. Security configuration:
 {code}
-    < !-- Default configuration for securityHelper, should implement com.jcatalog.grailsflow.security.SecurityHelper -->  
-    securityHelper(com.jcatalog.grailsflow.security.GrailsflowSecurityHelper)  
+    < !-- Default configuration for securityHelper, should implement com.jcatalog.grailsflow.security.SecurityHelper -->
+    securityHelper(com.jcatalog.grailsflow.security.GrailsflowSecurityHelper)
 
-    < !-- Default configuration for securityHelper, should implement com.jcatalog.grailsflow.security.UsersProvider -->  
-    usersProvider(com.jcatalog.grailsflow.security.GrailsflowUsersProvider)  
+    < !-- Default configuration for securityHelper, should implement com.jcatalog.grailsflow.security.UsersProvider -->
+    usersProvider(com.jcatalog.grailsflow.security.GrailsflowUsersProvider)
 
-    < !-- Default configuration for securityHelper, should implement com.jcatalog.grailsflow.security.RolesProvider -->  
-    rolesProvider(com.jcatalog.grailsflow.security.GrailsflowRolesProvider) 
+    < !-- Default configuration for securityHelper, should implement com.jcatalog.grailsflow.security.RolesProvider -->
+    rolesProvider(com.jcatalog.grailsflow.security.GrailsflowRolesProvider)
 
-    < !-- Default configuration for securityHelper, should implement com.jcatalog.grailsflow.security.GroupsProvider -->  
+    < !-- Default configuration for securityHelper, should implement com.jcatalog.grailsflow.security.GroupsProvider -->
     groupsProvider(com.jcatalog.grailsflow.security.GrailsflowGroupsProvider)
 {code}
-      
+
 
   3.  Grailsflow engine configuration
     {code}
-    < !-- Configures actionFactory, should implement com.jcatalog.grailsflow.actions.ActionFactory class --> 
+    < !-- Configures actionFactory, should implement com.jcatalog.grailsflow.actions.ActionFactory class -->
     actionFactory(com.jcatalog.grailsflow.actions.GrailsflowActionFactory) {
         actionsPath = ref('actionsPath')
         scriptsProvider = ref('scriptsProvider')
@@ -134,34 +131,34 @@ default configuration, but can be easily defined in the Spring configuration of 
         processesPath = ref('processesPath')
     }
 
-    < !-- Default settings for cacheManager, should implement class com.jcatalog.grailsflow.cache.CacheManager --> 
+    < !-- Default settings for cacheManager, should implement class com.jcatalog.grailsflow.cache.CacheManager -->
     cacheManager(com.jcatalog.grailsflow.cache.SimpleCacheManager)
 
-    < !-- Default settings for processFactory, should implement class com.jcatalog.grailsflow.engine.ProcessFactory --> 
+    < !-- Default settings for processFactory, should implement class com.jcatalog.grailsflow.engine.ProcessFactory -->
     processFactory(com.jcatalog.grailsflow.engine.GrailsflowCachingProcessFactory) {
         processScriptProvider = ref('processScriptProvider')
         cacheManager = ref('cacheManager')
     }
 
-    < !-- Default settings for nodeExecutor bean --> 
+    < !-- Default settings for nodeExecutor bean -->
     nodeExecutor(com.jcatalog.grailsflow.engine.execution.NodeExecutor) {
         actionFactory = ref('actionFactory')
     }
 {code}
-      
+
 
  4. Validation beans:
   {code}
     < !-- Default settings for process definition validation bean, should implement class    com.jcatalog.grailsflow.validation.Validator -->
     processDefValidator(com.jcatalog.grailsflow.validation.DefaultProcessDefValidator)
-     
+
     < !-- Default settings for process class validation bean, should implement class   com.jcatalog.grailsflow.validation.Validator -->
     processClassValidator(com.jcatalog.grailsflow.validation.DefaultProcessClassValidator)
 {code}
 
 5. Client executor bean:
 {code}
-      
+
     <!-- Configuration for client Executor, the implementation class should extend
       ClientExecutor class. Especially important if you want to use external calls and
       asynchronous actions in your application. -->
@@ -174,9 +171,9 @@ default configuration, but can be easily defined in the Spring configuration of 
       com.jcatalog.grailsflow.extension.email.EventEmailProcessor interface. -->
     eventEmailProcessor(com.jcatalog.grailsflow.extension.email.GrailsflowEventEmailProcessor) {
         processManagerService = ref('processManagerService')
-    }  
+    }
 {code}
-    Extended UI configuration with templates and configurable search parameters:  
+    Extended UI configuration with templates and configurable search parameters:
 {code}
     <!-- default settings for processListColumns UI -->
     processTypeSearchProperty(DefaultSearchParameter) {
@@ -256,5 +253,5 @@ default configuration, but can be easily defined in the Spring configuration of 
 {code}
 
 (The full list of available beans can be found in the GrailsflowGrailsPlugin.groovy file)
-      
+
 
