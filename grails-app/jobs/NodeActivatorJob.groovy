@@ -103,7 +103,7 @@ class NodeActivatorJob {
                     sw?.start('Loading ProcessNodes by keys')
                 }
 
-                List activeNodes = []
+                List<ProcessNode> activeNodes = []
                 activeNodesKeys.each {
                     activeNodes << ProcessNode.get(it)
                 }
@@ -122,8 +122,8 @@ class NodeActivatorJob {
                     sw?.stop()
                     sw?.start('Sending events for ProcessNodes')
                 }
-                activeNodes.each {
-                    processManagerService.sendEvent(it.process, it, null, it.caller)
+                activeNodes.each { ProcessNode node ->
+                    sendEvent(node)
                 }
                 if (log.debugEnabled) {
                     sw?.stop()
@@ -158,15 +158,8 @@ class NodeActivatorJob {
                 if (nodesComparator) {
                     waitNodes = waitNodes.sort(nodesComparator)
                 }
-                waitNodes.each() { node ->
-                    String namePrefix = "#${node.process?.id}(${node.process?.type})-${node.nodeID}"
-                    // check if the node is executed in separate thread or recently finished. if no - execute it
-                    if(!threadRuntimeInfoService.isExecutingOrRecentlyFinished(node.process.id)
-                            && grailsflowLockService.lockProcessExecution(node)){
-                        log.info "*** No Thread Info for thread [${namePrefix}]: sending event [${node.event}] to node [${node.nodeID}] ***"
-                        processManagerService.sendEvent(node.process, node, node.event, node.caller)
-                        grailsflowLockService.unlockProcessExecution(node)
-                    }
+                waitNodes.each { ProcessNode node ->
+                    sendEvent(node)
                 }
             }
             if (log.debugEnabled) {
@@ -179,6 +172,18 @@ class NodeActivatorJob {
         }
         if (log.debugEnabled && sw) {
             log.debug sw.prettyPrint()
+        }
+    }
+
+    private void sendEvent(ProcessNode node) {
+        // check if the node is executed in separate thread or recently finished. if no - execute it
+        if (!threadRuntimeInfoService.isExecutingOrRecentlyFinished(node.process.id)
+                && grailsflowLockService.lockProcessExecution(node)) {
+            String namePrefix = "#${node.process?.id}(${node.process?.type})-${node.nodeID}"
+
+            log.info "*** No Thread Info for thread [${namePrefix}]: sending event [${node.event}] to node [${node.nodeID}] ***"
+            processManagerService.sendEvent(node.process, node, node.event, node.caller)
+            grailsflowLockService.unlockProcessExecution(node)
         }
     }
 }

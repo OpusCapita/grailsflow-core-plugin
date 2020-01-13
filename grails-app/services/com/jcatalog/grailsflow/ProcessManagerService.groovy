@@ -306,6 +306,10 @@ class ProcessManagerService implements InitializingBean {
 
                 basicProcess.addToNodes(startNode)
 
+                if (startNodeDef.forcedStart) {
+                    grailsflowLockService.lockProcessExecution(startNode)
+                }
+
                 BasicProcess.withTransaction {status->
                     if (!basicProcess.save(flush: true) ) {
                         status.setRollbackOnly();
@@ -338,8 +342,6 @@ class ProcessManagerService implements InitializingBean {
                 }
 
                 if (startNodeDef.forcedStart) {
-                    grailsflowLockService.lockProcessExecution(startNode)
-
                     log.info "Forced start is enabled for '$startNode.nodeID' node of process #$basicProcess.id($processTypeID)"
                     invokeNodeExecution(basicProcess.id, startNode.nodeID, null, user, variables)
                 }
