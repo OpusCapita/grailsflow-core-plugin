@@ -38,7 +38,8 @@ import com.jcatalog.grailsflow.scheduling.triggers.ConfigurableSimpleTrigger
  * @author July Antonicheva
  */
 class GrailsflowLockService {
-    boolean transactional = false // manage transactions manually
+
+    static transactional = false // manage transactions manually
 
     def processManagerService
     def grailsApplication
@@ -73,8 +74,12 @@ class GrailsflowLockService {
             }
 
             return Boolean.TRUE
-        } catch(Exception ex) {
-            log.error("Cannot lock process execution for node [${node?.id}]: ${ex.message}")
+        } catch (Exception ex) {
+            ProcessNode.withTransaction { status ->
+                status.setRollbackOnly()
+            }
+            log.warn "Cannot create lock for process node [$node.id] execution: probably it was created by another process"
+
             return Boolean.FALSE
         }
     }
