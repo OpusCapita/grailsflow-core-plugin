@@ -1541,12 +1541,15 @@ class ProcessManagerService implements InitializingBean {
         Objects.requireNonNull(variableName, "Parameter 'variableName' can't be null")
         Objects.requireNonNull(variableValue, "Parameter 'variableValue' can't be null")
 
-        ProcessVariable processVariable = new ProcessVariable(
-                process: process,
-                name: variableName,
-                type: ProcessVariable.defineType(variableValue.class.simpleName)
-        )
+        ProcessVariable processVariable = ProcessVariable.findByProcessAndName(process, variableName)
+        if (!processVariable) {
+            processVariable = new ProcessVariable(
+                    process: process,
+                    name: variableName
+            )
+        }
 
+        processVariable.type = ProcessVariable.defineType(variableValue.class.simpleName)
         processVariable.value = variableValue
         processVariable.save(validate: false)
 
