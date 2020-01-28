@@ -75,8 +75,9 @@ class GrailsflowLockService {
 
             return Boolean.TRUE
         } catch (Exception ex) {
-            ProcessNode.withTransaction { status ->
-                status.setRollbackOnly()
+            ProcessNode.withSession {
+                // clear the session, because failed object during saving should be removed from session
+                it.clear()
             }
             log.warn "Cannot create lock for process node [$node.id] execution: probably it was created by another process"
 

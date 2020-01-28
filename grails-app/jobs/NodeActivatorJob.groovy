@@ -178,6 +178,9 @@ class NodeActivatorJob {
     }
 
     private void sendEvent(ProcessNode node) {
+        // get rid of 'LazyInitializationException' if the lock object was created in the separate process (cluster mode)
+        node.refresh()
+
         // check if the node is executed in separate thread or recently finished. if no - execute it
         if (grailsflowLockService.lockProcessExecution(node)) {
             String namePrefix = "#${node.process?.id}(${node.process?.type})-${node.nodeID}"
