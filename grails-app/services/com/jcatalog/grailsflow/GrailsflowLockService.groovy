@@ -88,14 +88,13 @@ class GrailsflowLockService {
     @Synchronized("lock")
     @Transactional(propagation = Propagation.REQUIRED)
     public boolean unlockProcessExecution(ProcessNode node)  {
-        GrailsflowLock lock = GrailsflowLock.findByProcessAndNodeID(node.process, node.nodeID)
-        if(lock) {
-            lock.delete()
-            return Boolean.TRUE
-        } else {
+        boolean isLockRemoved = GrailsflowLock.executeUpdate('DELETE GrailsflowLock WHERE process = ? AND nodeID = ?', [node.process, node.nodeID])
+
+        if (!isLockRemoved) {
             log.debug("No Grailsflow lock for process ${node.process.id} and node #${node.nodeID} was found!")
         }
-        return Boolean.FALSE
+
+        return isLockRemoved
     }
 
     @Synchronized("lock")
