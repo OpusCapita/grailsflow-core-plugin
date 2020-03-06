@@ -123,6 +123,10 @@ class NodeActivatorJob {
                     sw?.start('Sending events for ProcessNodes')
                 }
                 activeNodes.each {
+                    // get rid of 'LazyInitializationException' if the lock object was created in the separate process (cluster mode)
+                    if (!it.isAttached()) {
+                        it.attach()
+                    }
                     processManagerService.sendEvent(it.process, it, null, it.caller)
                 }
                 if (log.debugEnabled) {
@@ -158,7 +162,12 @@ class NodeActivatorJob {
                 if (nodesComparator) {
                     waitNodes = waitNodes.sort(nodesComparator)
                 }
-                waitNodes.each() { node ->
+                waitNodes.each() { ProcessNode node ->
+                    // get rid of 'LazyInitializationException' if the lock object was created in the separate process (cluster mode)
+                    if (!node.isAttached()) {
+                        node.attach()
+                    }
+
                     String namePrefix = "#${node.process?.id}(${node.process?.type})-${node.nodeID}"
                     // check if the node is executed in separate thread or recently finished. if no - execute it
                     if(!threadRuntimeInfoService.isExecutingOrRecentlyFinished(node.process.id)
