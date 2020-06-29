@@ -936,7 +936,6 @@ class ProcessManagerService implements InitializingBean {
             newNode.properties = forwardedNode.properties["branchID", "nodeID", "type", "description", "status"]
 
             forwardedNode.addToNextNodes(newNode)
-            newNode.addToPreviousNodes(forwardedNode)
 
             newNode.caller = forwardedBy
             newNode.startedOn = forwardedOn
@@ -1024,7 +1023,6 @@ class ProcessManagerService implements InitializingBean {
         }
         if (destNode) {
             fromNode.addToNextNodes(destNode)
-            destNode.addToPreviousNodes(fromNode)
         } else {
             destNodeDef.processDef = new ProcessDef(processID:  basicProcess.type)
             destNode = initNewNode(destNodeDef, fromNode, user, description)
@@ -1141,7 +1139,6 @@ class ProcessManagerService implements InitializingBean {
 
         if (fromNode) {
             fromNode.addToNextNodes(processNode)
-            processNode.addToPreviousNodes(fromNode)
         }
 
         if (fromNode) {
