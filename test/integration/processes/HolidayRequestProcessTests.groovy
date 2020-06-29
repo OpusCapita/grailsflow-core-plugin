@@ -27,7 +27,7 @@ import com.jcatalog.grailsflow.status.ProcessStatusEnum
  * @author July Karpey
  */
 class HolidayRequestProcessTests extends AbstractProcessTestCase {
-                                 
+
     def generateProcessService
 
     void testDefinitionBuilder() {
@@ -38,13 +38,13 @@ class HolidayRequestProcessTests extends AbstractProcessTestCase {
                              .buildProcessDefinition(processClass)
 
         assert processDef
-        assert processDef.processID.equals("HolidayRequest") == true
+        assert processDef.processID.equals("HolidayRequest")
         //assert processDef.description.equals("This process manages the request and approval of holidays for employees.") == true
         assert processDef.nodes.size() == 9
         assert processDef.variables.size() == 10
         assert processDef.description.size() == 2
         //assert processDef.transitions.size()== 10
-        assert processDef.startNode.nodeID.equals("HolidayRequestForm") == true
+        assert processDef.startNode.nodeID.equals("HolidayRequestForm")
     }
 
     void testFlowAndAssigners() {
@@ -58,7 +58,7 @@ class HolidayRequestProcessTests extends AbstractProcessTestCase {
       def activeStatus = FlowStatus.findByStatusID(NodeStatusEnum.ACTIVATED.value())
 
       def processId = startProcess("HolidayRequest", employee, null)
-      
+
       def basicProcess = BasicProcess.get(processId)
 
       // executing current nodes
@@ -75,21 +75,21 @@ class HolidayRequestProcessTests extends AbstractProcessTestCase {
       // check assignees for ManagerApproveHolidays
       def assignees = ProcessAssignee.findAllWhere(process: basicProcess, nodeID: activeNode.nodeID)*.assigneeID
       assert 2 == assignees.size()
-      assert true == assignees.contains("ROLE_MANAGER")
-      assert true == assignees.contains("ROLE_ADMIN")
-      
+      assert assignees.contains("ROLE_MANAGER")
+      assert assignees.contains("ROLE_ADMIN")
+
       // executing ManagerApproveHolidays
       executeManualNode(processId, "ManagerApproveHolidays", "approve", manager, null)
-      
+
       // executing ApprovedOperation
       invokeCurrentNodes()
-      
+
       // HRNotification and ApproveNotification nodes get activated
       activeNodes = ProcessNode.findAllWhere(process: basicProcess, status: activeStatus)
       assert 2 == activeNodes.size()
       def activeNodesIDs = activeNodes.collect() { it.nodeID }
-      assert true == activeNodesIDs.contains("HRNotification")
-      assert true == activeNodesIDs.contains("ApproveNotification")
+      assert activeNodesIDs.contains("HRNotification")
+      assert activeNodesIDs.contains("ApproveNotification")
 
       // executing HRNotification and ApproveNotification
       invokeCurrentNodes()
@@ -102,13 +102,14 @@ class HolidayRequestProcessTests extends AbstractProcessTestCase {
       // check assignees for HRBook
       assignees = ProcessAssignee.findAllWhere(process: basicProcess, nodeID: activeNode.nodeID)*.assigneeID
       assert 2 == assignees.size()
-      assert true == assignees.contains("ROLE_HR_USER")
-      assert true == assignees.contains("ROLE_ADMIN")
+      assert assignees.contains("ROLE_HR_USER")
+      assert assignees.contains("ROLE_ADMIN")
 
       // executing HRBook
       executeManualNode(processId, "HRBook", "save", hr_user, null)
-      
+
       // ApproveFinished 'AndJoin' node gets activated
+      // according to the ProcessManagerService#L1155 'AndJoin' nodes receive PENDING status
       activeNodes = ProcessNode.findAllWhere(process: basicProcess, status: activeStatus)
       assert 1 == activeNodes.size()
       activeNode = activeNodes.get(0)
@@ -116,13 +117,13 @@ class HolidayRequestProcessTests extends AbstractProcessTestCase {
 
       // executing ApproveFinished
       invokeCurrentNodes()
-      
+
       // Finish node gets activated
       activeNodes = ProcessNode.findAllWhere(process: basicProcess, status: activeStatus)
       assert 1 == activeNodes.size()
       activeNode = activeNodes.get(0)
       assert "Finish" == activeNode.nodeID
-      
+
       // executing Finish
       invokeCurrentNodes()
 

@@ -1010,12 +1010,12 @@ class ProcessManagerService implements InitializingBean {
         }
     }
 
-    private ProcessNode completeTransition(def fromNode, def toNodeID, def basicProcess, def processInstance,
-                                           def user, def eventID, def context) {
+    private ProcessNode completeTransition(ProcessNode fromNode, String toNodeID, BasicProcess basicProcess, def processInstance,
+                                           String user, String eventID, ActionContext context) {
         def processClass = processInstance.class
         def destNodeDef = processClass.nodes[toNodeID]
         def description = processInstance.evaluateExpression(processClass.nodeInfos[toNodeID])
-        def destNode = null
+        ProcessNode destNode = null
 
         if (destNodeDef.type == ConstantUtils.NODE_TYPE_ANDJOIN) {
             def pendingStatus = getStatus(NodeStatusEnum.PENDING.value())
@@ -1032,6 +1032,7 @@ class ProcessManagerService implements InitializingBean {
         fromNode.event = eventID
         basicProcess.lastModifiedOn = new Date()
         basicProcess.lastModifiedBy = user
+        fromNode.save(flush: true) // this is needed for correct work of 'getPreviousNodes' method on next nodes
 
         def activatedStatus = getStatus(NodeStatusEnum.ACTIVATED.value())
         if (destNodeDef.type == ConstantUtils.NODE_TYPE_ANDJOIN) {

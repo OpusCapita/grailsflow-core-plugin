@@ -84,11 +84,11 @@ class ProcessNode {
     }
 
     Collection<ProcessNode> getPreviousNodes() {
-        List previousNodesIds = []
+        List<Long> previousNodesIds = []
         withSession { Session session ->
             SQLQuery query = session.createSQLQuery('select distinct pnt.from_node from process_node_transition as pnt where pnt.to_node = :currentNodeId')
             query.setParameter('currentNodeId', this.id)
-            previousNodesIds = query.list()
+            previousNodesIds = query.list().collect { it as Long } // need to explicitly cast values to Long because it returns BigInteger
         }
         if (!previousNodesIds) {
             return []
