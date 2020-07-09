@@ -1520,10 +1520,14 @@ class ProcessManagerService implements InitializingBean {
     }
 
     private boolean canNewThreadBeStarted(Integer sizeOfRunningThreads) {
+        sizeOfRunningThreads < getMaxRunningThreadsQuantity()
+    }
+
+    int getMaxRunningThreadsQuantity() {
         if (grailsApplication.config.grailsflow.threads.maxQuantity instanceof Closure){
-            return sizeOfRunningThreads < grailsApplication.config.grailsflow.threads.maxQuantity()
+            return grailsApplication.config.grailsflow.threads.maxQuantity()
         } else {
-            return sizeOfRunningThreads < maxThreadsQuantity
+            return maxThreadsQuantity
         }
     }
 

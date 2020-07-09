@@ -15,7 +15,6 @@ import com.jcatalog.grailsflow.model.process.FlowStatus
 import com.jcatalog.grailsflow.model.process.ProcessNode
 import com.jcatalog.grailsflow.utils.ConstantUtils
 import com.jcatalog.grailsflow.status.NodeStatusEnum
-import org.hibernate.FetchMode
 import org.hibernate.SQLQuery
 import grails.util.Holders
 import com.jcatalog.grailsflow.scheduling.triggers.ConfigurableSimpleTrigger
@@ -72,49 +71,58 @@ class NodeActivatorJob {
         try{
             if (log.debugEnabled) {
                 sw?.start('Finding active and running FlowStatuses')
-            }
-            Long activatedStatusKey = FlowStatus.findByStatusID(NodeStatusEnum.ACTIVATED.value())?.id
-            Long runningStatusKey = FlowStatus.findByStatusID(NodeStatusEnum.RUNNING.value())?.id
-            if (log.debugEnabled) {
                 sw?.stop()
                 sw?.start('Finding active node keys')
             }
-            SQLQuery activeNodesQuery = sessionFactory.currentSession.createSQLQuery("""
-                    SELECT n.id FROM process_node n
-                    INNER JOIN basic_process p ON n.process_id = p.id
-                    WHERE p.app_groupid = :appExternalID
-                      AND n.status_id IN ($activatedStatusKey, $runningStatusKey)
-                      AND n.type      IN (:types)
-                    ORDER BY n.started_on ASC""")
-            activeNodesQuery.setParameter('appExternalID', appExternalID)
-            activeNodesQuery.setParameterList('types', [ConstantUtils.NODE_TYPE_ACTIVITY, ConstantUtils.NODE_TYPE_FORK,
-                                                        ConstantUtils.NODE_TYPE_ORJOIN, ConstantUtils.NODE_TYPE_ANDJOIN])
-            List activeNodesKeys = activeNodesQuery.list()
+
+            final Map queryParams = [
+                    appExternalID: appExternalID,
+                    statuses: [
+                            FlowStatus.findByStatusID(NodeStatusEnum.ACTIVATED.value()),
+                            FlowStatus.findByStatusID(NodeStatusEnum.RUNNING.value())
+                    ],
+                    processNodeTypes: [
+                            ConstantUtils.NODE_TYPE_ACTIVITY,
+                            ConstantUtils.NODE_TYPE_FORK,
+                            ConstantUtils.NODE_TYPE_ORJOIN,
+                            ConstantUtils.NODE_TYPE_ANDJOIN
+                    ]
+            ]
+
+            List<Long> activeNodesKeys = ProcessNode.executeQuery("""
+
+                    SELECT pn.id FROM ProcessNode AS pn INNER JOIN pn.process AS process
+                    WHERE process.appGroupID = :appExternalID
+                      AND pn.status IN (:statuses)
+                      AND pn.type IN (:processNodeTypes)
+                    ORDER BY pn.startedOn ASC""",
+
+                    queryParams,
+                    [max: processManagerService.getMaxRunningThreadsQuantity()]
+            )
+
+            Long runningStatusKey = FlowStatus.findByStatusID(NodeStatusEnum.RUNNING.value())?.id
 
             log.info "*** Amount of Nodes to execute ${activeNodesKeys.size()} ***"
 
             if (log.debugEnabled) {
                 sw?.stop()
             }
-            def nodesComparator
+            def nodesComparator = grailsApplication.config.grailsflow.nodeActivator.comparator
 
             if (activeNodesKeys) {
                 if (log.debugEnabled) {
                     sw?.start('Loading ProcessNodes by keys')
                 }
 
-                List activeNodes = []
-                activeNodesKeys.each {
-                    activeNodes << ProcessNode.get(it)
-                }
+                List<ProcessNode> activeNodes = ProcessNode.findAllByIdInList(activeNodesKeys)
 
-                if (log.debugEnabled) {
-                    sw?.stop()
-                    sw?.start('Sorting ProcessNodes')
-                }
                 // compare nodes according to configured nodes comparator
-                nodesComparator = grailsApplication.config.grailsflow.nodeActivator.comparator
                 if (nodesComparator) {
+                    if (log.debugEnabled) {
+                        sw?.stop()
+                        sw?.start('Sorting ProcessNodes')
+                    }
                     activeNodes.sort(nodesComparator)
                 }
 
@@ -158,7 +166,6 @@ class NodeActivatorJob {
                 log.info "*** Amount of manual nodes that are in running state: ${waitNodesKeys.size()} ***"
 
                 List<ProcessNode> waitNodes = waitNodesKeys.collect { ProcessNode.get(it) }
-                nodesComparator = activeNodesKeys ? nodesComparator : grailsApplication.config.grailsflow.nodeActivator.comparator
                 if (nodesComparator) {
                     waitNodes = waitNodes.sort(nodesComparator)
                 }
