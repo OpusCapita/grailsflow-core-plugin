@@ -70,8 +70,6 @@ class NodeActivatorJob {
         }
         try{
             if (log.debugEnabled) {
-                sw?.start('Finding active and running FlowStatuses')
-                sw?.stop()
                 sw?.start('Finding active node keys')
             }
 
@@ -89,9 +87,9 @@ class NodeActivatorJob {
                     ]
             ]
 
-            List<Long> activeNodesKeys = ProcessNode.executeQuery("""
+            List<ProcessNode> activeNodes = ProcessNode.executeQuery("""
 
-                    SELECT pn.id FROM ProcessNode AS pn INNER JOIN pn.process AS process
+                    SELECT pn FROM ProcessNode AS pn INNER JOIN pn.process AS process
                     WHERE process.appGroupID = :appExternalID
                       AND pn.status IN (:statuses)
                       AND pn.type IN (:processNodeTypes)
@@ -103,19 +101,15 @@ class NodeActivatorJob {
 
             Long runningStatusKey = FlowStatus.findByStatusID(NodeStatusEnum.RUNNING.value())?.id
 
-            log.info "*** Amount of Nodes to execute ${activeNodesKeys.size()} ***"
+            log.info "*** Amount of Nodes to execute ${activeNodes.size()} ***"
 
-            if (log.debugEnabled) {
-                sw?.stop()
-            }
             def nodesComparator = grailsApplication.config.grailsflow.nodeActivator.comparator
 
-            if (activeNodesKeys) {
+            if (activeNodes) {
                 if (log.debugEnabled) {
+                    sw?.stop()
                     sw?.start('Loading ProcessNodes by keys')
                 }
-
-                List<ProcessNode> activeNodes = ProcessNode.findAllByIdInList(activeNodesKeys)
 
                 // compare nodes according to configured nodes comparator
                 if (nodesComparator) {
@@ -137,12 +131,10 @@ class NodeActivatorJob {
                     }
                     processManagerService.sendEvent(it.process, it, null, it.caller)
                 }
-                if (log.debugEnabled) {
-                    sw?.stop()
-                }
             }
 
             if (log.debugEnabled) {
+                sw?.stop()
                 sw?.start('Finding manual nodes with running state')
             }
 
