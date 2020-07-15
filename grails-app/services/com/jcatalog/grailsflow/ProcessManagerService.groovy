@@ -935,7 +935,7 @@ class ProcessManagerService implements InitializingBean {
             def newNode = new ProcessNode()
             newNode.properties = forwardedNode.properties["branchID", "nodeID", "type", "description", "status"]
 
-            forwardedNode.addToNextNodes(newNode)
+            newNode.addToPreviousNodes(forwardedNode)
 
             newNode.caller = forwardedBy
             newNode.startedOn = forwardedOn
@@ -1022,7 +1022,7 @@ class ProcessManagerService implements InitializingBean {
             destNode = basicProcess.nodes.find() {node -> node.nodeID == toNodeID && node.status == pendingStatus}
         }
         if (destNode) {
-            fromNode.addToNextNodes(destNode)
+            destNode.addToPreviousNodes(fromNode)
         } else {
             destNodeDef.processDef = new ProcessDef(processID:  basicProcess.type)
             destNode = initNewNode(destNodeDef, fromNode, user, description)
@@ -1032,7 +1032,6 @@ class ProcessManagerService implements InitializingBean {
         fromNode.event = eventID
         basicProcess.lastModifiedOn = new Date()
         basicProcess.lastModifiedBy = user
-        fromNode.save(flush: true) // this is needed for correct work of 'getPreviousNodes' method on next nodes
 
         def activatedStatus = getStatus(NodeStatusEnum.ACTIVATED.value())
         if (destNodeDef.type == ConstantUtils.NODE_TYPE_ANDJOIN) {
@@ -1139,7 +1138,7 @@ class ProcessManagerService implements InitializingBean {
         }
 
         if (fromNode) {
-            fromNode.addToNextNodes(processNode)
+            processNode.addToPreviousNodes(fromNode)
         }
 
         if (fromNode) {

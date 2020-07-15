@@ -14,8 +14,6 @@
 package com.jcatalog.grailsflow.model.process
 
 import com.jcatalog.grailsflow.model.definition.ProcessNodeDef
-import org.hibernate.SQLQuery
-import org.hibernate.Session
 
 /**
  * Process Node represents a node for the process.
@@ -46,7 +44,7 @@ class ProcessNode {
 
     static belongsTo = [ process: BasicProcess ]
 
-    static hasMany = [ nextNodes : ProcessNode ]
+    static hasMany = [ previousNodes: ProcessNode, nextNodes : ProcessNode ]
 
     static constraints = {
         caller(nullable:true)
@@ -63,6 +61,7 @@ class ProcessNode {
       status index: 'IDX_PROCESS_NODE_1'
       nodeID index:'IDX_PROCESS_NODE_3'
       process index:'IDX_PROCESS_NODE_3'
+      previousNodes joinTable:[name:'process_node_transition', key:'to_node', column: "from_node"], cascade: "none"
       nextNodes joinTable:[name:'process_node_transition', key:'from_node', column: "to_node"]
     }
 
@@ -77,22 +76,31 @@ class ProcessNode {
 
     }
 
-    static transients = ["assignees", 'previousNodes']
+    static transients = ["assignees" ]
 
     public Collection<String> getAssignees() {
       return process?.assignees?.findAll() { it.nodeID == this.nodeID }?.collect() { it.assigneeID } ?: []
     }
 
-    Collection<ProcessNode> getPreviousNodes() {
-        List<Long> previousNodesIds = []
-        withSession { Session session ->
-            SQLQuery query = session.createSQLQuery('select distinct pnt.from_node from process_node_transition as pnt where pnt.to_node = :currentNodeId')
-            query.setParameter('currentNodeId', this.id)
-            previousNodesIds = query.list().collect { it as Long } // need to explicitly cast values to Long because it returns BigInteger
+    @Override
+    public boolean equals(Object other) {
+        if ((other == null) || !this.getClass().isAssignableFrom(other.getClass())) {
+            return false
         }
-        if (!previousNodesIds) {
-            return []
+        ProcessNode castOther = (ProcessNode) other
+
+        if (id == null) {
+            return GroovyObjectSupport.equals(castOther)
         }
-        return executeQuery("from ProcessNode pn where pn.id in (:previousNodesIds)", [previousNodesIds: previousNodesIds])
+
+        return id.equals(castOther.id)
+    }
+
+    @Override
+    public int hashCode() {
+        if (id == null) {
+            return GroovyObjectSupport.hashCode()
+        }
+        return id.hashCode()
     }
 }
