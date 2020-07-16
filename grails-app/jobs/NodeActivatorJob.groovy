@@ -106,11 +106,6 @@ class NodeActivatorJob {
             def nodesComparator = grailsApplication.config.grailsflow.nodeActivator.comparator
 
             if (activeNodes) {
-                if (log.debugEnabled) {
-                    sw?.stop()
-                    sw?.start('Loading ProcessNodes by keys')
-                }
-
                 // compare nodes according to configured nodes comparator
                 if (nodesComparator) {
                     if (log.debugEnabled) {
