@@ -1,4 +1,11 @@
 
+[Release 1.8.4](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.8.4) Tue Jul 21 2020 16:48:53 GMT+0300 (MSK)
+=======================================================
+
+- [#35](https://github.com/OpusCapita/grailsflow-core-plugin/issues/35) Fixed records duplication in 'process_node_transition' table. (Alexey Zinchenko zinchenko@scand.com, 2020-07-21 16:44:59 +0300)
+- Update CI image to opuscapita/minsk-core-ci:grails-2.4.4-jdk-8u192-nodejs-8.17.0-maven-3.3.9 [ci skip] (Egor Stambakio egor.stambakio@opuscapita.com, 2020-05-07 14:20:53 +0300)
+- Advancing plugin version after the release (Alexey Sergeev alexey.sergeev@opuscapita.com, 2020-03-17 11:47:39 +0300)
+
 [Release 1.8.1](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.8.1) Wed Aug 28 2019 15:21:55 GMT+0300 (MSK)
 =======================================================
 
