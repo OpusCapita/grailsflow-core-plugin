@@ -82,4 +82,25 @@ class ProcessNode {
       return process?.assignees?.findAll() { it.nodeID == this.nodeID }?.collect() { it.assigneeID } ?: []
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if ((other == null) || !this.getClass().isAssignableFrom(other.getClass())) {
+            return false
+        }
+        ProcessNode castOther = (ProcessNode) other
+
+        if (id == null) {
+            return GroovyObjectSupport.equals(castOther)
+        }
+
+        return id.equals(castOther.id)
+    }
+
+    @Override
+    public int hashCode() {
+        if (id == null) {
+            return GroovyObjectSupport.hashCode()
+        }
+        return id.hashCode()
+    }
 }

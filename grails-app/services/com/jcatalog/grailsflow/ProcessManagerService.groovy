@@ -935,7 +935,6 @@ class ProcessManagerService implements InitializingBean {
             def newNode = new ProcessNode()
             newNode.properties = forwardedNode.properties["branchID", "nodeID", "type", "description", "status"]
 
-            forwardedNode.addToNextNodes(newNode)
             newNode.addToPreviousNodes(forwardedNode)
 
             newNode.caller = forwardedBy
@@ -1011,19 +1010,18 @@ class ProcessManagerService implements InitializingBean {
         }
     }
 
-    private ProcessNode completeTransition(def fromNode, def toNodeID, def basicProcess, def processInstance,
-                                           def user, def eventID, def context) {
+    private ProcessNode completeTransition(ProcessNode fromNode, String toNodeID, BasicProcess basicProcess, def processInstance,
+                                           String user, String eventID, ActionContext context) {
         def processClass = processInstance.class
         def destNodeDef = processClass.nodes[toNodeID]
         def description = processInstance.evaluateExpression(processClass.nodeInfos[toNodeID])
-        def destNode = null
+        ProcessNode destNode = null
 
         if (destNodeDef.type == ConstantUtils.NODE_TYPE_ANDJOIN) {
             def pendingStatus = getStatus(NodeStatusEnum.PENDING.value())
             destNode = basicProcess.nodes.find() {node -> node.nodeID == toNodeID && node.status == pendingStatus}
         }
         if (destNode) {
-            fromNode.addToNextNodes(destNode)
             destNode.addToPreviousNodes(fromNode)
         } else {
             destNodeDef.processDef = new ProcessDef(processID:  basicProcess.type)
@@ -1140,7 +1138,6 @@ class ProcessManagerService implements InitializingBean {
         }
 
         if (fromNode) {
-            fromNode.addToNextNodes(processNode)
             processNode.addToPreviousNodes(fromNode)
         }
 

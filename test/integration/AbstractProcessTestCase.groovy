@@ -74,7 +74,7 @@ public abstract class AbstractProcessTestCase extends GroovyTestCase
     */
     public void executeManualNode(def  processId, String nodeID, String event, String username, Map<String, Object> params) {
         def sendEventResult = processManagerService.sendEvent(processId, nodeID, event, username, params)
-        sendEventResult == ExecutionResultEnum.EXECUTED_SUCCESSFULLY.value()
+        assert sendEventResult == ExecutionResultEnum.EXECUTED_SUCCESSFULLY.value()
     }
 
    /**
