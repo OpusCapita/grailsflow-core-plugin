@@ -244,7 +244,7 @@ class ProcessManagerService implements InitializingBean {
      *
      * @return process ID value if process was started successfully
      */
-    public synchronized def startProcess(def processTypeID, def user, def variables) {
+    public def startProcess(def processTypeID, def user, def variables) {
         // check processTypeID in supportedProcessTypes
         if (!processFactory.getProcessTypes().contains(processTypeID)) {
             log.error("Cannot start process of type '${processTypeID}'. Type is not supported.")
@@ -304,13 +304,13 @@ class ProcessManagerService implements InitializingBean {
 
                 updateProcessAssignees(basicProcess, processAssignees)
 
-                basicProcess.addToNodes(startNode)
-
-                if (startNodeDef.forcedStart) {
-                    grailsflowLockService.lockProcessExecution(startNode)
-                }
-
                 BasicProcess.withTransaction {status->
+                    basicProcess.addToNodes(startNode)
+
+                    if (startNodeDef.forcedStart) {
+                        grailsflowLockService.lockProcessExecution(startNode)
+                    }
+
                     if (!basicProcess.save(flush: true) ) {
                         status.setRollbackOnly();
                         log.error("Cannot save process: "+basicProcess.errors)
@@ -1517,10 +1517,14 @@ class ProcessManagerService implements InitializingBean {
     }
 
     private boolean canNewThreadBeStarted(Integer sizeOfRunningThreads) {
+        sizeOfRunningThreads < getMaxRunningThreadsQuantity()
+    }
+
+    int getMaxRunningThreadsQuantity() {
         if (grailsApplication.config.grailsflow.threads.maxQuantity instanceof Closure){
-            return sizeOfRunningThreads < grailsApplication.config.grailsflow.threads.maxQuantity()
+            return grailsApplication.config.grailsflow.threads.maxQuantity()
         } else {
-            return sizeOfRunningThreads < maxThreadsQuantity
+            return maxThreadsQuantity
         }
     }
 
