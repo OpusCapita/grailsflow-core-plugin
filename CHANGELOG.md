@@ -1,4 +1,9 @@
 
+[Release 1.8.5](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.8.5) Wed Sep 02 2020 15:00:41 GMT+0300 (MSK)
+=======================================================
+
+- [#37](https://github.com/OpusCapita/grailsflow-core-plugin/issues/37) Optimized work of NodeActivatorJob for executing active nodes (GitHub ivouchak-sc@users.noreply.github.com, 2020-09-02 14:32:46 +0300)
+
 [Release 1.8.4](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.8.4) Tue Jul 21 2020 16:48:53 GMT+0300 (MSK)
 =======================================================
 
