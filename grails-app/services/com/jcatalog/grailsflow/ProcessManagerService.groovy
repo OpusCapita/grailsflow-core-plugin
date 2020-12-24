@@ -859,6 +859,15 @@ class ProcessManagerService implements InitializingBean {
                         // check if process is complete
                         if (isProcessNodesCompleted(basicProcess)) {
                             completeProcess(basicProcess, user)
+
+                            if (processLogDir) {
+                                File logFile = getProcessLogFile(basicProcess)
+                                if (logFile.isFile()) {
+                                    LogUtils.zipLog(logFile)
+
+                                    logFile.delete()
+                                }
+                            }
                         } else {
                             calculateProcessStatus(basicProcess)
                         }
