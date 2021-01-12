@@ -14,12 +14,15 @@
 
 package com.jcatalog.grailsflow.logging
 
+import org.apache.commons.io.FilenameUtils
 import org.apache.log4j.FileAppender
 import org.apache.log4j.PatternLayout
 import org.apache.log4j.Logger
 import org.apache.log4j.spi.Filter
 import org.apache.log4j.spi.LoggingEvent
 
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 public class LogUtils {
 
@@ -32,6 +35,7 @@ public class LogUtils {
           return closure.call()
       } finally {
           if (appender) {
+              appender.close()
               Logger.getRootLogger().removeAppender(appender);
           }
       }
@@ -62,6 +66,20 @@ public class LogUtils {
       }
   }
 
+    static public def zipLog(File file) {
+        def zipFileName = FilenameUtils.getBaseName(file.path) + ".zip"
+
+        FileOutputStream fos = new FileOutputStream(new File(file.parent, zipFileName))
+        def zos = new ZipOutputStream(fos)
+        zos.putNextEntry(new ZipEntry(file.name.toString()))
+        file.withInputStream { is ->
+            zos << is
+        }
+        zos.closeEntry()
+
+        // close the ZipOutputStream
+        zos.close()
+    }
 }
 
 class ThreadLogFilter extends Filter {
