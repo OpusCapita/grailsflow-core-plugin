@@ -1,4 +1,9 @@
 
+[Release 1.8.7](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.8.7) Tue Jan 12 2021 12:41:09 GMT+0300 (MSK)
+=======================================================
+
+- (issues-39) Zip the log file if processLogDir is configured for grailsflow. ([#40](https://github.com/OpusCapita/grailsflow-core-plugin/issues/40)) (GitHub dvasiliev-sc@users.noreply.github.com, 2021-01-12 12:29:20 +0300)
+
 [Release 1.8.6](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.8.6) Mon Dec 21 2020 16:22:43 GMT+0300 (MSK)
 =======================================================
 
