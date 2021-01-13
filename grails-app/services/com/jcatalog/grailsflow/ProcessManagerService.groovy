@@ -1008,7 +1008,7 @@ class ProcessManagerService implements InitializingBean {
                 } else if (process.isWritable(existedVariable.name, nodeID)) {
                     existedVariable.value = variableValue
 
-                    log.info("Updated ProcessVariable '${existedVariable.name}' with value '${variableValue}' in process #${basicProcess.id}(${basicProcess.type})")
+                    log.debug("Updated ProcessVariable '${existedVariable.name}' with value '${variableValue}' in process #${basicProcess.id}(${basicProcess.type})")
                 }
             } else if (variableValue != null) {
                 final ProcessVariable newVariable = new ProcessVariable(name: variableName)
