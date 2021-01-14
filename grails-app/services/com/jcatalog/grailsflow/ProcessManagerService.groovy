@@ -2,6 +2,7 @@ package com.jcatalog.grailsflow
 
 import com.jcatalog.grailsflow.bean.DynamicProcessVariableDetails
 import com.jcatalog.grailsflow.jobs.SendEventJob
+import com.jcatalog.grailsflow.security.SecurityHelper
 
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -101,6 +102,7 @@ class ProcessManagerService implements InitializingBean {
     ProcessFactory processFactory
     NodeExecutor nodeExecutor
 
+    SecurityHelper securityHelper
     def maxThreadsQuantity
     def quartzScheduler
     def sessionFactory
@@ -1652,5 +1654,19 @@ class ProcessManagerService implements InitializingBean {
      */
     public ProcessVariable findRawDynamicProcessVariable(String variableName, ProcessNode node) {
         ProcessVariable.findByProcessAndName(node.process, "${variableName}_${node.id}")
+    }
+
+    Collection<String> getUserAuthorities() {
+        Collection<String> users = securityHelper.getUsers()
+        Collection<String> userRoles = securityHelper.getUserRoles()
+        Collection<String> userGroups = securityHelper.getUserGroups()
+
+        return AuthoritiesUtils.getAuthorities(users, userRoles, userGroups)
+    }
+
+    boolean hasUserAccessToProcessNode(ProcessNode processNode) {
+        final Collection<String> authorities = getUserAuthorities()
+
+        processNode.assignees.intersect(authorities) || securityHelper.hasNonAssigneeUserAccessToProcessNode(processNode)
     }
 }

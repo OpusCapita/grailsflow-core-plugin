@@ -14,6 +14,9 @@
 
 package com.jcatalog.grailsflow.security
 
+import com.jcatalog.grailsflow.model.process.ProcessNode
+import com.jcatalog.grailsflow.utils.AuthoritiesUtils
+
 /**
  * Default implementation of SecurityHelper interface.
  *
@@ -77,5 +80,10 @@ class GrailsflowSecurityHelper implements SecurityHelper {
      */
     List<String> getCustomUserAuthorities(def session) {
         return [];
+    }
+
+    @Override
+    boolean hasNonAssigneeUserAccessToProcessNode(ProcessNode processNode) {
+        return false
     }
 }

@@ -13,7 +13,6 @@
  */
 
 import com.jcatalog.grailsflow.utils.ConstantUtils
-import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import org.springframework.web.multipart.commons.CommonsMultipartFile
 
@@ -229,17 +228,7 @@ class ProcessManagementController extends GrailsFlowSecureController {
 
         def nodeID = node.nodeID
 
-        // checking process node assignees and user authorities
-        def authorities = getUserAuthorities(session)
-
-        def nodeAssignees = []
-        node?.process?.assignees?.each {
-            if (it.nodeID == nodeID) nodeAssignees << it.assigneeID.trim()
-        }
-        if (nodeAssignees.isEmpty()) {
-            nodeAssignees = processClass.nodes[nodeID]?.assignees?.collect() { it.assigneeID.trim() }
-        }
-        if (nodeAssignees && !nodeAssignees.isEmpty() && nodeAssignees.intersect(authorities).isEmpty()) {
+        if (!processManagerService.hasUserAccessToProcessNode(node)) {
             flash.errors << g.message(code: "plugin.grailsflow.message.nodeAuthorities.invalid")
             withFormat {
                 html { gotoError() }

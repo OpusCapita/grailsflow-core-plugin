@@ -14,6 +14,8 @@
 
 package com.jcatalog.grailsflow.security
 
+import com.jcatalog.grailsflow.model.process.ProcessNode
+
 /**
  * SecurityHelper interface.
  *
@@ -77,4 +79,11 @@ interface SecurityHelper {
      * @return list of custom authorities
      */
     List<String> getCustomUserAuthorities(def session)
+
+    /**
+     * Checks if a user has access to process node if it doesn't belong to the assignee list of this process node
+     * @param ProcessNode
+     * @return true if user has access to ProcessNode, otherwise - returns false
+     */
+    boolean hasNonAssigneeUserAccessToProcessNode(ProcessNode processNode)
 }
