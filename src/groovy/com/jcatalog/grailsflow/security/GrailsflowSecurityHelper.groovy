@@ -73,15 +73,6 @@ class GrailsflowSecurityHelper implements SecurityHelper {
       return (List<String>)groups;
     }
 
-    /**
-     * Return custom authorities of logged user.
-     * @param session
-     * @return list of custom user authorities
-     */
-    List<String> getCustomUserAuthorities(def session) {
-        return [];
-    }
-
     @Override
     boolean hasNonAssigneeUserAccessToProcessNode(ProcessNode processNode) {
         return false

@@ -36,7 +36,6 @@ class UpdateAssigneesAction extends Action {
     public def roles
     public def users
     public def groups
-    public def customAuthorities
 
     protected static def log = LogFactory.getLog(UpdateAssigneesAction.class)
 
@@ -44,8 +43,7 @@ class UpdateAssigneesAction extends Action {
        def userAuthorities = AuthoritiesUtils.getUserAuthorities(getCollectionValue(users))
        def roleAuthorities = AuthoritiesUtils.getRoleAuthorities(getCollectionValue(roles))
        def groupAuthorities = AuthoritiesUtils.getGroupAuthorities(getCollectionValue(groups))
-       def customAuthorities = AuthoritiesUtils.getCustomAuthorities(getCollectionValue(customAuthorities))
-       def authorities = userAuthorities + roleAuthorities + groupAuthorities + customAuthorities
+       def authorities = userAuthorities + roleAuthorities + groupAuthorities
        if (authorities != null) {
          if (nodes) {
            nodes = getCollectionValue(nodes)

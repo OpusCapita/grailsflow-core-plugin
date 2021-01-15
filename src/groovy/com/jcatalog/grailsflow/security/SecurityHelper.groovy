@@ -72,15 +72,6 @@ interface SecurityHelper {
     List<String> getUserGroups(def session)    
 
     /**
-     * Returns the custom authorities list for logged user.
-     *
-     * @param session
-     *
-     * @return list of custom authorities
-     */
-    List<String> getCustomUserAuthorities(def session)
-
-    /**
      * Checks if a user has access to process node if it doesn't belong to the assignee list of this process node
      * @param ProcessNode
      * @return true if user has access to ProcessNode, otherwise - returns false
