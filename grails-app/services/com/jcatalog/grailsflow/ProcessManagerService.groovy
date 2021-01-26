@@ -1120,7 +1120,7 @@ class ProcessManagerService implements InitializingBean {
         if (!process || !basicProcess) return
 
         process.class.variables?.each {
-            final String rawFieldValue = process.class.getField(it.name).get(process)
+            final def rawFieldValue = process.class.getField(it.name).get(process)
 
             if (rawFieldValue != null) {
                 def variable = new ProcessVariable("process": basicProcess, "name": it.name)
