@@ -1,4 +1,10 @@
 
+[Release 1.9.0](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.0) Wed Jan 27 2021 16:37:04 GMT+0300 (MSK)
+=======================================================
+
+- [#41](https://github.com/OpusCapita/grailsflow-core-plugin/issues/41) Reduced amount of GrailsFlow process variables (GitHub ivouchak-sc@users.noreply.github.com, 2021-01-27 16:23:43 +0300)
+- [#43](https://github.com/OpusCapita/grailsflow-core-plugin/issues/43) Added exit point for checking access for user to process node if the user doesn't belong to the assignee list of this process node (GitHub ivouchak-sc@users.noreply.github.com, 2021-01-27 15:40:18 +0300)
+
 [Release 1.8.7](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.8.7) Tue Jan 12 2021 12:41:09 GMT+0300 (MSK)
 =======================================================
 
