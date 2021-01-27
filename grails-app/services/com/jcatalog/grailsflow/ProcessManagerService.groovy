@@ -996,13 +996,31 @@ class ProcessManagerService implements InitializingBean {
           log.debug("Context variables are empty. Process variables won't be updated")
           return
         }
-        basicProcess.variables?.each { var ->
-             if (process.isWritable(var.name, nodeID) && variables.keySet().contains(var.name)) {
-               def value = variables[var.name]
-               log.debug("Update ProcessVariable '${var.name}' with value '${value}' in process #${basicProcess.id}(${basicProcess.type})")
-               var.value = value
-             }
-         }
+
+        // need to exclude additional variables, because they were added manually in 'com.jcatalog.grailsflow.actions.ActionContext'
+        variables.findAll { String variableName, def variableValue -> !['assignees', 'currentAssignees'].contains(variableName) }.each { String variableName, def variableValue ->
+            final ProcessVariable existedVariable = basicProcess.variables.find { it.name == variableName }
+
+            if (existedVariable) {
+                // remove process variables with NULL value or with type LIST and empty value
+                if (variableValue == null || (existedVariable.type == ProcessVariable.LIST && !variableValue)) {
+                    basicProcess.removeFromVariables(existedVariable)
+
+                    log.debug("Removed ProcessVariable '${existedVariable.name}' with NULL value in process #${basicProcess.id}(${basicProcess.type})")
+                } else if (process.isWritable(existedVariable.name, nodeID)) {
+                    existedVariable.value = variableValue
+
+                    log.debug("Updated ProcessVariable '${existedVariable.name}' with value '${variableValue}' in process #${basicProcess.id}(${basicProcess.type})")
+                }
+            } else if (variableValue != null) {
+                final ProcessVariable newVariable = new ProcessVariable(name: variableName)
+                newVariable.type = ProcessVariable.defineType(variableValue.getClass().simpleName)
+                newVariable.value = variableValue
+
+                basicProcess.addToVariables(newVariable)
+                log.debug("Created new ProcessVariable '${variableName}' with value '${variableValue}' in process #${basicProcess.id}(${basicProcess.type})")
+            }
+        }
     }
 
     /*
@@ -1104,13 +1122,17 @@ class ProcessManagerService implements InitializingBean {
         if (!process || !basicProcess) return
 
         process.class.variables?.each {
-            def variable = new ProcessVariable("process": basicProcess, "name": it.name)
-            variable.value = process.class.getField(it.name).get(process)
-            variable.type = ProcessVariable.defineType(it.type)
-            variable.typeName = it.type
-            variable.subTypeName = it.subType
-            variable.isProcessIdentifier = it.isProcessIdentifier
-            basicProcess.addToVariables(variable)
+            final def rawFieldValue = process.class.getField(it.name).get(process)
+
+            if (rawFieldValue != null) {
+                def variable = new ProcessVariable("process": basicProcess, "name": it.name)
+                variable.value = rawFieldValue
+                variable.type = ProcessVariable.defineType(it.type)
+                variable.typeName = it.type
+                variable.subTypeName = it.subType
+                variable.isProcessIdentifier = it.isProcessIdentifier
+                basicProcess.addToVariables(variable)
+            }
         }
     }
 
