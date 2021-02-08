@@ -41,6 +41,8 @@ import com.jcatalog.grailsflow.extension.SendEventParameters
 import com.jcatalog.grailsflow.engine.concurrent.ProcessLock
 
 import grails.util.Environment
+
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Callable
 import org.springframework.transaction.support.TransactionSynchronizationManager
@@ -1271,7 +1273,9 @@ class ProcessManagerService implements InitializingBean {
         log.debug("Executing node '${node.nodeID}' of process #${node.process?.id}(${node.process?.type})")
         Closure actionsCode = processClass.nodeActions[node.nodeID]
         // execute actions in separate session (creation a separate thread)
-        return Executors.newSingleThreadExecutor( new ThreadFactory() {
+        // This is important to put new instance to the separate variable to resolve the existed JDK issue
+        // https://bugs.openjdk.java.net/browse/JDK-8145304
+        ExecutorService threadExecutor = Executors.newSingleThreadExecutor( new ThreadFactory() {
             public Thread newThread(Runnable r) {
                 SecurityManager s = System.getSecurityManager();
                 def group = (s != null)? s.getThreadGroup() :
@@ -1289,7 +1293,9 @@ class ProcessManagerService implements InitializingBean {
                 notifier.invocationThreadLock.writeLock().unlock()
                 return t;
             }
-        }).submit( {
+        })
+
+        return threadExecutor.submit( {
             def result
             try {
                 Session session = SessionFactoryUtils.getNewSession(sessionFactory)
