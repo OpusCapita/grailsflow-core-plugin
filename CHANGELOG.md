@@ -1,4 +1,9 @@
 
+[Release 1.9.1](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.1) Tue Feb 16 2021 14:40:46 GMT+0300 (MSK)
+=======================================================
+
+- Update translations (Dmitriy Sanko dmitriy.sanko@opuscapita.com, 2021-02-16 14:28:43 +0300)
+
 [Release 1.9.0](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.0) Wed Jan 27 2021 16:37:04 GMT+0300 (MSK)
 =======================================================
 
