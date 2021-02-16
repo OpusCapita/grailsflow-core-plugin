@@ -58,6 +58,9 @@ import com.jcatalog.grailsflow.process.PostKillProcessHandler
 import org.springframework.transaction.TransactionStatus
 import org.quartz.ObjectAlreadyExistsException
 import org.quartz.SimpleTrigger
+
+import java.util.concurrent.Future
+
 import static org.quartz.TriggerKey.*;
 import java.util.concurrent.ThreadFactory
 import com.jcatalog.grailsflow.status.ProcessStatusEnum
@@ -1275,7 +1278,7 @@ class ProcessManagerService implements InitializingBean {
         // execute actions in separate session (creation a separate thread)
         // This is important to put new instance to the separate variable to resolve the existed JDK issue
         // https://bugs.openjdk.java.net/browse/JDK-8145304
-        ExecutorService threadExecutor = Executors.newSingleThreadExecutor( new ThreadFactory() {
+        final ExecutorService threadExecutor = Executors.newSingleThreadExecutor( new ThreadFactory() {
             public Thread newThread(Runnable r) {
                 SecurityManager s = System.getSecurityManager();
                 def group = (s != null)? s.getThreadGroup() :
@@ -1295,7 +1298,7 @@ class ProcessManagerService implements InitializingBean {
             }
         })
 
-        return threadExecutor.submit( {
+        final Future futureTask = threadExecutor.submit( {
             def result
             try {
                 Session session = SessionFactoryUtils.getNewSession(sessionFactory)
@@ -1363,7 +1366,9 @@ class ProcessManagerService implements InitializingBean {
                 }
             }
             return result
-        } as Callable ).get()
+        } as Callable )
+
+        return futureTask.get()
 
     }
 
