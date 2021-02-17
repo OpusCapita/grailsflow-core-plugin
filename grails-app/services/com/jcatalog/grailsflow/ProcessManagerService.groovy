@@ -1278,11 +1278,12 @@ class ProcessManagerService implements InitializingBean {
         // execute actions in separate session (creation a separate thread)
         // This is important to put new instance to the separate variable to resolve the existed JDK issue
         // https://bugs.openjdk.java.net/browse/JDK-8145304
-        final ExecutorService threadExecutor = Executors.newSingleThreadExecutor( new ThreadFactory() {
+
+        ThreadFactory threadFactory = new ThreadFactory() {
             public Thread newThread(Runnable r) {
                 SecurityManager s = System.getSecurityManager();
                 def group = (s != null)? s.getThreadGroup() :
-                    Thread.currentThread().getThreadGroup();
+                        Thread.currentThread().getThreadGroup();
                 def namePrefix = "#${node.process?.id}(${node.process?.type})-${node.nodeID}"
                 Thread t = new Thread(group, r, namePrefix, 0);
                 if (t.isDaemon())
@@ -1296,7 +1297,10 @@ class ProcessManagerService implements InitializingBean {
                 notifier.invocationThreadLock.writeLock().unlock()
                 return t;
             }
-        })
+        }
+
+        final ExecutorService fixedThreadPool = Executors.newFixedThreadPool(1, threadFactory )
+        final ExecutorService threadExecutor = Executors.unconfigurableExecutorService(fixedThreadPool)
 
         final Future futureTask = threadExecutor.submit( {
             def result
@@ -1368,7 +1372,10 @@ class ProcessManagerService implements InitializingBean {
             return result
         } as Callable )
 
-        return futureTask.get()
+        def threadExecutionResult = futureTask.get()
+        threadExecutor.shutdown()
+
+        return threadExecutionResult
 
     }
 
