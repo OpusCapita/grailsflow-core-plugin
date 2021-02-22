@@ -1,4 +1,9 @@
 
+[Release 1.8.8](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.8.8) Mon Feb 22 2021 17:34:05 GMT+0300 (MSK)
+=======================================================
+
+- [#45](https://github.com/OpusCapita/grailsflow-core-plugin/issues/45) Fixed unexpectable thread executor termination (GitHub ivouchak-sc@users.noreply.github.com, 2021-02-22 17:30:51 +0300)
+
 [Release 1.8.7](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.8.7) Tue Jan 12 2021 12:41:09 GMT+0300 (MSK)
 =======================================================
 
