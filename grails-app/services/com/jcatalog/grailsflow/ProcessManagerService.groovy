@@ -41,6 +41,8 @@ import com.jcatalog.grailsflow.extension.SendEventParameters
 import com.jcatalog.grailsflow.engine.concurrent.ProcessLock
 
 import grails.util.Environment
+
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Callable
 import org.springframework.transaction.support.TransactionSynchronizationManager
@@ -56,6 +58,9 @@ import com.jcatalog.grailsflow.process.PostKillProcessHandler
 import org.springframework.transaction.TransactionStatus
 import org.quartz.ObjectAlreadyExistsException
 import org.quartz.SimpleTrigger
+
+import java.util.concurrent.Future
+
 import static org.quartz.TriggerKey.*;
 import java.util.concurrent.ThreadFactory
 import com.jcatalog.grailsflow.status.ProcessStatusEnum
@@ -1271,11 +1276,14 @@ class ProcessManagerService implements InitializingBean {
         log.debug("Executing node '${node.nodeID}' of process #${node.process?.id}(${node.process?.type})")
         Closure actionsCode = processClass.nodeActions[node.nodeID]
         // execute actions in separate session (creation a separate thread)
-        return Executors.newSingleThreadExecutor( new ThreadFactory() {
+        // This is important to put new instance to the separate variable to resolve the existed JDK issue
+        // https://bugs.openjdk.java.net/browse/JDK-8145304
+
+        ThreadFactory threadFactory = new ThreadFactory() {
             public Thread newThread(Runnable r) {
                 SecurityManager s = System.getSecurityManager();
                 def group = (s != null)? s.getThreadGroup() :
-                    Thread.currentThread().getThreadGroup();
+                        Thread.currentThread().getThreadGroup();
                 def namePrefix = "#${node.process?.id}(${node.process?.type})-${node.nodeID}"
                 Thread t = new Thread(group, r, namePrefix, 0);
                 if (t.isDaemon())
@@ -1289,7 +1297,12 @@ class ProcessManagerService implements InitializingBean {
                 notifier.invocationThreadLock.writeLock().unlock()
                 return t;
             }
-        }).submit( {
+        }
+
+        final ExecutorService fixedThreadPool = Executors.newFixedThreadPool(1, threadFactory )
+        final ExecutorService threadExecutor = Executors.unconfigurableExecutorService(fixedThreadPool)
+
+        final Future futureTask = threadExecutor.submit( {
             def result
             try {
                 Session session = SessionFactoryUtils.getNewSession(sessionFactory)
@@ -1357,7 +1370,12 @@ class ProcessManagerService implements InitializingBean {
                 }
             }
             return result
-        } as Callable ).get()
+        } as Callable )
+
+        def threadExecutionResult = futureTask.get()
+        threadExecutor.shutdown()
+
+        return threadExecutionResult
 
     }
 
