@@ -282,7 +282,7 @@ class ProcessVariable {
             return DOUBLE
         } else if (classValue.equals("String")) {
             return STRING
-        } else if (classValue.equals("Date")) {
+        } else if (classValue in ['Date', 'Time', 'Timestamp']) { // date value can also has 'java.sql.Timestamp' or 'java.sql.Time' class
             return DATE
         } else if (classValue.equals("Integer")) {
             return INTEGER
