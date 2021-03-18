@@ -1,4 +1,9 @@
 
+[Release 1.9.2](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.2) Thu Mar 18 2021 17:14:38 GMT+0300 (MSK)
+=======================================================
+
+- [#47](https://github.com/OpusCapita/grailsflow-core-plugin/issues/47) Fixed defining correct type of process variable with 'java.sql.Timestamp' class value (GitHub ivouchak-sc@users.noreply.github.com, 2021-03-18 16:59:52 +0300)
+
 [Release 1.9.1](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.1) Tue Feb 16 2021 14:40:46 GMT+0300 (MSK)
 =======================================================
 
