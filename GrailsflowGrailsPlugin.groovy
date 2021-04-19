@@ -25,7 +25,7 @@ class GrailsflowGrailsPlugin {
     def description = "GrailsFlow is an open source Workflow and Process Engine."
 
     // URL to the plugin's documentation
-    def documentation = "http://opuscapita.github.io/grailsflow-core-plugin/"
+    def documentation = "https://github.com/OpusCapita/grailsflow-core-plugin"
     def license = "APACHE"
     def organization = [ name: "OpusCapita Software GmbH", url: "https://www.opuscapita.com/" ]
     def developers = [
