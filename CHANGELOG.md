@@ -1,4 +1,10 @@
 
+[Release 1.9.3](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.3) Fri Apr 30 2021 13:46:25 GMT+0300 (MSK)
+=======================================================
+
+- [#49](https://github.com/OpusCapita/grailsflow-core-plugin/issues/49) Fixed unexpectable thread executor termination ([#50](https://github.com/OpusCapita/grailsflow-core-plugin/issues/50)) (GitHub 52312752+nlogich-sc@users.noreply.github.com, 2021-04-30 08:13:34 +0300)
+- (EPROC-20369) Fixed link to documentation (Alexandr Shestak ashestak@scand.com, 2021-04-19 18:00:36 +0300)
+
 [Release 1.9.2](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.2) Thu Mar 18 2021 17:14:38 GMT+0300 (MSK)
 =======================================================
 
