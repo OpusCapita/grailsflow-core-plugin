@@ -1,4 +1,9 @@
 
+[Release 1.9.4](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.4) Fri May 28 2021 15:22:26 GMT+0300 (MSK)
+=======================================================
+
+- (EPROC-20548) Update translations (Dmitriy Sanko dmitriy.sanko@opuscapita.com, 2021-05-28 15:06:37 +0300)
+
 [Release 1.9.3](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.3) Fri Apr 30 2021 13:46:25 GMT+0300 (MSK)
 =======================================================
 
