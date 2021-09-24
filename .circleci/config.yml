@@ -45,14 +45,6 @@ jobs:
           name: Deploy.
           command: grails maven-deploy -Dgrails.env=prod -verbose
       - run:
-          name: Build and deploy docs.
-          command: |
-            if [ ! -z "${CIRCLE_TAG}" ]; then
-              rm -rf plugin.xml
-              grails doc --offline
-              grailsTechnicalDocumentationRsyncToAzure.sh
-            fi
-      - run:
           name: Remove plugin directory from maven repo.
           command: find ~/.m2/repository -type d -name '*-SNAPSHOT' -prune -exec rm -rf {} +
       - save_cache:
