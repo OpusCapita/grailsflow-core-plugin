@@ -1,76 +1,68 @@
+version: 2.1
+
+orbs:
+  jira: circleci/jira@1.2.2
+
 defaults: &defaults
   docker:
-    - image: opuscapita/minsk-core-ci:grails-2.4.4-jdk-8u192-nodejs-8.17.0-maven-3.3.9
+    - image: opuscapita/minsk-core-ci:4
   working_directory: ~/build
 
-version: 2
 jobs:
+  init:
+    docker:
+      - image: opuscapita/minsk-core-machineuser-env:2
+    steps:
+      - run: circle_ci_add_env.sh GH_MAIL GH_NAME
+
   build:
     <<: *defaults
     steps:
-      - run:
-          name: Environment inject.
-          command: env_inject.sh
-
       - checkout
-
       - restore_cache:
           keys:
-            - grails-core-plugin-{{ .Branch }}-{{ checksum "grails-app/conf/BuildConfig.groovy" }}
-            - grails-core-plugin-{{ .Branch }}
-            - grails-core-plugin
-
+            - 'v1-grails-plugin-{{ .Branch }}-{{ checksum "grails-app/conf/BuildConfig.groovy" }}'
+            - 'v1-grails-plugin-{{ .Branch }}'
+            - v1-grails-plugin
+      - run: if [ -f /.dockerenv ]; then configure-maven.sh && configure-grails.sh && configure-npm.sh; fi
       - run:
-          name: "Refresh grails dependencies."
+          name: Refresh grails dependencies.
           command: grails refresh-dependencies --non-interactive
-
       - run:
-          name: "Grails tests."
-          command: "grails test-app --stacktrace --offline"
-
+          name: Grails tests.
+          command: grails test-app --stacktrace --offline
       - run:
-          name: "Save grails test results."
+          name: Save grails test results.
           command: |
             mkdir -p ~/test-xml-reports/
             find . -type f -regex ".*/target/test-reports/.*xml" -exec cp -v {} ~/test-xml-reports/ \;
           when: always
-
       - store_test_results:
           path: ~/test-xml-reports
-
       - store_artifacts:
           path: ~/test-xml-reports
-
       - run:
-          name: "Deploy."
+          name: Deploy.
           command: grails maven-deploy -Dgrails.env=prod -verbose
-
-#      - run:
-#          name: "Build docs."
-#          command: |
-#            rm -rf plugin.xml
-#            grails doc --offline
-
-#      - run:
-#          name: "Deploy docs."
-#          command: grails DocDeploy --offline --upload-zip-to-google-drive
-
+      - run:
+          name: Build and deploy docs.
+          command: |
+            if [ ! -z "${CIRCLE_TAG}" ]; then
+              rm -rf plugin.xml
+              grails doc --offline
+              grailsTechnicalDocumentationRsyncToAzure.sh
+            fi
+      - run:
+          name: Remove plugin directory from maven repo.
+          command: find ~/.m2/repository -type d -name '*-SNAPSHOT' -prune -exec rm -rf {} +
       - save_cache:
-          key: grails-core-plugin-{{ .Branch }}-{{ checksum "grails-app/conf/BuildConfig.groovy" }}
-          paths:
-            - /root/.grails/.m2
-            - /root/.m2
+          key: 'v1-grails-plugin-{{ .Branch }}-{{ checksum "grails-app/conf/BuildConfig.groovy" }}'
+          paths: ~/.m2/repository
 
   release:
     <<: *defaults
     steps:
-
-      - run:
-          name: Environment inject
-          command: env_inject.sh
-
       - checkout
-
       - run:
           name: Executing release scrtipt.
           command: .circleci/release.sh
@@ -79,14 +71,25 @@ workflows:
   version: 2
   release-and-build:
     jobs:
+      - init:
+          filters:
+            tags:
+              only: /.*/
       - release:
           filters:
             branches:
               only: release
+          requires:
+            - init
+          post-steps:
+            - jira/notify
       - build:
           filters:
             tags:
               only: /.*/
             branches:
               ignore: release
-
+          requires:
+            - init
+          post-steps:
+            - jira/notify
