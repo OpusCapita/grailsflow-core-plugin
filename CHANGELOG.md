@@ -1,4 +1,8 @@
 
+[Release 1.9.7](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.7) Fri Oct 01 2021 18:36:39 GMT+0300 (MSK)
+=======================================================
+
+
 [Release 1.9.6](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.6) Fri Oct 01 2021 18:27:38 GMT+0300 (MSK)
 =======================================================
 
