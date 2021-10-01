@@ -18,7 +18,7 @@ jobs:
       - checkout
       - run:
           name: Executing release script
-          command: release.sh grails updateCommonDependencies
+          command: release.sh grails
 workflows:
   version: 2
   release-and-build:
