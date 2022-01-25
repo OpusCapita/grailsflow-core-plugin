@@ -1,4 +1,9 @@
 
+[Release 1.9.8](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.8) Tue Jan 25 2022 12:37:25 GMT+0300 (MSK)
+=======================================================
+
+- (EPROC-20852) Adjusted default translations (Mikhail Kravchenya kravchenya@scand.com, 2022-01-25 12:25:58 +0300)
+
 [Release 1.9.7](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.7) Fri Oct 01 2021 18:36:39 GMT+0300 (MSK)
 =======================================================
 
