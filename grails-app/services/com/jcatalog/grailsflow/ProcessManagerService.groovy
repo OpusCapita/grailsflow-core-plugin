@@ -243,6 +243,10 @@ class ProcessManagerService implements InitializingBean {
         }
     }
 
+    def startProcess(def processTypeID, def user, def variables) {
+        startProcess(processTypeID, user, variables, null)
+    }
+
     /**
      * Starting process execution
      *
@@ -251,7 +255,7 @@ class ProcessManagerService implements InitializingBean {
      *
      * @return process ID value if process was started successfully
      */
-    public def startProcess(def processTypeID, def user, def variables) {
+    public def startProcess(def processTypeID, def user, def variables, Map<String, List<String>> assignees) {
         // check processTypeID in supportedProcessTypes
         if (!processFactory.getProcessTypes().contains(processTypeID)) {
             log.error("Cannot start process of type '${processTypeID}'. Type is not supported.")
@@ -309,7 +313,7 @@ class ProcessManagerService implements InitializingBean {
                 // create process variables
                 defineVariables(basicProcess, process)
 
-                updateProcessAssignees(basicProcess, processAssignees)
+                updateProcessAssignees(basicProcess, assignees ?: processAssignees)
 
                 BasicProcess.withTransaction {status->
                     basicProcess.addToNodes(startNode)
