@@ -1,4 +1,9 @@
 
+[Release 1.9.10](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.10) Thu Mar 31 2022 11:42:47 GMT+0300 (MSK)
+=======================================================
+
+- (PROC-21233) Added possibility to define initial assignees during starting an approval process ([#52](https://github.com/OpusCapita/grailsflow-core-plugin/issues/52)) (GitHub ivouchak-sc@users.noreply.github.com, 2022-03-31 11:22:44 +0300)
+
 [Release 1.9.9](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.9) Tue Feb 08 2022 16:29:15 GMT+0300 (MSK)
 =======================================================
 
