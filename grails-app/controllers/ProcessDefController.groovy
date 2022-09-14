@@ -12,6 +12,8 @@
  * limitations under the License.
  */
 
+
+import com.jcatalog.grailsflow.ProcessExporterService
 import org.apache.commons.io.FilenameUtils
 import org.apache.commons.lang.StringUtils
 
