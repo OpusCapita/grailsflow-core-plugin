@@ -1,4 +1,9 @@
 
+[Release 1.9.11](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.11) Wed Sep 14 2022 10:42:12 GMT+0300 (MSK)
+=======================================================
+
+- (SSM-20316) Fixed ProcessExporterService import. ([#54](https://github.com/OpusCapita/grailsflow-core-plugin/issues/54)) (GitHub dvasiliev-sc@users.noreply.github.com, 2022-09-14 10:38:46 +0300)
+
 [Release 1.9.10](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.10) Thu Mar 31 2022 11:42:47 GMT+0300 (MSK)
 =======================================================
 
