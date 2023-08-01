@@ -100,3 +100,4 @@ workflows:
             - init
           post-steps:
             - jira/notify
+                token_name: "CIRCLE_CI_TOKEN"
