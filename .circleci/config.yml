@@ -23,7 +23,7 @@ jobs:
   init:
     docker:
       - image: opuscapita/minsk-core-machineuser-env:2
-      <<: *docker_auth
+        <<: *docker_auth
     steps:
       - run: circle_ci_add_env.sh GH_MAIL GH_NAME
 
