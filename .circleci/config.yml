@@ -99,4 +99,5 @@ workflows:
           requires:
             - init
           post-steps:
-            - jira/notify
+            - jira/notify:
+                token_name: "CIRCLE_CI_TOKEN"
