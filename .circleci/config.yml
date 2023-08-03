@@ -1,8 +1,20 @@
 version: 2
+
+aliases:
+  - &docker_auth
+    auth:
+      username: ${DOCKER_USER}
+      password: ${DOCKER_PASS}
+
+  - &default-context
+    context:
+      - shared-creds
+      
 jobs:
   inject-environment:
     docker:
       - image: opuscapita/minsk-core-machineuser-env:2
+        <<: *docker_auth
     steps:
       - run:
           name: Inject secrets from vault to CircleCI project's environment
@@ -11,9 +23,7 @@ jobs:
   release:
     docker:
       - image: opuscapita/minsk-core-release-manager:1
-        auth:
-          username: $DOCKER_USER
-          password: $DOCKER_PASS
+        <<: *docker_auth
     steps:
       - checkout
       - run:
@@ -23,7 +33,8 @@ workflows:
   version: 2
   release-and-build:
     jobs:
-      - inject-environment
+      - inject-environment:
+          <<: *default-context
       - release:
           requires:
             - inject-environment
