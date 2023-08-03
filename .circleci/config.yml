@@ -8,22 +8,15 @@ aliases:
     auth:
       username: ${DOCKER_USER}
       password: ${DOCKER_PASS}
-      
+
   - &default-context
     context:
       - shared-creds
 
-setup_docker: &setup_docker
-  docker:
-    - image: opuscapita/minsk-core-ci:4
-      <<: *docker_auth
-      environment:
-        JAVA_OPTS: -Xms2g -Xmx3g
-  working_directory: ~/build
-  
 defaults: &defaults
   docker:
     - image: opuscapita/minsk-core-ci:4
+      <<: *docker_auth
   working_directory: ~/build
 
 jobs:
@@ -95,7 +88,8 @@ workflows:
           requires:
             - init
           post-steps:
-            - jira/notify
+            - jira/notify:
+                token_name: "CIRCLE_CI_TOKEN"
       - build:
           <<: *default-context
           filters:
@@ -106,4 +100,5 @@ workflows:
           requires:
             - init
           post-steps:
-            - jira/notify
+            - jira/notify:
+                token_name: "CIRCLE_CI_TOKEN"
