@@ -1,4 +1,10 @@
 
+[Release 1.9.14](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.14) Thu Sep 14 2023 11:10:34 GMT+0300 (MSK)
+=======================================================
+
+- Merge pull request [#58](https://github.com/OpusCapita/grailsflow-core-plugin/issues/58) from OpusCapita/EPROC-21739 (GitHub 112688481+jacekniezgoda-oc@users.noreply.github.com, 2023-09-14 09:57:24 +0200)
+- EPROC-21739 Adjust source messages in eProc applications (Jacek Niezgoda ext-jacek.niezgoda@opuscapita.com, 2023-09-14 08:32:08 +0200)
+
 [Release 1.9.13](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.13) Thu Sep 07 2023 11:42:34 GMT+0300 (MSK)
 =======================================================
 
