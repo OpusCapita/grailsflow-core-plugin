@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  jira: circleci/jira@1.2.2
+  jira: circleci/jira@2.0
 
 aliases:
   - &docker_auth
@@ -89,7 +89,8 @@ workflows:
             - init
           post-steps:
             - jira/notify:
-                token_name: "CIRCLE_CI_TOKEN"
+                pipeline_id: << pipeline.id >>
+                pipeline_number: << pipeline.number >>
       - build:
           <<: *default-context
           filters:
@@ -101,4 +102,5 @@ workflows:
             - init
           post-steps:
             - jira/notify:
-                token_name: "CIRCLE_CI_TOKEN"
+                pipeline_id: << pipeline.id >>
+                pipeline_number: << pipeline.number >>
