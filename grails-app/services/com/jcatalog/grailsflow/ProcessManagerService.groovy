@@ -555,10 +555,12 @@ class ProcessManagerService implements InitializingBean {
             .build()
 
         log.debug("Invoking asynchronous node '${nodeID}' of process #${process?.id}(${process?.type})")
+        log.info("Invoking asynchronous node '${nodeID}' of process #${process?.id}(${process?.type})")
         try {
             SendEventJob.schedule(trigger)
         } catch (ObjectAlreadyExistsException e) {
             log.debug("Node '${nodeID}' of process #${process?.id}(${process?.type}) have already started the execution. The invocation was skipped.")
+            log.info("DEBUG: Node '${nodeID}' of process #${process?.id}(${process?.type}) have already started the execution. The invocation was skipped.")
         }
         return 0
     }
@@ -819,6 +821,7 @@ class ProcessManagerService implements InitializingBean {
                             }
 
                             log.debug("The result of execution node '${nodeID}' of process #${basicProcess.id}(${basicProcess.type}) is '${result}'")
+                            log.info("DEBUG: The result of execution node '${nodeID}' of process #${basicProcess.id}(${basicProcess.type}) is '${result}'")
                             // check result value
                             if (eventID == null) {
                                 eventID = result
