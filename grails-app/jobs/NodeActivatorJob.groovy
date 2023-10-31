@@ -144,7 +144,7 @@ class NodeActivatorJob {
             waitNodesQuery.setParameter('appExternalID', appExternalID)
             waitNodesQuery.setParameter('type', ConstantUtils.NODE_TYPE_WAIT)
             List waitNodesKeys = waitNodesQuery.list()
-
+            log.info "TEST: appExternalID ${appExternalID} type ${ConstantUtils.NODE_TYPE_WAIT} runningStatusKey ${runningStatusKey}"
             if (log.debugEnabled) {
                 sw?.stop()
                 sw?.start('Processing manual nodes in running state')
