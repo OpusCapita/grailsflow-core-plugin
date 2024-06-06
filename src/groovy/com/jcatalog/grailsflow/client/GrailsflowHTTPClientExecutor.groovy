@@ -14,15 +14,14 @@
  
 package com.jcatalog.grailsflow.client
 
-import com.jcatalog.grailsflow.client.ClientExecutor 
-import org.apache.commons.httpclient.methods.RequestEntity
-import org.apache.commons.httpclient.HttpClient
-import org.apache.commons.httpclient.HttpException
-import org.apache.commons.httpclient.methods.PostMethod
-
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
-
+import org.apache.hc.client5.http.classic.methods.HttpPost
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse
+import org.apache.hc.client5.http.impl.classic.HttpClients
+import org.apache.hc.core5.http.HttpEntity
+import org.apache.hc.core5.http.io.entity.EntityUtils
 /**
  * Simple implementation for client executor.
  * It makes authorization through passing 'manager' login and password.
@@ -33,44 +32,53 @@ import org.apache.commons.logging.LogFactory
 class GrailsflowHTTPClientExecutor implements ClientExecutor {
     private static final Log log = LogFactory.getLog(getClass())
     
-    def executeCall(String siteBase, String url, RequestEntity requestEntity) {
+    def executeCall(String siteBase, String url, HttpEntity requestEntity) {
         log.debug("Starting executing callback functions.")
-        
-        HttpClient httpClient = new HttpClient()
+
+        CloseableHttpClient httpClient = HttpClients.createDefault()
 
         // authentication part
         // we need to implement special SecurityHTTPClient that will provide
         // possibility to access remote URL.
         def loginUrl = "${siteBase}/login/login?loginName=manager&password=manager"
 
-        PostMethod method = new PostMethod(loginUrl)
+        HttpPost method = new HttpPost(loginUrl)
         try {
-            def statusCode = httpClient.executeMethod(method)
-        } catch (Throwable t) {
-            log.error(" Error during method execution", t)
+            executeHttpPost(httpClient, method, loginUrl)
+        } catch (IOException ex) {
+            log.error(" Error during authorization method execution", ex)
+            httpClient.close()
         }
-
-        def stream = method.getResponseBodyAsStream()
-        if (stream) stream.close()
-        method.releaseConnection()
 
         log.debug("Authorization request is finished.")
         
         // callback URL part
-        method = new PostMethod(url)
-        method.setRequestEntity(requestEntity)
+        method = new HttpPost(url)
+        method.setEntity(requestEntity)
 
         try {
-            def statusCode = httpClient.executeMethod(method)
-            log.debug("Status of callback function execution is: $statusCode")
+            executeHttpPost(httpClient, method, url)
         } catch (Throwable t) {
-            log.error("Error during method execution", t)
+            log.error("Error during callback method execution", t)
+        } finally {
+            httpClient.close()
         }
 
-        stream = method.getResponseBodyAsStream()
-        if (stream) stream.close()
-        method.releaseConnection()
-
         return null
+    }
+
+    private void executeHttpPost(CloseableHttpClient httpClient, HttpPost method, String url) {
+        CloseableHttpResponse response = httpClient.execute(method)
+        HttpEntity entity = response.getEntity()
+        String entityAsString = EntityUtils.toString(entity)
+        EntityUtils.consume(entity)
+        logDebugInformation(url, response, entityAsString)
+    }
+
+    private void logDebugInformation(url, CloseableHttpResponse response, String entityAsString) {
+        if (log.isDebugEnabled()) {
+            log.debug("Response code from ${url}: ${response.getCode()} ${response.getReasonPhrase()}")
+            log.debug("Response body: ${entityAsString}")
+        }
     }
 }

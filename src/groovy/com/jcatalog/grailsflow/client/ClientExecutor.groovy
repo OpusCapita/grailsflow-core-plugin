@@ -1,6 +1,6 @@
 package com.jcatalog.grailsflow.client
 
-import org.apache.commons.httpclient.methods.RequestEntity
+import org.apache.hc.core5.http.HttpEntity
 
 /**
  * ClientExecutor class represents common interface for executing
@@ -18,5 +18,5 @@ import org.apache.commons.httpclient.methods.RequestEntity
  * @author July Karpey
  */
 interface ClientExecutor {
-    def executeCall(String siteBase, String url, RequestEntity requestEntity)
+    def executeCall(String siteBase, String url, HttpEntity requestEntity)
 }

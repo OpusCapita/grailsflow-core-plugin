@@ -14,6 +14,8 @@
  
 package com.jcatalog.grailsflow.jobs
 
+import org.apache.hc.core5.http.ContentType
+import org.apache.hc.core5.http.io.entity.StringEntity
 import org.springframework.scheduling.quartz.QuartzJobBean
 import org.quartz.JobExecutionContext
 import org.quartz.JobExecutionException
@@ -21,7 +23,7 @@ import org.quartz.JobDataMap
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 
-import org.apache.commons.httpclient.methods.StringRequestEntity
+import java.nio.charset.StandardCharsets
 
 /**
  * CallbackJob class contains common mechanizm for preparing callback
@@ -76,11 +78,13 @@ abstract class CallbackJob extends QuartzJobBean {
         xmlDocument.append("<actionresult><![CDATA[${result?.toString()}]]></actionresult>")
         xmlDocument.append("</document>")
 
-        log.debug("Prepared document: $xmlDocument")
+        if (log.isDebugEnabled()) {
+            log.debug("Prepared document: $xmlDocument")
+        }
 
         if (clientExecutor) {
             clientExecutor
-                .executeCall(siteBase, url, new StringRequestEntity(xmlDocument.toString(), "text/xml", "utf-8"))
+                .executeCall(siteBase, url, new StringEntity(xmlDocument.toString(), ContentType.TEXT_XML, StandardCharsets.UTF_8.name(), false))
         } else {
             log.debug("No ClientExecutor is configured")
         }

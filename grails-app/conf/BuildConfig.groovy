@@ -33,7 +33,7 @@ grails.project.dependency.resolution = {
     
     dependencies {
         compile ("com.sdicons.jsontools:jsontools-core:1.7",
-                 "commons-httpclient:commons-httpclient:3.0.1",
+                 "org.apache.httpcomponents.client5:httpclient5:5.2.3",
                  "commons-beanutils:commons-beanutils:1.9.2",
                  "javax.validation:validation-api:1.1.0.Final") {
             exported=false
