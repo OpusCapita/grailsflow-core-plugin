@@ -1,4 +1,13 @@
 
+[Release 1.9.15](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.15) Thu Jun 06 2024 16:28:47 GMT+0300 (MSK)
+=======================================================
+
+- Merge pull request [#59](https://github.com/OpusCapita/grailsflow-core-plugin/issues/59) from OpusCapita/EPROC-22132-internal-plugin-test (GitHub 110452555+WojciechStrzelinski-oc@users.noreply.github.com, 2024-06-06 14:57:55 +0200)
+- Revert "Create development branch 'EPROC-22132-internal-plugin-test' [ci skip]" (Wojciech Strzeli??ski ext-wojciech.strzelinski@opuscapita.com, 2024-06-06 14:47:57 +0200)
+- (EPROC-22132) refactor: Update Apache HttpClient (Wojciech Strzeli??ski ext-wojciech.strzelinski@opuscapita.com, 2024-06-03 13:40:52 +0200)
+- Create development branch 'EPROC-22132-internal-plugin-test' [ci skip] (Wojciech Strzeli??ski ext-wojciech.strzelinski@opuscapita.com, 2024-06-03 08:37:19 +0000)
+- Update jira orb to 2.0 [skip ci] (GitHub 114471701+arturszwed-oc@users.noreply.github.com, 2023-10-24 08:14:43 +0200)
+
 [Release 1.9.14](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.14) Thu Sep 14 2023 11:10:34 GMT+0300 (MSK)
 =======================================================
 
