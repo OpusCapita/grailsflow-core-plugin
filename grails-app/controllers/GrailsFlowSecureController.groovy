@@ -44,10 +44,7 @@ abstract class GrailsFlowSecureController {
      * @return
      */
     protected def getUserAuthorities(def session) {
-       def users = securityHelper.getUsers(session)
-       def userRoles = securityHelper.getUserRoles(session)
-       def userGroups = securityHelper.getUserGroups(session)
-       return AuthoritiesUtils.getAuthorities(users, userRoles, userGroups)
+       return securityHelper.getUserAuthorities(session)
     }
 
 }

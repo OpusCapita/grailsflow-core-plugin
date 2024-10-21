@@ -62,7 +62,6 @@ import org.quartz.SimpleTrigger
 
 import java.util.concurrent.Future
 
-import static org.quartz.TriggerKey.*;
 import java.util.concurrent.ThreadFactory
 import com.jcatalog.grailsflow.status.ProcessStatusEnum
 import com.jcatalog.grailsflow.status.NodeStatusEnum
@@ -70,10 +69,8 @@ import com.jcatalog.grailsflow.engine.execution.ExecutionResultEnum
 import com.jcatalog.grailsflow.model.definition.ProcessNodeDef
 import com.jcatalog.grailsflow.engine.concurrent.ProcessNotifier
 import com.jcatalog.grailsflow.model.definition.ProcessDef
-import org.quartz.Trigger
 import org.quartz.TriggerBuilder
 import org.quartz.JobDataMap
-import com.jcatalog.grailsflow.cluster.GrailsflowLock
 
 /**
  * Process Manager service is an engine that deals with processes:
@@ -801,7 +798,7 @@ class ProcessManagerService implements InitializingBean {
                                     log.debug("Node execution was interrupted!")
                                     return ExecutionResultEnum.INTERRUPTED_BY_KILLING.value()
                                 } else {
-                                    log.error("Node execution throwed exception", e)
+                                    log.error("Node execution thrown exception", e)
                                 }
 
                                 ProcessNodeException exception = new ProcessNodeException(e)
@@ -1701,11 +1698,7 @@ class ProcessManagerService implements InitializingBean {
     }
 
     Collection<String> getUserAuthorities() {
-        Collection<String> users = securityHelper.getUsers()
-        Collection<String> userRoles = securityHelper.getUserRoles()
-        Collection<String> userGroups = securityHelper.getUserGroups()
-
-        return AuthoritiesUtils.getAuthorities(users, userRoles, userGroups)
+        return securityHelper.getUserAuthorities()
     }
 
     boolean hasUserAccessToProcessNode(ProcessNode processNode) {
