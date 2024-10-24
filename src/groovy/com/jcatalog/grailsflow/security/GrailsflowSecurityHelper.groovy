@@ -49,7 +49,7 @@ class GrailsflowSecurityHelper implements SecurityHelper {
      * @param session
      * @return
      */
-    List<String> getUsers(Object session) {
+    List<String> getUsers(def session) {
         return [getUser(session)]
     }
 
