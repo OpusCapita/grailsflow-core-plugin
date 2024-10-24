@@ -1698,7 +1698,7 @@ class ProcessManagerService implements InitializingBean {
     }
 
     Collection<String> getUserAuthorities() {
-        return securityHelper.getUserAuthorities()
+        return securityHelper.getUserAuthorities(null)
     }
 
     boolean hasUserAccessToProcessNode(ProcessNode processNode) {
