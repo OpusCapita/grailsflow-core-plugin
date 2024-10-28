@@ -1,4 +1,12 @@
 
+[Release 1.10.0](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.10.0) Mon Oct 28 2024 11:33:25 GMT+0300 (MSK)
+=======================================================
+
+- Merge pull request [#60](https://github.com/OpusCapita/grailsflow-core-plugin/issues/60) from OpusCapita/PROC-21713 (GitHub 112688481+jacekniezgoda-oc@users.noreply.github.com, 2024-10-28 09:19:31 +0100)
+- PROC-21713 - Add null parameter as session is never used (Jacek Niezgoda ext-jacek.niezgoda@opuscapita.com, 2024-10-24 10:34:12 +0200)
+- PROC-21713 - unify GrailsflowSecurityHelper method parameters type (Jacek Niezgoda ext-jacek.niezgoda@opuscapita.com, 2024-10-24 09:40:35 +0200)
+- PROC-21713 - Slow getUserAuthorities execution when many delegations defined - move getUserAuthorities to SecurityHelper (Jacek Niezgoda ext-jacek.niezgoda@opuscapita.com, 2024-10-21 10:54:20 +0200)
+
 [Release 1.9.15](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.9.15) Thu Jun 06 2024 16:28:47 GMT+0300 (MSK)
 =======================================================
 
