@@ -40,7 +40,7 @@ class GrailsflowSecurityHelper implements SecurityHelper {
      * @return "grailsflow"
      */
     String getUser(def session) {
-      return "grailsflow";
+      return "grailsflow"
     }
 
     /**
@@ -49,7 +49,7 @@ class GrailsflowSecurityHelper implements SecurityHelper {
      * @param session
      * @return
      */
-    List<String> getUsers(Object session) {
+    List<String> getUsers(def session) {
         return [getUser(session)]
     }
 
@@ -60,7 +60,7 @@ class GrailsflowSecurityHelper implements SecurityHelper {
      */
     List<String> getUserRoles(def session) {
       def roles = ["GRAILSFLOW"]
-      return (List<String>)roles;
+      return (List<String>)roles
     }
 
     /**
@@ -70,7 +70,20 @@ class GrailsflowSecurityHelper implements SecurityHelper {
      */
     List<String> getUserGroups(def session) {
       def groups = ["Grailsflow"]
-      return (List<String>)groups;
+      return (List<String>)groups
+    }
+
+    /**
+     * Always return authorities of "GRAILSFLOW" user, "GRAILSFLOW" role and "Grailsflow" group.
+     * @param session
+     * @return authorities
+     */
+    List<String> getUserAuthorities(def session) {
+        return AuthoritiesUtils.getAuthorities(
+                getUsers(session),
+                getUserRoles(session),
+                getUserGroups(session)
+        )
     }
 
     @Override
