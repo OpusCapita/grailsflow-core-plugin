@@ -30,7 +30,7 @@ grails.project.dependency.resolution = {
         mavenRepo "http://repository.jboss.com/maven2/"
         mavenRepo "http://repo.grails.org/grails/core"
     }
-    
+
     dependencies {
         compile ("com.sdicons.jsontools:jsontools-core:1.7",
                  "org.apache.httpcomponents.client5:httpclient5:5.2.3",
@@ -46,7 +46,7 @@ grails.project.dependency.resolution = {
         }
         test "org.grails:grails-datastore-test-support:1.0.1-grails-2.4"
     }
-    
+
     plugins {
         // plugins for the build system only
         build   ":tomcat:7.0.55"
@@ -54,8 +54,10 @@ grails.project.dependency.resolution = {
 
         runtime ":hibernate:3.6.10.18"
         runtime(":resources:1.2.8",
-                ":jquery:1.11.1",
-                ":jquery-ui:1.10.4")
+//                ":jquery:1.11.1",
+//                ":jquery-ui:1.10.4"
+                'com.jcatalog.grailsplugins:jcatalog-js-libraries:EPROC-22642-SNAPSHOT'
+        )
         runtime ':font-awesome-resources:4.3.0.1'
         compile ":twitter-bootstrap:3.3.1"
         compile ":export:1.6"
