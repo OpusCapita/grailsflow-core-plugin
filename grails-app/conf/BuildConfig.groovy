@@ -56,7 +56,7 @@ grails.project.dependency.resolution = {
         runtime(":resources:1.2.8",
 //                ":jquery:1.11.1",
 //                ":jquery-ui:1.10.4"
-                'com.jcatalog.grailsplugins:jcatalog-js-libraries:EPROC-22642-SNAPSHOT'
+                'com.jcatalog.grailsplugins:jcatalog-js-libraries:7.42.GA.1-select2-SNAPSHOT'
         )
         runtime ':font-awesome-resources:4.3.0.1'
         compile ":twitter-bootstrap:3.3.1"
