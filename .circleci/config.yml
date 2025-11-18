@@ -13,22 +13,26 @@ aliases:
     context:
       - shared-creds
 
-defaults: &defaults
-  docker:
-    - image: opuscapita/minsk-core-ci:4
-      <<: *docker_auth
-  working_directory: ~/build
+executors:
+  default-executor:
+    docker:
+      - image: opuscapita/minsk-core-ci:4
+        <<: *docker_auth
+    working_directory: ~/build
 
-jobs:
-  init:
+  machine-user-executor:
     docker:
       - image: opuscapita/minsk-core-machineuser-env:2
         <<: *docker_auth
+
+jobs:
+  init:
+    executor: machine-user-executor
     steps:
       - run: circle_ci_add_env.sh GH_MAIL GH_NAME
 
   build:
-    <<: *defaults
+    executor: default-executor
     steps:
       - checkout
       - restore_cache:
@@ -64,7 +68,7 @@ jobs:
           paths: ~/.m2/repository
 
   release:
-    <<: *defaults
+    executor: default-executor
     steps:
       - checkout
       - run:
@@ -72,7 +76,6 @@ jobs:
           command: .circleci/release.sh
 
 workflows:
-  version: 2
   release-and-build:
     jobs:
       - init:
