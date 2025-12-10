@@ -21,7 +21,50 @@
 </head>
 
 <body>
+  <r:script>
+    $(function () {
+      function fetchDelete(url) {
+        const messageContainer = $('#messageContainer');
+        messageContainer.addClass('hide');
+        messageContainer.html('');
+        fetch(url, { method: "DELETE" })
+          .then(r => {
+            if (!r.ok) {
+              throw new Error("Server error");
+            }
+            return r.json();
+          })
+          .then(data => {
+            if (data.success) {
+               location.reload();
+            } else if (data.message) {
+              throw new Error(data.message);
+            }
+          })
+          .catch(e => {
+            messageContainer.text(e.message);
+            messageContainer.removeClass('hide');
+          });
+      }
+
+      function handleDelete(el, url) {
+        const message = $(el.currentTarget).data('message');
+        if (message && confirm(message)) {
+          fetchDelete(url);
+        }
+      }
+
+      $('.jobDelete').on('click', function(el) {
+        const name = $(el.currentTarget).data('name');
+        const group = $(el.currentTarget).data('group');
+        handleDelete(el, location.origin + '${request.getContextPath()}' + '/' + '${params['controller']}' + '/delete?name=' + name + '&group=' + group);
+      });
+    });
+  </r:script>
+
   <h1><g:message code="plugin.grailsflow.label.schedulerDetails"/></h1>
+
+  <div id="messageContainer" class="bs-callout bs-callout-danger hide"></div>
 
   <g:render plugin="grailsflowCore" template="/commons/messageInfo"/>
 
@@ -175,13 +218,14 @@
                             </g:else>
                             ${g.message(code: (jobInfo?.paused) ? 'plugin.grailsflow.label.resume' : 'plugin.grailsflow.label.pause')}
                           </g:link>
-                          <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="delete"
-                                  params="${[name: jobInfo?.job?.name, group: jobInfo?.job?.group]}"
-                                  onclick="return window.confirm('${g.message(code: 'plugin.grailsflow.message.job.delete')}');"
-                                  title="${g.message(code: 'plugin.grailsflow.label.delete')}">
-                            <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;
+                          <a class="btn btn-sm btn-default jobDelete" href="javascript:void(0);"
+                            data-name="${jobInfo?.job?.name}"
+                            data-group="${jobInfo?.job?.group}"
+                            data-message="${g.message(code: 'plugin.grailsflow.message.job.delete', encodeAs: 'JavaScript')}"
+                            title="${g.message(code: 'plugin.grailsflow.label.delete')}"
+                          ><span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;
                             <g:message code="plugin.grailsflow.label.delete"/>
-                          </g:link>
+                          </a>
                           <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="edit"
                                   params="${[name: jobInfo?.trigger?.name, group: jobInfo?.trigger?.group]}"
                                   title="${g.message(code: 'plugin.grailsflow.label.edit')}">
