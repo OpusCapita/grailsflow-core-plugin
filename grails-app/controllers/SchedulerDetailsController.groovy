@@ -13,11 +13,10 @@
  */
 
 import com.jcatalog.grailsflow.utils.TranslationUtils
+import grails.converters.JSON
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
-
 import org.springframework.web.multipart.commons.CommonsMultipartFile
 import java.text.SimpleDateFormat
-
 import com.jcatalog.grailsflow.model.process.ProcessVariable
 import org.apache.commons.lang.StringUtils
 import java.text.ParseException
@@ -35,6 +34,10 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
     def documentsPath
 
     def schedulerOperationsService
+
+    def static allowedMethods = [
+            delete: 'DELETE'
+    ]
     
     def index = {
         redirect(action: "showSchedulerDetails")
@@ -151,16 +154,16 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
     }
 
     def delete = {
+        boolean success = false
         if (params.name && params.group) {
             if (schedulerOperationsService.deleteScheduledJob(params.name, params.group)) {
-                flash.message = g.message(code: "plugin.grailsflow.messages.job.deleted")
-            } else {
-                flash.error = g.message(code: "plugin.grailsflow.messages.error.delete")
+                success = true
             }
-        } else {
-            flash.error = g.message(code: "plugin.grailsflow.messages.error.delete")
         }
-        redirect(action: "showSchedulerDetails")
+
+        render([success: success, message: (success)
+                ? g.message(code: "plugin.grailsflow.messages.job.deleted")
+                : g.message(code: "plugin.grailsflow.messages.error.delete")] as JSON)
     }
 
     def scheduleProcess = {
