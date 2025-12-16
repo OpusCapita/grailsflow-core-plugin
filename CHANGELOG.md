@@ -1,4 +1,10 @@
 
+[Release 1.10.1](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.10.1) Tue Dec 16 2025 12:49:33 GMT+0300 (MSK)
+=======================================================
+
+- Merge pull request [#62](https://github.com/OpusCapita/grailsflow-core-plugin/issues/62) from OpusCapita/EPROC-22812 (GitHub ext-jan.kozak@opuscapita.com, 2025-12-16 08:37:01 +0100)
+- (EPROC-22812) Change endpoint to use DELETE (Jan Kozak ext-jan.kozak@opuscapita.com, 2025-12-10 18:40:13 +0100)
+
 [Release 1.10.0](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.10.0) Mon Oct 28 2024 11:33:25 GMT+0300 (MSK)
 =======================================================
 
