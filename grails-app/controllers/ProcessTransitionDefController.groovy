@@ -16,6 +16,8 @@ import com.jcatalog.grailsflow.model.definition.ProcessTransitionDef
 
 import com.jcatalog.grailsflow.utils.NameUtils
 
+import grails.converters.JSON
+
 /**
  * Process transition definition controller class is used for working with
  * transition definitions.
@@ -25,32 +27,36 @@ import com.jcatalog.grailsflow.utils.NameUtils
  */
 class ProcessTransitionDefController extends GrailsFlowSecureController {
 
+    static allowedMethods = [
+        delete             : 'POST',
+        save               : 'POST',
+        update             : 'POST',
+        deleteTransitionDef: 'DELETE'
+    ]
+
     def index = {
         redirect(controller: "processDef")
     }
 
-    // the delete, save and update actions only accept POST requests
-    def static allowedMethods = [delete: 'POST', save: 'POST', update: 'POST']
-
     def addTransitonDef = {
-        def node = params.fromNode ? ProcessNodeDef.get(Long.valueOf(params.fromNode)) : null
+        def node = ProcessNodeDef.get(params.long('fromNode'))
         render(view: 'transitionForm',
                model: [transition: new ProcessTransitionDef(fromNode: node) ] )
     }
 
     def editTransitonDef = {
-        def trans = ProcessTransitionDef.get(Long.valueOf(params.id))
+        def trans = ProcessTransitionDef.get(params.long('id'))
         render(view: 'transitionForm', model: [transition: trans])
     }
 
     def saveTransitionDef = {
-        def fromNode = params.fromNode ? ProcessNodeDef.get(Long.valueOf(params.fromNode)) : null
+        def fromNode = ProcessNodeDef.get(params.long('fromNode'))
         def event = params.eventID?.trim()
         def process = fromNode.processDef
 
         def finishNodes = []
         if (params.toNode) {
-            finishNodes << ProcessNodeDef.get(Long.valueOf(params.toNode))
+            finishNodes << ProcessNodeDef.get(params.long('toNode'))
         } else {
             process.nodes.each {
                 if (params["toNode_" + it.id] == "true"
@@ -77,7 +83,7 @@ class ProcessTransitionDefController extends GrailsFlowSecureController {
             } else {
               def transition
 			        if (params.id) {
-			            transition = ProcessTransitionDef.get(Long.valueOf(params.id))
+			            transition = ProcessTransitionDef.get(params.long('id'))
 			        } else {
 			            transition = new ProcessTransitionDef(fromNode: fromNode)
 			        }
@@ -88,23 +94,23 @@ class ProcessTransitionDefController extends GrailsFlowSecureController {
             }
         }
     }
-    
+
     def editTranslations = {
         if (!flash.message) flash.message = ""
-        def transition = params.id ? ProcessTransitionDef.get(Long.valueOf(params.id)) : null
+        def transition = ProcessTransitionDef.get(params.long('id'))
         if (!transition) {
             flash.errors = ["Impossible to edit transition with key ${params.id}"]
-            return redirect(controller: 'processDef', action: 'editTypes')    
+            return redirect(controller: 'processDef', action: 'editTypes')
         }
         render(view: 'editTranslations', model: [transition: transition])
     }
-        
+
     def saveTranslations = {
         if (!flash.message) flash.message = []
-        def transition = params.id ? ProcessTransitionDef.get(Long.valueOf(params.id)) : null
+        def transition = ProcessTransitionDef.get(params.long('id'))
         if (!transition) {
             flash.errors = ["Impossible to edit transition with key ${params.id}"]
-            return redirect(controller: 'processDef', action: 'editTypes')    
+            return redirect(controller: 'processDef', action: 'editTypes')
         }
         def labels = GrailsflowRequestUtils.getTranslationsMapFromParams(params, 'label_')
         transition.label = labels
@@ -112,16 +118,25 @@ class ProcessTransitionDefController extends GrailsFlowSecureController {
         redirect(action: 'editTransitonDef', params: [id: params.id])
     }
 
-    def deleteTransitonDef = {
-        def transition = ProcessTransitionDef.get(Long.valueOf(params.id))
-        def processDefID = transition.fromNode.processDef.id
-        transition.removeFromAssociations()
-        transition.delete(flush: true)
-        redirect(controller: "processDef", action: 'editProcess', params: [id: processDefID])
+    def deleteTransitionDef = {
+        def transition = ProcessTransitionDef.get(params.long('id'))
+
+        def result
+        if (transition) {
+            def processDefId = transition.fromNode.processDef.id
+            transition.removeFromAssociations()
+            transition.delete(flush: true)
+            result = [success: true, processDefId: processDefId]
+        } else {
+            def errorMessage = 'Transition def not found'
+            log.debug(errorMessage)
+            result = [success: false, error: [code: 'NOT_FOUND', message: errorMessage]]
+        }
+        render result as JSON
     }
 
     def toProcessEditor = {
-      def fromNode = params.fromNode ? ProcessNodeDef.get(Long.valueOf(params.fromNode)) : null
+      def fromNode = ProcessNodeDef.get(params.long('fromNode'))
       def processDefID = fromNode?.processDef?.id
       if (processDefID != null) {
         redirect(controller: "processDef", action: 'editProcess', params: [id: processDefID])

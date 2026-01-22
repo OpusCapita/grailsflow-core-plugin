@@ -26,57 +26,59 @@
 
 <r:script>
   function orderMoveVarUp(id) {
-      jQuery.ajax({
-          url: "${request.contextPath}/processVarDef/orderMoveUp/"+id ,
-          success:function(data) {
-              afterMoveVarUp(data)
-          }
-      })
+    orderMoveVarCommon(id, 'Up', afterMoveVarUp.bind(null, id));
   }
 
   function orderMoveVarDown(id) {
-      jQuery.ajax({
-          url: "${request.contextPath}/processVarDef/orderMoveDown/"+id ,
-          success:function(data) {
-              afterMoveVarDown(data)
-          }
+    orderMoveVarCommon(id, 'Down', afterMoveVarDown.bind(null, id));
+  }
+
+  function orderMoveVarCommon(id, direction, callback) {
+    const errorContainer = $('#errorContainer');
+    errorContainer.addClass('hide');
+    let url = '${request.contextPath}/processVarDef/orderMove' + direction + '/' + id;
+    fetch(url, {method: 'POST'})
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Server error");
+        }
+        return response.json();
       })
+      .then(data => {
+        if (!data.success) {
+          throw new Error("Move variable " + direction + " failed");
+        }
+        return callback(data);
+      })
+      .catch(error => {
+        console.error(error);
+        errorContainer.removeClass('hide');
+      });
   }
 
-  function moveUp(oldOrder) {
-    var row = document.getElementById("variable_"+oldOrder)
-    var newOrder = oldOrder - 1;
-    var previousRow = document.getElementById("variable_"+newOrder)
-
-    // change rows IDs 
-    row.id = "variable_"+newOrder
-    previousRow.id = "variable_"+oldOrder
-
-    // change rows order
-    previousRow.parentNode.insertBefore(row, previousRow);
-
-    // change rows IDs 
-    row.className = (newOrder % 2 == 0 ? 'odd' : 'even')
-    previousRow.className = (oldOrder % 2 == 0 ? 'odd' : 'even')
+  function afterMoveVarUp(id){
+    const row = $("#variable_" + id)
+    row.prev().insertAfter(row);
+    adjustVariableRowStyles();
   }
 
-  function afterMoveVarUp(json){
-    if (!json.orderChanged) {
-      alert('Nothing changed')
-      // TODO: show errors
-      return;
-    }
-    moveUp(json.oldOrder)
+  function afterMoveVarDown(id){
+    const row = $("#variable_" + id)
+    row.next().insertBefore(row);
+    adjustVariableRowStyles();
   }
 
-  function afterMoveVarDown(json){
-    if (!json.orderChanged) {
-      alert('Nothing changed')
-      // TODO: show errors
-      return;
-    }
-    // Moving down is moving next row up
-    moveUp(eval(json.oldOrder) + 1)
+  function deleteVarDef(id) {
+    deleteCommon('processVarDef', 'deleteVarDef', 'Delete variable failed', id, function() {
+      $('#variable_' + id).remove();
+      adjustVariableRowStyles();
+    });
+  }
+
+  function adjustVariableRowStyles() {
+    $('.process-variable').removeClass('odd even');
+    $('.process-variable:nth-child(odd)').addClass('odd');
+    $('.process-variable:nth-child(even)').addClass('even');
   }
 </r:script>
  
@@ -96,7 +98,7 @@
      </thead>
      <tbody>
      <g:each in="${variables}" var="variable" status="i">
-       <tr id="variable_${i}" class="${ (i % 2) == 0 ? 'odd' : 'even'}" valign="top">
+       <tr id="variable_${variable.id}" class="${ (i % 2) == 0 ? 'odd' : 'even'} process-variable" valign="top">
          <td>${variable.name?.encodeAsHTML()}</td>
          <td>${variable.type}</td>
          <td>
@@ -144,7 +146,7 @@
                      <span class="glyphicon glyphicon-edit"></span>&nbsp;
                        <g:message code="plugin.grailsflow.command.edit"/>
                    </g:link>
-                   <g:link onclick="return askConfirmation('${g.message(code: 'plugin.grailsflow.question.confirm')}');" controller="processVarDef" action="deleteVarDef" id="${variable.id}" title="${g.message(code: 'plugin.grailsflow.command.delete')}" class="btn btn-sm btn-default">
+                   <g:link onclick="deleteVarDef('${variable.id}');" uri="javascript:void(0)" title="${g.message(code: 'plugin.grailsflow.command.delete')}" class="btn btn-sm btn-default">
                      <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;
                      <g:message code="plugin.grailsflow.command.delete"/>
                    </g:link>

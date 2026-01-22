@@ -71,6 +71,12 @@ import java.text.SimpleDateFormat
  * @author Maria Voitovich
  */
 class ProcessDefController extends GrailsFlowSecureController {
+    static allowedMethods = [
+        delete        : 'POST',
+        save          : 'POST',
+        deleteAssignee: 'DELETE'
+    ]
+
     def processExporterService
     def processManagerService
     def generateProcessService
@@ -84,9 +90,6 @@ class ProcessDefController extends GrailsFlowSecureController {
         flash.message = ""
         redirect(action: "editTypes")
     }
-
-    // the delete, save actions only accept POST requests
-    def static allowedMethods = [delete: 'POST', save: 'POST']
 
     def showProcessScript = {
         def processScript = processScriptProvider.readProcessScript(params.processID)
@@ -147,7 +150,7 @@ class ProcessDefController extends GrailsFlowSecureController {
       flash.errors = []
       flash.warnings = []
       flash.message = []
-      def process = ProcessDef.get(Long.valueOf(params.id))
+      def process = ProcessDef.get(params.long('id'))
 
       process = process ?: new ProcessDef()
 
@@ -232,7 +235,7 @@ class ProcessDefController extends GrailsFlowSecureController {
         flash.errors = []
         flash.warnings = []
         flash.message = []
-        def process = ProcessDef.get(Long.valueOf(params.id))
+        def process = ProcessDef.get(params.long('id'))
 
         if (!process) {
           flash.errors << "Failed to save ProcessDef"
@@ -337,7 +340,7 @@ class ProcessDefController extends GrailsFlowSecureController {
 
     def editProcess = {
         if (!flash.message) flash.message = ""
-        def processDef = params.id ? ProcessDef.get(Long.valueOf(params.id)) : null
+        def processDef = ProcessDef.get(params.long('id'))
 
         if (!processDef) {
             flash.errors = ["Impossible to edit process with key ${params.id}"]
@@ -349,7 +352,7 @@ class ProcessDefController extends GrailsFlowSecureController {
 
     def editProcessTranslations = {
         if (!flash.message) flash.message = ""
-        def processDef = params.id ? ProcessDef.get(Long.valueOf(params.id)) : null
+        def processDef = ProcessDef.get(params.long('id'))
 
         if (!processDef) {
             flash.errors = ["Impossible to edit process with key ${params.id}"]
@@ -361,7 +364,7 @@ class ProcessDefController extends GrailsFlowSecureController {
 
     def saveProcessTranslations = {
         if (!flash.message) flash.message = []
-        def processDef = params.id ? ProcessDef.get(Long.valueOf(params.id)) : null
+        def processDef = ProcessDef.get(params.long('id'))
         if (!processDef) {
             flash.errors = ["Impossible to edit process with key ${params.id}"]
             return redirect(action: "editTypes")
@@ -469,7 +472,7 @@ class ProcessDefController extends GrailsFlowSecureController {
      *
      */
     def addAssignees = {
-        def processDef = ProcessDef.get(Long.valueOf(params.id))
+        def processDef = ProcessDef.get(params.long('id'))
         def assignees
         switch (params.authority_type) {
           case 'users':
@@ -512,7 +515,7 @@ class ProcessDefController extends GrailsFlowSecureController {
           default:
             break;
         }
-        def result = [authorityType: params.authority_type, addedAssignees: addedAssignees]
+        def result = [authorityType: params.authority_type, addedAssignees: addedAssignees, success: true]
         render result as JSON
     }
 
@@ -525,29 +528,33 @@ class ProcessDefController extends GrailsFlowSecureController {
      *
      */
     def deleteAssignee = {
-        def processDef = ProcessDef.get(Long.valueOf(params.id))
+        def processDef = ProcessDef.get(params.long('id'))
         def assigneeID = params.assigneeID
         switch (params.authority_type) {
-          case 'users':
-            assigneeID = AuthoritiesUtils.getUserAuthority(assigneeID)
-            break;
-          case 'roles':
-            assigneeID = AuthoritiesUtils.getRoleAuthority(assigneeID)
-            break;
-          case 'groups':
-            assigneeID = AuthoritiesUtils.getGroupAuthority(assigneeID)
-            break;
-          default:
-            break;
+            case 'users':
+                assigneeID = AuthoritiesUtils.getUserAuthority(assigneeID)
+                break;
+            case 'roles':
+                assigneeID = AuthoritiesUtils.getRoleAuthority(assigneeID)
+                break;
+            case 'groups':
+                assigneeID = AuthoritiesUtils.getGroupAuthority(assigneeID)
+                break;
+            default:
+                break;
         }
-        def removedAssignee = null
+        def result
         def assignee = processDef.processAssignees?.find() { it.assigneeID ==  assigneeID }
-        if (assignee) {
-            removedAssignee = params.assigneeID
-            processDef.removeFromAssignees(assignee)
-            processDef.save(flush: true)
+        if (!assignee) {
+            result = [success: false]
+        } else {
+            assignee.delete()
+            result = [
+                success        : true,
+                authorityType  : params.authority_type,
+                removedAssignee: params.assigneeID
+            ]
         }
-        def result = [authorityType: params.authority_type, removedAssignee: removedAssignee]
         render result as JSON
     }
 
@@ -567,7 +574,7 @@ class ProcessDefController extends GrailsFlowSecureController {
     def exportAsHTML = {
         if (!params.id) return redirect(action: "editTypes", params: [sort: params.sort, order: params.order])
 
-        def processDef = ProcessDef.get(Long.valueOf(params.id))
+        def processDef = ProcessDef.get(params.long('id'))
         if (!processDef) {
             flash.message = "There is no process definition with key '${params.id}'"
             return redirect(action: "editTypes", params: [sort: params.sort, order: params.order])
@@ -587,7 +594,7 @@ class ProcessDefController extends GrailsFlowSecureController {
     }
 
     def editNodeDef = {
-        def process = ProcessDef.get(Long.valueOf(params.processID))
+        def process = ProcessDef.get(params.long('processID'))
         def node = ProcessNodeDef.findWhere(processDef: process, nodeID: params.nodeID)
         redirect(controller: "processNodeDef", action: "editNodeDef", params: [id: node.id])
     }
@@ -595,7 +602,7 @@ class ProcessDefController extends GrailsFlowSecureController {
     def showGraphic = {
         if (!params.processID) return []
 
-        def processDef = ProcessDef.get(Long.valueOf(params.processID))
+        def processDef = ProcessDef.get(params.long('processID'))
 
         def trList = []
         def nodeInfos = []
@@ -632,7 +639,7 @@ class ProcessDefController extends GrailsFlowSecureController {
 
     def saveNodesPositions = {
         def nodesInfo = params.positions.split(";")
-        def processDef = ProcessDef.get(Long.valueOf(params.id))
+        def processDef = ProcessDef.get(params.long('id'))
         nodesInfo.each() {
             def nodeInf = it.split(",")
             def nodePosition = ProcessNodeDefPosition

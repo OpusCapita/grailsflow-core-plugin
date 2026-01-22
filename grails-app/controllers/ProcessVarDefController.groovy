@@ -37,18 +37,23 @@ import com.jcatalog.grailsflow.model.view.VariableView
 * @author July Karpey
 */
 class ProcessVarDefController extends GrailsFlowSecureController {
+    static allowedMethods = [
+        delete       : 'POST',
+        save         : 'POST',
+        update       : 'POST',
+        deleteVarDef : 'DELETE',
+        orderMoveDown: 'POST',
+        orderMoveUp  : 'POST'
+    ]
+
     def index = {
         redirect(controller: "processDef")
     }
 
-    // the delete, save and update actions only accept POST requests
-    // def allowedMethods = [delete:'POST', save:'POST', update:'POST']
-    def static allowedMethods = [delete: 'POST', save: 'POST', update: 'POST']
-
     def changeVarInput = {
         def var = new ProcessVariableDef()
         if (params.varID) {
-            var = ProcessVariableDef.get(Long.valueOf(params.varID))
+            var = ProcessVariableDef.get(params.long('varID'))
         }
 
         var.type = params.varType
@@ -66,22 +71,22 @@ class ProcessVarDefController extends GrailsFlowSecureController {
 
     def addVarDef = {
         render(view: 'variableForm', model: [variable: new ProcessVariableDef(type: 'String'),
-               process: ProcessDef.get(Long.valueOf(params.id))])
+               process: ProcessDef.get(params.long('id'))])
     }
 
     def editVarDef = {
-        def var = ProcessVariableDef.get(Long.valueOf(params.id))
-               
+        def var = ProcessVariableDef.get(params.long('id'))
+
         render(view: 'variableForm', model: [variable: var, process: var.processDef])
     }
 
     def saveVarDef = {
         flash.errors = []
 
-        def process = ProcessDef.get(Long.valueOf(params.id))
+        def process = ProcessDef.get(params.long('id'))
         def var
         if (params.varID) {
-            var = ProcessVariableDef.get(Long.valueOf(params.varID))
+            var = ProcessVariableDef.get(params.long('varID'))
         } else {
             var = new ProcessVariableDef(processDef: process)
         }
@@ -219,66 +224,70 @@ class ProcessVarDefController extends GrailsFlowSecureController {
     }
 
     def deleteVarDef = {
-        def var = ProcessVariableDef.get(Long.valueOf(params.id))
-        def processDefID = var?.processDef?.id
-        if (var) {
-            def varName = var.name
-            var.removeFromAssociations()
-            var.delete(flush: true)
-            flash.message = g.message(code: "plugin.grailsflow.message.variable.deleted", args: [varName])
+        def variable = ProcessVariableDef.get(params.long('id'))
+        def result
+        if (variable) {
+            variable.removeFromAssociations()
+            variable.delete(flush: true)
+            result = [success: true]
+        } else {
+            def errorMessage = 'Variable def not found'
+            log.debug(errorMessage)
+            result = [success: false, error: [code: 'NOT_FOUND', message: errorMessage]]
         }
-
-        redirect(controller: "processDef", action: "editProcess", params: [id: processDefID] )
+        render result as JSON
     }
 
     def orderMoveUp = {
-      def variable =  ProcessVariableDef.get(Long.valueOf(params.id))
-      def processDef = variable?.processDef
-      def result
-      if (!variable || !processDef) {
-        log.debug("Nothing found to update for id=${params.id}")
-        result = [orderChanged: false]
-      } else if (variable == processDef.variables[0]) {
-        log.debug("Cannot move up first element")
-        result = [orderChanged: false]
-      } else {
-	      log.debug("Updating variables order for process ${processDef.processID}")
-	      def oldOrder = processDef.variables.findIndexOf() { it == variable }
-	      processDef.variables = moveElementUp(processDef.variables, variable)
-	      if (!processDef.save(flush: true)) {
-		      processDef.errors.each() {
-		        log.error(it)
-		      }
-		      result = [errors: processDef.errors, orderChanged: false]
-	      }
-	      result = [orderChanged: true, oldOrder: oldOrder]
-	    }
-      render result as JSON
+        def variable = ProcessVariableDef.get(params.long('id'))
+        def processDef = variable?.processDef
+
+        if (!variable || !processDef) {
+            def errorMessage = 'Nothing found to update for id=' + params.id
+            log.debug(errorMessage)
+            return render([success: false, error: [code: 'NOTHING_TO_UPDATE', message: errorMessage]] as JSON)
+        }
+
+        if (variable == processDef.variables[0]) {
+            def errorMessage = 'Cannot move up first element'
+            log.debug(errorMessage)
+            return render([success: false, error: [code: 'ALREADY_FIRST', message: errorMessage]] as JSON)
+        }
+
+        log.debug("Updating variables order for process ${processDef.processID}")
+        processDef.variables = moveElementUp(processDef.variables, variable)
+        if (processDef.save(flush: true)) {
+            return render([success: true] as JSON)
+        }
+
+        processDef.errors.each(log.&error)
+        render([errors: processDef.errors, success: false] as JSON)
     }
 
     def orderMoveDown = {
-      def variable =  ProcessVariableDef.get(Long.valueOf(params.id))
-      def processDef = variable?.processDef
-      def result
-      if (!variable || !processDef) {
-        log.debug("Nothing found to update for id=${params.id}")
-        result = [orderChanged: false]
-      } else if (variable == processDef.variables[-1]) {
-        log.debug("Cannot move up first element")
-        result = [orderChanged: false]
-      } else {
-	      log.debug("Updating variables order for process ${processDef.processID}")
-	      def oldOrder = processDef.variables.findIndexOf() { it == variable }
-	      processDef.variables = moveElementDown(processDef.variables, variable)
-	      if (!processDef.save(flush: true)) {
-		      processDef.errors.each() {
-		        log.error(it)
-		      }
-		      result = [errors: processDef.errors, orderChanged: false]
-	      }
-	      result = [orderChanged: true, oldOrder: oldOrder]
-	    }
-      render result as JSON
+        def variable = ProcessVariableDef.get(params.long('id'))
+        def processDef = variable?.processDef
+
+        if (!variable || !processDef) {
+            def errorMessage = 'Nothing found to update for id=' + params.id
+            log.debug(errorMessage)
+            return render([success: false, error: [code: 'NOTHING_TO_UPDATE', message: errorMessage]] as JSON)
+        }
+
+        if (variable == processDef.variables[-1]) {
+            def errorMessage = 'Cannot move down last element'
+            log.debug(errorMessage)
+            return render([success: false, error: [code: 'ALREADY_LAST', message: errorMessage]] as JSON)
+        }
+
+        log.debug("Updating variables order for process ${processDef.processID}")
+        processDef.variables = moveElementDown(processDef.variables, variable)
+        if (processDef.save(flush: true)) {
+            return render([success: true] as JSON)
+        }
+
+        processDef.errors.each(log.&error)
+        render([errors: processDef.errors, success: false] as JSON)
     }
 
     private def moveElementUp(def list, def element){
@@ -307,12 +316,12 @@ class ProcessVarDefController extends GrailsFlowSecureController {
     }
 
     def editVariableTranslations = {
-        def variable = ProcessVariableDef.get(Long.valueOf(params.id))
+        def variable = ProcessVariableDef.get(params.long('id'))
         render(view: 'editVariableTranslations', model: [variable: variable])
     }
 
     def saveVariableTranslations = {
-        def variable = ProcessVariableDef.get(Long.valueOf(params.id))
+        def variable = ProcessVariableDef.get(params.long('id'))
 
         def labels = GrailsflowRequestUtils.getTranslationsMapFromParams(params, 'label_')
         def descriptions = GrailsflowRequestUtils.getTranslationsMapFromParams(params, 'description_')
