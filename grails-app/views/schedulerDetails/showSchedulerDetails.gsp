@@ -21,7 +21,7 @@
 </head>
 
 <body>
-  <r:script>
+<r:script>
     $(function () {
       function fetchDelete(url) {
         const messageContainer = $('#messageContainer');
@@ -37,8 +37,32 @@
           .then(data => {
             if (data.success) {
                location.reload();
-            } else if (data.message) {
-              throw new Error(data.message);
+            } else {
+              throw new Error(data.message || "Operation failed");
+            }
+          })
+          .catch(e => {
+            messageContainer.text(e.message);
+            messageContainer.removeClass('hide');
+          });
+      }
+
+      function fetchPause(url) {
+        const messageContainer = $('#messageContainer');
+        messageContainer.addClass('hide');
+        messageContainer.html('');
+        fetch(url, { method: "POST" })
+          .then(r => {
+            if (!r.ok) {
+              throw new Error("Server error");
+            }
+            return r.json();
+          })
+          .then(data => {
+            if (data.success) {
+               location.reload();
+            } else {
+              throw new Error(data.message || "Operation failed");
             }
           })
           .catch(e => {
@@ -55,14 +79,20 @@
       }
 
       $('.jobDelete').on('click', function(el) {
-        const name = $(el.currentTarget).data('name');
-        const group = $(el.currentTarget).data('group');
-        handleDelete(el, location.origin + '${request.getContextPath()}' + '/' + '${params['controller']}' + '/delete?name=' + name + '&group=' + group);
+        const url = $(el.currentTarget).data('delete-url');
+        handleDelete(el, url);
+      });
+
+      $('.jobPause').on('click', function(el) {
+        el.preventDefault();
+        const url = $(el.currentTarget).data('pause-url');
+        fetchPause(url);
       });
     });
-  </r:script>
+</r:script>
 
-  <h1><g:message code="plugin.grailsflow.label.schedulerDetails"/></h1>
+
+<h1><g:message code="plugin.grailsflow.label.schedulerDetails"/></h1>
 
   <div id="messageContainer" class="bs-callout bs-callout-danger hide"></div>
 
@@ -207,20 +237,19 @@
                     <g:else>
                       <div class="btn-group input-group-btn text-right">
                         <nobr>
-                          <g:link class="btn btn-sm btn-default" controller="${params['controller']}" action="pause"
-                                  params="${[name: jobInfo?.job?.name, group: jobInfo?.job?.group, isPaused: jobInfo?.paused ? jobInfo?.paused : 'false', isRunning: jobInfo?.running ? jobInfo.running : 'false']}"
-                                  title="${g.message(code: (jobInfo?.paused) ? 'plugin.grailsflow.label.resume' : 'plugin.grailsflow.label.pause')}">
-                            <g:if test="${jobInfo?.paused}">
-                              <span class="glyphicon glyphicon-play"></span>&nbsp;
-                            </g:if>
-                            <g:else>
-                              <span class="glyphicon glyphicon-pause"></span>&nbsp;
-                            </g:else>
-                            ${g.message(code: (jobInfo?.paused) ? 'plugin.grailsflow.label.resume' : 'plugin.grailsflow.label.pause')}
-                          </g:link>
-                          <a class="btn btn-sm btn-default jobDelete" href="javascript:void(0);"
-                            data-name="${jobInfo?.job?.name}"
-                            data-group="${jobInfo?.job?.group}"
+                            <a class="btn btn-sm btn-default jobPause" href="javascript:void(0);"
+                               data-pause-url="${g.createLink(action: 'pause', absolute: true, params: [name: jobInfo?.job?.name, group: jobInfo?.job?.group, isPaused: jobInfo?.paused ?: false, isRunning: jobInfo?.running ?: false])}"
+                               title="${g.message(code: (jobInfo?.paused) ? 'plugin.grailsflow.label.resume' : 'plugin.grailsflow.label.pause')}">
+                                <g:if test="${jobInfo?.paused}">
+                                    <span class="glyphicon glyphicon-play"></span>&nbsp;
+                                </g:if>
+                                <g:else>
+                                    <span class="glyphicon glyphicon-pause"></span>&nbsp;
+                                </g:else>
+                                ${g.message(code: (jobInfo?.paused) ? 'plugin.grailsflow.label.resume' : 'plugin.grailsflow.label.pause')}
+                            </a>
+                            <a class="btn btn-sm btn-default jobDelete" href="javascript:void(0);"
+                            data-delete-url="${g.createLink(action: 'delete', absolute: true, params: [name: jobInfo?.job?.name, group: jobInfo?.job?.group])}"
                             data-message="${g.message(code: 'plugin.grailsflow.message.job.delete', encodeAs: 'JavaScript')}"
                             title="${g.message(code: 'plugin.grailsflow.label.delete')}"
                           ><span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;

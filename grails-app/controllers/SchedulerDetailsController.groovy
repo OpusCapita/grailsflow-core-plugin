@@ -12,22 +12,19 @@
  * limitations under the License.
  */
 
+
+import com.jcatalog.grailsflow.model.process.ProcessVariable
 import com.jcatalog.grailsflow.utils.TranslationUtils
 import grails.converters.JSON
-import org.springframework.web.servlet.support.RequestContextUtils as RCU
-import org.springframework.web.multipart.commons.CommonsMultipartFile
-import java.text.SimpleDateFormat
-import com.jcatalog.grailsflow.model.process.ProcessVariable
-import org.apache.commons.lang.StringUtils
-import java.text.ParseException
-
+import groovy.util.logging.Slf4j
 /**
- * SchedulerDetailsController class is used for monitoring and 
+ * SchedulerDetailsController class is used for monitoring and
  * managing (CRUD) of Quartz jobs.
  *
  * @author Stephan Albers
  * @author July Karpey
  */
+@Slf4j
 class SchedulerDetailsController extends GrailsFlowSecureController {
     def processManagerService
     def workareaPathProvider
@@ -36,9 +33,10 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
     def schedulerOperationsService
 
     def static allowedMethods = [
-            delete: 'DELETE'
+            delete: 'DELETE',
+            pause: 'POST'
     ]
-    
+
     def index = {
         redirect(action: "showSchedulerDetails")
     }
@@ -60,20 +58,29 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
     }
 
     def pause = {
-        if (!params.name || !params.group) {
-            flash.error = g.message(code: "plugin.grailsflow.messages.error.pauseResume")
-            return forward(action: "showSchedulerDetails", params: params)
-        }
-        if (params.isRunning == "true") {
-            flash.message = g.message(code: "plugin.grailsflow.messages.job.running", args: [params.name, params.group])
-            return redirect(action: "showSchedulerDetails")
-        }
+        try {
+            if (!params.name || !params.group) {
+                throw new IllegalArgumentException(g.message(code: "plugin.grailsflow.messages.error.pauseResume") as String)
+            }
 
-        def shouldBePaused = params.isPaused == "false"
-        if (!schedulerOperationsService.pauseResumeJob(params.name, params.group, shouldBePaused)) {
-            flash.error = g.message(code: "plugin.grailsflow.messages.error.pauseResume")
+            if (params.isRunning == "true") {
+                throw new IllegalStateException(g.message(code: "plugin.grailsflow.message.job.running", args: [params.name, params.group]) as String)
+            }
+
+            def shouldBePaused = params.isPaused == "false"
+            if (!schedulerOperationsService.pauseResumeJob(params.name, params.group, shouldBePaused)) {
+                throw new RuntimeException(g.message(code: "plugin.grailsflow.messages.error.pauseResume") as String)
+            }
+
+            render([success: true] as JSON)
+        } catch (Exception e) {
+            log.error("Error pausing/resuming job: ${params.name}/${params.group}", e)
+            response.status = 200
+            render([
+                success: false,
+                message: e.message ?: g.message(code: "plugin.grailsflow.messages.error.pauseResume")
+            ] as JSON)
         }
-        redirect(action: "showSchedulerDetails")
     }
 
     def edit = {
@@ -169,7 +176,7 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
     def scheduleProcess = {
         def authorities = getUserAuthorities(session)
         def lang = request.locale.language.toString()
-        
+
         def classes = processManagerService.getSupportedProcessClasses().
             findAll { processClass ->
                 def processAssignees = processClass.processAssignees.collect() { it.assigneeID.trim() }
@@ -263,7 +270,7 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
             startDay = new Date()
         }
         params.startDay = startDay
-        
+
         def startTime_hours = 0
         def startTime_minutes = 0
         if (params.startTime_hours && params.startTime_hours != '00') {
@@ -284,7 +291,7 @@ class SchedulerDetailsController extends GrailsFlowSecureController {
             }
         }
 
-        def startTime = (startTime_hours*60 + startTime_minutes)*60000 
+        def startTime = (startTime_hours*60 + startTime_minutes)*60000
         def startDate = new Date(startDay?.time + startTime)
 
         def calendarTime = Calendar.getInstance()
