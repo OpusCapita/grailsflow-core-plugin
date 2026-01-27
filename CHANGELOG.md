@@ -1,4 +1,11 @@
 
+[Release 1.10.2](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.10.2) Tue Jan 27 2026 17:08:37 GMT+0300 (MSK)
+=======================================================
+
+- Merge pull request [#63](https://github.com/OpusCapita/grailsflow-core-plugin/issues/63) from OpusCapita/EPROC-23044-csrf-batch-07 (GitHub 110452555+WojciechStrzelinski-oc@users.noreply.github.com, 2026-01-27 12:44:30 +0100)
+- (EPROC-23044) feat: SchedulerDetails pause endpoint refactoring (Wojciech Strzeli??ski ext-wojciech.strzelinski@opuscapita.com, 2026-01-22 22:20:22 +0100)
+- chore: Update CircleCI config [ci skip] (Wojciech Strzeli??ski ext-wojciech.strzelinski@opuscapita.com, 2025-10-01 21:33:24 +0200)
+
 [Release 1.10.1](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.10.1) Tue Dec 16 2025 12:49:33 GMT+0300 (MSK)
 =======================================================
 
