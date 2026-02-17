@@ -1,4 +1,10 @@
 
+[Release 1.10.3](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.10.3) Tue Feb 17 2026 15:43:52 GMT+0300 (MSK)
+=======================================================
+
+- Merge pull request [#65](https://github.com/OpusCapita/grailsflow-core-plugin/issues/65) from OpusCapita/EPROC-23048 (GitHub 98901041+krzywe-OC@users.noreply.github.com, 2026-02-17 13:24:14 +0100)
+- [EPROC-23048] Change GET to POST for StartProcess (Krzysztof W??gierski ext-krzysztof.wegierski@opuscapita.com, 2026-02-04 23:00:15 +0100)
+
 [Release 1.10.2](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.10.2) Tue Jan 27 2026 17:08:37 GMT+0300 (MSK)
 =======================================================
 
