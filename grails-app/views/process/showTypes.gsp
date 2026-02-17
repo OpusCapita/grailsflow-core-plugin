@@ -40,7 +40,10 @@
                     <td><g:set var="description" value="${gf.translatedValue(['translations': item.description, 'default': ''])}" scope="page" />${description?.encodeAsHTML()}</td>
                     <td>
                       <div class="form-submit text-right">
-                        <g:link action="startProcess" controller="${params['controller']}" id="${item.processType}" title="${g.message(code: 'plugin.grailsflow.command.start')}" class="btn btn-sm btn-default"><g:message code="plugin.grailsflow.command.start"/></g:link>
+                        <g:form action="startProcess" controller="${params['controller']}" method="POST">
+                          <g:hiddenField name="id" value="${item.processType}"/>
+                          <g:submitButton name="submit" value="${g.message(code: 'plugin.grailsflow.command.start')}" title="${g.message(code: 'plugin.grailsflow.command.start')}" class="btn btn-sm btn-default"/>
+                        </g:form>
                       </div>
                     </td>
                   </tr>
