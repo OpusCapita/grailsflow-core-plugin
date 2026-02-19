@@ -41,13 +41,21 @@ import grails.converters.JSON
 * @author July Karpey
 */
 class ProcessNodeDefController extends GrailsFlowSecureController {
+    static allowedMethods = [
+        delete        : 'POST',
+        save          : 'POST',
+        update        : 'POST',
+        deleteNodeDef : 'DELETE',
+        orderMoveDown : 'POST',
+        orderMoveUp   : 'POST',
+        deleteAssignee: 'DELETE'
+    ]
+
     def processManagerService
 
     def index = {
         redirect(controller: "processDef")
     }
-
-    def static allowedMethods = [delete: 'POST', save: 'POST', update: 'POST']
 
     def addNodeDef = {
         params.dueDate_days = 0
@@ -58,58 +66,60 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
         params.expectedDuration_minutes = 0
         params.formType = 1
         render(view: 'nodeForm', model: [node: new ProcessNodeDef(),
-               process: params.id ? ProcessDef.get(Long.valueOf(params.id)) : null,
+               process: ProcessDef.get(params.long('id')),
                params:params])
     }
 
     def orderMoveUp = {
-        def node = ProcessNodeDef.get(Long.valueOf(params.id))
+        def node =  ProcessNodeDef.get(params.long('id'))
         def processDef = node?.processDef
-        def result
+
         if (!node || !processDef) {
-            log.debug("Nothing found to update for id=${params.id}")
-            result = [orderChanged: false]
-        } else if (node == processDef.nodes[0]) {
-            log.debug("Cannot move up first element")
-            result = [orderChanged: false]
-        } else {
-            log.debug("Updating nodes order for process ${processDef.processID}")
-            def oldOrder = processDef.nodes.findIndexOf() { it == node }
-            processDef.nodes = moveElementUp(processDef.nodes, node)
-            if (!processDef.save(flush: true)) {
-                processDef.errors.each() {
-                    log.error(it)
-                }
-                result = [errors: processDef.errors, orderChanged: false]
-            } else
-                result = [orderChanged: true, oldOrder: oldOrder]
+            def errorMessage = 'Nothing found to update for id=' + params.id
+            log.debug(errorMessage)
+            return render([success: false, error: [code: 'NOTHING_TO_UPDATE', message: errorMessage]] as JSON)
         }
-        render result as JSON
+
+        if (node == processDef.nodes[0]) {
+            def errorMessage = 'Cannot move up first element'
+            log.debug(errorMessage)
+            return render([success: false, error: [code: 'ALREADY_FIRST', message: errorMessage]] as JSON)
+        }
+
+        log.debug("Updating nodes order for process ${processDef.processID}")
+        processDef.nodes = moveElementUp(processDef.nodes, node)
+        if (processDef.save(flush: true)) {
+            return render([success: true] as JSON)
+        }
+
+        processDef.errors.each(log.&error)
+        render([errors: processDef.errors, success: false] as JSON)
     }
 
     def orderMoveDown = {
-        def node =  ProcessNodeDef.get(Long.valueOf(params.id))
+        def node =  ProcessNodeDef.get(params.long('id'))
         def processDef = node?.processDef
-        def result
+
         if (!node || !processDef) {
-            log.debug("Nothing found to update for id=${params.id}")
-            result = [orderChanged: false]
-        } else if (node == processDef.nodes[-1]) {
-            log.debug("Cannot move up first element")
-            result = [orderChanged: false]
-        } else {
-            log.debug("Updating nodes order for process ${processDef.processID}")
-            def oldOrder = processDef.nodes.findIndexOf() { it == node }
-            processDef.nodes = moveElementDown(processDef.nodes, node)
-            if (!processDef.save(flush: true)) {
-                processDef.errors.each() {
-                    log.error(it)
-                }
-                result = [errors: processDef.errors, orderChanged: false]
-            }
-            result = [orderChanged: true, oldOrder: oldOrder]
+            def errorMessage = 'Nothing found to update for id=' + params.id
+            log.debug(errorMessage)
+            return render([success: false, error: [code: 'NOTHING_TO_UPDATE', message: errorMessage]] as JSON)
         }
-        render result as JSON
+
+        if (node == processDef.nodes[-1]) {
+            def errorMessage = 'Cannot move down last element'
+            log.debug(errorMessage)
+            return render([success: false, error: [code: 'ALREADY_LAST', message: errorMessage]] as JSON)
+        }
+
+        log.debug("Updating nodes order for process ${processDef.processID}")
+        processDef.nodes = moveElementDown(processDef.nodes, node)
+        if (processDef.save(flush: true)) {
+            return render([success: true] as JSON)
+        }
+
+        processDef.errors.each(log.&error)
+        render([errors: processDef.errors, success: false] as JSON)
     }
 
     private def moveElementUp(def list, def element){
@@ -138,7 +148,7 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
     }
 
     def editNodeDef = {
-        def node = ProcessNodeDef.get(Long.valueOf(params.id))
+        def node = ProcessNodeDef.get(params.long('id'))
 
         def dueDate = new BigInteger( (node.dueDate != null) ? node.dueDate.toString() : "0")
 
@@ -217,7 +227,7 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
      *
      */
     def addAssignees = {
-        def node = ProcessNodeDef.get(Long.valueOf(params.ndID))
+        def node =  ProcessNodeDef.get(params.long('ndID'))
         def processDef = node?.processDef
         def assignees
         switch (params.authority_type) {
@@ -259,7 +269,7 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
           default:
             break;
         }
-        def result = [authorityType: params.authority_type, addedAssignees: addedAssignees]
+        def result = [authorityType: params.authority_type, addedAssignees: addedAssignees, success: true]
         render result as JSON
     }
 
@@ -272,35 +282,41 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
      *
      */
     def deleteAssignee = {
-        def nodeDef = ProcessNodeDef.get(Long.valueOf(params.ndID))
+        def nodeDef =  ProcessNodeDef.get(params.long('ndID'))
         def processDef = nodeDef?.processDef
         def assigneeID = params.assigneeID
         switch (params.authority_type) {
-          case 'users':
-            assigneeID = AuthoritiesUtils.getUserAuthority(assigneeID)
-            break;
-          case 'roles':
-            assigneeID = AuthoritiesUtils.getRoleAuthority(assigneeID)
-            break;
-          case 'groups':
-            assigneeID = AuthoritiesUtils.getGroupAuthority(assigneeID)
-            break;
-          default:
-            break;
+            case 'users':
+                assigneeID = AuthoritiesUtils.getUserAuthority(assigneeID)
+                break;
+            case 'roles':
+                assigneeID = AuthoritiesUtils.getRoleAuthority(assigneeID)
+                break;
+            case 'groups':
+                assigneeID = AuthoritiesUtils.getGroupAuthority(assigneeID)
+                break;
+            default:
+                break;
         }
-        def removedAssignee = null
+        def result
         def assignee = ProcessDefAssignee.findWhere(processDef: processDef, processNodeDef: nodeDef, assigneeID: assigneeID)
-        if (assignee) {
-	        assignee.delete()
-          removedAssignee = params.assigneeID
+        if (!assignee) {
+            def errorMessage = "Assignee $assigneeID not found"
+            result = [success: false, error: [code: 'ASSIGNEE_NOT_FOUND', message: errorMessage]]
+        } else {
+            assignee.delete()
+            result = [
+                success        : true,
+                authorityType  : params.authority_type,
+                removedAssignee: params.assigneeID
+            ]
         }
-        def result = [authorityType: params.authority_type, removedAssignee: removedAssignee]
         render result as JSON
     }
 
     def generateManualForm = {
-        def processDef = ProcessDef.get(Long.valueOf(params.id))
-        def node = ProcessNodeDef.get(Long.valueOf(params.ndID))
+        def processDef = ProcessDef.get(params.long('id'))
+        def node = ProcessNodeDef.get(params.long('ndID'))
 
         def viewsPath = getViewsPath(grailsApplication)
 
@@ -346,8 +362,8 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
     }
 
     def generateManualActivity = {
-        def processDef = ProcessDef.get(Long.valueOf(params.id))
-        def node = ProcessNodeDef.get(Long.valueOf(params.ndID))
+        def processDef = ProcessDef.get(params.long('id'))
+        def node = ProcessNodeDef.get(params.long('ndID'))
 
         def viewsPath = getViewsPath(grailsApplication)
         def controllersPath = getControllersPath(grailsApplication)
@@ -397,8 +413,8 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
     }
 
     def addMultiPage = {
-        def processDef = ProcessDef.get(Long.valueOf(params.id))
-        def node = ProcessNodeDef.get(Long.valueOf(params.ndID))
+        def processDef = ProcessDef.get(params.long('id'))
+        def node = ProcessNodeDef.get(params.long('ndID'))
 
         def viewsPath = getViewsPath(grailsApplication)
         viewsPath = viewsPath.substring(0, viewsPath.length() - 12)
@@ -446,8 +462,8 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
     }
 
     def deleteMultiPage = {
-        def processDef = ProcessDef.get(Long.valueOf(params.id))
-        def node = ProcessNodeDef.get(Long.valueOf(params.ndID))
+        def processDef = ProcessDef.get(params.long('id'))
+        def node = ProcessNodeDef.get(params.long('ndID'))
 
         def viewsPath = getViewsPath(grailsApplication)
         viewsPath = viewsPath.substring(0, viewsPath.length() - 12)
@@ -471,7 +487,7 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
 
     def editNodeTranslations = {
         if (!flash.message) flash.message = ""
-        def processNodeDef = params.id ? ProcessNodeDef.get(Long.valueOf(params.id)) : null
+        def processNodeDef = ProcessNodeDef.get(params.long('id'))
 
         if (!processNodeDef) {
             flash.errors = ["Impossible to edit node with key ${params.id}"]
@@ -483,7 +499,7 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
 
     def saveNodeTranslations = {
         if (!flash.message) flash.message = []
-        def processNodeDef = params.id ? ProcessNodeDef.get(Long.valueOf(params.id)) : null
+        def processNodeDef = ProcessNodeDef.get(params.long('id'))
         if (!processNodeDef) {
             flash.errors = ["Impossible to edit node with key ${params.id}"]
             return redirect(controller: 'processDef', action: 'editTypes')
@@ -500,11 +516,11 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
     def saveNodeDef = {
         if (!flash.errors) flash.errors = []
 
-        def process = ProcessDef.get(Long.valueOf(params.id))
+        def process = ProcessDef.get(params.long('id'))
         def node, nodePosition
 
         if (params.ndID) {
-            node = ProcessNodeDef.get(Long.valueOf(params.ndID))
+            node = ProcessNodeDef.get(params.long('ndID'))
         } else {
             node = new ProcessNodeDef()
             node.processDef = process
@@ -522,7 +538,7 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
             }
         }
 
-        def ndID = params.ndID ? Long.valueOf(params.ndID) : null
+        Long ndID = params.long('ndID')
         def duplicateNode = ProcessNodeDef.findWhere(processDef: process, nodeID: params.nodeID)
         if ( duplicateNode && (ndID == null || ndID != duplicateNode.id) ) {
             flash.errors << g.message(code: "plugin.grailsflow.message.nodeID.duplicated")
@@ -530,7 +546,7 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
         }
 
         if (ndID != null) {
-            node = ProcessNodeDef.get(Long.valueOf(ndID))
+            node = ProcessNodeDef.get(ndID)
             nodePosition = ProcessNodeDefPosition
                                .findWhere("processDef": process, "nodeID": node.nodeID)
         } else {
@@ -541,53 +557,23 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
         }
 
         def dueDate = 0
-        def dueDate_days
-        try {
-            dueDate_days = Long.parseLong(params.dueDate_days)
-        } catch (NumberFormatException e) {
-            dueDate_days = Long.valueOf(0)
-        }
+        def dueDate_days = params.long('dueDate_days') ?: 0L
         dueDate += dueDate_days * DateUtils.MILLIS_PER_DAY
 
-        def dueDate_hours
-        try {
-            dueDate_hours = Long.parseLong(params.dueDate_hours)
-        } catch (NumberFormatException e) {
-            dueDate_hours = Long.valueOf(0)
-        }
+        def dueDate_hours = params.long('dueDate_hours') ?: 0L
         dueDate += dueDate_hours * DateUtils.MILLIS_PER_HOUR
 
-        def dueDate_minutes
-        try {
-            dueDate_minutes = Long.parseLong(params.dueDate_minutes)
-        } catch (NumberFormatException e) {
-            dueDate_minutes = Long.valueOf(0)
-        }
+        def dueDate_minutes = params.long('dueDate_minutes') ?: 0L
         dueDate += dueDate_minutes * DateUtils.MILLIS_PER_MINUTE
 
         def expectedDuration = 0
-        def expectedDuration_days
-        try {
-            expectedDuration_days = Long.parseLong(params.expectedDuration_days)
-        } catch (NumberFormatException e) {
-            expectedDuration_days = Long.valueOf(0)
-        }
+        def expectedDuration_days = params.long('expectedDuration_days') ?: 0L
         expectedDuration += expectedDuration_days * DateUtils.MILLIS_PER_DAY
 
-        def expectedDuration_hours
-        try {
-            expectedDuration_hours = Long.parseLong(params.expectedDuration_hours)
-        } catch (NumberFormatException e) {
-            expectedDuration_hours = Long.valueOf(0)
-        }
+        def expectedDuration_hours = params.long('expectedDuration_hours') ?: 0L
         expectedDuration += expectedDuration_hours * DateUtils.MILLIS_PER_HOUR
 
-        def expectedDuration_minutes
-        try {
-            expectedDuration_minutes = Long.parseLong(params.expectedDuration_minutes)
-        } catch (NumberFormatException e) {
-            expectedDuration_minutes = Long.valueOf(0)
-        }
+        def expectedDuration_minutes = params.long('expectedDuration_minutes') ?: 0L
         expectedDuration += expectedDuration_minutes * DateUtils.MILLIS_PER_MINUTE
 
         if (params.type == ConstantUtils.NODE_TYPE_WAIT && params.nodeID) {
@@ -660,7 +646,10 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
     }
 
     def deleteNodeDef = {
-        def node = ProcessNodeDef.get(Long.valueOf(params.id))
+        def node = ProcessNodeDef.get(params.long('id'))
+        if (!node) {
+            return render ([success: false, error: 'Node not found'] as JSON)
+        }
         def process = node.processDef
 
         def viewsPath = getViewsPath(grailsApplication)
@@ -688,8 +677,7 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
         node.removeFromAssociations()
         node.delete(flush:true)
 
-        flash.message = "Process Node '${nodeID}' was deleted."
-        redirect(controller: "processDef", action: 'editProcess', params: [id: processID])
+        render ([success: true] as JSON)
     }
 
     def showProcessEditor = {
@@ -716,9 +704,9 @@ class ProcessNodeDefController extends GrailsFlowSecureController {
     def previewGeneratedForm = {
         def nodeDef
         if (params.ndID) {
-          nodeDef = ProcessNodeDef.get(Long.valueOf(params.ndID))
+          nodeDef = ProcessNodeDef.get(params.long('ndID'))
         } else {
-          def process = ProcessDef.get(Long.valueOf(params.id))
+          def process = ProcessDef.get(params.long('id'))
           nodeDef = new ProcessNodeDef(processDef: process, nodeID: params.nodeID)
         }
         def varVisibility = getVarVisibilityFromParams(params)

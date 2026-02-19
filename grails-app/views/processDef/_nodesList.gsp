@@ -26,57 +26,91 @@
 
 <r:script>
   function orderMoveNodeUp(id) {
-      jQuery.ajax({
-          url: "${request.contextPath}/processNodeDef/orderMoveUp/"+id ,
-          success:function(data) {
-              afterMoveNodeUp(data)
-          }
-      })
+      orderMoveNodeCommon(id, 'Up', afterMoveNodeUp.bind(null, id));
   }
 
   function orderMoveNodeDown(id) {
-      jQuery.ajax({
-          url: "${request.contextPath}/processNodeDef/orderMoveDown/"+id ,
-          success:function(data) {
-              afterMoveNodeDown(data)
-          }
+      orderMoveNodeCommon(id, 'Down', afterMoveNodeDown.bind(null, id));
+  }
+
+  function orderMoveNodeCommon(id, direction, callback) {
+    const errorContainer = $('#errorContainer');
+    errorContainer.addClass('hide');
+    let url = '${request.contextPath}/processNodeDef/orderMove' + direction + '/' + id;
+    fetch(url, {method: 'POST'})
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Server error");
+        }
+        return response.json();
       })
+      .then(data => {
+        if (!data.success) {
+          throw new Error("Move node " + direction + " failed");
+        }
+        return callback(data);
+      })
+      .catch(error => {
+        console.error(error);
+        errorContainer.removeClass('hide');
+      });
   }
 
-  function moveNodeUp(oldOrder) {
-    var row = document.getElementById("node_"+oldOrder)
-    var newOrder = oldOrder - 1;
-    var previousRow = document.getElementById("node_"+newOrder)
-
-    // change rows IDs 
-    row.id = "node_"+newOrder
-    previousRow.id = "node_"+oldOrder
-
-    // change rows order
-    previousRow.parentNode.insertBefore(row, previousRow);
-
-    // change rows IDs 
-    row.className = (newOrder % 2 == 0 ? 'odd' : 'even')
-    previousRow.className = (oldOrder % 2 == 0 ? 'odd' : 'even')
+  function afterMoveNodeUp(id){
+    const node = $('#node_' + id);
+    node.prev().insertAfter(node);
+    adjustNodeRowStyles();
   }
 
-  function afterMoveNodeUp(json){
-    if (!json.orderChanged) {
-      alert('Nothing changed')
-      // TODO: show errors
+  function afterMoveNodeDown(id){
+    const node = $('#node_' + id);
+    node.next().insertBefore(node);
+    adjustNodeRowStyles();
+  }
+
+  function adjustNodeRowStyles() {
+    $('.process-node').removeClass('odd even');
+    $('.process-node:nth-child(odd)').addClass('odd');
+    $('.process-node:nth-child(even)').addClass('even');
+  }
+
+  function deleteTransitionDef(id) {
+    deleteCommon('processTransitionDef', 'deleteTransitionDef', 'Delete transition failed', id, function() {
+      $('#transition_' + id).remove();
+    });
+  }
+
+  function deleteNodeDef(id) {
+    deleteCommon('processNodeDef', 'deleteNodeDef', 'Delete node failed', id, function() {
+      $('#node_' + id).remove();
+      adjustNodeRowStyles();
+    });
+  }
+
+  function deleteCommon(controller, action, errorMsg, id, callback) {
+    const errorContainer = $('#errorContainer');
+    errorContainer.addClass('hide');
+    if (!askConfirmation('${g.message(code: 'plugin.grailsflow.question.confirm')}')) {
       return;
     }
-    moveNodeUp(json.oldOrder)
-  }
-
-  function afterMoveNodeDown(json){
-    if (!json.orderChanged) {
-      alert('Nothing changed')
-      // TODO: show errors
-      return;
-    }
-    // Moving down is moving next row up
-    moveNodeUp(eval(json.oldOrder) + 1)
+    let url = '${request.contextPath}/' + controller + '/' + action + '/' + id;
+    fetch(url, {method: 'DELETE'})
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Server error");
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (!data.success) {
+          throw new Error(errorMsg);
+        }
+        callback()
+      })
+      .catch(error => {
+        console.error(error);
+        errorContainer.removeClass('hide');
+      });
   }
 </r:script>
  
@@ -97,7 +131,7 @@
   </thead>
   <tbody>
     <g:each in="${nodes}" var="node" status="i">
-      <tr id="node_${i}"  class="${ (i % 2) == 0 ? 'odd' : 'even'}" valign="top">
+      <tr id="node_${node.id}"  class="${ (i % 2) == 0 ? 'odd' : 'even'} process-node" valign="top">
         <td>${node.nodeID}</td>
         <td>${node.type}</td>
         <td>
@@ -105,15 +139,17 @@
             <tr>
               <td>
                 <g:each in="${node.transitions}" var="transition">
-                  <g:link controller="processTransitionDef" action="editTransitonDef" id="${transition.id}">
-                    <b>${transition.event}</b>
-                  </g:link>
-                  &nbsp;&nbsp;
-                  <g:link title="${g.message(code:'plugin.grailsflow.command.delete')}" onclick="return askConfirmation('${g.message(code: 'plugin.grailsflow.question.confirm')}');" controller="processTransitionDef" action="deleteTransitonDef" id="${transition.id}">
-                    <span class="glyphicon glyphicon-remove text-danger"></span>
-                  </g:link>
-                  <br/>
-                  <font class="hint"> >> ${transition.toNodes*.nodeID}</font><br/>
+                  <div id="transition_${transition.id}">
+                    <g:link controller="processTransitionDef" action="editTransitonDef" id="${transition.id}">
+                      <b>${transition.event}</b>
+                    </g:link>
+                    &nbsp;&nbsp;
+                    <g:link title="${g.message(code:'plugin.grailsflow.command.delete')}" onclick="deleteTransitionDef('${transition.id}'); return false" uri="javascript:void(0)">
+                      <span class="glyphicon glyphicon-remove text-danger"></span>
+                    </g:link>
+                    <br/>
+                    <span class="hint"> >> ${transition.toNodes*.nodeID}</span>
+                  </div>
                 </g:each>
               </td>
               <td align="right">
@@ -142,7 +178,7 @@
                   <span class="glyphicon glyphicon-edit"></span>&nbsp;
                   <g:message code="plugin.grailsflow.command.edit"/>
                 </g:link>
-                <g:link onclick="return askConfirmation('${g.message(code: 'plugin.grailsflow.question.confirm')}');" controller="processNodeDef" action="deleteNodeDef" id="${node.id}" title="${g.message(code: 'plugin.grailsflow.command.delete')}" class="btn btn-sm btn-default">
+                <g:link onclick="deleteNodeDef('${node.id}'); return false" uri="javascript:void(0)" title="${g.message(code: 'plugin.grailsflow.command.delete')}" class="btn btn-sm btn-default">
                   <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;
                   <g:message code="plugin.grailsflow.command.delete"/>
                 </g:link>

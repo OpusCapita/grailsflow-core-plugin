@@ -11,7 +11,33 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-
+<r:script>
+  function deleteTransition(id) {
+    const errorContainer = $('#errorContainer');
+    errorContainer.addClass('hide');
+    if (!askConfirmation('${g.message(code: 'plugin.grailsflow.question.confirm')}')) {
+      return;
+    }
+    let url = '${request.contextPath}/processTransitionDef/deleteTransitionDef/' + id;
+    fetch(url, {method: 'DELETE'})
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Server error");
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (!data.success) {
+          throw new Error("Delete transition failed");
+        }
+        window.location.href = '${request.contextPath}/processDef/editProcess/' + data.processDefId;
+      })
+      .catch(error => {
+        console.error(error);
+        errorContainer.removeClass('hide');
+      });
+  }
+</r:script>
 <html>
     <head>
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -125,7 +151,9 @@
             <div class="form-submit text-right">
               <g:actionSubmit action="toProcessEditor" id="${transition?.fromNode?.processDef?.id}" value="${g.message(code: 'plugin.grailsflow.command.back')}" class="btn btn-link"/>
               <g:if test="${transition?.id != null}">
-                <g:actionSubmit onclick="return askConfirmation('${g.message(code: 'plugin.grailsflow.question.confirm')}');" action="deleteTransitonDef" value="${g.message(code: 'plugin.grailsflow.command.delete')}" class="btn btn-default"/>
+                <g:link onclick="deleteTransition(${transition?.id}); return false;" uri="javascript:void(0)" class="btn btn-default">
+                  <g:message code="plugin.grailsflow.command.delete"/>
+                </g:link>
               </g:if>
               <g:actionSubmit action="saveTransitionDef" value="${g.message(code: 'plugin.grailsflow.command.apply')}" class="btn btn-primary"/>
             </div>

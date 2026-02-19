@@ -26,37 +26,69 @@
 
   //Asynchronous call for addAssignees
   function callAddAssignees(button) {
-    var elements = getFilteredInputs(button.form, button.name);
-    var parameters = jQuery(elements).serializeArray();
-    jQuery.getJSON("${g.createLink(controller: controller, action:'addAssignees')}",
-            parameters, function(data, textStatus, jqXHR){afterAddAssignees(data, textStatus, jqXHR);});
+    const elements = getFilteredInputs(button.form, button.name);
+    const data = new URLSearchParams(convertFormElementsToObject(elements))
+    const url = "${g.createLink(controller: controller, action:'addAssignees')}"
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      body: data
+    }
+
+    commonCallHandler(url, options, 'Add assignee failed', afterAddAssignees)
+
     return false;
   }
 
+  function convertFormElementsToObject(elements) {
+    return Object.fromEntries($(elements).serializeArray().map(item => [item.name, item.value]))
+  }
+
+  function commonCallHandler(url, options, errorMsg, callback) {
+    const errorContainer = $('#errorContainer');
+    errorContainer.addClass('hide');
+
+    fetch(url, options)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Server error");
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (!data.success) {
+          throw new Error(errorMsg);
+        }
+        callback(data)
+      })
+      .catch(error => {
+        console.error(error);
+        errorContainer.removeClass('hide');
+      });
+  }
+
   // Callback function for adding assignees
-  function afterAddAssignees(json, textStatus, jqXHR) {
-        var type = json.authorityType
-        var addedAssignees = json.addedAssignees
-            if (!addedAssignees || addedAssignees.length == 0 || addedAssignees == '') {
-              alert("There are no new assignees specified. Please fill assignees input!")
-              return;
-            }
-            switch (type) {
-              case "users":
-                addAssignees("users", addedAssignees)
-                clearUsers()
-                break;
-              case "roles":
-                addAssignees("roles", addedAssignees)
-                clearRoles()
-                break;
-              case "groups":
-                addAssignees("groups", addedAssignees)
-                clearGroups()
-                break;
-              default:
-                break;
-            }
+  function afterAddAssignees(json) {
+    const type = json.authorityType
+    const addedAssignees = json.addedAssignees
+    switch (type) {
+      case "users":
+        addAssignees("users", addedAssignees)
+        clearUsers()
+        break;
+      case "roles":
+        addAssignees("roles", addedAssignees)
+        clearRoles()
+        break;
+      case "groups":
+        addAssignees("groups", addedAssignees)
+        clearGroups()
+        break;
+      default:
+        break;
+    }
   }
 
   function addAssignees(assigneesType, assignees) {
@@ -80,7 +112,7 @@
 
             // remove link
             var removeLink = cloneSampleElement('sample_assigee_delete_link')
-            removeLink.onclick = getDeleteAssigneeFunction(parentForm, assignee)
+            removeLink.onclick = callDeleteAssignee.bind(null, parentForm, assignee)
             var divButton = document.createElement('div')
             divButton.className ="form-submit text-right"
             divButton.appendChild(removeLink)
@@ -91,36 +123,35 @@
     document.getElementById(assigneesType+"_count").innerHTML="("+table.rows.length+")"
   }
 
-  function getDeleteAssigneeFunction(form, assigneeID) {
-    return function () {
-      return callDeleteAssignee(form, assigneeID)
-    }
-  }
-
   //Asynchronous call for deleteAssignee
   function callDeleteAssignee(form, assigneeID) {
-    if (askConfirmation('${g.message(code:'plugin.grailsflow.question.confirm')}')) {
-      var elements = getFilteredInputs(form)
-      var assigneeElement = document.createElement("input")
-      assigneeElement.name = "assigneeID"
-      assigneeElement.value = assigneeID
-      elements.push( assigneeElement )
-      var parameters = jQuery(elements).serializeArray();
-      jQuery.getJSON("${g.createLink(controller: controller, action:'deleteAssignee')}",
-        parameters,
-        function(data, textStatus, jqXHR){afterDeleteAssignee(data, textStatus, jqXHR);}
-      )
+    if (!askConfirmation('${g.message(code:'plugin.grailsflow.question.confirm')}')) {
+        return false;
     }
+    const data = {
+      authority_type: form.authority_type.value,
+      assigneeID: assigneeID
+    }
+    if (form.ndID) {
+      data.ndID = form.ndID.value;
+    } else {
+      data.id = form.id.value;
+    }
+    const url = "${g.createLink(controller: controller, action:'deleteAssignee')}?" + new URLSearchParams(data)
+    const options = {
+      method: 'DELETE'
+    }
+
+    commonCallHandler(url, options, 'Delete assignee failed', afterDeleteAssignee)
     return false;
   }
 
   // Callback function for removing assignees
-  function afterDeleteAssignee(json, textStatus, jqXHR) {
+  function afterDeleteAssignee(json) {
     var type = json.authorityType
     var removedAssignee = json.removedAssignee
     if (!removedAssignee) {
-      // TODO: show errors
-      return;
+        throw new Error("Assignee not removed");
     }
     switch (type) {
       case "users":
@@ -173,7 +204,7 @@
               onclick="return callAddAssignees(this);"/>
      </div>
 
-     <a class="btn btn-sm btn-default" href="${g.createLink(controller: controller, action: 'deleteAssignee')}" id="sample_assigee_delete_link" title="${g.message(code:'plugin.grailsflow.command.delete')}" style="display: none">
+     <a class="btn btn-sm btn-default" uri="javascript:void(0)" id="sample_assigee_delete_link" title="${g.message(code:'plugin.grailsflow.command.delete')}" style="display: none">
        <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;<g:message code="plugin.grailsflow.command.delete"/>
      </a>
 
@@ -193,7 +224,7 @@
            <td>${user?.encodeAsHTML()}</td>
            <td>
              <div class="form-submit text-right">
-               <g:link class="btn btn-sm btn-default" title="${g.message(code:'plugin.grailsflow.command.delete')}" onclick="return callDeleteAssignee(getAncestorElementOfType(this, 'form'), '${user?.encodeAsJavaScript()?.encodeAsHTML()}');">
+               <g:link class="btn btn-sm btn-default" uri="javascript:void(0)" title="${g.message(code:'plugin.grailsflow.command.delete')}" onclick="return callDeleteAssignee(getAncestorElementOfType(this, 'form'), '${user?.encodeAsJavaScript()?.encodeAsHTML()}');">
                  <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;${g.message(code: 'plugin.grailsflow.command.delete')}
                </g:link>
              </div>
@@ -215,7 +246,7 @@
            <td>${role?.encodeAsHTML()}</td>
            <td>
              <div class="form-submit text-right">
-               <g:link class="btn btn-sm btn-default" title="${g.message(code: 'plugin.grailsflow.command.delete')}" onclick="return callDeleteAssignee(getAncestorElementOfType(this, 'form'), '${role?.encodeAsJavaScript()?.encodeAsHTML()}');">
+               <g:link class="btn btn-sm btn-default" uri="javascript:void(0)" title="${g.message(code: 'plugin.grailsflow.command.delete')}" onclick="return callDeleteAssignee(getAncestorElementOfType(this, 'form'), '${role?.encodeAsJavaScript()?.encodeAsHTML()}');">
                  <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;<g:message code="plugin.grailsflow.command.delete"/>
                </g:link>
              </div>
@@ -237,7 +268,7 @@
          <td>${group?.encodeAsHTML()}</td>
          <td>
            <div class="form-submit text-right">
-             <g:link class="btn btn-sm btn-default" title="${g.message(code: 'plugin.grailsflow.command.delete')}" onclick="return callDeleteAssignee(getAncestorElementOfType(this, 'form'), '${group?.encodeAsJavaScript()?.encodeAsHTML()}');">
+             <g:link class="btn btn-sm btn-default" uri="javascript:void(0)" title="${g.message(code: 'plugin.grailsflow.command.delete')}" onclick="return callDeleteAssignee(getAncestorElementOfType(this, 'form'), '${group?.encodeAsJavaScript()?.encodeAsHTML()}');">
                <span class="glyphicon glyphicon-remove text-danger"></span>&nbsp;<g:message code="plugin.grailsflow.command.delete"/>
              </g:link>
            </div>
