@@ -1,4 +1,10 @@
 
+[Release 1.10.4](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.10.4) Thu Feb 19 2026 11:13:08 GMT+0300 (MSK)
+=======================================================
+
+- Merge pull request [#64](https://github.com/OpusCapita/grailsflow-core-plugin/issues/64) from OpusCapita/EPROC-22810-system-information-processes-endpoint-refinement (GitHub 93995893+kwas-oc@users.noreply.github.com, 2026-02-19 09:11:49 +0100)
+- (EPROC-22810) Rewrite endpoints & usage (Krzysztof Wasilewski krzysztof.wasilewski@opuscapita.com, 2026-01-22 08:32:17 +0100)
+
 [Release 1.10.3](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.10.3) Tue Feb 17 2026 15:43:52 GMT+0300 (MSK)
 =======================================================
 
