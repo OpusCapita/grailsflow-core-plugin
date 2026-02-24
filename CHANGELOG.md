@@ -1,4 +1,11 @@
 
+[Release 7.46.GA](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v7.46.GA) Tue Feb 24 2026 15:15:02 GMT+0300 (MSK)
+=======================================================
+
+- Merge pull request [#66](https://github.com/OpusCapita/grailsflow-core-plugin/issues/66) from OpusCapita/EPROC-22642-jquery-updatez (GitHub 110452555+WojciechStrzelinski-oc@users.noreply.github.com, 2026-02-24 13:02:51 +0100)
+- (EPROC-22317) chore: Replace old JQuery and JQuery-UI plugins (Wojciech Strzeli??ski ext-wojciech.strzelinski@opuscapita.com, 2025-10-01 21:33:52 +0200)
+- Create development branch 'EPROC-22642-jquery-update' [ci skip] (Wojciech Strzeli??ski ext-wojciech.strzelinski@opuscapita.com, 2025-10-01 19:26:29 +0000)
+
 [Release 1.10.4](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.10.4) Thu Feb 19 2026 11:13:08 GMT+0300 (MSK)
 =======================================================
 
