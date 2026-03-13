@@ -1,4 +1,10 @@
 
+[Release 7.46.GA.1](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v7.46.GA.1) Fri Mar 13 2026 17:39:03 GMT+0300 (MSK)
+=======================================================
+
+- Merge pull request [#67](https://github.com/OpusCapita/grailsflow-core-plugin/issues/67) from OpusCapita/SSM-20595-js-libraries-update (GitHub 110452555+WojciechStrzelinski-oc@users.noreply.github.com, 2026-03-13 15:20:34 +0100)
+- (SSM-20595) chore: Update jcatalog-js-libraries plugin (Wojciech Strzeli??ski ext-wojciech.strzelinski@opuscapita.com, 2026-03-13 14:29:27 +0100)
+
 [Release 7.46.GA](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v7.46.GA) Tue Feb 24 2026 15:15:02 GMT+0300 (MSK)
 =======================================================
 
