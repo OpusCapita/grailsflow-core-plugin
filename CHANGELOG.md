@@ -1,4 +1,8 @@
 
+[Release 7.42.EXT](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v7.42.EXT) Thu Jul 16 2026 00:55:15 GMT+0300 (MSK)
+=======================================================
+
+
 [Release 1.10.4](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v1.10.4) Thu Feb 19 2026 11:13:08 GMT+0300 (MSK)
 =======================================================
 
