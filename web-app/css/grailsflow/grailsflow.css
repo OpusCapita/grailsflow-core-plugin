@@ -1,0 +1,11 @@
+.process-variable.first .btn-link.moveUp,
+.process-node.first .btn-link.moveUp {
+  color: gray;
+  cursor: not-allowed;
+}
+
+.process-variable.last .btn-link.moveDown,
+.process-node.last .btn-link.moveDown {
+  color: gray;
+  cursor: not-allowed;
+}

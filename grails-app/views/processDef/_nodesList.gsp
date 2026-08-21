@@ -34,42 +34,50 @@
   }
 
   function orderMoveNodeCommon(id, direction, callback) {
-    const errorContainer = $('#errorContainer');
-    errorContainer.addClass('hide');
     let url = '${request.contextPath}/processNodeDef/orderMove' + direction + '/' + id;
     fetch(url, {method: 'POST'})
       .then(response => {
         if (!response.ok) {
-          throw new Error("Server error");
+          throw new Error('${message(code: 'plugin.grailsflow.internalError')}');
         }
-        return response.json();
+        try {
+          return response.json();
+        } catch (e) {
+          throw new Error('${message(code: 'plugin.grailsflow.internalError')}');
+        }
       })
       .then(data => {
         if (!data.success) {
-          throw new Error("Move node " + direction + " failed");
+          const errorMessage = data.error && data.error.message ? data.error.message : 'Move node ' + direction + ' failed';
+          throw new Error(errorMessage);
         }
         return callback(data);
       })
       .catch(error => {
-        console.error(error);
-        errorContainer.removeClass('hide');
+        showInformationModalDialog('Error', error.message);
       });
   }
 
   function afterMoveNodeUp(id){
-    const node = $('#node_' + id);
-    node.prev().insertAfter(node);
+    const row = $('#node_' + id);
+    const prevRow = row.prev();
+    prevRow.insertAfter(row);
+
     adjustNodeRowStyles();
   }
 
   function afterMoveNodeDown(id){
-    const node = $('#node_' + id);
-    node.next().insertBefore(node);
+    const row = $('#node_' + id);
+    const nextRow = row.next();
+    nextRow.insertBefore(row);
+
     adjustNodeRowStyles();
   }
 
   function adjustNodeRowStyles() {
-    $('.process-node').removeClass('odd even');
+    $('.process-node').removeClass('odd even first last');
+    $('.process-node:first').addClass('first');
+    $('.process-node:last').addClass('last');
     $('.process-node:nth-child(odd)').addClass('odd');
     $('.process-node:nth-child(even)').addClass('even');
   }
@@ -88,8 +96,6 @@
   }
 
   function deleteCommon(controller, action, errorMsg, id, callback) {
-    const errorContainer = $('#errorContainer');
-    errorContainer.addClass('hide');
     if (!askConfirmation('${g.message(code: 'plugin.grailsflow.question.confirm')}')) {
       return;
     }
@@ -97,21 +103,52 @@
     fetch(url, {method: 'DELETE'})
       .then(response => {
         if (!response.ok) {
-          throw new Error("Server error");
+          throw new Error('${message(code: 'plugin.grailsflow.internalError')}');
         }
-        return response.json();
+        try {
+          return response.json();
+        } catch (e) {
+          throw new Error('${message(code: 'plugin.grailsflow.internalError')}');
+        }
       })
       .then(data => {
         if (!data.success) {
-          throw new Error(errorMsg);
+          const errorMessage = data.error && data.error.message ? data.error.message : errorMsg;
+          throw new Error(errorMessage);
         }
         callback()
       })
       .catch(error => {
-        console.error(error);
-        errorContainer.removeClass('hide');
+        showInformationModalDialog('Error', error.message);
       });
   }
+
+  $(function() {
+    const processNodes = $('.process-node');
+    processNodes.on('click', '.moveUp', function(el) {
+      const row = $(el.delegateTarget);
+
+      if (row.hasClass('first')) {
+        return false;
+      }
+
+      const id = row.attr('id').replace('node_', '');
+      orderMoveNodeUp(id);
+      return false;
+    });
+
+    processNodes.on('click', '.moveDown', function(el) {
+      const row = $(el.delegateTarget);
+
+      if (row.hasClass('last')) {
+        return false;
+      }
+
+      const id = row.attr('id').replace('node_', '');
+      orderMoveNodeDown(id);
+      return false;
+    });
+  });
 </r:script>
  
  
@@ -131,7 +168,9 @@
   </thead>
   <tbody>
     <g:each in="${nodes}" var="node" status="i">
-      <tr id="node_${node.id}"  class="${ (i % 2) == 0 ? 'odd' : 'even'} process-node" valign="top">
+      <g:set var="isFirst" value="${i == 0}"/>
+      <g:set var="isLast" value="${i == nodes.size() - 1}"/>
+      <tr id="node_${node.id}" class="${ (i % 2) == 0 ? 'odd' : 'even'}${isFirst ? ' first' : ''}${isLast ? ' last' : ''} process-node" valign="top">
         <td>${node.nodeID}</td>
         <td>${node.type}</td>
         <td>
@@ -164,13 +203,11 @@
           <td>
             <div class="btn-group input-group-btn">
               <nobr>
-                <a href="javascript:void(0)" title="${g.message(code: 'plugin.grailsflow.command.up')}" onclick="orderMoveNodeUp(${node.id}); return false;"
-                    title="${g.message(code: 'plugin.grailsflow.command.up')}" class="btn btn-sm btn-link">
+                <a href="javascript:void(0)" title="${g.message(code: 'plugin.grailsflow.command.up')}" class="btn btn-sm btn-link moveUp">
                   <span class="glyphicon glyphicon-arrow-up"></span>
                 </a>
                 &nbsp;
-                <a href="javascript:void(0)" title="${g.message(code: 'plugin.grailsflow.command.down')}" onclick="orderMoveNodeDown(${node.id}); return false;"
-                    title="${g.message(code: 'plugin.grailsflow.command.down')}" class="btn btn-sm btn-link">
+                <a href="javascript:void(0)" title="${g.message(code: 'plugin.grailsflow.command.down')}" class="btn btn-sm btn-link moveDown">
                   <span class="glyphicon glyphicon-arrow-down"></span>
                 </a>
                 &nbsp;
