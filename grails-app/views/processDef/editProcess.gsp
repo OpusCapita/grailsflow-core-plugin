@@ -21,7 +21,7 @@
 
          <title><g:message code="plugin.grailsflow.title.processEditor"/></title>
 
-         <r:require modules="grailsflowDatepicker"/>
+         <r:require modules="grailsflowDatepicker, grailsflowStyles"/>
          <r:script>
            function openGraphic(id) {
              window.open("${g.createLink(action:'showGraphic')}?processID="+id, "GraphicProcess", 'width=700, height=500, resizable=yes, scrollbars=yes, status=no')
@@ -33,9 +33,6 @@
       <h1><g:message code="plugin.grailsflow.label.processEditor"/></h1>
 
       <g:render plugin="grailsflow" template="/commons/messageInfo"/>
-      <div id="errorContainer" class="bs-callout bs-callout-danger hide">
-        <g:message code="plugin.grailsflow.internalError" encodeAs="SafeHtml"/>
-      </div>
 
       <g:form controller="${params['controller']}">
 

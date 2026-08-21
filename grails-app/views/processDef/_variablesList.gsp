@@ -34,37 +34,43 @@
   }
 
   function orderMoveVarCommon(id, direction, callback) {
-    const errorContainer = $('#errorContainer');
-    errorContainer.addClass('hide');
     let url = '${request.contextPath}/processVarDef/orderMove' + direction + '/' + id;
     fetch(url, {method: 'POST'})
       .then(response => {
         if (!response.ok) {
-          throw new Error("Server error");
+          throw new Error('${message(code: 'plugin.grailsflow.internalError')}');
         }
-        return response.json();
+        try {
+          return response.json();
+        } catch (e) {
+          throw new Error('${message(code: 'plugin.grailsflow.internalError')}');
+        }
       })
       .then(data => {
         if (!data.success) {
-          throw new Error("Move variable " + direction + " failed");
+          const errorMessage = data.error && data.error.message ? data.error.message : 'Move variable ' + direction + ' failed';
+          throw new Error(errorMessage);
         }
         return callback(data);
       })
       .catch(error => {
-        console.error(error);
-        errorContainer.removeClass('hide');
+        showInformationModalDialog('Error', error.message);
       });
   }
 
-  function afterMoveVarUp(id){
+  function afterMoveVarUp(id) {
     const row = $("#variable_" + id)
-    row.prev().insertAfter(row);
+    const prevRow = row.prev();
+    prevRow.insertAfter(row);
+
     adjustVariableRowStyles();
   }
 
-  function afterMoveVarDown(id){
+  function afterMoveVarDown(id) {
     const row = $("#variable_" + id)
-    row.next().insertBefore(row);
+    const nextRow = row.next();
+    nextRow.insertBefore(row);
+
     adjustVariableRowStyles();
   }
 
@@ -76,10 +82,39 @@
   }
 
   function adjustVariableRowStyles() {
-    $('.process-variable').removeClass('odd even');
+    $('.process-variable').removeClass('odd even first last');
+    $('.process-variable:first').addClass('first');
+    $('.process-variable:last').addClass('last');
     $('.process-variable:nth-child(odd)').addClass('odd');
     $('.process-variable:nth-child(even)').addClass('even');
   }
+
+  $(function() {
+    const processVariables = $('.process-variable');
+    processVariables.on('click', '.moveUp', function(el) {
+      const row = $(el.delegateTarget);
+
+      if (row.hasClass('first')) {
+        return false;
+      }
+
+      const id = row.attr('id').replace('variable_', '');
+      orderMoveVarUp(id);
+      return false;
+    });
+
+    processVariables.on('click', '.moveDown', function(el) {
+      const row = $(el.delegateTarget);
+
+      if (row.hasClass('last')) {
+        return false;
+      }
+
+      const id = row.attr('id').replace('variable_', '');
+      orderMoveVarDown(id);
+      return false;
+    });
+  });
 </r:script>
  
  
@@ -98,7 +133,9 @@
      </thead>
      <tbody>
      <g:each in="${variables}" var="variable" status="i">
-       <tr id="variable_${variable.id}" class="${ (i % 2) == 0 ? 'odd' : 'even'} process-variable" valign="top">
+       <g:set var="isFirst" value="${i == 0}"/>
+       <g:set var="isLast" value="${i == variables.size() - 1}"/>
+       <tr id="variable_${variable.id}" class="${ (i % 2) == 0 ? 'odd' : 'even'}${isFirst ? ' first' : ''}${isLast ? ' last' : ''} process-variable" valign="top">
          <td>${variable.name?.encodeAsHTML()}</td>
          <td>${variable.type}</td>
          <td>
@@ -132,13 +169,11 @@
            <td>
              <div class="btn-group input-group-btn">
                <nobr>
-                   <a href="javascript:void(0)" title="${g.message(code: 'plugin.grailsflow.command.up')}" onclick="orderMoveVarUp(${variable.id}); return false;"
-                      title="${g.message(code: 'plugin.grailsflow.command.up')}" class="btn btn-sm btn-link">
+                   <a href="javascript:void(0)" title="${g.message(code: 'plugin.grailsflow.command.up')}" class="btn btn-sm btn-link moveUp">
                      <span class="glyphicon glyphicon-arrow-up"></span>
                    </a>
                    &nbsp;
-                   <a href="javascript:void(0)" title="${g.message(code: 'plugin.grailsflow.command.down')}" onclick="orderMoveVarDown(${variable.id}); return false;"
-                      title="${g.message(code: 'plugin.grailsflow.command.down')}" class="btn btn-sm btn-link">
+                   <a href="javascript:void(0)" title="${g.message(code: 'plugin.grailsflow.command.down')}" class="btn btn-sm btn-link moveDown">
                      <span class="glyphicon glyphicon-arrow-down"></span>
                    </a>
                    &nbsp;

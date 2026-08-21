@@ -6,6 +6,11 @@ modules = {
         resource url: [plugin: 'grailsflow', file: 'js/grailsflow/common.js']
         resource url: [plugin: 'grailsflow', file: 'js/grailsflow/jquery/config.js']
     }
+
+    grailsflowStyles {
+        resource url: [plugin: 'grailsflow', file: 'css/grailsflow/grailsflow.css']
+    }
+
     grailsflowGraphics {
         dependsOn 'jquery'
         resource url: [plugin: 'grailsflow', file: 'css/grailsflow/graphic/ext-all.css']
