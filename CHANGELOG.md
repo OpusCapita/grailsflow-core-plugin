@@ -1,4 +1,11 @@
 
+[Release 7.42.EXT.1](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v7.42.EXT.1) Wed Aug 26 2026 16:32:11 GMT+0300 (MSK)
+=======================================================
+
+- Merge pull request [#69](https://github.com/OpusCapita/grailsflow-core-plugin/issues/69) from OpusCapita/PROC-21863-afv-process-editor-move-operation-fails (GitHub 93995893+kwas-oc@users.noreply.github.com, 2026-08-26 15:28:29 +0200)
+- (PROC-21863) Fix error reporting & block move up&down for first&last items (Krzysztof Wasilewski krzysztof.wasilewski@opuscapita.com, 2026-08-21 09:15:56 +0200)
+- Create development branch 'PROC-21863-afv-process-editor-move-operation-fails' [ci skip] (Krzysztof Wasilewski krzysztof.wasilewski@opuscapita.com, 2026-08-25 07:41:30 +0000)
+
 [Release 7.42.EXT](https://github.com/OpusCapita/grailsflow-core-plugin/releases/tag/v7.42.EXT) Thu Jul 16 2026 00:55:15 GMT+0300 (MSK)
 =======================================================
 
